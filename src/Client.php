@@ -7,7 +7,7 @@ class Client
     
     public function configure($config = [])
     {
-        return array_merge(
+        $GLOBALS['pcoClientConfig'] = array_merge(
             [
                 'calendar' => [
                     'apiVersion' => '2021-07-20',
