@@ -1,0 +1,22 @@
+{
+    "name": "encoredigitalgroup/planningcenter-php-sdk",
+    "description": "PHP SDK for the Planning Center API",
+    "type": "library",
+    "version": "0.1.0",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "EncoreDigitalGroup\\PlanningCenter\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Marc Beinder",
+            "email": "hello@marcbeinder.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "guzzlehttp/guzzle": "^7.7"
+    }
+}
