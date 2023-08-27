@@ -14,7 +14,7 @@ class Event
             'Authorization' => $config['authorization'],
             'X-PCO-API-Version' => $config['calendar']['apiVersion'],
         ];
-        $request = new Request('GET', 'https://api.planningcenteronline.com/calendar/v2/events?filter=future', $headers);
+        $request = new Request('GET', 'https://api.planningcenteronline.com/calendar/v2/events', $headers);
         $res = $client->sendAsync($request)->wait();
         return $res->getBody(); 
     }
