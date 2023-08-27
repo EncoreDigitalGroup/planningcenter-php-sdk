@@ -45,6 +45,18 @@ class Event
         $request = new Request('GET', 'calendar/v2/events/' . $id . '?' . $query, $headers);
         return $PCOClient->send($request);
     }
+
+    public function instance($PCOClient, $id, $instance = '', $query = []): string
+    {
+        $config = $GLOBALS['pcoClientConfig'];
+        $headers = [
+            'Authorization' => $config['authorization'],
+            'X-PCO-API-Version' => $config['calendar']['apiVersion'],
+        ];
+        $query = http_build_query($query);
+        $request = new Request('GET', 'calendar/v2/events/' . $id . '/event_instances/' . $instance . '?' . $query, $headers);
+        return $PCOClient->send($request);
+    }
 }
 
 
