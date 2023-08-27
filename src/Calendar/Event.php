@@ -1,22 +1,49 @@
 <?php
 namespace EncoreDigitalGroup\PlanningCenter\Calendar;
 
-use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Psr7\Request;
 
 class Event
 {
-    public function getAll()
+    public function all($PCOClient, $query = [])
     {
         $config = $GLOBALS['pcoClientConfig'];
-        $client = new GuzzleClient();
         $headers = [
             'Authorization' => $config['authorization'],
             'X-PCO-API-Version' => $config['calendar']['apiVersion'],
         ];
-        $request = new Request('GET', 'https://api.planningcenteronline.com/calendar/v2/events', $headers);
-        $res = $client->sendAsync($request)->wait();
-        return $res->getBody(); 
+
+       $query = http_build_query($query);
+       $request = new Request('GET', 'calendar/v2/events?' . $query, $headers);
+       return $PCOClient->send($request, $query);
+    }
+
+    public function future($PCOClient, $query = []): string
+    {
+        $config = $GLOBALS['pcoClientConfig'];
+        $headers = [
+            'Authorization' => $config['authorization'],
+            'X-PCO-API-Version' => $config['calendar']['apiVersion'],
+        ];
+        $query = array_merge(
+            [
+                'filter' => 'future',
+            ], $query);
+        $query = http_build_query($query);
+        $request = new Request('GET', 'calendar/v2/events?' . $query, $headers);
+        return $PCOClient->send($request);
+    }
+
+    public function get($PCOClient, $id, $query = []): string
+    {
+        $config = $GLOBALS['pcoClientConfig'];
+        $headers = [
+            'Authorization' => $config['authorization'],
+            'X-PCO-API-Version' => $config['calendar']['apiVersion'],
+        ];
+        $query = http_build_query($query);
+        $request = new Request('GET', 'calendar/v2/events/' . $id . '?' . $query, $headers);
+        return $PCOClient->send($request);
     }
 }
 
