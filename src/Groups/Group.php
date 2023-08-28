@@ -10,7 +10,7 @@ class Group
         $config = $GLOBALS['pcoClientConfig'];
         $headers = [
             'Authorization' => $config['authorization'],
-            'X-PCO-API-Version' => $config['calendar']['apiVersion'],
+            'X-PCO-API-Version' => $config['groups']['apiVersion'],
         ];
 
         $query = http_build_query($query);
@@ -23,7 +23,7 @@ class Group
         $config = $GLOBALS['pcoClientConfig'];
         $headers = [
             'Authorization' => $config['authorization'],
-            'X-PCO-API-Version' => $config['calendar']['apiVersion'],
+            'X-PCO-API-Version' => $config['groups']['apiVersion'],
         ];
         $query = array_merge(
             [
@@ -39,7 +39,7 @@ class Group
         $config = $GLOBALS['pcoClientConfig'];
         $headers = [
             'Authorization' => $config['authorization'],
-            'X-PCO-API-Version' => $config['calendar']['apiVersion'],
+            'X-PCO-API-Version' => $config['groups']['apiVersion'],
         ];
         $query = http_build_query($query);
         $request = new Request('GET', 'groups/v2/groups/' . $id . '?' . $query, $headers);
@@ -51,7 +51,7 @@ class Group
         $config = $GLOBALS['pcoClientConfig'];
         $headers = [
             'Authorization' => $config['authorization'],
-            'X-PCO-API-Version' => $config['calendar']['apiVersion'],
+            'X-PCO-API-Version' => $config['groups']['apiVersion'],
         ];
         $query = http_build_query($query);
         $request = new Request('GET', 'groups/v2/groups/' . $id . '/enrollment?' . $query, $headers);
@@ -63,7 +63,7 @@ class Group
         $config = $GLOBALS['pcoClientConfig'];
         $headers = [
             'Authorization' => $config['authorization'],
-            'X-PCO-API-Version' => $config['calendar']['apiVersion'],
+            'X-PCO-API-Version' => $config['groups']['apiVersion'],
         ];
         $query = http_build_query($query);
         $request = new Request('GET', 'groups/v2/groups/' . $id . '/events?' . $query, $headers);
@@ -75,7 +75,7 @@ class Group
         $config = $GLOBALS['pcoClientConfig'];
         $headers = [
             'Authorization' => $config['authorization'],
-            'X-PCO-API-Version' => $config['calendar']['apiVersion'],
+            'X-PCO-API-Version' => $config['groups']['apiVersion'],
         ];
         $query = http_build_query($query);
         $request = new Request('GET', 'groups/v2/groups/' . $id . '/memberships?' . $query, $headers);
@@ -87,7 +87,7 @@ class Group
         $config = $GLOBALS['pcoClientConfig'];
         $headers = [
             'Authorization' => $config['authorization'],
-            'X-PCO-API-Version' => $config['calendar']['apiVersion'],
+            'X-PCO-API-Version' => $config['groups']['apiVersion'],
         ];
         $query = http_build_query($query);
         $request = new Request('GET', 'groups/v2/groups/' . $id . '/people?' . $query, $headers);

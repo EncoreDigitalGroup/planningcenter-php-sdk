@@ -18,7 +18,13 @@ class Client
             [
                 'calendar' => [
                     'apiVersion' => '2021-07-20',
-                ]
+                ],
+                'groups' => [
+                    'apiVersion' => '2023-07-10',
+                ],
+                'people' => [
+                    'apiVersion' => '2023-02-15',
+                ],
             ], $config);
         
         $GLOBALS['pcoClient'] = new GuzzleClient(

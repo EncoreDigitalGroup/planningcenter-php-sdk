@@ -10,7 +10,7 @@ class Person
         $config = $GLOBALS['pcoClientConfig'];
         $headers = [
             'Authorization' => $config['authorization'],
-            'X-PCO-API-Version' => $config['calendar']['apiVersion'],
+            'X-PCO-API-Version' => $config['people']['apiVersion'],
         ];
 
         $query = http_build_query($query);
@@ -23,7 +23,7 @@ class Person
         $config = $GLOBALS['pcoClientConfig'];
         $headers = [
             'Authorization' => $config['authorization'],
-            'X-PCO-API-Version' => $config['calendar']['apiVersion'],
+            'X-PCO-API-Version' => $config['people']['apiVersion'],
         ];
         $query = http_build_query($query);
         $request = new Request('GET', 'people/v2/people/' . $id . '?' . $query, $headers);

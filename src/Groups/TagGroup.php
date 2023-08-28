@@ -10,7 +10,7 @@ class TagGroup
         $config = $GLOBALS['pcoClientConfig'];
         $headers = [
             'Authorization' => $config['authorization'],
-            'X-PCO-API-Version' => $config['calendar']['apiVersion'],
+            'X-PCO-API-Version' => $config['groups']['apiVersion'],
         ];
 
        $query = http_build_query($query);
@@ -23,7 +23,7 @@ class TagGroup
         $config = $GLOBALS['pcoClientConfig'];
         $headers = [
             'Authorization' => $config['authorization'],
-            'X-PCO-API-Version' => $config['calendar']['apiVersion'],
+            'X-PCO-API-Version' => $config['groups']['apiVersion'],
         ];
         $query = http_build_query($query);
         $request = new Request('GET', 'groups/v2/tag_groups/' . $id . '/tags/' . $tag . '?' . $query, $headers);
