@@ -1,18 +1,19 @@
 <?php
+
 namespace EncoreDigitalGroup\PlanningCenter;
 
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Handler\CurlHandler;
+use GuzzleHttp\HandlerStack;
 
 class Client
 {
     public $config;
-    
+
     public function configure($config = [])
     {
-        $handler = new CurlHandler();
+        $handler = new CurlHandler;
         $stack = HandlerStack::create($handler); // Wrap w/ middleware
         $GLOBALS['pcoClientConfig'] = array_merge(
             [
@@ -26,7 +27,7 @@ class Client
                     'apiVersion' => '2023-02-15',
                 ],
             ], $config);
-        
+
         $GLOBALS['pcoClient'] = new GuzzleClient(
             [
                 'base_uri' => 'https://api.planningcenteronline.com',
@@ -34,7 +35,7 @@ class Client
             ]
         );
     }
-    
+
     public function send($request)
     {
         $client = $GLOBALS['pcoClient'];
@@ -43,7 +44,7 @@ class Client
         } catch (ClientException $e) {
             return $e->getResponse()->getBody();
         }
+
         return $res->getBody();
     }
 }
-

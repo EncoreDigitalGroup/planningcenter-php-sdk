@@ -1,4 +1,5 @@
 <?php
+
 namespace EncoreDigitalGroup\PlanningCenter\Calendar;
 
 use GuzzleHttp\Psr7\Request;
@@ -13,9 +14,10 @@ class Event
             'X-PCO-API-Version' => $config['calendar']['apiVersion'],
         ];
 
-       $query = http_build_query($query);
-       $request = new Request('GET', 'calendar/v2/events?' . $query, $headers);
-       return $PCOClient->send($request, $query);
+        $query = http_build_query($query);
+        $request = new Request('GET', 'calendar/v2/events?' . $query, $headers);
+
+        return $PCOClient->send($request, $query);
     }
 
     public function future($PCOClient, $query = []): string
@@ -31,6 +33,7 @@ class Event
             ], $query);
         $query = http_build_query($query);
         $request = new Request('GET', 'calendar/v2/events?' . $query, $headers);
+
         return $PCOClient->send($request);
     }
 
@@ -43,6 +46,7 @@ class Event
         ];
         $query = http_build_query($query);
         $request = new Request('GET', 'calendar/v2/events/' . $id . '?' . $query, $headers);
+
         return $PCOClient->send($request);
     }
 
@@ -55,6 +59,7 @@ class Event
         ];
         $query = http_build_query($query);
         $request = new Request('GET', 'calendar/v2/events/' . $id . '/event_instances/' . $instance . '?' . $query, $headers);
+
         return $PCOClient->send($request);
     }
 
@@ -67,8 +72,7 @@ class Event
         ];
         $query = http_build_query($query);
         $request = new Request('GET', 'calendar/v2/events/' . $id . '/event_connections/' . $connection . '?' . $query, $headers);
+
         return $PCOClient->send($request);
     }
 }
-
-

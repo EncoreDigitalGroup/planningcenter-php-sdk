@@ -1,4 +1,5 @@
 <?php
+
 namespace EncoreDigitalGroup\PlanningCenter\Groups;
 
 use GuzzleHttp\Psr7\Request;
@@ -15,6 +16,7 @@ class Group
 
         $query = http_build_query($query);
         $request = new Request('GET', 'groups/v2/groups?' . $query, $headers);
+
         return $PCOClient->send($request, $query);
     }
 
@@ -31,6 +33,7 @@ class Group
             ], $query);
         $query = http_build_query($query);
         $request = new Request('GET', 'groups/v2/groups?' . $query, $headers);
+
         return $PCOClient->send($request);
     }
 
@@ -43,6 +46,7 @@ class Group
         ];
         $query = http_build_query($query);
         $request = new Request('GET', 'groups/v2/groups/' . $id . '?' . $query, $headers);
+
         return $PCOClient->send($request);
     }
 
@@ -55,6 +59,7 @@ class Group
         ];
         $query = http_build_query($query);
         $request = new Request('GET', 'groups/v2/groups/' . $id . '/enrollment?' . $query, $headers);
+
         return $PCOClient->send($request);
     }
 
@@ -67,6 +72,7 @@ class Group
         ];
         $query = http_build_query($query);
         $request = new Request('GET', 'groups/v2/groups/' . $id . '/events?' . $query, $headers);
+
         return $PCOClient->send($request);
     }
 
@@ -79,6 +85,7 @@ class Group
         ];
         $query = http_build_query($query);
         $request = new Request('GET', 'groups/v2/groups/' . $id . '/memberships?' . $query, $headers);
+
         return $PCOClient->send($request);
     }
 
@@ -91,8 +98,7 @@ class Group
         ];
         $query = http_build_query($query);
         $request = new Request('GET', 'groups/v2/groups/' . $id . '/people?' . $query, $headers);
+
         return $PCOClient->send($request);
     }
 }
-
-

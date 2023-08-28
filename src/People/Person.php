@@ -1,4 +1,5 @@
 <?php
+
 namespace EncoreDigitalGroup\PlanningCenter\People;
 
 use GuzzleHttp\Psr7\Request;
@@ -15,6 +16,7 @@ class Person
 
         $query = http_build_query($query);
         $request = new Request('GET', 'people/v2/people?' . $query, $headers);
+
         return $PCOClient->send($request, $query);
     }
 
@@ -27,8 +29,7 @@ class Person
         ];
         $query = http_build_query($query);
         $request = new Request('GET', 'people/v2/people/' . $id . '?' . $query, $headers);
+
         return $PCOClient->send($request);
     }
 }
-
-
