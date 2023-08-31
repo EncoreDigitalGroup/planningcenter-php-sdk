@@ -24,4 +24,5 @@ Currently, the client only supports Basic Authentication, but OAuth Authenticati
 <br />
 <br />
 
-Next: [Change the API Version](02-Change-the-API-Version.md)
+Helpful Hint: [How to Change the API Version](02-Change-the-API-Version.md)
+Next: [Calendar](../03-calendar/README.md)
