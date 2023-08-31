@@ -64,3 +64,7 @@ To get a single event connection, pass the ```id``` of the event connection as t
 $Event->connection($PCOClient, $id, $event_connection_id);
 ```
 When ```$event_connection_id``` is not included, this tells the SDK that you want all event connection. When ```$event_connection_id``` is included, the SDK will return only the event connection you requested. As always, the final argument for this method is the query modifier array.
+<br />
+<br />
+
+Next: [TagGroup](02-TagGroup.md)
