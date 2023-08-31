@@ -36,6 +36,18 @@ class Client
         );
     }
 
+    public function send($request)
+    {
+        $client = $GLOBALS['pcoClient'];
+        try {
+            $res = $client->sendAsync($request)->wait();
+        } catch (ClientException $e) {
+            return json_encode($this->processResponse($e->getResponse()));
+        }
+
+        return json_encode($this->processResponse($res));
+
+    }
     protected function processResponse($res): array
     {
         $response_body = $res->getBody();
@@ -68,16 +80,5 @@ class Client
         return $response;
     }
 
-    public function send($request)
-    {
-        $client = $GLOBALS['pcoClient'];
-        try {
-            $res = $client->sendAsync($request)->wait();
-        } catch (ClientException $e) {
-            return json_encode($this->processResponse($e->getResponse()));
-        }
-
-        return json_encode($this->processResponse($res));
-
-    }
+    
 }
