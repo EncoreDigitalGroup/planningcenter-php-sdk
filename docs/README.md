@@ -2,3 +2,6 @@
 This SDK is open-source and freely available to use. Contributions are welcome.
 
 As we add functionality to the SDK, documentation will be made available here.
+
+1. [Installation](installation/README.md)
+2. [Setup](setup/README.md)
