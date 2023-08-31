@@ -36,15 +36,48 @@ class Client
         );
     }
 
+    protected function processResponse($res): array
+    {
+        $response_body = $res->getBody();
+        $http_response_code = $res->getStatusCode();
+        $http_message = $res->getReasonPhrase();
+        $success = false;
+        if ($http_response_code >= 200 && $http_response_code < 300) {
+            $success = true;
+        }
+
+        $response = [
+            'sdk' => [
+                'outcome' => [
+                    'success' => $success ?? false,
+                    'http' => [
+                        'status_code' => $http_response_code ?? null,
+                        'message' => $http_message ?? null,
+                    ],
+                ],
+            ]
+        ];
+
+        if ($success) {
+            $response_body = json_decode($response_body);
+            $response['pco'] = $response_body;
+            $response['sdk']['page']['previous'] = $response_body->meta->prev->offset ?? null;
+            $response['sdk']['page']['next'] = $response_body->meta->next->offset ?? null;
+        }
+
+        return $response;
+    }
+
     public function send($request)
     {
         $client = $GLOBALS['pcoClient'];
         try {
             $res = $client->sendAsync($request)->wait();
         } catch (ClientException $e) {
-            return $e->getResponse()->getBody();
+            return json_encode($this->processResponse($e->getResponse()));
         }
 
-        return $res->getBody();
+        return json_encode($this->processResponse($res));
+
     }
 }
