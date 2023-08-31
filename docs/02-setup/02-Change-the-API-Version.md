@@ -23,3 +23,7 @@ $PCOClient->configure([
 ]);
 ```
 Excluding any of the product or apiVersion array keys will configure the SDK to the default values.
+<br />
+<br />
+
+Next: [Calendar](../03-calendar/README.md)
