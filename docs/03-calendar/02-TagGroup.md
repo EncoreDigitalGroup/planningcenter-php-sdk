@@ -3,6 +3,7 @@ To start using the Calendar TagGroup API, add the following to the top of your f
 ```php
 use EncoreDigitalGroup\PlanningCenter\Calendar\TagGroup;
 ```
+## ***Before your continue***: *Did you setup the [PCOClient](../02-setup/01-Setup-the-PCOClient.md)*
 
 ### TagGroup Class
 Now we can create a new instance of the TagGroup class;
