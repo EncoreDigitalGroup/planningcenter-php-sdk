@@ -3,6 +3,7 @@ To start using the Calendar Event API, add the following to the top of your file
 ```php
 use EncoreDigitalGroup\PlanningCenter\Calendar\Event;
 ```
+## ***Before your continue***: *Did you setup the [PCOClient](../02-setup/01-Setup-the-PCOClient.md)*
 
 ### Event Class
 Now we can create a new instance of the Event class;
