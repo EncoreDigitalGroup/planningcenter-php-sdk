@@ -11,3 +11,5 @@ Once composer has installed the SDK, require the composer autoloader in your pro
 ```php
 require 'vendor/autoload.php'
 ```
+
+Next: [Setup](/docs/02-setup/README.md)
