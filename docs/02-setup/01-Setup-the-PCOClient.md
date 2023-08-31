@@ -21,3 +21,7 @@ $PCOClient->configure([
 ]);
 ```
 Currently, the client only supports Basic Authentication, but OAuth Authentication is on the roadmap. Once released, this documentation will reflect that.
+<br />
+<br />
+
+Next: [Change the API Version](02-Change-the-API-Version.md)
