@@ -2,7 +2,7 @@
     "name": "encoredigitalgroup/planningcenter-php-sdk",
     "description": "PHP SDK for the Planning Center API",
     "type": "library",
-    "version": "0.5.0",
+    "version": "0.5.1",
     "license": "MIT",
     "autoload": {
         "psr-4": {
