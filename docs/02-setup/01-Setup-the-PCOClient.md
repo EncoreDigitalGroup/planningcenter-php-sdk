@@ -24,6 +24,8 @@ Currently, the client only supports Basic Authentication, but OAuth Authenticati
 <br />
 <br />
 
+***Note***: *In the event that the API returns an error, the client will retry the request up to 5 times for a grand total of 6 requests. After the 6th request, the client will return the error to your application.* 
+
 *Helpful Hint: [How to Change the API Version](02-Change-the-API-Version.md)*
 <br />
 <br />
