@@ -36,12 +36,17 @@ class Client
         );
     }
 
-    public function send($request)
+    public function send($request, $retry = 0, $retry_limit = 5)
     {
         $client = $GLOBALS['pcoClient'];
         try {
             $res = $client->sendAsync($request)->wait();
         } catch (ClientException $e) {
+            if ($retry <= $retry_limit)
+            {
+                $i = $retry++;
+                $this->send($request, $i);
+            }
             return json_encode($this->processResponse($e->getResponse()));
         }
 
