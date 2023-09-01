@@ -36,7 +36,7 @@ class Client
         );
     }
 
-    public function send($request, $retry = 0, $retry_limit = 5)
+    public function send($request, $query, $retry_limit = 5, $retry = 0)
     {
         $client = $GLOBALS['pcoClient'];
         try {
@@ -44,8 +44,9 @@ class Client
         } catch (ClientException $e) {
             if ($retry <= $retry_limit)
             {
-                $i = $retry++;
-                $this->send($request, $i);
+                $i = $retry + 1;
+                $GLOBALS['pcoRetryCount'] = $i - 1;
+                return $this->send($request, $query, $retry_limit, $i);
             }
             return json_encode($this->processResponse($e->getResponse()));
         }
@@ -70,6 +71,7 @@ class Client
                     'http' => [
                         'status_code' => $http_response_code ?? null,
                         'message' => $http_message ?? null,
+                        'retry_count' => $GLOBALS['pcoRetryCount'] ?? 0,
                     ],
                 ],
             ]
