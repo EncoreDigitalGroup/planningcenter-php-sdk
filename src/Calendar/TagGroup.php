@@ -30,6 +30,6 @@ class TagGroup
         $query = http_build_query($query);
         $request = new Request('GET', 'calendar/v2/tag_groups/' . $id . '/tags/' . $tag . '?' . $query, $headers);
 
-        return $PCOClient->send($request);
+        return $PCOClient->send($request, $query);
     }
 }

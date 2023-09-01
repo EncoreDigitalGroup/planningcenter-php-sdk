@@ -56,7 +56,7 @@ class Client
     }
     protected function processResponse($res): array
     {
-        $response_body = $res->getBody();
+        $response_body = $res->getBody()->getContents();
         $http_response_code = $res->getStatusCode();
         $http_message = $res->getReasonPhrase();
         $success = false;
