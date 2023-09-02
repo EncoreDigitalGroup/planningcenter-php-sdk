@@ -36,7 +36,7 @@ class Client
         );
     }
 
-    public function send($request, $query, $retry_limit = 5, $retry = 0)
+    public function send($request, $query = [], $retry_limit = 5, $retry = 0)
     {
         $client = $GLOBALS['pcoClient'];
         try {
