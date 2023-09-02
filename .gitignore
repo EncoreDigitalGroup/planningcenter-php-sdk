@@ -1,5 +1,7 @@
 /.idea/
 /vendor/
-test.php
 composer.lock
+package.json
+package-lock.json
+test.php
 test.json
