@@ -3,7 +3,7 @@
     "description": "PHP SDK for the Planning Center API",
     "type": "library",
     "version": "0.5.2",
-    "license": "MIT",
+    "license": "GNU AGPLv3",
     "autoload": {
         "psr-4": {
             "EncoreDigitalGroup\\PlanningCenter\\": "src/"
