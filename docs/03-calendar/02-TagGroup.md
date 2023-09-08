@@ -16,6 +16,9 @@ To get all calendar tag groups that exist in Planning Center, use the following 
 ```php
 $TagGroup->all($PCOClient);
 ```
+<br />
+
+# Tags
 
 ### Get All Tags in Tag Group
 To get all tags in a tag group, pass the ```id``` of the tag group as the second argument to the ```tag()``` method
