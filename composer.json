@@ -2,7 +2,6 @@
     "name": "encoredigitalgroup/planningcenter-php-sdk",
     "description": "PHP SDK for the Planning Center API",
     "type": "library",
-    "version": "0.6.0",
     "license": "AGPL-3.0-or-later",
     "autoload": {
         "psr-4": {
