@@ -7,7 +7,7 @@ use GuzzleHttp\Psr7\Request;
 
 class Person
 {
-    
+    public string $id;
     public $given_name;
     public string $first_name;
     public string $nickname;
@@ -55,7 +55,7 @@ class Person
         return $PCOClient->send($request, $query);
     }
 
-    public static function get($PCOClient, $id, $query = []): string
+    public static function get($PCOClient, self $person, $query = []): string
     {
         $config = $GLOBALS['pcoClientConfig'];
         $headers = [
@@ -63,12 +63,12 @@ class Person
             'X-PCO-API-Version' => $config['people']['apiVersion'],
         ];
         $query = http_build_query($query);
-        $request = new Request('GET', 'people/v2/people/' . $id . '?' . $query, $headers);
+        $request = new Request('GET', 'people/v2/people/' . $person->id . '?' . $query, $headers);
 
         return $PCOClient->send($request);
     }
     
-    public static function create($PCOClient, $person): string
+    public static function create($PCOClient, self $person): string
     {
         $config = $GLOBALS['pcoClientConfig'];
         $headers = [
@@ -76,6 +76,30 @@ class Person
             'X-PCO-API-Version' => $config['people']['apiVersion'],
         ];
         $request = new Request('POST', 'people/v2/people', $headers, json_encode($person));
+
+        return $PCOClient->send($request);
+    }
+
+    public static function update($PCOClient, self $person): string
+    {
+        $config = $GLOBALS['pcoClientConfig'];
+        $headers = [
+            'Authorization' => $config['authorization'],
+            'X-PCO-API-Version' => $config['people']['apiVersion'],
+        ];
+        $request = new Request('PATCH', 'people/v2/people/' . $person->id, $headers, json_encode($person));
+
+        return $PCOClient->send($request);
+    }
+
+    public static function delete($PCOClient, self $person): string
+    {
+        $config = $GLOBALS['pcoClientConfig'];
+        $headers = [
+            'Authorization' => $config['authorization'],
+            'X-PCO-API-Version' => $config['people']['apiVersion'],
+        ];
+        $request = new Request('DELETE', 'people/v2/people/' . $person->id, $headers, json_encode($person));
 
         return $PCOClient->send($request);
     }
