@@ -4,6 +4,7 @@ namespace EncoreDigitalGroup\PlanningCenter\People;
 
 use DateTime;
 use GuzzleHttp\Psr7\Request;
+use JMS\Serializer\SerializerBuilder;
 
 class Person
 {
@@ -52,7 +53,8 @@ class Person
         $query = http_build_query($query);
         $request = new Request('GET', 'people/v2/people?' . $query, $headers);
 
-        return $PCOClient->send($request, $query);
+        $Serializer = SerializerBuilder::create()->build();
+        return $Serializer->deserialize($PCOClient->send($request), self::class, 'json');
     }
 
     public static function get($PCOClient, self $person, $query = []): string
@@ -65,7 +67,8 @@ class Person
         $query = http_build_query($query);
         $request = new Request('GET', 'people/v2/people/' . $person->id . '?' . $query, $headers);
 
-        return $PCOClient->send($request);
+        $Serializer = SerializerBuilder::create()->build();
+        return $Serializer->deserialize($PCOClient->send($request), self::class, 'json');
     }
     
     public static function create($PCOClient, self $person): string
@@ -77,7 +80,8 @@ class Person
         ];
         $request = new Request('POST', 'people/v2/people', $headers, json_encode($person));
 
-        return $PCOClient->send($request);
+        $Serializer = SerializerBuilder::create()->build();
+        return $Serializer->deserialize($PCOClient->send($request), self::class, 'json');
     }
 
     public static function update($PCOClient, self $person): string
@@ -89,7 +93,8 @@ class Person
         ];
         $request = new Request('PATCH', 'people/v2/people/' . $person->id, $headers, json_encode($person));
 
-        return $PCOClient->send($request);
+        $Serializer = SerializerBuilder::create()->build();
+        return $Serializer->deserialize($PCOClient->send($request), self::class, 'json');
     }
 
     public static function delete($PCOClient, self $person): string
@@ -101,6 +106,7 @@ class Person
         ];
         $request = new Request('DELETE', 'people/v2/people/' . $person->id, $headers, json_encode($person));
 
-        return $PCOClient->send($request);
+        $Serializer = SerializerBuilder::create()->build();
+        return $Serializer->deserialize($PCOClient->send($request), self::class, 'json');
     }
 }
