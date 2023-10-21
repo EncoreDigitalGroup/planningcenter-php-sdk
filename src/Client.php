@@ -71,6 +71,7 @@ class Client
                     'http' => [
                         'status_code' => $http_response_code ?? null,
                         'message' => $http_message ?? null,
+                        'pco' => $response_body,
                         'retry_count' => $GLOBALS['pcoRetryCount'] ?? 0,
                     ],
                 ],
@@ -87,5 +88,5 @@ class Client
         return $response;
     }
 
-    
+
 }
