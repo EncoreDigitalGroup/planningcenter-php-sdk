@@ -4,43 +4,44 @@ namespace EncoreDigitalGroup\PlanningCenter\People;
 
 use DateTime;
 use GuzzleHttp\Psr7\Request;
+use stdClass;
 
 class Person
 {
-    public string $id;
+    public $id;
     public $given_name;
-    public string $first_name;
-    public string $nickname;
-    public string $middle_name;
-    public string $last_name;
-    public DateTime $birthdate;
-    public DateTime $anniversary;
-    public string $gender;
-    public int $grade;
-    public bool $child;
-    public int $graduation_year;
-    public bool $site_administrator;
-    public bool $accounting_administrator;
-    public string $people_permissions;
-    public string $membership;
-    public DateTime $inactivated_at;
-    public string $medical_notes;
-    public bool $mfa_configured;
-    public DateTime $created_at;
-    public DateTime $updated_at;
-    public string $avatar;
-    public string $name;
-    public string $demographic_avatar_url;
-    public string $directory_status;
-    public bool $passed_background_check;
-    public bool $can_create_forms;
-    public bool $can_email_lists;
-    public string $school_type;
-    public string $status;
+    public $first_name;
+    public $nickname;
+    public $middle_name;
+    public $last_name;
+    public $birthdate;
+    public $anniversary;
+    public $gender;
+    public $grade;
+    public $child;
+    public $graduation_year;
+    public $site_administrator;
+    public $accounting_administrator;
+    public $people_permissions;
+    public $membership;
+    public $inactivated_at;
+    public $medical_notes;
+    public $mfa_configured;
+    public $created_at;
+    public $updated_at;
+    public $avatar;
+    public $name;
+    public $demographic_avatar_url;
+    public $directory_status;
+    public $passed_background_check;
+    public $can_create_forms;
+    public $can_email_lists;
+    public $school_type;
+    public $status;
     public $primary_campus_id;
     public $gender_id;
     public $remote_id;
-    
+
     public static function all($PCOClient, $query = [])
     {
         $config = $GLOBALS['pcoClientConfig'];
@@ -67,7 +68,7 @@ class Person
 
         return $PCOClient->send($request);
     }
-    
+
     public static function create($PCOClient, self $person): string
     {
         $config = $GLOBALS['pcoClientConfig'];
@@ -87,7 +88,10 @@ class Person
             'Authorization' => $config['authorization'],
             'X-PCO-API-Version' => $config['people']['apiVersion'],
         ];
-        $request = new Request('PATCH', 'people/v2/people/' . $person->id, $headers, json_encode($person));
+        
+        $Person = self::prepareDataObject($person);
+
+        $request = new Request('PATCH', 'people/v2/people/' . $person->id, $headers, json_encode($Person));
 
         return $PCOClient->send($request);
     }
@@ -103,7 +107,7 @@ class Person
 
         return $PCOClient->send($request);
     }
-    
+
     public static function emails($PCOClient, self $person): string
     {
         $config = $GLOBALS['pcoClientConfig'];
@@ -114,5 +118,25 @@ class Person
         $request = new Request('DELETE', 'people/v2/emails/' . $person->id . '/person', $headers, json_encode($person));
 
         return $PCOClient->send($request);
+    }
+    
+    private static function prepareDataObject($person)
+    {
+        $Person = new stdClass();
+        $Person->data = new stdClass();
+        $Person->data->attributes = new stdClass();
+        $Person->data->attributes->first_name = $person->first_name;
+        $Person->data->attributes->middle_name = $person->middle_name;
+        $Person->data->attributes->last_name = $person->last_name;
+        $Person->data->attributes->birthdate = $person->birthdate;
+        $Person->data->attributes->anniversary = $person->anniversary;
+        $Person->data->attributes->gender = $person->gender;
+        $Person->data->attributes->grade = $person->grade;
+        $Person->data->attributes->child = $person->child;
+        $Person->data->attributes->graduation_year = $person->graduation_year;
+        $Person->data->attributes->membership = $person->membership;
+        $Person->data->attributes->status = $person->status;
+        
+        return $Person;
     }
 }
