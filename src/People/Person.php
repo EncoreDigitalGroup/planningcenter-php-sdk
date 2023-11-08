@@ -108,16 +108,9 @@ class Person
         return $PCOClient->send($request);
     }
 
-    public static function emails($PCOClient, self $person): string
+    public static function email($PCOClient, self $person): string
     {
-        $config = $GLOBALS['pcoClientConfig'];
-        $headers = [
-            'Authorization' => $config['authorization'],
-            'X-PCO-API-Version' => $config['people']['apiVersion'],
-        ];
-        $request = new Request('DELETE', 'people/v2/emails/' . $person->id . '/person', $headers, json_encode($person));
-
-        return $PCOClient->send($request);
+        return Email::get($PCOClient, $person);
     }
     
     private static function prepareDataObject($person)
