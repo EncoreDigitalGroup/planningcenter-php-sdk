@@ -8,7 +8,7 @@
     <toc-element topic="README.md"/>
     <toc-element topic="LICENSE.md"/>
     <toc-element topic="SECURITY.md"/>
-    <toc-element toc-title="docs">
+    <toc-element toc-title="Documentation">
         <toc-element topic="docs_README.md"/>
         <toc-element toc-title="01-installation">
             <toc-element topic="01-installation_README.md"/>
