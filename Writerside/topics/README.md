@@ -1,4 +1,4 @@
-# PlanningCenter-PHP-SDK
+# Getting Started
 
 This SDK is open-source and freely available to use. Contributions are welcome. Curious what's in the works? Here's the SDK [Roadmap](https://encoredigital.atlassian.net/browse/PCO).
 
