@@ -1,4 +1,4 @@
-# Setup the PCOClient
+# Set up the PCOClient
 
 At the top of your file, add the following code:
 

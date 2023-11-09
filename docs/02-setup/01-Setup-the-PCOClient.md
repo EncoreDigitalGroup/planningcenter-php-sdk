@@ -1,11 +1,11 @@
-# Setup the PCOClient
+# Set up the PCOClient
 
 At the top of your file, add the following code:
 
 ```php
 use EncoreDigitalGroup\PlanningCenter\Client as PCOClient;
 ```
-<br  />
+<br />
 
 Now we can create the PCOClient like so:
 ```php
