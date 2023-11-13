@@ -9,39 +9,39 @@ use stdClass;
 class Person
 {
     /**
-     * @prop $id int
-     * @prop $given_name string
-     * @prop $first_name string
-     * @prop $nickname string
-     * @prop $middle_name string
-     * @prop $last_name string
-     * @prop $birthdate DateTime
-     * @prop $anniversary DateTime
-     * @prop $gender string
-     * @prop $grade int
-     * @prop $child bool
-     * @prop $graduation_year int
-     * @prop $site_administrator bool
-     * @prop $accounting_administrator bool
-     * @prop $people_permissions string
-     * @prop $membership string
-     * @prop $inactivated_at DateTime
-     * @prop $medical_notes string
-     * @prop $mfa_configured bool
-     * @prop $created_at DateTime
-     * @prop $updated_at DateTime
-     * @prop $avatar string
-     * @prop $name string
-     * @prop $demographic_avatar_url string
-     * @prop $directory_status string
-     * @prop $passed_background_check bool
-     * @prop $can_create_forms bool
-     * @prop $can_email_lists bool
-     * @prop $school_type string
-     * @prop $status string
-     * @prop $primary_campus_id int
-     * @prop $gender_id int
-     * @prop $remote_id int
+     * @var $id int
+     * @var $given_name string
+     * @var $first_name string
+     * @var $nickname string
+     * @var $middle_name string
+     * @var $last_name string
+     * @var $birthdate DateTime
+     * @var $anniversary DateTime
+     * @var $gender string
+     * @var $grade int
+     * @var $child bool
+     * @var $graduation_year int
+     * @var $site_administrator bool
+     * @var $accounting_administrator bool
+     * @var $people_permissions string
+     * @var $membership string
+     * @var $inactivated_at DateTime
+     * @var $medical_notes string
+     * @var $mfa_configured bool
+     * @var $created_at DateTime
+     * @var $updated_at DateTime
+     * @var $avatar string
+     * @var $name string
+     * @var $demographic_avatar_url string
+     * @var $directory_status string
+     * @var $passed_background_check bool
+     * @var $can_create_forms bool
+     * @var $can_email_lists bool
+     * @var $school_type string
+     * @var $status string
+     * @var $primary_campus_id int
+     * @var $gender_id int
+     * @var $remote_id int
      */
     public $id;
     public $given_name;
