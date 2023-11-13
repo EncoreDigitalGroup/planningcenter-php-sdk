@@ -8,6 +8,41 @@ use stdClass;
 
 class Person
 {
+    /**
+     * @prop $id int
+     * @prop $given_name string
+     * @prop $first_name string
+     * @prop $nickname string
+     * @prop $middle_name string
+     * @prop $last_name string
+     * @prop $birthdate DateTime
+     * @prop $anniversary DateTime
+     * @prop $gender string
+     * @prop $grade int
+     * @prop $child bool
+     * @prop $graduation_year int
+     * @prop $site_administrator bool
+     * @prop $accounting_administrator bool
+     * @prop $people_permissions string
+     * @prop $membership string
+     * @prop $inactivated_at DateTime
+     * @prop $medical_notes string
+     * @prop $mfa_configured bool
+     * @prop $created_at DateTime
+     * @prop $updated_at DateTime
+     * @prop $avatar string
+     * @prop $name string
+     * @prop $demographic_avatar_url string
+     * @prop $directory_status string
+     * @prop $passed_background_check bool
+     * @prop $can_create_forms bool
+     * @prop $can_email_lists bool
+     * @prop $school_type string
+     * @prop $status string
+     * @prop $primary_campus_id int
+     * @prop $gender_id int
+     * @prop $remote_id int
+     */
     public $id;
     public $given_name;
     public $first_name;
