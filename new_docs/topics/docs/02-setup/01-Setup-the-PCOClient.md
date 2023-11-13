@@ -5,7 +5,7 @@ At the top of your file, add the following code:
 ```php
 use EncoreDigitalGroup\PlanningCenter\Client as PCOClient;
 ```
-<br />
+<br  />
 
 Now we can create the PCOClient like so:
 ```php
@@ -29,4 +29,4 @@ Currently, the client only supports Basic Authentication, but OAuth Authenticati
 *Helpful Hint: [How to Change the API Version](02-Change-the-API-Version.md)*
 <br />
 <br />
-Next: [Calendar](../03-calendar/README.md)
+Next: [Calendar](03-calendar_README.md)

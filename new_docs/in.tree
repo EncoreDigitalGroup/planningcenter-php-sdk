@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE instance-profile
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/product-profile.dtd">
+
+<instance-profile id="in"
+                  name="Planning Center PHP SDK Docs" start-page="README.md">
+
+    <toc-element topic="README.md"/>
+    <toc-element toc-title="Documentation">
+        <toc-element topic="docs_README.md"/>
+        <toc-element toc-title="Installation">
+            <toc-element topic="01-installation_README.md"/>
+        </toc-element>
+        <toc-element toc-title="Setup">
+            <toc-element topic="02-setup_README.md"/>
+            <toc-element topic="02-Change-the-API-Version.md"/>
+            <toc-element topic="01-Setup-the-PCOClient.md"/>
+        </toc-element>
+        <toc-element toc-title="Calendar">
+            <toc-element topic="03-calendar_README.md"/>
+            <toc-element topic="02-TagGroup.md"/>
+            <toc-element topic="01-Event.md"/>
+        </toc-element>
+        <toc-element toc-title="Groups (Coming Soon)">
+            <toc-element topic="06-groups_README.md"/>
+        </toc-element>
+        <toc-element toc-title="People (Documentation Being Written Right Now!)">
+            <toc-element topic="07-people_README.md"/>
+        </toc-element>
+    </toc-element>
+    <toc-element topic="SECURITY.md"/>
+    <toc-element topic="LICENSE.md"/>
+</instance-profile>
