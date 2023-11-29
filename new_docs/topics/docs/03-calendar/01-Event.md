@@ -3,7 +3,7 @@ To start using the Calendar Event API, add the following to the top of your file
 ```php
 use EncoreDigitalGroup\PlanningCenter\Calendar\Event;
 ```
-## ***Before your continue***: *Did you setup the [PCOClient](01-Setup-the-PCOClient.md)*
+<include from="SnippetLibrary.md" element-id="setupThePcoClient"></include>
 
 ### Event Class
 Now we can create a new instance of the Event class;
@@ -26,7 +26,6 @@ $query = [
 
 $Event->all($PCOClient, $query);
 ```
-<br />
 
 Specifically for Future Calendar Events, we have created a method that applies this query modification for you automatically.
 ```php
@@ -65,7 +64,3 @@ To get a single event connection, pass the ```id``` of the event connection as t
 $Event->connection($PCOClient, $id, $event_connection_id);
 ```
 When ```$event_connection_id``` is not included, this tells the SDK that you want all event connection. When ```$event_connection_id``` is included, the SDK will return only the event connection you requested. As always, the final argument for this method is the query modifier array.
-<br />
-<br />
-
-Next: [TagGroup](02-TagGroup.md)
