@@ -3,11 +3,14 @@
 namespace EncoreDigitalGroup\PlanningCenter\People;
 
 use DateTime;
+use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 use GuzzleHttp\Psr7\Request;
 use stdClass;
 
 class Person
 {
+    use HasPlanningCenterClient;
+
     /** @var $id int */
     public $id;
 
@@ -107,78 +110,74 @@ class Person
     /** @var $remote_id int */
     public $remote_id;
 
-    public static function all($PCOClient, $query = [])
+    public function all($query = [])
     {
-        $config = $GLOBALS['pcoClientConfig'];
         $headers = [
-            'Authorization' => $config['authorization'],
-            'X-PCO-API-Version' => $config['people']['apiVersion'],
+            'Authorization' => $this->config->getAuthorization(),
+            'X-PCO-API-Version' => $this->config->getPeopleApiVersion(),
         ];
 
         $query = http_build_query($query);
         $request = new Request('GET', 'people/v2/people?' . $query, $headers);
 
-        return $PCOClient->send($request);
+        return $this->client->send($request);
     }
 
-    public static function get($PCOClient, self $person, $query = []): string
+    public function get(self $person, $query = []): string
     {
-        $config = $GLOBALS['pcoClientConfig'];
         $headers = [
-            'Authorization' => $config['authorization'],
-            'X-PCO-API-Version' => $config['people']['apiVersion'],
+            'Authorization' => $this->config->getAuthorization(),
+            'X-PCO-API-Version' => $this->config->getPeopleApiVersion(),
         ];
         $query = http_build_query($query);
         $request = new Request('GET', 'people/v2/people/' . $person->id . '?' . $query, $headers);
 
-        return $PCOClient->send($request);
+        return $this->client->send($request);
     }
 
-    public static function create($PCOClient, self $person): string
+    public function create(self $person): string
     {
-        $config = $GLOBALS['pcoClientConfig'];
         $headers = [
-            'Authorization' => $config['authorization'],
-            'X-PCO-API-Version' => $config['people']['apiVersion'],
+            'Authorization' => $this->config->getAuthorization(),
+            'X-PCO-API-Version' => $this->config->getPeopleApiVersion(),
         ];
         $request = new Request('POST', 'people/v2/people', $headers, json_encode($person));
 
-        return $PCOClient->send($request);
+        return $this->client->send($request);
     }
 
-    public static function update($PCOClient, self $person): string
+    public function update(self $person): string
     {
-        $config = $GLOBALS['pcoClientConfig'];
         $headers = [
-            'Authorization' => $config['authorization'],
-            'X-PCO-API-Version' => $config['people']['apiVersion'],
+            'Authorization' => $this->config->getAuthorization(),
+            'X-PCO-API-Version' => $this->config->getPeopleApiVersion(),
         ];
-        
+
         $Person = self::prepareDataObject($person);
 
         $request = new Request('PATCH', 'people/v2/people/' . $person->id, $headers, json_encode($Person));
 
-        return $PCOClient->send($request);
+        return $this->client->send($request);
     }
 
-    public static function delete($PCOClient, self $person): string
+    public function delete(self $person): string
     {
-        $config = $GLOBALS['pcoClientConfig'];
         $headers = [
-            'Authorization' => $config['authorization'],
-            'X-PCO-API-Version' => $config['people']['apiVersion'],
+            'Authorization' => $this->config->getAuthorization(),
+            'X-PCO-API-Version' => $this->config->getPeopleApiVersion(),
         ];
         $request = new Request('DELETE', 'people/v2/people/' . $person->id, $headers, json_encode($person));
 
-        return $PCOClient->send($request);
+        return $this->client->send($request);
     }
 
-    public static function email($PCOClient, self $person): string
+    public function email(self $person): string
     {
-        return Email::get($PCOClient, $person);
+        $Email = new Email($this->client);
+        return $Email->get($person);
     }
-    
-    private static function prepareDataObject($person)
+
+    private static function prepareDataObject($person): stdClass
     {
         $Person = new stdClass();
         $Person->data = new stdClass();
@@ -194,7 +193,7 @@ class Person
         $Person->data->attributes->graduation_year = $person->graduation_year;
         $Person->data->attributes->membership = $person->membership;
         $Person->data->attributes->status = $person->status;
-        
+
         return $Person;
     }
 }

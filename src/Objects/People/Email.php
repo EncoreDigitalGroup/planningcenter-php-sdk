@@ -3,12 +3,15 @@
 namespace EncoreDigitalGroup\PlanningCenter\People;
 
 use DateTime;
+use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 use GuzzleHttp\Psr7\Request;
 use JMS\Serializer\SerializerBuilder;
 use stdClass;
 
 class Email
 {
+    use HasPlanningCenterClient;
+
     public $id;
     public $address;
     public $location;
@@ -17,35 +20,33 @@ class Email
     public $updated_at;
     public $blocked;
 
-    public static function get($PCOClient, Person $person): string
+    public function get(Person $person): string
     {
-        $config = $GLOBALS['pcoClientConfig'];
         $headers = [
-            'Authorization' => $config['authorization'],
-            'X-PCO-API-Version' => $config['people']['apiVersion'],
+            'Authorization' => $this->config->getAuthorization(),
+            'X-PCO-API-Version' => $this->config->getPeopleApiVersion(),
         ];
-        
+
         $request = new Request('GET', 'people/v2/people/' . $person->id . '/emails', $headers, json_encode($person));
 
-        return $PCOClient->send($request);
+        return $this->client->send($request);
     }
 
-    public static function update($PCOClient, self $email): string
+    public function update(self $email): string
     {
-        $config = $GLOBALS['pcoClientConfig'];
         $headers = [
-            'Authorization' => $config['authorization'],
-            'X-PCO-API-Version' => $config['people']['apiVersion'],
+            'Authorization' => $this->config->getAuthorization(),
+            'X-PCO-API-Version' => $this->config->getPeopleApiVersion(),
         ];
-        
+
         $Email = self::prepareDataObject($email);
-        
+
         $request = new Request('PATCH', 'people/v2/emails/' . $email->id, $headers, json_encode($Email));
 
-        return $PCOClient->send($request);
+        return $this->client->send($request);
     }
 
-    private static function prepareDataObject($email)
+    private static function prepareDataObject($email): stdClass
     {
         $Email = new stdClass();
         $Email->data = new stdClass();
