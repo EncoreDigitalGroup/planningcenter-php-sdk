@@ -11,6 +11,6 @@ trait HasPlanningCenterClient
     private PlanningCenterClient $client;
     public function __construct(PlanningCenterClient $client){
         $this->config = $client->getConfiguration();
-        $this->client = new PlanningCenterClient($this->config);
+        $this->client = $client;
     }
 }
