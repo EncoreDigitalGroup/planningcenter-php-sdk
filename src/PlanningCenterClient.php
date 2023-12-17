@@ -33,12 +33,10 @@ class PlanningCenterClient
     {
         $handler = new CurlHandler;
         $stack = HandlerStack::create($handler);
-        $this->client = once(function () use ($stack) {
-            return new GuzzleClient([
+        $this->client = new GuzzleClient([
                 'base_uri' => 'https://api.planningcenteronline.com',
                 'handler' => $stack,
             ]);
-        });
     }
 
     public function getClient(): GuzzleClient
