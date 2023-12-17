@@ -7,28 +7,33 @@ use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Handler\CurlHandler;
 use GuzzleHttp\HandlerStack;
 
-class Client
+class PlanningCenterClient
 {
-    public $config;
+    protected ClientConfiguration $config;
+    protected GuzzleClient $client;
 
-    public function configure($config = [])
+    public function __construct(ClientConfiguration $config)
+    {
+        $this->config = $this->setConfiguration($config);
+        $this->createClient();
+    }
+
+    public function setConfiguration(ClientConfiguration $config): ClientConfiguration
+    {
+        $this->config = $config;
+        return $this->config;
+    }
+
+    public function getConfiguration(): ClientConfiguration
+    {
+        return $this->config;
+    }
+
+    public function createClient(): void
     {
         $handler = new CurlHandler;
-        $stack = HandlerStack::create($handler); // Wrap w/ middleware
-        $GLOBALS['pcoClientConfig'] = array_merge(
-            [
-                'calendar' => [
-                    'apiVersion' => '2021-07-20',
-                ],
-                'groups' => [
-                    'apiVersion' => '2023-07-10',
-                ],
-                'people' => [
-                    'apiVersion' => '2023-02-15',
-                ],
-            ], $config);
-
-        $GLOBALS['pcoClient'] = new GuzzleClient(
+        $stack = HandlerStack::create($handler);
+        $this->client = new GuzzleClient(
             [
                 'base_uri' => 'https://api.planningcenteronline.com',
                 'handler' => $stack,
@@ -36,9 +41,14 @@ class Client
         );
     }
 
-    public function send($request, $query = [], $retry_limit = 5, $retry = 0)
+    public function getClient(): GuzzleClient
     {
-        $client = $GLOBALS['pcoClient'];
+        return $this->client;
+    }
+
+    public function send($request, $query = [], $retry_limit = 5, $retry = 0): bool|string
+    {
+        $client = $this->getClient();
         try {
             $res = $client->sendAsync($request)->wait();
         } catch (ClientException $e) {
