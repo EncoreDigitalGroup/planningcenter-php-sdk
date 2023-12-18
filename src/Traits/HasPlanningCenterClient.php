@@ -7,9 +7,9 @@ use EncoreDigitalGroup\PlanningCenter\PlanningCenterClient;
 
 trait HasPlanningCenterClient
 {
-    private ClientConfiguration $config;
-    private PlanningCenterClient $client;
-    public function __construct(PlanningCenterClient $client){
+    protected mixed $config;
+    protected mixed $client;
+    public function __construct(mixed $client){
         $this->config = $client->getConfiguration();
         $this->client = $client;
     }
