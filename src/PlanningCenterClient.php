@@ -12,7 +12,7 @@ class PlanningCenterClient
     protected ClientConfiguration $config;
     protected GuzzleClient $client;
 
-    public function __construct(ClientConfiguration $config)
+    public function __construct($config)
     {
         $this->config = $this->setConfiguration($config);
         $this->createClient();
