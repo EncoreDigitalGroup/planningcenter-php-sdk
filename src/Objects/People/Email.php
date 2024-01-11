@@ -1,6 +1,6 @@
 <?php
 
-namespace EncoreDigitalGroup\PlanningCenter\People;
+namespace EncoreDigitalGroup\PlanningCenter\Objects\People;
 
 use DateTime;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;

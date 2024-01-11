@@ -1,6 +1,6 @@
 <?php
 
-namespace EncoreDigitalGroup\PlanningCenter\Groups;
+namespace EncoreDigitalGroup\PlanningCenter\Objects\Groups;
 
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 use GuzzleHttp\Psr7\Request;
