@@ -23,6 +23,11 @@ class TagGroup
 
     public function tag($id, $tag = '', $query = []): string
     {
+        if($tag == null)
+        {
+            $tag = '';
+        }
+
         $headers = [
             'Authorization' => $this->config->getAuthorization(),
             'X-PCO-API-Version' => $this->config->getGroupsApiVersion(),
