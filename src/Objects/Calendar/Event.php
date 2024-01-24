@@ -50,16 +50,14 @@ class Event
         return $this->client->send($request);
     }
 
-    public function instance($id, $instance = '', $query = []): string
+    public function instance($eventId, $eventInstanceId = '', $query = []): string
     {
-        $headers = [
-            'Authorization' => $this->config->getAuthorization(),
-            'X-PCO-API-Version' => $this->config->getCalenderApiVersion(),
-        ];
-        $query = http_build_query($query);
-        $request = new Request('GET', 'calendar/v2/events/' . $id . '/event_instances/' . $instance . '?' . $query, $headers);
+        $EventInstance = new EventInstance($this->client);
+        if($eventInstanceId == '' || $eventInstanceId == null){
+            return $EventInstance->all($eventId, $query);
+        }
 
-        return $this->client->send($request);
+        return $EventInstance->get($eventId, $eventInstanceId, $query);
     }
 
     public function connection($id, $connection = '', $query = []): string
