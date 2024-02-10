@@ -29,7 +29,7 @@ class Email
         return $Email;
     }
 
-    public function get(Person $person): string
+    public function get(Person $person): stdClass
     {
         $headers = [
             'Authorization' => $this->config->getAuthorization(),
@@ -41,7 +41,7 @@ class Email
         return $this->client->send($request);
     }
 
-    public function update(self $email): string
+    public function update(self $email): stdClass
     {
         $headers = [
             'Authorization' => $this->config->getAuthorization(),

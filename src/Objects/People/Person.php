@@ -130,7 +130,7 @@ class Person
         return $Person;
     }
 
-    public function all($query = [])
+    public function all($query = []): stdClass
     {
         $headers = [
             'Authorization' => $this->config->getAuthorization(),
@@ -143,7 +143,7 @@ class Person
         return $this->client->send($request);
     }
 
-    public function get(self $person, $query = []): string
+    public function get(self $person, $query = []): stdClass
     {
         $headers = [
             'Authorization' => $this->config->getAuthorization(),
@@ -166,7 +166,7 @@ class Person
         return $this->client->send($request);
     }
 
-    public function update(self $person): string
+    public function update(self $person): stdClass
     {
         $headers = [
             'Authorization' => $this->config->getAuthorization(),
@@ -180,7 +180,7 @@ class Person
         return $this->client->send($request);
     }
 
-    public function delete(self $person): string
+    public function delete(self $person): stdClass
     {
         $headers = [
             'Authorization' => $this->config->getAuthorization(),
@@ -191,7 +191,7 @@ class Person
         return $this->client->send($request);
     }
 
-    public function email(self $person): string
+    public function email(self $person): stdClass
     {
         $Email = new Email($this->client);
 

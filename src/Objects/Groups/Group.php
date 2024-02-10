@@ -4,12 +4,13 @@ namespace EncoreDigitalGroup\PlanningCenter\Objects\Groups;
 
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 use GuzzleHttp\Psr7\Request;
+use stdClass;
 
 class Group
 {
     use HasPlanningCenterClient;
 
-    public function all($query = [])
+    public function all($query = []): stdClass
     {
         $headers = [
             'Authorization' => $this->config->getAuthorization(),
@@ -22,7 +23,7 @@ class Group
         return $this->client->send($request, $query);
     }
 
-    public function mine($query = []): string
+    public function mine($query = []): stdClass
     {
         $headers = [
             'Authorization' => $this->config->getAuthorization(),
@@ -38,7 +39,7 @@ class Group
         return $this->client->send($request);
     }
 
-    public function get($id, $query = []): string
+    public function get($id, $query = []): stdClass
     {
         $headers = [
             'Authorization' => $this->config->getAuthorization(),
@@ -50,7 +51,7 @@ class Group
         return $this->client->send($request);
     }
 
-    public function enrollment($id, $query = []): string
+    public function enrollment($id, $query = []): stdClass
     {
         $headers = [
             'Authorization' => $this->config->getAuthorization(),
@@ -62,7 +63,7 @@ class Group
         return $this->client->send($request);
     }
 
-    public function event($id, $query = []): string
+    public function event($id, $query = []): stdClass
     {
         $headers = [
             'Authorization' => $this->config->getAuthorization(),
@@ -74,7 +75,7 @@ class Group
         return $this->client->send($request);
     }
 
-    public function membership($id, $query = []): string
+    public function membership($id, $query = []): stdClass
     {
         $headers = [
             'Authorization' => $this->config->getAuthorization(),
@@ -86,7 +87,7 @@ class Group
         return $this->client->send($request);
     }
 
-    public function people($id, $query = []): string
+    public function people($id, $query = []): stdClass
     {
         $headers = [
             'Authorization' => $this->config->getAuthorization(),

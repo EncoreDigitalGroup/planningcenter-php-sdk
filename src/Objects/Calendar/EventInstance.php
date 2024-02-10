@@ -4,12 +4,13 @@ namespace EncoreDigitalGroup\PlanningCenter\Objects\Calendar;
 
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 use GuzzleHttp\Psr7\Request;
+use stdClass;
 
 class EventInstance
 {
     use HasPlanningCenterClient;
 
-    public function all($eventId, $query = [])
+    public function all($eventId, $query = []): stdClass
     {
         $headers = [
             'Authorization' => $this->config->getAuthorization(),
@@ -21,7 +22,7 @@ class EventInstance
         return $this->client->send($request);
     }
 
-    public function get($eventId, $eventInstanceId, $query = []): string
+    public function get($eventId, $eventInstanceId, $query = []): stdClass
     {
         $headers = [
             'Authorization' => $this->config->getAuthorization(),
