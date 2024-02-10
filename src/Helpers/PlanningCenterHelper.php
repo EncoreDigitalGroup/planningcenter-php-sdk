@@ -4,6 +4,15 @@ namespace EncoreDigitalGroup\PlanningCenter\Helpers;
 
 class PlanningCenterHelper
 {
+    public static function wasSuccessful($response): bool
+    {
+        if ($response->sdk->outcome->success) {
+            return true;
+        }
+
+        return false;
+    }
+
     public static function wasRateLimited($response): bool
     {
         if ($response->sdk->outcome->rate_limited) {
