@@ -58,14 +58,14 @@ class PlanningCenterClient
                 return $this->send($request, $query, $retry_limit, $i);
             }
 
-            return json_encode($this->processResponse($e->getResponse()));
+            return json_decode($this->processResponse($e->getResponse()));
         }
 
-        return json_encode($this->processResponse($res));
+        return json_decode($this->processResponse($res));
 
     }
 
-    protected function processResponse($res): array
+    protected function processResponse($res): string
     {
         $response_body = $res->getBody()->getContents();
         $http_response_code = $res->getStatusCode();
@@ -103,7 +103,6 @@ class PlanningCenterClient
             $response['sdk']['page']['next'] = $response_body->meta->next->offset ?? null;
         }
 
-        $response = json_encode($response);
-        return json_decode($response);
+        return json_encode($response);
     }
 }
