@@ -8,6 +8,7 @@ use GuzzleHttp\Psr7\Request;
 class TagGroup
 {
     use HasPlanningCenterClient;
+
     public function all($query = [])
     {
         $headers = [
@@ -23,8 +24,7 @@ class TagGroup
 
     public function tag($id, $tag = '', $query = []): string
     {
-        if($tag == null)
-        {
+        if ($tag == null) {
             $tag = '';
         }
 

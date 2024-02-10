@@ -11,104 +11,124 @@ class Person
 {
     use HasPlanningCenterClient;
 
-    /** @var $id int */
+    /** @var int */
     public $id;
 
-    /** @var $given_name string */
+    /** @var string */
     public $given_name;
 
-    /** @var $first_name string */
+    /** @var string */
     public $first_name;
 
-    /** @var $nickname string */
+    /** @var string */
     public $nickname;
 
-    /** @var $middle_name string */
+    /** @var string */
     public $middle_name;
 
-    /** @var $last_name string */
+    /** @var string */
     public $last_name;
 
-    /** @var $birthdate DateTime */
+    /** @var DateTime */
     public $birthdate;
 
-    /** @var $anniversary DateTime */
+    /** @var DateTime */
     public $anniversary;
 
-    /** @var $gender string */
+    /** @var string */
     public $gender;
 
-    /** @var $grade int */
+    /** @var int */
     public $grade;
 
-    /** @var $child bool */
+    /** @var bool */
     public $child;
 
-    /** @var $graduation_year int */
+    /** @var int */
     public $graduation_year;
 
-    /** @var $site_administrator bool */
+    /** @var bool */
     public $site_administrator;
 
-    /** @var $accounting_administrator bool */
+    /** @var bool */
     public $accounting_administrator;
 
-    /** @var $people_permissions string */
+    /** @var string */
     public $people_permissions;
 
-    /** @var $membership string */
+    /** @var string */
     public $membership;
 
-    /** @var $inactivated_at DateTime */
+    /** @var DateTime */
     public $inactivated_at;
 
-    /** @var $medical_notes string */
+    /** @var string */
     public $medical_notes;
 
-    /** @var $mfa_configured bool */
+    /** @var bool */
     public $mfa_configured;
 
-    /** @var $created_at DateTime */
+    /** @var DateTime */
     public $created_at;
 
-    /** @var $updated_at DateTime */
+    /** @var DateTime */
     public $updated_at;
 
-    /** @var $avatar string */
+    /** @var string */
     public $avatar;
 
-    /** @var $name string */
+    /** @var string */
     public $name;
 
-    /** @var $demographic_avatar_url string */
+    /** @var string */
     public $demographic_avatar_url;
 
-    /** @var $directory_status string */
+    /** @var string */
     public $directory_status;
 
-    /** @var $passed_background_check bool */
+    /** @var bool */
     public $passed_background_check;
 
-    /** @var $can_create_forms bool */
+    /** @var bool */
     public $can_create_forms;
 
-    /** @var $can_email_lists bool */
+    /** @var bool */
     public $can_email_lists;
 
-    /** @var $school_type string */
+    /** @var string */
     public $school_type;
 
-    /** @var $status string */
+    /** @var string */
     public $status;
 
-    /** @var $primary_campus_id int */
+    /** @var int */
     public $primary_campus_id;
 
-    /** @var $gender_id int */
+    /** @var int */
     public $gender_id;
 
-    /** @var $remote_id int */
+    /** @var int */
     public $remote_id;
+
+    private static function prepareDataObject($person): stdClass
+    {
+        $Person = new stdClass;
+        $Person->data = new stdClass;
+        $Person->data->attributes = new stdClass;
+        $Person->data->attributes->first_name = $person->first_name;
+        $Person->data->attributes->middle_name = $person->middle_name;
+        $Person->data->attributes->last_name = $person->last_name;
+        $Person->data->attributes->birthdate = $person->birthdate;
+        $Person->data->attributes->anniversary = $person->anniversary;
+        $Person->data->attributes->gender = $person->gender;
+        $Person->data->attributes->grade = $person->grade;
+        $Person->data->attributes->child = $person->child;
+        $Person->data->attributes->graduation_year = $person->graduation_year;
+        $Person->data->attributes->membership = $person->membership;
+        $Person->data->attributes->status = $person->status;
+
+        return $Person;
+    }
 
     public function all($query = [])
     {
@@ -174,26 +194,7 @@ class Person
     public function email(self $person): string
     {
         $Email = new Email($this->client);
+
         return $Email->get($person);
-    }
-
-    private static function prepareDataObject($person): stdClass
-    {
-        $Person = new stdClass();
-        $Person->data = new stdClass();
-        $Person->data->attributes = new stdClass();
-        $Person->data->attributes->first_name = $person->first_name;
-        $Person->data->attributes->middle_name = $person->middle_name;
-        $Person->data->attributes->last_name = $person->last_name;
-        $Person->data->attributes->birthdate = $person->birthdate;
-        $Person->data->attributes->anniversary = $person->anniversary;
-        $Person->data->attributes->gender = $person->gender;
-        $Person->data->attributes->grade = $person->grade;
-        $Person->data->attributes->child = $person->child;
-        $Person->data->attributes->graduation_year = $person->graduation_year;
-        $Person->data->attributes->membership = $person->membership;
-        $Person->data->attributes->status = $person->status;
-
-        return $Person;
     }
 }

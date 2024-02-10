@@ -2,10 +2,8 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Objects\People;
 
-use DateTime;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 use GuzzleHttp\Psr7\Request;
-use JMS\Serializer\SerializerBuilder;
 use stdClass;
 
 class Email
@@ -19,6 +17,17 @@ class Email
     public $created_at;
     public $updated_at;
     public $blocked;
+
+    private static function prepareDataObject($email): stdClass
+    {
+        $Email = new stdClass;
+        $Email->data = new stdClass;
+        $Email->data->attributes = new stdClass;
+        $Email->data->attributes->address = $email->address;
+        $Email->data->attributes->primary = $email->primary;
+
+        return $Email;
+    }
 
     public function get(Person $person): string
     {
@@ -44,16 +53,5 @@ class Email
         $request = new Request('PATCH', 'people/v2/emails/' . $email->id, $headers, json_encode($Email));
 
         return $this->client->send($request);
-    }
-
-    private static function prepareDataObject($email): stdClass
-    {
-        $Email = new stdClass();
-        $Email->data = new stdClass();
-        $Email->data->attributes = new stdClass();
-        $Email->data->attributes->address = $email->address;
-        $Email->data->attributes->primary = $email->primary;
-
-        return $Email;
     }
 }

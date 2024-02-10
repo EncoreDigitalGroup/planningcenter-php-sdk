@@ -8,6 +8,7 @@ use GuzzleHttp\Psr7\Request;
 class Group
 {
     use HasPlanningCenterClient;
+
     public function all($query = [])
     {
         $headers = [
