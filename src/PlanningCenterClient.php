@@ -6,6 +6,7 @@ use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Handler\CurlHandler;
 use GuzzleHttp\HandlerStack;
+use stdClass;
 
 class PlanningCenterClient
 {
@@ -45,7 +46,7 @@ class PlanningCenterClient
         return $this->client;
     }
 
-    public function send($request, $query = [], $retry_limit = 5, $retry = 0): bool|string
+    public function send($request, $query = [], $retry_limit = 5, $retry = 0): bool|string|stdClass
     {
         $client = $this->getClient();
         try {
