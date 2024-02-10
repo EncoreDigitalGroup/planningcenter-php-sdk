@@ -85,7 +85,7 @@ class PlanningCenterClient
             'sdk' => [
                 'outcome' => [
                     'success' => $success ?? false,
-                    'rateLimited' => $rate_limited ?? false,
+                    'rate_limited' => $rate_limited ?? false,
                     'http' => [
                         'status_code' => $http_response_code ?? null,
                         'message' => $http_message ?? null,
@@ -103,6 +103,7 @@ class PlanningCenterClient
             $response['sdk']['page']['next'] = $response_body->meta->next->offset ?? null;
         }
 
-        return $response;
+        $response = json_encode($response);
+        return json_decode($response);
     }
 }
