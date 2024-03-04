@@ -7,107 +7,77 @@ use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 use GuzzleHttp\Psr7\Request;
 use stdClass;
 
+/**
+ * @property int id
+ * @property string given_name
+ * @property string first_name
+ * @property string nickname
+ * @property string middle_name
+ * @property string last_name
+ * @property DateTime birthdate
+ * @property DateTime anniversary
+ * @property string gender
+ * @property int grade
+ * @property bool child
+ * @property int graduation_year
+ * @property bool site_administrator
+ * @property bool accounting_administrator
+ * @property string people_permissions
+ * @property string membership
+ * @property DateTime inactivated_at
+ * @property string medical_notes
+ * @property bool mfa_configured
+ * @property DateTime created_at
+ * @property DateTime updated_at
+ * @property string avatar
+ * @property string name
+ * @property string demographic_avatar_url
+ * @property string directory_status
+ * @property bool passed_background_check
+ * @property bool can_create_forms
+ * @property bool can_email_lists
+ * @property string school_type
+ * @property string status
+ * @property int primary_campus_id
+ * @property int $gender_id
+ * @property int $remote_id
+ */
 class Person
 {
     use HasPlanningCenterClient;
 
-    /** @var int */
     public $id;
-
-    /** @var string */
     public $given_name;
-
-    /** @var string */
     public $first_name;
-
-    /** @var string */
     public $nickname;
-
-    /** @var string */
     public $middle_name;
-
-    /** @var string */
     public $last_name;
-
-    /** @var DateTime */
     public $birthdate;
-
-    /** @var DateTime */
     public $anniversary;
-
-    /** @var string */
     public $gender;
-
-    /** @var int */
     public $grade;
-
-    /** @var bool */
     public $child;
-
-    /** @var int */
     public $graduation_year;
-
-    /** @var bool */
     public $site_administrator;
-
-    /** @var bool */
     public $accounting_administrator;
-
-    /** @var string */
     public $people_permissions;
-
-    /** @var string */
     public $membership;
-
-    /** @var DateTime */
     public $inactivated_at;
-
-    /** @var string */
     public $medical_notes;
-
-    /** @var bool */
     public $mfa_configured;
-
-    /** @var DateTime */
     public $created_at;
-
-    /** @var DateTime */
     public $updated_at;
-
-    /** @var string */
     public $avatar;
-
-    /** @var string */
     public $name;
-
-    /** @var string */
     public $demographic_avatar_url;
-
-    /** @var string */
     public $directory_status;
-
-    /** @var bool */
     public $passed_background_check;
-
-    /** @var bool */
     public $can_create_forms;
-
-    /** @var bool */
     public $can_email_lists;
-
-    /** @var string */
     public $school_type;
-
-    /** @var string */
     public $status;
-
-    /** @var int */
     public $primary_campus_id;
-
-    /** @var int */
     public $gender_id;
-
-    /** @var int */
     public $remote_id;
 
     private static function prepareDataObject($person): stdClass

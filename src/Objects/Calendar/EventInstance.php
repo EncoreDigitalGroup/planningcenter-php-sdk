@@ -16,6 +16,7 @@ class EventInstance
             'Authorization' => $this->config->getAuthorization(),
             'X-PCO-API-Version' => $this->config->getCalenderApiVersion(),
         ];
+
         $query = http_build_query($query);
         $request = new Request('GET', 'calendar/v2/events/' . $eventId . '/event_instances/?' . $query, $headers);
 
@@ -28,6 +29,7 @@ class EventInstance
             'Authorization' => $this->config->getAuthorization(),
             'X-PCO-API-Version' => $this->config->getCalenderApiVersion(),
         ];
+
         $query = http_build_query($query);
         $request = new Request('GET', 'calendar/v2/event_instances/' . $eventInstanceId . '?' . $query, $headers);
 

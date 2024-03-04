@@ -29,10 +29,8 @@ class Event
             'Authorization' => $this->config->getAuthorization(),
             'X-PCO-API-Version' => $this->config->getCalenderApiVersion(),
         ];
-        $query = array_merge(
-            [
-                'filter' => 'future',
-            ], $query);
+
+        $query = array_merge(['filter' => 'future'], $query);
         $query = http_build_query($query);
         $request = new Request('GET', 'calendar/v2/events?' . $query, $headers);
 
@@ -45,6 +43,7 @@ class Event
             'Authorization' => $this->config->getAuthorization(),
             'X-PCO-API-Version' => $this->config->getCalenderApiVersion(),
         ];
+
         $query = http_build_query($query);
         $request = new Request('GET', 'calendar/v2/events/' . $id . '?' . $query, $headers);
 
@@ -54,7 +53,8 @@ class Event
     public function instance($eventId, $eventInstanceId = '', $query = []): stdClass
     {
         $EventInstance = new EventInstance($this->client);
-        if($eventInstanceId == '' || $eventInstanceId == null){
+
+        if ($eventInstanceId == '' || $eventInstanceId == null) {
             return $EventInstance->all($eventId, $query);
         }
 
@@ -67,6 +67,7 @@ class Event
             'Authorization' => $this->config->getAuthorization(),
             'X-PCO-API-Version' => $this->config->getCalenderApiVersion(),
         ];
+
         $query = http_build_query($query);
         $request = new Request('GET', 'calendar/v2/events/' . $id . '/event_connections/' . $connection . '?' . $query, $headers);
 

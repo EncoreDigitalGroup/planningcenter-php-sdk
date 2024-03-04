@@ -12,6 +12,7 @@ class PlanningCenterClient
 {
     protected ClientConfiguration $config;
     protected GuzzleClient $client;
+    protected int $attempts;
 
     public function __construct($config)
     {
@@ -46,17 +47,18 @@ class PlanningCenterClient
         return $this->client;
     }
 
-    public function send($request, $query = [], $retry_limit = 5, $retry = 0): bool|string|stdClass
+    public function send($request, $query = [], $attempt_limit = 5, $attempt = 1): bool|string|stdClass
     {
+        $this->attempts = $attempt;
         $client = $this->getClient();
+
         try {
             $res = $client->sendAsync($request)->wait();
         } catch (ClientException $e) {
-            if ($retry <= $retry_limit) {
-                $i = $retry + 1;
-                $GLOBALS['pcoRetryCount'] = $i - 1;
+            if ($attempt <= $attempt_limit) {
+                $i = $attempt + 1;
 
-                return $this->send($request, $query, $retry_limit, $i);
+                return $this->send($request, $query, $attempt_limit, $i);
             }
 
             return json_decode($this->processResponse($e->getResponse()));
@@ -78,10 +80,6 @@ class PlanningCenterClient
             $success = true;
         }
 
-        if ($http_response_code == 429) {
-            $rate_limited = true;
-        }
-
         $response = [
             'sdk' => [
                 'outcome' => [
@@ -91,7 +89,7 @@ class PlanningCenterClient
                         'status_code' => $http_response_code ?? null,
                         'message' => $http_message ?? null,
                         'pco' => $response_body,
-                        'retry_count' => $GLOBALS['pcoRetryCount'] ?? 0,
+                        'attempts' => $this->attempts ?? 1,
                     ],
                 ],
             ],

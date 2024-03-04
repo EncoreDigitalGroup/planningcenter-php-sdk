@@ -2,6 +2,9 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Traits;
 
+use EncoreDigitalGroup\PlanningCenter\ClientConfiguration;
+use EncoreDigitalGroup\PlanningCenter\PlanningCenterClient;
+
 trait HasPlanningCenterClient
 {
     protected mixed $config;

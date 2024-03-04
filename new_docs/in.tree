@@ -3,13 +3,14 @@
         SYSTEM "https://resources.jetbrains.com/writerside/1.0/product-profile.dtd">
 
 <instance-profile id="in"
-                  name="Planning Center PHP SDK Docs" start-page="README.md">
+                  name="Planning Center PHP SDK Docs"
+                  start-page="README.md">
 
     <toc-element topic="README.md"/>
     <toc-element toc-title="Documentation">
         <toc-element topic="docs_README.md"/>
         <toc-element toc-title="Installation">
-            <toc-element topic="01-installation_README.md"/>
+            <toc-element topic="01-installation_README.md" id="installation"/>
         </toc-element>
         <toc-element toc-title="Setup">
             <toc-element topic="02-setup_README.md"/>
@@ -31,5 +32,4 @@
     </toc-element>
     <toc-element topic="SECURITY.md"/>
     <toc-element topic="LICENSE.md"/>
-    <toc-element topic="SnippetLibrary.md" hidden="true"/>
 </instance-profile>
