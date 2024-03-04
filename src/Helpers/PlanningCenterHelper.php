@@ -15,7 +15,7 @@ class PlanningCenterHelper
 
     public static function wasNotSuccessful($response): bool
     {
-        if (!$response->sdk->outcome->success) {
+        if (! $response->sdk->outcome->success) {
             return true;
         }
 
@@ -38,7 +38,7 @@ class PlanningCenterHelper
 
     public static function wasNotRateLimited($response): bool
     {
-        if (!$response->sdk->outcome->rate_limited) {
+        if (! $response->sdk->outcome->rate_limited) {
             return true;
         }
 

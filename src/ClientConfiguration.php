@@ -7,6 +7,7 @@ class ClientConfiguration
     const CALENDAR_API_VERSION = '2021-07-20';
     const GROUPS_API_VERSION = '2023-07-10';
     const PEOPLE_API_VERSION = '2023-02-15';
+
     protected array $authorization;
     protected string $authorizationToken;
     protected string $authorizationType;
@@ -36,7 +37,7 @@ class ClientConfiguration
 
     public function getAuthorization(): string
     {
-        return $this->getAuthorizationType() . " " . base64_encode($this->getAuthorizationToken());
+        return $this->getAuthorizationType() . ' ' . base64_encode($this->getAuthorizationToken());
     }
 
     public function setAuthorizationToken($authorization_token = null): void
