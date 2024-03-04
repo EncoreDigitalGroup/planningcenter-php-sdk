@@ -8,6 +8,8 @@ class ClientConfiguration
     const GROUPS_API_VERSION = '2023-07-10';
     const PEOPLE_API_VERSION = '2023-02-15';
     protected array $authorization;
+    protected string $authorizationToken;
+    protected string $authorizationType;
     protected array $calendar;
     protected array $groups;
     protected array $people;
@@ -17,9 +19,11 @@ class ClientConfiguration
         $this->calendar = [
             'apiVersion' => $this->getCalenderApiVersion(),
         ];
+
         $this->groups = [
             'apiVersion' => $this->getGroupsApiVersion(),
         ];
+
         $this->people = [
             'apiVersion' => $this->getPeopleApiVersion(),
         ];
@@ -32,7 +36,27 @@ class ClientConfiguration
 
     public function getAuthorization(): string
     {
+        return $this->getAuthorizationType() . " " . base64_encode($this->getAuthorizationToken());
+    }
+
+    public function setAuthorizationToken($authorization_token = null): void
+    {
+        $this->authorizationToken = $authorization_token ?? $this->getAuthorization();
+    }
+
+    public function getAuthorizationToken(): string
+    {
         return $this->authorization['authorization'] ?? '';
+    }
+
+    public function setAuthorizationType($authorization_type = null): void
+    {
+        $this->authorizationType = $authorization_type ?? $this->getAuthorizationType();
+    }
+
+    public function getAuthorizationType(): string
+    {
+        return $this->authorizationType ?? 'Basic';
     }
 
     public function setCalendarApiVersion($version = null): void
