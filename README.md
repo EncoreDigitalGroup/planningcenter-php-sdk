@@ -1,3 +1,3 @@
 # PlanningCenter-PHP-SDK
 - [Documentation](docs/README.md)
-- [Roadmap](https://encoredigital.atlassian.net/browse/PCO)
+- [Roadmap](https://github.com/orgs/EncoreDigitalGroup/projects/2)

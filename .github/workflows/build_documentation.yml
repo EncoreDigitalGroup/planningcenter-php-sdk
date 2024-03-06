@@ -1,0 +1,24 @@
+name: Build Documentation
+on:
+  push:
+    paths:
+      - 'webHelpIN2-all.zip'
+  workflow_dispatch:
+
+jobs:
+  Extract:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v2
+      - name: 'Extract Docs'
+        run: |
+          rm -rf ./docs
+          unzip webHelpIN2-all.zip -d ./docs
+          echo "pco.oss.encoredigitalgroup.com" > ./docs/CNAME
+          git config --local user.email "github-actions@users.noreply.github.com"
+          git config --local user.name "github-actions"
+          git add .
+          git commit -m "Build Documentation"
+          git push origin main
