@@ -4,5 +4,5 @@ This SDK is open-source and freely available to use. Contributions are welcome. 
 
 As we add functionality to the SDK, documentation will be made available here.
 
-- [Documentation](docs_README.md)
+- [Documentation](welcome.md)
 - [Roadmap](https://encoredigital.atlassian.net/browse/PCO)

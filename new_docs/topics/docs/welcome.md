@@ -1,7 +1,7 @@
 # Welcome to the PlanningCenter-PHP-SDK Docs!
 
-1. [Installation](01-installation_README.md)
-2. [Setup](02-setup_README.md)
-3. [Calendar](03-calendar_README.md)
+1. [Installation](installation.md)
+2. [Setup](setup-home.md)
+3. [Calendar](calendar-home.md)
 4. Groups - *Documentation in progress*
 5. People - *Documentation in progress*

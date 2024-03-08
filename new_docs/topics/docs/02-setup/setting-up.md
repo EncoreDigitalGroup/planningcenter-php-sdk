@@ -27,4 +27,4 @@ $PlanningCenterClient = new PlanningCenterClient($PlanningCenterClientConfigurat
 In the event that the API returns an error, the client will retry the request up to 5 times for a grand total of 6 requests. After the 6th request, the client will return the error to your application. 
 </note>
 
-<tip><a href="02-Change-the-API-Version.md">How to change the API Version</a></tip>
+<tip><a href="changing-the-api-version.md">How to change the API Version</a></tip>
