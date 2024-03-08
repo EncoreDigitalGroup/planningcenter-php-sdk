@@ -16,8 +16,7 @@ jobs:
         run: |
           rm -rf ./pages
           rm -rf ./docs
-          mkdir ./docs
-          unzip webHelpIN2-all.zip -d ./pages
+          unzip webHelpIN2-all.zip -d ./docs
           rm webHelpIN2-all.zip
           git config --local user.email "github-actions@users.noreply.github.com"
           git config --local user.name "github-actions"
