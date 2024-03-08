@@ -22,4 +22,4 @@ jobs:
           git config --local user.name "github-actions"
           git add .
           git commit -m "Build Documentation"
-          git push origin doc-testing              
+          git push origin docs              
