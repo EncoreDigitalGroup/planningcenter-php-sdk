@@ -1,2 +1,0 @@
-# People
-Documentation coming soon

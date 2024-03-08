@@ -1,2 +1,0 @@
-# Groups
-Documentation coming soon
