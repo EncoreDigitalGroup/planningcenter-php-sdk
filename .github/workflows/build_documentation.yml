@@ -14,12 +14,12 @@ jobs:
       - uses: actions/checkout@v2
       - name: 'Extract Docs'
         run: |
-          rm -r pages
-          unzip webHelpIN2-all.zip
+          rm -r ./pages
+          mkdir ./pages
+          unzip webHelpIN2-all.zip -d ./pages
           rm webHelpIN2-all.zip
-          mv webHelpIN2-all pages
           git config --local user.email "github-actions@users.noreply.github.com"
           git config --local user.name "github-actions"
           git add .
           git commit -m "Build Documentation"
-          git push origin main              
+          git push origin doc-testing              
