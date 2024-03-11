@@ -6,9 +6,19 @@ use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 use GuzzleHttp\Psr7\Request;
 use stdClass;
 
+/**
+ * Class Event
+ * @property int $eventId
+ * @property int $eventInstanceId
+ * @property int $connectionId
+ */
 class Event
 {
     use HasPlanningCenterClient;
+
+    public $eventId;
+    public $eventInstanceId;
+    public $connectionId;
 
     public function all($query = []): stdClass
     {
@@ -37,7 +47,7 @@ class Event
         return $this->client->send($request);
     }
 
-    public function get($id, $query = []): stdClass
+    public function get($query = []): stdClass
     {
         $headers = [
             'Authorization' => $this->config->getAuthorization(),
@@ -45,23 +55,29 @@ class Event
         ];
 
         $query = http_build_query($query);
-        $request = new Request('GET', 'calendar/v2/events/' . $id . '?' . $query, $headers);
+        $request = new Request('GET', 'calendar/v2/events/' . $this->eventId . '?' . $query, $headers);
 
         return $this->client->send($request);
     }
 
-    public function instance($eventId, $eventInstanceId = '', $query = []): stdClass
+    public function instance($query = []): stdClass
     {
-        $EventInstance = new EventInstance($this->client);
+        $eventInstance = new EventInstance($this->client);
+        $eventInstance->eventInstanceId = $this->eventInstanceId;
+        $eventInstance->eventId = $this->eventId;
 
-        if ($eventInstanceId == '' || $eventInstanceId == null) {
-            return $EventInstance->all($eventId, $query);
-        }
-
-        return $EventInstance->get($eventId, $eventInstanceId, $query);
+        return $eventInstance->get($query);
     }
 
-    public function connection($id, $connection = '', $query = []): stdClass
+    public function instances($query = []): stdClass
+    {
+        $eventInstances = new EventInstance($this->client);
+        $eventInstances->eventId = $this->eventId;
+
+        return $eventInstances->all($this->eventId, $query);
+    }
+
+    public function connection($query = []): stdClass
     {
         $headers = [
             'Authorization' => $this->config->getAuthorization(),
@@ -69,7 +85,7 @@ class Event
         ];
 
         $query = http_build_query($query);
-        $request = new Request('GET', 'calendar/v2/events/' . $id . '/event_connections/' . $connection . '?' . $query, $headers);
+        $request = new Request('GET', 'calendar/v2/events/' . $this->eventId . '/event_connections/' . $this->connectionId . '?' . $query, $headers);
 
         return $this->client->send($request);
     }

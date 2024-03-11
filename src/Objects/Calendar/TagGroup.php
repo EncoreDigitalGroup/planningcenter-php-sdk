@@ -4,10 +4,19 @@ namespace EncoreDigitalGroup\PlanningCenter\Objects\Calendar;
 
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 use GuzzleHttp\Psr7\Request;
+use stdClass;
 
+/**
+ * Class EventInstance
+ * @property int $tagGroupId
+ * @property int $tagId
+ */
 class TagGroup
 {
     use HasPlanningCenterClient;
+
+    public $tagGroupId;
+    public $tagId;
 
     public function all($query = []): stdClass
     {
@@ -22,11 +31,8 @@ class TagGroup
         return $this->client->send($request, $query);
     }
 
-    public function tag($id, $tag = '', $query = []): stdClass
+    public function tag($query = []): stdClass
     {
-        if ($tag == null) {
-            $tag = '';
-        }
 
         $headers = [
             'Authorization' => $this->config->getAuthorization(),
@@ -34,7 +40,10 @@ class TagGroup
         ];
 
         $query = http_build_query($query);
-        $request = new Request('GET', 'calendar/v2/tag_groups/' . $id . '/tags/' . $tag . '?' . $query, $headers);
+
+
+        $tagGroupId = $this->tagGroupId ?? '';
+        $request = new Request('GET', 'calendar/v2/tag_groups/' . $tagGroupId . '/tags/' . $this->tagId . '?' . $query, $headers);
 
         return $this->client->send($request, $query);
     }
