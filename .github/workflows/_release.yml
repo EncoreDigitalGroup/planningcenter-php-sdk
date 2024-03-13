@@ -15,3 +15,4 @@ jobs:
       token: ${{ secrets.GITHUB_TOKEN }}
       generate_release_notes: true
       is_draft: false
+      pre_release: false
