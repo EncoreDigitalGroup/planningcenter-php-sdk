@@ -8,6 +8,7 @@ use stdClass;
 
 /**
  * Class Event
+ *
  * @property int $eventId
  * @property int $eventInstanceId
  * @property int $connectionId
@@ -16,9 +17,9 @@ class Event
 {
     use HasPlanningCenterClient;
 
-    public $eventId;
-    public $eventInstanceId;
-    public $connectionId;
+    public mixed $eventId;
+    public mixed $eventInstanceId;
+    public mixed $connectionId;
 
     public function all($query = []): stdClass
     {

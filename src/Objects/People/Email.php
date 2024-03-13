@@ -10,13 +10,13 @@ class Email
 {
     use HasPlanningCenterClient;
 
-    public $id;
-    public $address;
-    public $location;
-    public $primary;
-    public $created_at;
-    public $updated_at;
-    public $blocked;
+    public mixed $id;
+    public mixed $address;
+    public mixed $location;
+    public mixed $primary;
+    public mixed $created_at;
+    public mixed $updated_at;
+    public mixed $blocked;
 
     private static function prepareDataObject($email): stdClass
     {

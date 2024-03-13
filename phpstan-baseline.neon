@@ -1,0 +1,591 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\ClientConfiguration\\:\\:setAuthorization\\(\\) has parameter \\$authorization with no type specified\\.$#"
+			count: 1
+			path: src/ClientConfiguration.php
+
+		-
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\ClientConfiguration\\:\\:setAuthorizationToken\\(\\) has parameter \\$authorization_token with no type specified\\.$#"
+			count: 1
+			path: src/ClientConfiguration.php
+
+		-
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\ClientConfiguration\\:\\:setAuthorizationType\\(\\) has parameter \\$authorization_type with no type specified\\.$#"
+			count: 1
+			path: src/ClientConfiguration.php
+
+		-
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\ClientConfiguration\\:\\:setCalendarApiVersion\\(\\) has parameter \\$version with no type specified\\.$#"
+			count: 1
+			path: src/ClientConfiguration.php
+
+		-
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\ClientConfiguration\\:\\:setGroupsApiVersion\\(\\) has parameter \\$version with no type specified\\.$#"
+			count: 1
+			path: src/ClientConfiguration.php
+
+		-
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\ClientConfiguration\\:\\:setPeopleApiVersion\\(\\) has parameter \\$version with no type specified\\.$#"
+			count: 1
+			path: src/ClientConfiguration.php
+
+		-
+			message: "#^Property EncoreDigitalGroup\\\\PlanningCenter\\\\ClientConfiguration\\:\\:\\$authorization type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ClientConfiguration.php
+
+		-
+			message: "#^Property EncoreDigitalGroup\\\\PlanningCenter\\\\ClientConfiguration\\:\\:\\$calendar type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ClientConfiguration.php
+
+		-
+			message: "#^Property EncoreDigitalGroup\\\\PlanningCenter\\\\ClientConfiguration\\:\\:\\$groups type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ClientConfiguration.php
+
+		-
+			message: "#^Property EncoreDigitalGroup\\\\PlanningCenter\\\\ClientConfiguration\\:\\:\\$people type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ClientConfiguration.php
+
+		-
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Helpers\\\\PlanningCenterHelper\\:\\:wasNotRateLimited\\(\\) has parameter \\$response with no type specified\\.$#"
+			count: 1
+			path: src/Helpers/PlanningCenterHelper.php
+
+		-
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Helpers\\\\PlanningCenterHelper\\:\\:wasNotSuccessful\\(\\) has parameter \\$response with no type specified\\.$#"
+			count: 1
+			path: src/Helpers/PlanningCenterHelper.php
+
+		-
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Helpers\\\\PlanningCenterHelper\\:\\:wasRateLimited\\(\\) has parameter \\$response with no type specified\\.$#"
+			count: 1
+			path: src/Helpers/PlanningCenterHelper.php
+
+		-
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Helpers\\\\PlanningCenterHelper\\:\\:wasSuccessful\\(\\) has parameter \\$response with no type specified\\.$#"
+			count: 1
+			path: src/Helpers/PlanningCenterHelper.php
+
+		-
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Helpers\\\\PlanningCenterHelper\\:\\:wasUnsuccessful\\(\\) has parameter \\$res with no type specified\\.$#"
+			count: 1
+			path: src/Helpers/PlanningCenterHelper.php
+
+		-
+			message: "#^Cannot call method getAuthorization\\(\\) on mixed\\.$#"
+			count: 4
+			path: src/Objects/Calendar/Event.php
+
+		-
+			message: "#^Cannot call method getCalenderApiVersion\\(\\) on mixed\\.$#"
+			count: 4
+			path: src/Objects/Calendar/Event.php
+
+		-
+			message: "#^Cannot call method getConfiguration\\(\\) on mixed\\.$#"
+			count: 1
+			path: src/Objects/Calendar/Event.php
+
+		-
+			message: "#^Cannot call method send\\(\\) on mixed\\.$#"
+			count: 4
+			path: src/Objects/Calendar/Event.php
+
+		-
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Calendar\\\\Event\\:\\:all\\(\\) has parameter \\$query with no type specified\\.$#"
+			count: 1
+			path: src/Objects/Calendar/Event.php
+
+		-
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Calendar\\\\Event\\:\\:connection\\(\\) has parameter \\$query with no type specified\\.$#"
+			count: 1
+			path: src/Objects/Calendar/Event.php
+
+		-
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Calendar\\\\Event\\:\\:future\\(\\) has parameter \\$query with no type specified\\.$#"
+			count: 1
+			path: src/Objects/Calendar/Event.php
+
+		-
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Calendar\\\\Event\\:\\:get\\(\\) has parameter \\$query with no type specified\\.$#"
+			count: 1
+			path: src/Objects/Calendar/Event.php
+
+		-
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Calendar\\\\Event\\:\\:instance\\(\\) has parameter \\$query with no type specified\\.$#"
+			count: 1
+			path: src/Objects/Calendar/Event.php
+
+		-
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Calendar\\\\Event\\:\\:instances\\(\\) has parameter \\$query with no type specified\\.$#"
+			count: 1
+			path: src/Objects/Calendar/Event.php
+
+		-
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Calendar\\\\EventInstance\\:\\:all\\(\\) invoked with 2 parameters, 0\\-1 required\\.$#"
+			count: 1
+			path: src/Objects/Calendar/Event.php
+
+		-
+			message: "#^Cannot call method getAuthorization\\(\\) on mixed\\.$#"
+			count: 2
+			path: src/Objects/Calendar/EventInstance.php
+
+		-
+			message: "#^Cannot call method getCalenderApiVersion\\(\\) on mixed\\.$#"
+			count: 2
+			path: src/Objects/Calendar/EventInstance.php
+
+		-
+			message: "#^Cannot call method getConfiguration\\(\\) on mixed\\.$#"
+			count: 1
+			path: src/Objects/Calendar/EventInstance.php
+
+		-
+			message: "#^Cannot call method send\\(\\) on mixed\\.$#"
+			count: 2
+			path: src/Objects/Calendar/EventInstance.php
+
+		-
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Calendar\\\\EventInstance\\:\\:all\\(\\) has parameter \\$query with no type specified\\.$#"
+			count: 1
+			path: src/Objects/Calendar/EventInstance.php
+
+		-
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Calendar\\\\EventInstance\\:\\:get\\(\\) has parameter \\$query with no type specified\\.$#"
+			count: 1
+			path: src/Objects/Calendar/EventInstance.php
+
+		-
+			message: "#^Cannot call method getAuthorization\\(\\) on mixed\\.$#"
+			count: 2
+			path: src/Objects/Calendar/TagGroup.php
+
+		-
+			message: "#^Cannot call method getCalenderApiVersion\\(\\) on mixed\\.$#"
+			count: 2
+			path: src/Objects/Calendar/TagGroup.php
+
+		-
+			message: "#^Cannot call method getConfiguration\\(\\) on mixed\\.$#"
+			count: 1
+			path: src/Objects/Calendar/TagGroup.php
+
+		-
+			message: "#^Cannot call method send\\(\\) on mixed\\.$#"
+			count: 2
+			path: src/Objects/Calendar/TagGroup.php
+
+		-
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Calendar\\\\TagGroup\\:\\:all\\(\\) has parameter \\$query with no type specified\\.$#"
+			count: 1
+			path: src/Objects/Calendar/TagGroup.php
+
+		-
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Calendar\\\\TagGroup\\:\\:tag\\(\\) has parameter \\$query with no type specified\\.$#"
+			count: 1
+			path: src/Objects/Calendar/TagGroup.php
+
+		-
+			message: "#^Cannot call method getAuthorization\\(\\) on mixed\\.$#"
+			count: 7
+			path: src/Objects/Groups/Group.php
+
+		-
+			message: "#^Cannot call method getConfiguration\\(\\) on mixed\\.$#"
+			count: 1
+			path: src/Objects/Groups/Group.php
+
+		-
+			message: "#^Cannot call method getGroupsApiVersion\\(\\) on mixed\\.$#"
+			count: 7
+			path: src/Objects/Groups/Group.php
+
+		-
+			message: "#^Cannot call method send\\(\\) on mixed\\.$#"
+			count: 7
+			path: src/Objects/Groups/Group.php
+
+		-
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Groups\\\\Group\\:\\:all\\(\\) has parameter \\$query with no type specified\\.$#"
+			count: 1
+			path: src/Objects/Groups/Group.php
+
+		-
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Groups\\\\Group\\:\\:enrollment\\(\\) has parameter \\$id with no type specified\\.$#"
+			count: 1
+			path: src/Objects/Groups/Group.php
+
+		-
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Groups\\\\Group\\:\\:enrollment\\(\\) has parameter \\$query with no type specified\\.$#"
+			count: 1
+			path: src/Objects/Groups/Group.php
+
+		-
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Groups\\\\Group\\:\\:event\\(\\) has parameter \\$id with no type specified\\.$#"
+			count: 1
+			path: src/Objects/Groups/Group.php
+
+		-
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Groups\\\\Group\\:\\:event\\(\\) has parameter \\$query with no type specified\\.$#"
+			count: 1
+			path: src/Objects/Groups/Group.php
+
+		-
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Groups\\\\Group\\:\\:get\\(\\) has parameter \\$id with no type specified\\.$#"
+			count: 1
+			path: src/Objects/Groups/Group.php
+
+		-
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Groups\\\\Group\\:\\:get\\(\\) has parameter \\$query with no type specified\\.$#"
+			count: 1
+			path: src/Objects/Groups/Group.php
+
+		-
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Groups\\\\Group\\:\\:membership\\(\\) has parameter \\$id with no type specified\\.$#"
+			count: 1
+			path: src/Objects/Groups/Group.php
+
+		-
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Groups\\\\Group\\:\\:membership\\(\\) has parameter \\$query with no type specified\\.$#"
+			count: 1
+			path: src/Objects/Groups/Group.php
+
+		-
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Groups\\\\Group\\:\\:mine\\(\\) has parameter \\$query with no type specified\\.$#"
+			count: 1
+			path: src/Objects/Groups/Group.php
+
+		-
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Groups\\\\Group\\:\\:people\\(\\) has parameter \\$id with no type specified\\.$#"
+			count: 1
+			path: src/Objects/Groups/Group.php
+
+		-
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Groups\\\\Group\\:\\:people\\(\\) has parameter \\$query with no type specified\\.$#"
+			count: 1
+			path: src/Objects/Groups/Group.php
+
+		-
+			message: "#^Cannot call method getAuthorization\\(\\) on mixed\\.$#"
+			count: 2
+			path: src/Objects/Groups/TagGroup.php
+
+		-
+			message: "#^Cannot call method getConfiguration\\(\\) on mixed\\.$#"
+			count: 1
+			path: src/Objects/Groups/TagGroup.php
+
+		-
+			message: "#^Cannot call method getGroupsApiVersion\\(\\) on mixed\\.$#"
+			count: 2
+			path: src/Objects/Groups/TagGroup.php
+
+		-
+			message: "#^Cannot call method send\\(\\) on mixed\\.$#"
+			count: 2
+			path: src/Objects/Groups/TagGroup.php
+
+		-
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Groups\\\\TagGroup\\:\\:all\\(\\) has parameter \\$query with no type specified\\.$#"
+			count: 1
+			path: src/Objects/Groups/TagGroup.php
+
+		-
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Groups\\\\TagGroup\\:\\:tag\\(\\) has parameter \\$id with no type specified\\.$#"
+			count: 1
+			path: src/Objects/Groups/TagGroup.php
+
+		-
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Groups\\\\TagGroup\\:\\:tag\\(\\) has parameter \\$query with no type specified\\.$#"
+			count: 1
+			path: src/Objects/Groups/TagGroup.php
+
+		-
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Groups\\\\TagGroup\\:\\:tag\\(\\) has parameter \\$tag with no type specified\\.$#"
+			count: 1
+			path: src/Objects/Groups/TagGroup.php
+
+		-
+			message: "#^Cannot call method getAuthorization\\(\\) on mixed\\.$#"
+			count: 2
+			path: src/Objects/People/Email.php
+
+		-
+			message: "#^Cannot call method getConfiguration\\(\\) on mixed\\.$#"
+			count: 1
+			path: src/Objects/People/Email.php
+
+		-
+			message: "#^Cannot call method getPeopleApiVersion\\(\\) on mixed\\.$#"
+			count: 2
+			path: src/Objects/People/Email.php
+
+		-
+			message: "#^Cannot call method send\\(\\) on mixed\\.$#"
+			count: 2
+			path: src/Objects/People/Email.php
+
+		-
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\People\\\\Email\\:\\:prepareDataObject\\(\\) has parameter \\$email with no type specified\\.$#"
+			count: 1
+			path: src/Objects/People/Email.php
+
+		-
+			message: "#^Parameter \\#4 \\$body of class GuzzleHttp\\\\Psr7\\\\Request constructor expects Psr\\\\Http\\\\Message\\\\StreamInterface\\|resource\\|string\\|null, string\\|false given\\.$#"
+			count: 2
+			path: src/Objects/People/Email.php
+
+		-
+			message: "#^Cannot call method getAuthorization\\(\\) on mixed\\.$#"
+			count: 5
+			path: src/Objects/People/Person.php
+
+		-
+			message: "#^Cannot call method getConfiguration\\(\\) on mixed\\.$#"
+			count: 1
+			path: src/Objects/People/Person.php
+
+		-
+			message: "#^Cannot call method getPeopleApiVersion\\(\\) on mixed\\.$#"
+			count: 5
+			path: src/Objects/People/Person.php
+
+		-
+			message: "#^Cannot call method send\\(\\) on mixed\\.$#"
+			count: 5
+			path: src/Objects/People/Person.php
+
+		-
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\People\\\\Person\\:\\:all\\(\\) has parameter \\$query with no type specified\\.$#"
+			count: 1
+			path: src/Objects/People/Person.php
+
+		-
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\People\\\\Person\\:\\:get\\(\\) has parameter \\$query with no type specified\\.$#"
+			count: 1
+			path: src/Objects/People/Person.php
+
+		-
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\People\\\\Person\\:\\:prepareDataObject\\(\\) has parameter \\$person with no type specified\\.$#"
+			count: 1
+			path: src/Objects/People/Person.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(DateTime anniversary\\)\\: Unexpected token \"anniversary\", expected variable at offset 231$#"
+			count: 1
+			path: src/Objects/People/Person.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(DateTime birthdate\\)\\: Unexpected token \"birthdate\", expected variable at offset 199$#"
+			count: 1
+			path: src/Objects/People/Person.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(DateTime created_at\\)\\: Unexpected token \"created_at\", expected variable at offset 626$#"
+			count: 1
+			path: src/Objects/People/Person.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(DateTime inactivated_at\\)\\: Unexpected token \"inactivated_at\", expected variable at offset 522$#"
+			count: 1
+			path: src/Objects/People/Person.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(DateTime updated_at\\)\\: Unexpected token \"updated_at\", expected variable at offset 659$#"
+			count: 1
+			path: src/Objects/People/Person.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(bool accounting_administrator\\)\\: Unexpected token \"accounting_administrator\", expected variable at offset 405$#"
+			count: 1
+			path: src/Objects/People/Person.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(bool can_create_forms\\)\\: Unexpected token \"can_create_forms\", expected variable at offset 862$#"
+			count: 1
+			path: src/Objects/People/Person.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(bool can_email_lists\\)\\: Unexpected token \"can_email_lists\", expected variable at offset 897$#"
+			count: 1
+			path: src/Objects/People/Person.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(bool child\\)\\: Unexpected token \"child\", expected variable at offset 311$#"
+			count: 1
+			path: src/Objects/People/Person.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(bool mfa_configured\\)\\: Unexpected token \"mfa_configured\", expected variable at offset 589$#"
+			count: 1
+			path: src/Objects/People/Person.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(bool passed_background_check\\)\\: Unexpected token \"passed_background_check\", expected variable at offset 820$#"
+			count: 1
+			path: src/Objects/People/Person.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(bool site_administrator\\)\\: Unexpected token \"site_administrator\", expected variable at offset 368$#"
+			count: 1
+			path: src/Objects/People/Person.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(int grade\\)\\: Unexpected token \"grade\", expected variable at offset 287$#"
+			count: 1
+			path: src/Objects/People/Person.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(int graduation_year\\)\\: Unexpected token \"graduation_year\", expected variable at offset 334$#"
+			count: 1
+			path: src/Objects/People/Person.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(int id\\)\\: Unexpected token \"id\", expected variable at offset 21$#"
+			count: 1
+			path: src/Objects/People/Person.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(int primary_campus_id\\)\\: Unexpected token \"primary_campus_id\", expected variable at offset 989$#"
+			count: 1
+			path: src/Objects/People/Person.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(string avatar\\)\\: Unexpected token \"avatar\", expected variable at offset 690$#"
+			count: 1
+			path: src/Objects/People/Person.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(string demographic_avatar_url\\)\\: Unexpected token \"demographic_avatar_url\", expected variable at offset 742$#"
+			count: 1
+			path: src/Objects/People/Person.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(string directory_status\\)\\: Unexpected token \"directory_status\", expected variable at offset 785$#"
+			count: 1
+			path: src/Objects/People/Person.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(string first_name\\)\\: Unexpected token \"first_name\", expected variable at offset 75$#"
+			count: 1
+			path: src/Objects/People/Person.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(string gender\\)\\: Unexpected token \"gender\", expected variable at offset 263$#"
+			count: 1
+			path: src/Objects/People/Person.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(string given_name\\)\\: Unexpected token \"given_name\", expected variable at offset 44$#"
+			count: 1
+			path: src/Objects/People/Person.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(string last_name\\)\\: Unexpected token \"last_name\", expected variable at offset 167$#"
+			count: 1
+			path: src/Objects/People/Person.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(string medical_notes\\)\\: Unexpected token \"medical_notes\", expected variable at offset 557$#"
+			count: 1
+			path: src/Objects/People/Person.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(string membership\\)\\: Unexpected token \"membership\", expected variable at offset 489$#"
+			count: 1
+			path: src/Objects/People/Person.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(string middle_name\\)\\: Unexpected token \"middle_name\", expected variable at offset 135$#"
+			count: 1
+			path: src/Objects/People/Person.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(string name\\)\\: Unexpected token \"name\", expected variable at offset 717$#"
+			count: 1
+			path: src/Objects/People/Person.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(string nickname\\)\\: Unexpected token \"nickname\", expected variable at offset 106$#"
+			count: 1
+			path: src/Objects/People/Person.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(string people_permissions\\)\\: Unexpected token \"people_permissions\", expected variable at offset 450$#"
+			count: 1
+			path: src/Objects/People/Person.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(string school_type\\)\\: Unexpected token \"school_type\", expected variable at offset 933$#"
+			count: 1
+			path: src/Objects/People/Person.php
+
+		-
+			message: "#^PHPDoc tag @property has invalid value \\(string status\\)\\: Unexpected token \"status\", expected variable at offset 965$#"
+			count: 1
+			path: src/Objects/People/Person.php
+
+		-
+			message: "#^Parameter \\#4 \\$body of class GuzzleHttp\\\\Psr7\\\\Request constructor expects Psr\\\\Http\\\\Message\\\\StreamInterface\\|resource\\|string\\|null, string\\|false given\\.$#"
+			count: 3
+			path: src/Objects/People/Person.php
+
+		-
+			message: "#^Cannot access property \\$meta on mixed\\.$#"
+			count: 2
+			path: src/PlanningCenterClient.php
+
+		-
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\PlanningCenterClient\\:\\:__construct\\(\\) has parameter \\$config with no type specified\\.$#"
+			count: 1
+			path: src/PlanningCenterClient.php
+
+		-
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\PlanningCenterClient\\:\\:processResponse\\(\\) has parameter \\$res with no type specified\\.$#"
+			count: 1
+			path: src/PlanningCenterClient.php
+
+		-
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\PlanningCenterClient\\:\\:processResponse\\(\\) should return string but returns string\\|false\\.$#"
+			count: 1
+			path: src/PlanningCenterClient.php
+
+		-
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\PlanningCenterClient\\:\\:send\\(\\) has parameter \\$attempt with no type specified\\.$#"
+			count: 1
+			path: src/PlanningCenterClient.php
+
+		-
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\PlanningCenterClient\\:\\:send\\(\\) has parameter \\$attempt_limit with no type specified\\.$#"
+			count: 1
+			path: src/PlanningCenterClient.php
+
+		-
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\PlanningCenterClient\\:\\:send\\(\\) has parameter \\$query with no type specified\\.$#"
+			count: 1
+			path: src/PlanningCenterClient.php
+
+		-
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\PlanningCenterClient\\:\\:send\\(\\) has parameter \\$request with no type specified\\.$#"
+			count: 1
+			path: src/PlanningCenterClient.php
+
+		-
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\PlanningCenterClient\\:\\:send\\(\\) should return bool\\|stdClass\\|string but returns mixed\\.$#"
+			count: 2
+			path: src/PlanningCenterClient.php
+
+		-
+			message: "#^Variable \\$rate_limited on left side of \\?\\? always exists and is not nullable\\.$#"
+			count: 1
+			path: src/PlanningCenterClient.php
+
+		-
+			message: "#^Variable \\$success on left side of \\?\\? always exists and is not nullable\\.$#"
+			count: 1
+			path: src/PlanningCenterClient.php
