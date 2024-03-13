@@ -10,8 +10,14 @@
     },
     "authors": [
         {
+            "name": "Encore Digital Group",
+            "email": "opensource@encoredigitalgroup.com",
+            "role": "Maintainer"
+        },
+        {
             "name": "Marc Beinder",
-            "email": "hello@marcbeinder.com"
+            "email": "hello@marcbeinder.com",
+            "role": "Maintaining Developer"
         }
     ],
     "minimum-stability": "stable",
