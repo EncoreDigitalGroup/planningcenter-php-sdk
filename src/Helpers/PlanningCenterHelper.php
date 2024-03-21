@@ -44,4 +44,13 @@ class PlanningCenterHelper
 
         return false;
     }
+
+    public static function serviceError($response): bool
+    {
+        if ($response->sdk->outcome->http->status_code >= 500) {
+            return true;
+        }
+
+        return false;
+    }
 }
