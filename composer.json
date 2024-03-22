@@ -6,7 +6,10 @@
     "autoload": {
         "psr-4": {
             "EncoreDigitalGroup\\PlanningCenter\\": "src/"
-        }
+        },
+        "files": [
+            "src/Helpers/helpers.php"
+        ]
     },
     "authors": [
         {
