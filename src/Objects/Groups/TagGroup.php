@@ -10,7 +10,10 @@ class TagGroup
 {
     use HasPlanningCenterClient;
 
-    public function all($query = []): stdClass
+    public int $tagGroupId;
+    public int $tagId;
+
+    public function all(array $query = []): stdClass
     {
         $headers = [
             'Authorization' => $this->config->getAuthorization(),
@@ -20,22 +23,18 @@ class TagGroup
         $query = http_build_query($query);
         $request = new Request('GET', 'groups/v2/tag_groups?' . $query, $headers);
 
-        return $this->client->send($request, $query);
+        return $this->client->send($request);
     }
 
-    public function tag($id, $tag = '', $query = []): stdClass
+    public function tag(array $query = []): stdClass
     {
-        if ($tag == null) {
-            $tag = '';
-        }
-
         $headers = [
             'Authorization' => $this->config->getAuthorization(),
             'X-PCO-API-Version' => $this->config->getGroupsApiVersion(),
         ];
 
         $query = http_build_query($query);
-        $request = new Request('GET', 'groups/v2/tag_groups/' . $id . '/tags/' . $tag . '?' . $query, $headers);
+        $request = new Request('GET', 'groups/v2/tag_groups/' . $this->tagGroupId . '/tags/' . $this->tagId . '?' . $query, $headers);
 
         return $this->client->send($request);
     }

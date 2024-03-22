@@ -10,7 +10,9 @@ class Group
 {
     use HasPlanningCenterClient;
 
-    public function all($query = []): stdClass
+    public int $groupId;
+
+    public function all(array $query = []): stdClass
     {
         $headers = [
             'Authorization' => $this->config->getAuthorization(),
@@ -23,7 +25,7 @@ class Group
         return $this->client->send($request, $query);
     }
 
-    public function mine($query = []): stdClass
+    public function mine(array $query = []): stdClass
     {
         $headers = [
             'Authorization' => $this->config->getAuthorization(),
@@ -39,62 +41,62 @@ class Group
         return $this->client->send($request);
     }
 
-    public function get($id, $query = []): stdClass
+    public function get(array $query = []): stdClass
     {
         $headers = [
             'Authorization' => $this->config->getAuthorization(),
             'X-PCO-API-Version' => $this->config->getGroupsApiVersion(),
         ];
         $query = http_build_query($query);
-        $request = new Request('GET', 'groups/v2/groups/' . $id . '?' . $query, $headers);
+        $request = new Request('GET', 'groups/v2/groups/' . $this->groupId . '?' . $query, $headers);
 
         return $this->client->send($request);
     }
 
-    public function enrollment($id, $query = []): stdClass
+    public function enrollment(array $query = []): stdClass
     {
         $headers = [
             'Authorization' => $this->config->getAuthorization(),
             'X-PCO-API-Version' => $this->config->getGroupsApiVersion(),
         ];
         $query = http_build_query($query);
-        $request = new Request('GET', 'groups/v2/groups/' . $id . '/enrollment?' . $query, $headers);
+        $request = new Request('GET', 'groups/v2/groups/' . $this->groupId . '/enrollment?' . $query, $headers);
 
         return $this->client->send($request);
     }
 
-    public function event($id, $query = []): stdClass
+    public function event(array $query = []): stdClass
     {
         $headers = [
             'Authorization' => $this->config->getAuthorization(),
             'X-PCO-API-Version' => $this->config->getGroupsApiVersion(),
         ];
         $query = http_build_query($query);
-        $request = new Request('GET', 'groups/v2/groups/' . $id . '/events?' . $query, $headers);
+        $request = new Request('GET', 'groups/v2/groups/' . $this->groupId . '/events?' . $query, $headers);
 
         return $this->client->send($request);
     }
 
-    public function membership($id, $query = []): stdClass
+    public function membership(array $query = []): stdClass
     {
         $headers = [
             'Authorization' => $this->config->getAuthorization(),
             'X-PCO-API-Version' => $this->config->getGroupsApiVersion(),
         ];
         $query = http_build_query($query);
-        $request = new Request('GET', 'groups/v2/groups/' . $id . '/memberships?' . $query, $headers);
+        $request = new Request('GET', 'groups/v2/groups/' . $this->groupId . '/memberships?' . $query, $headers);
 
         return $this->client->send($request);
     }
 
-    public function people($id, $query = []): stdClass
+    public function people(array $query = []): stdClass
     {
         $headers = [
             'Authorization' => $this->config->getAuthorization(),
             'X-PCO-API-Version' => $this->config->getGroupsApiVersion(),
         ];
         $query = http_build_query($query);
-        $request = new Request('GET', 'groups/v2/groups/' . $id . '/people?' . $query, $headers);
+        $request = new Request('GET', 'groups/v2/groups/' . $this->groupId . '/people?' . $query, $headers);
 
         return $this->client->send($request);
     }
