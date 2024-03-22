@@ -51,6 +51,11 @@ parameters:
 			path: src/ClientConfiguration.php
 
 		-
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Helpers\\\\PlanningCenterHelper\\:\\:serviceError\\(\\) has parameter \\$response with no type specified\\.$#"
+			count: 1
+			path: src/Helpers/PlanningCenterHelper.php
+
+		-
 			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Helpers\\\\PlanningCenterHelper\\:\\:wasNotRateLimited\\(\\) has parameter \\$response with no type specified\\.$#"
 			count: 1
 			path: src/Helpers/PlanningCenterHelper.php
@@ -76,259 +81,99 @@ parameters:
 			path: src/Helpers/PlanningCenterHelper.php
 
 		-
-			message: "#^Cannot call method getAuthorization\\(\\) on mixed\\.$#"
-			count: 4
-			path: src/Objects/Calendar/Event.php
-
-		-
-			message: "#^Cannot call method getCalenderApiVersion\\(\\) on mixed\\.$#"
-			count: 4
-			path: src/Objects/Calendar/Event.php
-
-		-
-			message: "#^Cannot call method getConfiguration\\(\\) on mixed\\.$#"
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Calendar\\\\Event\\:\\:all\\(\\) has parameter \\$query with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Objects/Calendar/Event.php
 
 		-
-			message: "#^Cannot call method send\\(\\) on mixed\\.$#"
-			count: 4
-			path: src/Objects/Calendar/Event.php
-
-		-
-			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Calendar\\\\Event\\:\\:all\\(\\) has parameter \\$query with no type specified\\.$#"
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Calendar\\\\Event\\:\\:connection\\(\\) has parameter \\$query with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Objects/Calendar/Event.php
 
 		-
-			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Calendar\\\\Event\\:\\:connection\\(\\) has parameter \\$query with no type specified\\.$#"
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Calendar\\\\Event\\:\\:future\\(\\) has parameter \\$query with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Objects/Calendar/Event.php
 
 		-
-			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Calendar\\\\Event\\:\\:future\\(\\) has parameter \\$query with no type specified\\.$#"
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Calendar\\\\Event\\:\\:get\\(\\) has parameter \\$query with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Objects/Calendar/Event.php
 
 		-
-			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Calendar\\\\Event\\:\\:get\\(\\) has parameter \\$query with no type specified\\.$#"
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Calendar\\\\Event\\:\\:instance\\(\\) has parameter \\$query with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Objects/Calendar/Event.php
 
 		-
-			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Calendar\\\\Event\\:\\:instance\\(\\) has parameter \\$query with no type specified\\.$#"
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Calendar\\\\Event\\:\\:instances\\(\\) has parameter \\$query with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Objects/Calendar/Event.php
 
 		-
-			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Calendar\\\\Event\\:\\:instances\\(\\) has parameter \\$query with no type specified\\.$#"
-			count: 1
-			path: src/Objects/Calendar/Event.php
-
-		-
-			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Calendar\\\\EventInstance\\:\\:all\\(\\) invoked with 2 parameters, 0\\-1 required\\.$#"
-			count: 1
-			path: src/Objects/Calendar/Event.php
-
-		-
-			message: "#^Cannot call method getAuthorization\\(\\) on mixed\\.$#"
-			count: 2
-			path: src/Objects/Calendar/EventInstance.php
-
-		-
-			message: "#^Cannot call method getCalenderApiVersion\\(\\) on mixed\\.$#"
-			count: 2
-			path: src/Objects/Calendar/EventInstance.php
-
-		-
-			message: "#^Cannot call method getConfiguration\\(\\) on mixed\\.$#"
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Calendar\\\\EventInstance\\:\\:all\\(\\) has parameter \\$query with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Objects/Calendar/EventInstance.php
 
 		-
-			message: "#^Cannot call method send\\(\\) on mixed\\.$#"
-			count: 2
-			path: src/Objects/Calendar/EventInstance.php
-
-		-
-			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Calendar\\\\EventInstance\\:\\:all\\(\\) has parameter \\$query with no type specified\\.$#"
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Calendar\\\\EventInstance\\:\\:get\\(\\) has parameter \\$query with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Objects/Calendar/EventInstance.php
 
 		-
-			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Calendar\\\\EventInstance\\:\\:get\\(\\) has parameter \\$query with no type specified\\.$#"
-			count: 1
-			path: src/Objects/Calendar/EventInstance.php
-
-		-
-			message: "#^Cannot call method getAuthorization\\(\\) on mixed\\.$#"
-			count: 2
-			path: src/Objects/Calendar/TagGroup.php
-
-		-
-			message: "#^Cannot call method getCalenderApiVersion\\(\\) on mixed\\.$#"
-			count: 2
-			path: src/Objects/Calendar/TagGroup.php
-
-		-
-			message: "#^Cannot call method getConfiguration\\(\\) on mixed\\.$#"
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Calendar\\\\TagGroup\\:\\:all\\(\\) has parameter \\$query with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Objects/Calendar/TagGroup.php
 
 		-
-			message: "#^Cannot call method send\\(\\) on mixed\\.$#"
-			count: 2
-			path: src/Objects/Calendar/TagGroup.php
-
-		-
-			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Calendar\\\\TagGroup\\:\\:all\\(\\) has parameter \\$query with no type specified\\.$#"
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Calendar\\\\TagGroup\\:\\:tag\\(\\) has parameter \\$query with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Objects/Calendar/TagGroup.php
 
 		-
-			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Calendar\\\\TagGroup\\:\\:tag\\(\\) has parameter \\$query with no type specified\\.$#"
-			count: 1
-			path: src/Objects/Calendar/TagGroup.php
-
-		-
-			message: "#^Cannot call method getAuthorization\\(\\) on mixed\\.$#"
-			count: 7
-			path: src/Objects/Groups/Group.php
-
-		-
-			message: "#^Cannot call method getConfiguration\\(\\) on mixed\\.$#"
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Groups\\\\Group\\:\\:all\\(\\) has parameter \\$query with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Objects/Groups/Group.php
 
 		-
-			message: "#^Cannot call method getGroupsApiVersion\\(\\) on mixed\\.$#"
-			count: 7
-			path: src/Objects/Groups/Group.php
-
-		-
-			message: "#^Cannot call method send\\(\\) on mixed\\.$#"
-			count: 7
-			path: src/Objects/Groups/Group.php
-
-		-
-			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Groups\\\\Group\\:\\:all\\(\\) has parameter \\$query with no type specified\\.$#"
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Groups\\\\Group\\:\\:enrollment\\(\\) has parameter \\$query with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Objects/Groups/Group.php
 
 		-
-			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Groups\\\\Group\\:\\:enrollment\\(\\) has parameter \\$id with no type specified\\.$#"
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Groups\\\\Group\\:\\:event\\(\\) has parameter \\$query with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Objects/Groups/Group.php
 
 		-
-			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Groups\\\\Group\\:\\:enrollment\\(\\) has parameter \\$query with no type specified\\.$#"
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Groups\\\\Group\\:\\:get\\(\\) has parameter \\$query with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Objects/Groups/Group.php
 
 		-
-			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Groups\\\\Group\\:\\:event\\(\\) has parameter \\$id with no type specified\\.$#"
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Groups\\\\Group\\:\\:membership\\(\\) has parameter \\$query with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Objects/Groups/Group.php
 
 		-
-			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Groups\\\\Group\\:\\:event\\(\\) has parameter \\$query with no type specified\\.$#"
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Groups\\\\Group\\:\\:mine\\(\\) has parameter \\$query with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Objects/Groups/Group.php
 
 		-
-			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Groups\\\\Group\\:\\:get\\(\\) has parameter \\$id with no type specified\\.$#"
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Groups\\\\Group\\:\\:people\\(\\) has parameter \\$query with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Objects/Groups/Group.php
 
 		-
-			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Groups\\\\Group\\:\\:get\\(\\) has parameter \\$query with no type specified\\.$#"
-			count: 1
-			path: src/Objects/Groups/Group.php
-
-		-
-			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Groups\\\\Group\\:\\:membership\\(\\) has parameter \\$id with no type specified\\.$#"
-			count: 1
-			path: src/Objects/Groups/Group.php
-
-		-
-			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Groups\\\\Group\\:\\:membership\\(\\) has parameter \\$query with no type specified\\.$#"
-			count: 1
-			path: src/Objects/Groups/Group.php
-
-		-
-			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Groups\\\\Group\\:\\:mine\\(\\) has parameter \\$query with no type specified\\.$#"
-			count: 1
-			path: src/Objects/Groups/Group.php
-
-		-
-			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Groups\\\\Group\\:\\:people\\(\\) has parameter \\$id with no type specified\\.$#"
-			count: 1
-			path: src/Objects/Groups/Group.php
-
-		-
-			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Groups\\\\Group\\:\\:people\\(\\) has parameter \\$query with no type specified\\.$#"
-			count: 1
-			path: src/Objects/Groups/Group.php
-
-		-
-			message: "#^Cannot call method getAuthorization\\(\\) on mixed\\.$#"
-			count: 2
-			path: src/Objects/Groups/TagGroup.php
-
-		-
-			message: "#^Cannot call method getConfiguration\\(\\) on mixed\\.$#"
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Groups\\\\TagGroup\\:\\:all\\(\\) has parameter \\$query with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Objects/Groups/TagGroup.php
 
 		-
-			message: "#^Cannot call method getGroupsApiVersion\\(\\) on mixed\\.$#"
-			count: 2
-			path: src/Objects/Groups/TagGroup.php
-
-		-
-			message: "#^Cannot call method send\\(\\) on mixed\\.$#"
-			count: 2
-			path: src/Objects/Groups/TagGroup.php
-
-		-
-			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Groups\\\\TagGroup\\:\\:all\\(\\) has parameter \\$query with no type specified\\.$#"
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Groups\\\\TagGroup\\:\\:tag\\(\\) has parameter \\$query with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Objects/Groups/TagGroup.php
-
-		-
-			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Groups\\\\TagGroup\\:\\:tag\\(\\) has parameter \\$id with no type specified\\.$#"
-			count: 1
-			path: src/Objects/Groups/TagGroup.php
-
-		-
-			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Groups\\\\TagGroup\\:\\:tag\\(\\) has parameter \\$query with no type specified\\.$#"
-			count: 1
-			path: src/Objects/Groups/TagGroup.php
-
-		-
-			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\Groups\\\\TagGroup\\:\\:tag\\(\\) has parameter \\$tag with no type specified\\.$#"
-			count: 1
-			path: src/Objects/Groups/TagGroup.php
-
-		-
-			message: "#^Cannot call method getAuthorization\\(\\) on mixed\\.$#"
-			count: 2
-			path: src/Objects/People/Email.php
-
-		-
-			message: "#^Cannot call method getConfiguration\\(\\) on mixed\\.$#"
-			count: 1
-			path: src/Objects/People/Email.php
-
-		-
-			message: "#^Cannot call method getPeopleApiVersion\\(\\) on mixed\\.$#"
-			count: 2
-			path: src/Objects/People/Email.php
-
-		-
-			message: "#^Cannot call method send\\(\\) on mixed\\.$#"
-			count: 2
-			path: src/Objects/People/Email.php
 
 		-
 			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\People\\\\Email\\:\\:prepareDataObject\\(\\) has parameter \\$email with no type specified\\.$#"
@@ -341,23 +186,8 @@ parameters:
 			path: src/Objects/People/Email.php
 
 		-
-			message: "#^Cannot call method getAuthorization\\(\\) on mixed\\.$#"
-			count: 5
-			path: src/Objects/People/Person.php
-
-		-
-			message: "#^Cannot call method getConfiguration\\(\\) on mixed\\.$#"
+			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\Objects\\\\People\\\\Email\\:\\:get\\(\\) invoked with 1 parameter, 0 required\\.$#"
 			count: 1
-			path: src/Objects/People/Person.php
-
-		-
-			message: "#^Cannot call method getPeopleApiVersion\\(\\) on mixed\\.$#"
-			count: 5
-			path: src/Objects/People/Person.php
-
-		-
-			message: "#^Cannot call method send\\(\\) on mixed\\.$#"
-			count: 5
 			path: src/Objects/People/Person.php
 
 		-
@@ -536,11 +366,6 @@ parameters:
 			path: src/Objects/People/Person.php
 
 		-
-			message: "#^Cannot access property \\$meta on mixed\\.$#"
-			count: 2
-			path: src/PlanningCenterClient.php
-
-		-
 			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\PlanningCenterClient\\:\\:__construct\\(\\) has parameter \\$config with no type specified\\.$#"
 			count: 1
 			path: src/PlanningCenterClient.php
@@ -573,11 +398,6 @@ parameters:
 		-
 			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\PlanningCenterClient\\:\\:send\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
-			path: src/PlanningCenterClient.php
-
-		-
-			message: "#^Method EncoreDigitalGroup\\\\PlanningCenter\\\\PlanningCenterClient\\:\\:send\\(\\) should return bool\\|stdClass\\|string but returns mixed\\.$#"
-			count: 2
 			path: src/PlanningCenterClient.php
 
 		-
