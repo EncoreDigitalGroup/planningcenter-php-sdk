@@ -10,7 +10,7 @@ class Email
 {
     use HasPlanningCenterClient;
 
-    public mixed $id;
+    public mixed $personId;
     public mixed $address;
     public mixed $location;
     public mixed $primary;
@@ -29,14 +29,14 @@ class Email
         return $Email;
     }
 
-    public function get(Person $person): stdClass
+    public function get(): stdClass
     {
         $headers = [
             'Authorization' => $this->config->getAuthorization(),
             'X-PCO-API-Version' => $this->config->getPeopleApiVersion(),
         ];
 
-        $request = new Request('GET', 'people/v2/people/' . $person->id . '/emails', $headers, json_encode($person));
+        $request = new Request('GET', 'people/v2/people/' . $this->personId . '/emails', $headers, json_encode($this));
 
         return $this->client->send($request);
     }
@@ -48,9 +48,9 @@ class Email
             'X-PCO-API-Version' => $this->config->getPeopleApiVersion(),
         ];
 
-        $Email = self::prepareDataObject($email);
+        $emailObj = self::prepareDataObject($email);
 
-        $request = new Request('PATCH', 'people/v2/emails/' . $email->id, $headers, json_encode($Email));
+        $request = new Request('PATCH', 'people/v2/emails/' . $email->personId, $headers, json_not_null($emailObj));
 
         return $this->client->send($request);
     }

@@ -8,7 +8,7 @@ use GuzzleHttp\Psr7\Request;
 use stdClass;
 
 /**
- * @property int id
+ * @property int personId
  * @property string given_name
  * @property string first_name
  * @property string nickname
@@ -46,7 +46,7 @@ class Person
 {
     use HasPlanningCenterClient;
 
-    public mixed $id;
+    public mixed $personId;
     public mixed $given_name;
     public mixed $first_name;
     public mixed $nickname;
@@ -100,7 +100,7 @@ class Person
         return $Person;
     }
 
-    public function all($query = []): stdClass
+    public function all(array $query = []): stdClass
     {
         $headers = [
             'Authorization' => $this->config->getAuthorization(),
@@ -113,58 +113,60 @@ class Person
         return $this->client->send($request);
     }
 
-    public function get(self $person, $query = []): stdClass
+    public function get(array $query = []): stdClass
     {
         $headers = [
             'Authorization' => $this->config->getAuthorization(),
             'X-PCO-API-Version' => $this->config->getPeopleApiVersion(),
         ];
         $query = http_build_query($query);
-        $request = new Request('GET', 'people/v2/people/' . $person->id . '?' . $query, $headers);
+        $request = new Request('GET', 'people/v2/people/' . $this->personId . '?' . $query, $headers);
 
         return $this->client->send($request);
     }
 
-    public function create(self $person): string
+    public function create(): string
     {
         $headers = [
             'Authorization' => $this->config->getAuthorization(),
             'X-PCO-API-Version' => $this->config->getPeopleApiVersion(),
         ];
-        $request = new Request('POST', 'people/v2/people', $headers, json_encode($person));
+        $request = new Request('POST', 'people/v2/people', $headers, json_not_null($this));
 
         return $this->client->send($request);
     }
 
-    public function update(self $person): stdClass
+    public function update(): stdClass
     {
         $headers = [
             'Authorization' => $this->config->getAuthorization(),
             'X-PCO-API-Version' => $this->config->getPeopleApiVersion(),
         ];
 
-        $Person = self::prepareDataObject($person);
+        $Person = self::prepareDataObject($this);
 
-        $request = new Request('PATCH', 'people/v2/people/' . $person->id, $headers, json_encode($Person));
+        $request = new Request('PATCH', 'people/v2/people/' . $this->personId, $headers, json_not_null($Person));
 
         return $this->client->send($request);
     }
 
-    public function delete(self $person): stdClass
+    public function delete(): stdClass
     {
         $headers = [
             'Authorization' => $this->config->getAuthorization(),
             'X-PCO-API-Version' => $this->config->getPeopleApiVersion(),
         ];
-        $request = new Request('DELETE', 'people/v2/people/' . $person->id, $headers, json_encode($person));
+
+        $request = new Request('DELETE', 'people/v2/people/' . $this->personId, $headers, json_not_null($this));
 
         return $this->client->send($request);
     }
 
-    public function email(self $person): stdClass
+    public function email(): stdClass
     {
-        $Email = new Email($this->client);
+        $email = new Email($this->client);
+        $email->personId = $this->personId;
 
-        return $Email->get($person);
+        return $email->get();
     }
 }
