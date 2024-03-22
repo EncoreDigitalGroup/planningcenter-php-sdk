@@ -7,78 +7,42 @@ use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 use GuzzleHttp\Psr7\Request;
 use stdClass;
 
-/**
- * @property int personId
- * @property string given_name
- * @property string first_name
- * @property string nickname
- * @property string middle_name
- * @property string last_name
- * @property DateTime birthdate
- * @property DateTime anniversary
- * @property string gender
- * @property int grade
- * @property bool child
- * @property int graduation_year
- * @property bool site_administrator
- * @property bool accounting_administrator
- * @property string people_permissions
- * @property string membership
- * @property DateTime inactivated_at
- * @property string medical_notes
- * @property bool mfa_configured
- * @property DateTime created_at
- * @property DateTime updated_at
- * @property string avatar
- * @property string name
- * @property string demographic_avatar_url
- * @property string directory_status
- * @property bool passed_background_check
- * @property bool can_create_forms
- * @property bool can_email_lists
- * @property string school_type
- * @property string status
- * @property int primary_campus_id
- * @property int $gender_id
- * @property int $remote_id
- */
 class Person
 {
     use HasPlanningCenterClient;
 
-    public mixed $personId;
-    public mixed $given_name;
-    public mixed $first_name;
-    public mixed $nickname;
-    public mixed $middle_name;
-    public mixed $last_name;
-    public mixed $birthdate;
-    public mixed $anniversary;
-    public mixed $gender;
-    public mixed $grade;
-    public mixed $child;
-    public mixed $graduation_year;
-    public mixed $site_administrator;
-    public mixed $accounting_administrator;
-    public mixed $people_permissions;
-    public mixed $membership;
-    public mixed $inactivated_at;
-    public mixed $medical_notes;
-    public mixed $mfa_configured;
-    public mixed $created_at;
-    public mixed $updated_at;
-    public mixed $avatar;
-    public mixed $name;
-    public mixed $demographic_avatar_url;
-    public mixed $directory_status;
-    public mixed $passed_background_check;
-    public mixed $can_create_forms;
-    public mixed $can_email_lists;
-    public mixed $school_type;
-    public mixed $status;
-    public mixed $primary_campus_id;
-    public mixed $gender_id;
-    public mixed $remote_id;
+    public int $personId;
+    public string $given_name;
+    public string $first_name;
+    public string $nickname;
+    public string $middle_name;
+    public DateTime $last_name;
+    public DateTime $birthdate;
+    public DateTime $anniversary;
+    public string $gender;
+    public int $grade;
+    public bool $child;
+    public int $graduation_year;
+    public bool $site_administrator;
+    public bool $accounting_administrator;
+    public string $people_permissions;
+    public string $membership;
+    public DateTime $inactivated_at;
+    public string $medical_notes;
+    public bool $mfa_configured;
+    public DateTime $created_at;
+    public DateTime $updated_at;
+    public string $avatar;
+    public string $name;
+    public string $demographic_avatar_url;
+    public string $directory_status;
+    public bool $passed_background_check;
+    public bool $can_create_forms;
+    public bool $can_email_lists;
+    public string $school_type;
+    public string $status;
+    public int $primary_campus_id;
+    public int $remote_id;
 
     private static function prepareDataObject($person): stdClass
     {
