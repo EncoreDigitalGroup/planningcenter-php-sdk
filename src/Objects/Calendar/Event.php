@@ -6,22 +6,15 @@ use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 use GuzzleHttp\Psr7\Request;
 use stdClass;
 
-/**
- * Class Event
- *
- * @property int $eventId
- * @property int $eventInstanceId
- * @property int $connectionId
- */
 class Event
 {
     use HasPlanningCenterClient;
 
-    public mixed $eventId;
-    public mixed $eventInstanceId;
-    public mixed $connectionId;
+    public int $eventId;
+    public int $eventInstanceId;
+    public int $connectionId;
 
-    public function all($query = []): stdClass
+    public function all(array $query = []): stdClass
     {
         $headers = [
             'Authorization' => $this->config->getAuthorization(),
@@ -34,7 +27,7 @@ class Event
         return $this->client->send($request);
     }
 
-    public function future($query = []): stdClass
+    public function future(array $query = []): stdClass
     {
         $headers = [
             'Authorization' => $this->config->getAuthorization(),
@@ -48,7 +41,7 @@ class Event
         return $this->client->send($request);
     }
 
-    public function get($query = []): stdClass
+    public function get(array $query = []): stdClass
     {
         $headers = [
             'Authorization' => $this->config->getAuthorization(),
@@ -61,7 +54,7 @@ class Event
         return $this->client->send($request);
     }
 
-    public function instance($query = []): stdClass
+    public function instance(array $query = []): stdClass
     {
         $eventInstance = new EventInstance($this->client);
         $eventInstance->eventInstanceId = $this->eventInstanceId;
@@ -70,15 +63,15 @@ class Event
         return $eventInstance->get($query);
     }
 
-    public function instances($query = []): stdClass
+    public function instances(array $query = []): stdClass
     {
         $eventInstances = new EventInstance($this->client);
         $eventInstances->eventId = $this->eventId;
 
-        return $eventInstances->all($this->eventId, $query);
+        return $eventInstances->all($query);
     }
 
-    public function connection($query = []): stdClass
+    public function connection(array $query = []): stdClass
     {
         $headers = [
             'Authorization' => $this->config->getAuthorization(),

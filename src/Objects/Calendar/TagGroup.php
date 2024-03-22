@@ -16,10 +16,10 @@ class TagGroup
 {
     use HasPlanningCenterClient;
 
-    public mixed $tagGroupId;
-    public mixed $tagId;
+    public int $tagGroupId;
+    public int $tagId;
 
-    public function all($query = []): stdClass
+    public function all(array $query = []): stdClass
     {
         $headers = [
             'Authorization' => $this->config->getAuthorization(),
@@ -32,7 +32,7 @@ class TagGroup
         return $this->client->send($request, $query);
     }
 
-    public function tag($query = []): stdClass
+    public function tag(array $query = []): stdClass
     {
 
         $headers = [

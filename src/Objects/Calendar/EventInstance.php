@@ -6,20 +6,14 @@ use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 use GuzzleHttp\Psr7\Request;
 use stdClass;
 
-/**
- * Class EventInstance
- *
- * @property int $eventInstanceId
- * @property int $eventId
- */
 class EventInstance
 {
     use HasPlanningCenterClient;
 
-    public mixed $eventInstanceId;
-    public mixed $eventId;
+    public int $eventInstanceId;
+    public int $eventId;
 
-    public function all($query = []): stdClass
+    public function all(array $query = []): stdClass
     {
         $headers = [
             'Authorization' => $this->config->getAuthorization(),
@@ -32,7 +26,7 @@ class EventInstance
         return $this->client->send($request);
     }
 
-    public function get($query = []): stdClass
+    public function get(array $query = []): stdClass
     {
         $headers = [
             'Authorization' => $this->config->getAuthorization(),
