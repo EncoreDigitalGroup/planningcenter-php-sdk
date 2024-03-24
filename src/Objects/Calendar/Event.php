@@ -2,9 +2,9 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Objects\Calendar;
 
+use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 use GuzzleHttp\Psr7\Request;
-use stdClass;
 
 class Event
 {
@@ -14,7 +14,7 @@ class Event
     public int $eventInstanceId;
     public int $connectionId;
 
-    public function all(array $query = []): stdClass
+    public function all(array $query = []): ClientResponse
     {
         $headers = $this->buildHeaders();
 
@@ -25,7 +25,7 @@ class Event
         return $this->client->send($request);
     }
 
-    public function future(array $query = []): stdClass
+    public function future(array $query = []): ClientResponse
     {
         $headers = $this->buildHeaders();
 
@@ -37,7 +37,7 @@ class Event
         return $this->client->send($request);
     }
 
-    public function get(array $query = []): stdClass
+    public function get(array $query = []): ClientResponse
     {
         $headers = $this->buildHeaders();
 
@@ -48,7 +48,7 @@ class Event
         return $this->client->send($request);
     }
 
-    public function instance(array $query = []): stdClass
+    public function instance(array $query = []): ClientResponse
     {
         $eventInstance = new EventInstance($this->client);
         $eventInstance->eventInstanceId = $this->eventInstanceId;
@@ -57,7 +57,7 @@ class Event
         return $eventInstance->get($query);
     }
 
-    public function instances(array $query = []): stdClass
+    public function instances(array $query = []): ClientResponse
     {
         $eventInstances = new EventInstance($this->client);
         $eventInstances->eventId = $this->eventId;
@@ -65,7 +65,7 @@ class Event
         return $eventInstances->all($query);
     }
 
-    public function connection(array $query = []): stdClass
+    public function connection(array $query = []): ClientResponse
     {
         $headers = $this->buildHeaders();
 

@@ -2,9 +2,9 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Objects\Groups;
 
+use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 use GuzzleHttp\Psr7\Request;
-use stdClass;
 
 class Group
 {
@@ -12,7 +12,7 @@ class Group
 
     public int $groupId;
 
-    public function all(array $query = []): stdClass
+    public function all(array $query = []): ClientResponse
     {
         $headers = $this->buildHeaders();
 
@@ -23,7 +23,7 @@ class Group
         return $this->client->send($request, $query);
     }
 
-    public function mine(array $query = []): stdClass
+    public function mine(array $query = []): ClientResponse
     {
         $headers = $this->buildHeaders();
 
@@ -35,7 +35,7 @@ class Group
         return $this->client->send($request);
     }
 
-    public function get(array $query = []): stdClass
+    public function get(array $query = []): ClientResponse
     {
         $headers = $this->buildHeaders();
 
@@ -46,7 +46,7 @@ class Group
         return $this->client->send($request);
     }
 
-    public function enrollment(array $query = []): stdClass
+    public function enrollment(array $query = []): ClientResponse
     {
         $headers = $this->buildHeaders();
 
@@ -57,7 +57,7 @@ class Group
         return $this->client->send($request);
     }
 
-    public function event(array $query = []): stdClass
+    public function event(array $query = []): ClientResponse
     {
         $headers = $this->buildHeaders();
 
@@ -68,7 +68,7 @@ class Group
         return $this->client->send($request);
     }
 
-    public function membership(array $query = []): stdClass
+    public function membership(array $query = []): ClientResponse
     {
         $headers = $this->buildHeaders();
 
@@ -79,7 +79,7 @@ class Group
         return $this->client->send($request);
     }
 
-    public function people(array $query = []): stdClass
+    public function people(array $query = []): ClientResponse
     {
         $headers = $this->buildHeaders();
 

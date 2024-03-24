@@ -2,6 +2,7 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Objects\People;
 
+use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 use GuzzleHttp\Psr7\Request;
 use stdClass;
@@ -29,7 +30,7 @@ class Email
         return $Email;
     }
 
-    public function get(): stdClass
+    public function get(): ClientResponse
     {
         $headers = $this->buildHeaders();
 
@@ -38,7 +39,7 @@ class Email
         return $this->client->send($request);
     }
 
-    public function update(self $email): stdClass
+    public function update(self $email): ClientResponse
     {
         $headers = $this->buildHeaders();
 

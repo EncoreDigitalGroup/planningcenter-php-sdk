@@ -2,9 +2,9 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Objects\Calendar;
 
+use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 use GuzzleHttp\Psr7\Request;
-use stdClass;
 
 /**
  * Class TagGroup
@@ -19,7 +19,7 @@ class TagGroup
     public int $tagGroupId;
     public int $tagId;
 
-    public function all(array $query = []): stdClass
+    public function all(array $query = []): ClientResponse
     {
         $headers = $this->buildHeaders();
 
@@ -30,7 +30,7 @@ class TagGroup
         return $this->client->send($request, $query);
     }
 
-    public function tag(array $query = []): stdClass
+    public function tag(array $query = []): ClientResponse
     {
 
         $headers = $this->buildHeaders();

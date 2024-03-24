@@ -3,6 +3,7 @@
 namespace EncoreDigitalGroup\PlanningCenter\Objects\People;
 
 use DateTime;
+use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 use GuzzleHttp\Psr7\Request;
 use stdClass;
@@ -64,7 +65,7 @@ class Person
         return $Person;
     }
 
-    public function all(array $query = []): stdClass
+    public function all(array $query = []): ClientResponse
     {
         $headers = $this->buildHeaders();
 
@@ -75,7 +76,7 @@ class Person
         return $this->client->send($request);
     }
 
-    public function get(array $query = []): stdClass
+    public function get(array $query = []): ClientResponse
     {
         $headers = $this->buildHeaders();
 
@@ -86,7 +87,7 @@ class Person
         return $this->client->send($request);
     }
 
-    public function create(): string
+    public function create(): ClientResponse
     {
         $headers = $this->buildHeaders();
 
@@ -95,7 +96,7 @@ class Person
         return $this->client->send($request);
     }
 
-    public function update(): stdClass
+    public function update(): ClientResponse
     {
         $headers = $this->buildHeaders();
 
@@ -106,7 +107,7 @@ class Person
         return $this->client->send($request);
     }
 
-    public function delete(): stdClass
+    public function delete(): ClientResponse
     {
         $headers = $this->buildHeaders();
 
@@ -115,7 +116,7 @@ class Person
         return $this->client->send($request);
     }
 
-    public function email(): stdClass
+    public function email(): ClientResponse
     {
         $email = new Email($this->client);
         $email->personId = $this->personId;
