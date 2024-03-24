@@ -44,7 +44,7 @@ class Person
     public int $primary_campus_id;
     public int $remote_id;
 
-    private static function prepareDataObject($person): stdClass
+    private static function prepareDataObject(self $person): stdClass
     {
         $Person = new stdClass;
         $Person->data = new stdClass;

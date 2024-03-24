@@ -8,7 +8,7 @@ class ClientConfiguration
     const GROUPS_API_VERSION = '2023-07-10';
     const PEOPLE_API_VERSION = '2023-02-15';
 
-    protected array $authorization;
+    protected string $authorization;
     protected string $authorizationToken;
     protected string $authorizationType;
     protected array $calendar;
@@ -30,29 +30,24 @@ class ClientConfiguration
         ];
     }
 
-    public function setAuthorization($authorization = null): void
-    {
-        $this->authorization = $authorization ?? $this->getAuthorization();
-    }
-
     public function getAuthorization(): string
     {
         return $this->getAuthorizationType() . ' ' . base64_encode($this->getAuthorizationToken());
     }
 
-    public function setAuthorizationToken($authorization_token = null): void
+    public function setAuthorizationToken(string $authorizationToken = null): void
     {
-        $this->authorizationToken = $authorization_token ?? $this->getAuthorization();
+        $this->authorizationToken = $authorizationToken ?? $this->getAuthorization();
     }
 
     public function getAuthorizationToken(): string
     {
-        return $this->authorization['authorization'] ?? '';
+        return $this->authorizationToken ?? '';
     }
 
-    public function setAuthorizationType($authorization_type = null): void
+    public function setAuthorizationType(string $authorizationType = null): void
     {
-        $this->authorizationType = $authorization_type ?? $this->getAuthorizationType();
+        $this->authorizationType = $authorizationType ?? $this->getAuthorizationType();
     }
 
     public function getAuthorizationType(): string
@@ -60,7 +55,7 @@ class ClientConfiguration
         return $this->authorizationType ?? 'Basic';
     }
 
-    public function setCalendarApiVersion($version = null): void
+    public function setCalendarApiVersion(string $version = null): void
     {
         $this->calendar['apiVersion'] = $version ?? $this->getCalenderApiVersion();
     }
@@ -70,7 +65,7 @@ class ClientConfiguration
         return $this->calendar['apiVersion'] ?? self::CALENDAR_API_VERSION;
     }
 
-    public function setGroupsApiVersion($version = null): void
+    public function setGroupsApiVersion(string $version = null): void
     {
         $this->groups['apiVersion'] = $version ?? $this->getGroupsApiVersion();
     }
@@ -80,7 +75,7 @@ class ClientConfiguration
         return $this->groups['apiVersion'] ?? self::GROUPS_API_VERSION;
     }
 
-    public function setPeopleApiVersion($version = null): void
+    public function setPeopleApiVersion(string $version = null): void
     {
         $this->people['apiVersion'] = $version ?? $this->getPeopleApiVersion();
     }

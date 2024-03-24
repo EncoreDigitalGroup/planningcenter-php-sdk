@@ -18,7 +18,7 @@ class Email
     public mixed $updated_at;
     public mixed $blocked;
 
-    private static function prepareDataObject($email): stdClass
+    private static function prepareDataObject(self $email): stdClass
     {
         $Email = new stdClass;
         $Email->data = new stdClass;
@@ -36,7 +36,7 @@ class Email
             'X-PCO-API-Version' => $this->config->getPeopleApiVersion(),
         ];
 
-        $request = new Request('GET', 'people/v2/people/' . $this->personId . '/emails', $headers, json_encode($this));
+        $request = new Request('GET', 'people/v2/people/' . $this->personId . '/emails', $headers, json_not_null($this));
 
         return $this->client->send($request);
     }

@@ -2,10 +2,12 @@
 
 namespace EncoreDigitalGroup\PlanningCenter;
 
+use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Handler\CurlHandler;
 use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Psr7\Request;
 use stdClass;
 
 class PlanningCenterClient
@@ -14,7 +16,7 @@ class PlanningCenterClient
     protected GuzzleClient $client;
     protected int $attempts;
 
-    public function __construct($config)
+    public function __construct(mixed $config)
     {
         $this->config = $this->setConfiguration($config);
         $this->createClient();
@@ -47,7 +49,7 @@ class PlanningCenterClient
         return $this->client;
     }
 
-    public function send($request, $query = [], $attempt_limit = 5, $attempt = 1): bool|string|stdClass
+    public function send(Request $request, array $query = [], int $attemptLimit = 5, int $attempt = 1): ClientResponse
     {
         $this->attempts = $attempt;
         $client = $this->getClient();
@@ -55,53 +57,48 @@ class PlanningCenterClient
         try {
             $res = $client->sendAsync($request)->wait();
         } catch (ClientException $e) {
-            if ($attempt <= $attempt_limit) {
+            if ($attempt <= $attemptLimit) {
                 $i = $attempt + 1;
 
-                return $this->send($request, $query, $attempt_limit, $i);
+                return $this->send($request, $query, $attemptLimit, $i);
             }
 
-            return json_decode($this->processResponse($e->getResponse()));
+            return $this->processResponse($e->getResponse());
         }
 
-        return json_decode($this->processResponse($res));
+        return $this->processResponse($res);
 
     }
 
-    protected function processResponse($res): string
+    protected function processResponse(mixed $res): ClientResponse
     {
-        $response_body = $res->getBody()->getContents();
-        $http_response_code = $res->getStatusCode();
-        $http_message = $res->getReasonPhrase();
-        $success = false;
-        $rate_limited = false;
+        $responseBody = $res->getBody()->getContents();
+        $httpStatusCode = $res->getStatusCode();
+        $httpMessage = $res->getReasonPhrase();
 
-        if ($http_response_code >= 200 && $http_response_code < 300) {
+        if ($httpStatusCode >= 200 && $httpStatusCode < 300) {
             $success = true;
         }
 
-        $response = [
-            'sdk' => [
-                'outcome' => [
-                    'success' => $success ?? false,
-                    'rate_limited' => $rate_limited ?? false,
-                    'http' => [
-                        'status_code' => $http_response_code ?? null,
-                        'message' => $http_message ?? null,
-                        'pco' => $response_body,
-                        'attempts' => $this->attempts ?? 1,
-                    ],
-                ],
-            ],
-        ];
-
-        if ($success) {
-            $response_body = json_decode($response_body);
-            $response['pco'] = $response_body;
-            $response['sdk']['page']['previous'] = $response_body->meta->prev->offset ?? null;
-            $response['sdk']['page']['next'] = $response_body->meta->next->offset ?? null;
+        if ($httpStatusCode == 429) {
+            $rateLimited = true;
         }
 
-        return json_encode($response);
+        $response = new ClientResponse();
+        $response->sdk->outcome->success = $success ?? false;
+        $response->sdk->outcome->rateLimited = $rateLimited ?? false;
+        $response->sdk->outcome->http->statusCode = $httpStatusCode ?? null;
+        $response->sdk->outcome->http->message = $httpMessage ?? null;
+        $response->sdk->outcome->http->pco = $responseBody;
+        $response->sdk->outcome->http->attempts = $this->attempts ?? 1;
+
+        if ($success ?? false) {
+            $responseBody = json_decode($responseBody);
+            $response->pco = $responseBody;
+            $response->sdk->page->previous = $responseBody->meta->prev->offset ?? null;
+            $response->sdk->page->next = $responseBody->meta->next->offset ?? null;
+        }
+
+        return $response;
     }
 }
