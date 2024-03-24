@@ -20,7 +20,7 @@ class Group
 
         $request = new Request('GET', 'groups/v2/groups?' . $query, $headers);
 
-        return $this->client->send($request, $query);
+        return $this->client->send($request);
     }
 
     public function mine(array $query = []): ClientResponse

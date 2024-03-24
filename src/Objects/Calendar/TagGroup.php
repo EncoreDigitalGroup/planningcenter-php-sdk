@@ -27,7 +27,7 @@ class TagGroup
 
         $request = new Request('GET', 'calendar/v2/tag_groups?' . $query, $headers);
 
-        return $this->client->send($request, $query);
+        return $this->client->send($request);
     }
 
     public function tag(array $query = []): ClientResponse
@@ -41,6 +41,6 @@ class TagGroup
 
         $request = new Request('GET', 'calendar/v2/tag_groups/' . $tagGroupId . '/tags/' . $this->tagId . '?' . $query, $headers);
 
-        return $this->client->send($request, $query);
+        return $this->client->send($request);
     }
 }

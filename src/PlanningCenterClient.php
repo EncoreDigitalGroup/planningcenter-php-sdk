@@ -48,7 +48,7 @@ class PlanningCenterClient
         return $this->client;
     }
 
-    public function send(Request $request, array $query = [], int $attemptLimit = 5, int $attempt = 1): ClientResponse
+    public function send(Request $request, int $attemptLimit = 5, int $attempt = 1): ClientResponse
     {
         $this->attempts = $attempt;
         $client = $this->getClient();
@@ -59,7 +59,7 @@ class PlanningCenterClient
             if ($attempt <= $attemptLimit) {
                 $i = $attempt + 1;
 
-                return $this->send($request, $query, $attemptLimit, $i);
+                return $this->send($request, $attemptLimit, $i);
             }
 
             return $this->processResponse($e->getResponse());
