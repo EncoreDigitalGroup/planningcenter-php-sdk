@@ -15,25 +15,32 @@ class TagGroup
 
     public function all(array $query = []): stdClass
     {
-        $headers = [
-            'Authorization' => $this->config->getAuthorization(),
-            'X-PCO-API-Version' => $this->config->getGroupsApiVersion(),
-        ];
+        $headers = $this->buildHeaders();
 
         $query = http_build_query($query);
+
         $request = new Request('GET', 'groups/v2/tag_groups?' . $query, $headers);
+
+        return $this->client->send($request);
+    }
+
+    public function tags(array $query = []): stdClass
+    {
+        $headers = $this->buildHeaders();
+
+        $query = http_build_query($query);
+
+        $request = new Request('GET', 'groups/v2/tag_groups/' . $this->tagGroupId . '/tags?' . $query, $headers);
 
         return $this->client->send($request);
     }
 
     public function tag(array $query = []): stdClass
     {
-        $headers = [
-            'Authorization' => $this->config->getAuthorization(),
-            'X-PCO-API-Version' => $this->config->getGroupsApiVersion(),
-        ];
+        $headers = $this->buildHeaders();
 
         $query = http_build_query($query);
+
         $request = new Request('GET', 'groups/v2/tag_groups/' . $this->tagGroupId . '/tags/' . $this->tagId . '?' . $query, $headers);
 
         return $this->client->send($request);

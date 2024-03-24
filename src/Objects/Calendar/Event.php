@@ -16,12 +16,10 @@ class Event
 
     public function all(array $query = []): stdClass
     {
-        $headers = [
-            'Authorization' => $this->config->getAuthorization(),
-            'X-PCO-API-Version' => $this->config->getCalenderApiVersion(),
-        ];
+        $headers = $this->buildHeaders();
 
         $query = http_build_query($query);
+
         $request = new Request('GET', 'calendar/v2/events?' . $query, $headers);
 
         return $this->client->send($request);
@@ -29,13 +27,11 @@ class Event
 
     public function future(array $query = []): stdClass
     {
-        $headers = [
-            'Authorization' => $this->config->getAuthorization(),
-            'X-PCO-API-Version' => $this->config->getCalenderApiVersion(),
-        ];
+        $headers = $this->buildHeaders();
 
         $query = array_merge(['filter' => 'future'], $query);
         $query = http_build_query($query);
+
         $request = new Request('GET', 'calendar/v2/events?' . $query, $headers);
 
         return $this->client->send($request);
@@ -43,12 +39,10 @@ class Event
 
     public function get(array $query = []): stdClass
     {
-        $headers = [
-            'Authorization' => $this->config->getAuthorization(),
-            'X-PCO-API-Version' => $this->config->getCalenderApiVersion(),
-        ];
+        $headers = $this->buildHeaders();
 
         $query = http_build_query($query);
+
         $request = new Request('GET', 'calendar/v2/events/' . $this->eventId . '?' . $query, $headers);
 
         return $this->client->send($request);
@@ -73,12 +67,10 @@ class Event
 
     public function connection(array $query = []): stdClass
     {
-        $headers = [
-            'Authorization' => $this->config->getAuthorization(),
-            'X-PCO-API-Version' => $this->config->getCalenderApiVersion(),
-        ];
+        $headers = $this->buildHeaders();
 
         $query = http_build_query($query);
+        
         $request = new Request('GET', 'calendar/v2/events/' . $this->eventId . '/event_connections/' . $this->connectionId . '?' . $query, $headers);
 
         return $this->client->send($request);

@@ -31,10 +31,7 @@ class Email
 
     public function get(): stdClass
     {
-        $headers = [
-            'Authorization' => $this->config->getAuthorization(),
-            'X-PCO-API-Version' => $this->config->getPeopleApiVersion(),
-        ];
+        $headers = $this->buildHeaders();
 
         $request = new Request('GET', 'people/v2/people/' . $this->personId . '/emails', $headers, json_not_null($this));
 
@@ -43,10 +40,7 @@ class Email
 
     public function update(self $email): stdClass
     {
-        $headers = [
-            'Authorization' => $this->config->getAuthorization(),
-            'X-PCO-API-Version' => $this->config->getPeopleApiVersion(),
-        ];
+        $headers = $this->buildHeaders();
 
         $emailObj = self::prepareDataObject($email);
 

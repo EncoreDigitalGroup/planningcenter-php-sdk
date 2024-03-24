@@ -66,12 +66,10 @@ class Person
 
     public function all(array $query = []): stdClass
     {
-        $headers = [
-            'Authorization' => $this->config->getAuthorization(),
-            'X-PCO-API-Version' => $this->config->getPeopleApiVersion(),
-        ];
+        $headers = $this->buildHeaders();
 
         $query = http_build_query($query);
+
         $request = new Request('GET', 'people/v2/people?' . $query, $headers);
 
         return $this->client->send($request);
@@ -79,11 +77,10 @@ class Person
 
     public function get(array $query = []): stdClass
     {
-        $headers = [
-            'Authorization' => $this->config->getAuthorization(),
-            'X-PCO-API-Version' => $this->config->getPeopleApiVersion(),
-        ];
+        $headers = $this->buildHeaders();
+
         $query = http_build_query($query);
+
         $request = new Request('GET', 'people/v2/people/' . $this->personId . '?' . $query, $headers);
 
         return $this->client->send($request);
@@ -91,10 +88,8 @@ class Person
 
     public function create(): string
     {
-        $headers = [
-            'Authorization' => $this->config->getAuthorization(),
-            'X-PCO-API-Version' => $this->config->getPeopleApiVersion(),
-        ];
+        $headers = $this->buildHeaders();
+
         $request = new Request('POST', 'people/v2/people', $headers, json_not_null($this));
 
         return $this->client->send($request);
@@ -102,10 +97,7 @@ class Person
 
     public function update(): stdClass
     {
-        $headers = [
-            'Authorization' => $this->config->getAuthorization(),
-            'X-PCO-API-Version' => $this->config->getPeopleApiVersion(),
-        ];
+        $headers = $this->buildHeaders();
 
         $Person = self::prepareDataObject($this);
 
@@ -116,10 +108,7 @@ class Person
 
     public function delete(): stdClass
     {
-        $headers = [
-            'Authorization' => $this->config->getAuthorization(),
-            'X-PCO-API-Version' => $this->config->getPeopleApiVersion(),
-        ];
+        $headers = $this->buildHeaders();
 
         $request = new Request('DELETE', 'people/v2/people/' . $this->personId, $headers, json_not_null($this));
 

@@ -15,12 +15,10 @@ class EventInstance
 
     public function all(array $query = []): stdClass
     {
-        $headers = [
-            'Authorization' => $this->config->getAuthorization(),
-            'X-PCO-API-Version' => $this->config->getCalenderApiVersion(),
-        ];
+        $headers = $this->buildHeaders();
 
         $query = http_build_query($query);
+
         $request = new Request('GET', 'calendar/v2/events/' . $this->eventId . '/event_instances/?' . $query, $headers);
 
         return $this->client->send($request);
@@ -28,12 +26,10 @@ class EventInstance
 
     public function get(array $query = []): stdClass
     {
-        $headers = [
-            'Authorization' => $this->config->getAuthorization(),
-            'X-PCO-API-Version' => $this->config->getCalenderApiVersion(),
-        ];
+        $headers = $this->buildHeaders();
 
         $query = http_build_query($query);
+
         $request = new Request('GET', 'calendar/v2/event_instances/' . $this->eventInstanceId . '?' . $query, $headers);
 
         return $this->client->send($request);
