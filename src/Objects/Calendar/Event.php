@@ -70,7 +70,7 @@ class Event
         $headers = $this->buildHeaders();
 
         $query = http_build_query($query);
-        
+
         $request = new Request('GET', 'calendar/v2/events/' . $this->eventId . '/event_connections/' . $this->connectionId . '?' . $query, $headers);
 
         return $this->client->send($request);

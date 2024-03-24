@@ -9,6 +9,6 @@ class SdkContainer
 
     public function __construct()
     {
-        $this->outcome = new OutcomeContainer();
+        $this->outcome = new OutcomeContainer;
     }
 }

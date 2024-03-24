@@ -27,7 +27,7 @@ class Group
     {
         $headers = $this->buildHeaders();
 
-        $query = array_merge(['filter' => 'my_groups',], $query);
+        $query = array_merge(['filter' => 'my_groups'], $query);
         $query = http_build_query($query);
 
         $request = new Request('GET', 'groups/v2/groups?' . $query, $headers);

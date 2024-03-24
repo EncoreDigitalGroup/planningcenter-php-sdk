@@ -1,6 +1,6 @@
 <?php
 
-if (!function_exists('json_not_null')) {
+if (! function_exists('json_not_null')) {
     function json_not_null(mixed $data): string
     {
         $jsonString = json_encode($data);

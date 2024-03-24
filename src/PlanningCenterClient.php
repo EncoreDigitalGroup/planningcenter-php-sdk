@@ -8,7 +8,6 @@ use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Handler\CurlHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Request;
-use stdClass;
 
 class PlanningCenterClient
 {
@@ -84,7 +83,7 @@ class PlanningCenterClient
             $rateLimited = true;
         }
 
-        $response = new ClientResponse();
+        $response = new ClientResponse;
         $response->sdk->outcome->success = $success ?? false;
         $response->sdk->outcome->rateLimited = $rateLimited ?? false;
         $response->sdk->outcome->http->statusCode = $httpStatusCode ?? null;

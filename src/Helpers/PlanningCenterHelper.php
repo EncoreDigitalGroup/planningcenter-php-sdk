@@ -40,7 +40,7 @@ class PlanningCenterHelper
 
     public static function wasNotRateLimited(ClientResponse $response): bool
     {
-        if (!$response->sdk->outcome->rateLimited) {
+        if (! $response->sdk->outcome->rateLimited) {
             return true;
         }
 

@@ -9,7 +9,6 @@ class ClientResponse
 
     public function __construct()
     {
-        $this->sdk = new SdkContainer();
+        $this->sdk = new SdkContainer;
     }
-
 }

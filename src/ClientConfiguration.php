@@ -35,7 +35,7 @@ class ClientConfiguration
         return $this->getAuthorizationType() . ' ' . base64_encode($this->getAuthorizationToken());
     }
 
-    public function setAuthorizationToken(string $authorizationToken = null): void
+    public function setAuthorizationToken(?string $authorizationToken = null): void
     {
         $this->authorizationToken = $authorizationToken ?? $this->getAuthorization();
     }
@@ -45,7 +45,7 @@ class ClientConfiguration
         return $this->authorizationToken ?? '';
     }
 
-    public function setAuthorizationType(string $authorizationType = null): void
+    public function setAuthorizationType(?string $authorizationType = null): void
     {
         $this->authorizationType = $authorizationType ?? $this->getAuthorizationType();
     }
@@ -55,7 +55,7 @@ class ClientConfiguration
         return $this->authorizationType ?? 'Basic';
     }
 
-    public function setCalendarApiVersion(string $version = null): void
+    public function setCalendarApiVersion(?string $version = null): void
     {
         $this->calendar['apiVersion'] = $version ?? $this->getCalenderApiVersion();
     }
@@ -65,7 +65,7 @@ class ClientConfiguration
         return $this->calendar['apiVersion'] ?? self::CALENDAR_API_VERSION;
     }
 
-    public function setGroupsApiVersion(string $version = null): void
+    public function setGroupsApiVersion(?string $version = null): void
     {
         $this->groups['apiVersion'] = $version ?? $this->getGroupsApiVersion();
     }
@@ -75,7 +75,7 @@ class ClientConfiguration
         return $this->groups['apiVersion'] ?? self::GROUPS_API_VERSION;
     }
 
-    public function setPeopleApiVersion(string $version = null): void
+    public function setPeopleApiVersion(?string $version = null): void
     {
         $this->people['apiVersion'] = $version ?? $this->getPeopleApiVersion();
     }
