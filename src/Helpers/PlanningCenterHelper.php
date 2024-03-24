@@ -54,7 +54,7 @@ class PlanningCenterHelper
         return false;
     }
 
-    public static function idealRequestOutcome($response): bool
+    public static function idealRequestOutcome(object $response): bool
     {
         if (self::wasNotSuccessful($response) || self::wasRateLimited($response) || self::serviceError($response)) {
             return false;

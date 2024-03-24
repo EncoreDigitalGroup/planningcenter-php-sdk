@@ -1,9 +1,7 @@
 name: Build Documentation
 on:
-  push:
-    paths:
-      - 'webHelpIN2-all.zip'
   workflow_dispatch:
+  workflow_call:
 
 jobs:
   Extract:

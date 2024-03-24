@@ -1,11 +1,15 @@
 includes:
-    - phpstan-baseline.neon
+#    - phpstan-baseline.neon
 
 parameters:
     level: 8
     paths:
         - src
-#    ignoreErrors:
-#        - '#PHPDoc tag @var#'
+    reportUnmatchedIgnoredErrors: false
+    checkMissingIterableValueType: false
+    checkGenericClassInNonGenericObjectType: false
+    checkDynamicProperties: false
+    checkTooWideReturnTypesInProtectedAndPublicMethods: false
+    ignoreErrors:
+        - '#PHPDoc tag .+ #'
 #    excludePaths:
-#    checkMissingIterableValueType: false

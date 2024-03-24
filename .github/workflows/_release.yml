@@ -16,3 +16,6 @@ jobs:
       generate_release_notes: true
       is_draft: false
       pre_release: false
+  BuildsDocs:
+    name: Build Documentation
+    uses: ./build_documentation.yml@main
