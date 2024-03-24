@@ -8,4 +8,9 @@ class OutcomeContainer
     public bool $rateLimited;
     public HttpContainer $http;
 
+    public function __construct()
+    {
+        $this->http = new HttpContainer;
+    }
+
 }

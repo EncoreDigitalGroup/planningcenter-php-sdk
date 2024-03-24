@@ -30,6 +30,19 @@ class TagGroup
         return $this->client->send($request);
     }
 
+    public function tags(array $query = []): ClientResponse
+    {
+        $headers = $this->buildHeaders();
+
+        $query = http_build_query($query);
+
+        $tagGroupId = $this->tagGroupId ?? '';
+
+        $request = new Request('GET', 'calendar/v2/tag_groups/' . $tagGroupId . '/tags?' . $query, $headers);
+
+        return $this->client->send($request);
+    }
+
     public function tag(array $query = []): ClientResponse
     {
 
