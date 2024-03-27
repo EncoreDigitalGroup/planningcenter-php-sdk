@@ -2,6 +2,7 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Objects\People;
 
+use DateTime;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 use GuzzleHttp\Psr7\Request;
@@ -11,12 +12,13 @@ class Email
 {
     use HasPlanningCenterClient;
 
-    public mixed $personId;
-    public mixed $address;
-    public mixed $location;
-    public mixed $primary;
-    public mixed $created_at;
-    public mixed $updated_at;
+    public ?string $personId;
+    public ?string $emailAddressId;
+    public string $address;
+    public string $location;
+    public bool $primary;
+    public DateTime $created_at;
+    public DateTime $updated_at;
     public mixed $blocked;
 
     private static function prepareDataObject(self $email): stdClass
@@ -39,13 +41,13 @@ class Email
         return $this->client->send($request);
     }
 
-    public function update(self $email): ClientResponse
+    public function update(): ClientResponse
     {
         $headers = $this->buildHeaders();
 
-        $emailObj = self::prepareDataObject($email);
+        $emailObj = self::prepareDataObject($this);
 
-        $request = new Request('PATCH', 'people/v2/emails/' . $email->personId, $headers, json_not_null($emailObj));
+        $request = new Request('PATCH', 'people/v2/emails/' . $this->emailAddressId, $headers, json_not_null($emailObj));
 
         return $this->client->send($request);
     }
