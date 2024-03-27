@@ -16,8 +16,8 @@ class Person
     public string $given_name;
     public string $first_name;
     public string $nickname;
-    public string $middle_name;
-    public DateTime $last_name;
+    public ?string $middle_name;
+    public string $last_name;
     public DateTime $birthdate;
     public DateTime $anniversary;
     public string $gender;
