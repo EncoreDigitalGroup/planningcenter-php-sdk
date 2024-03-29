@@ -11,4 +11,9 @@ enum PlanningCenterWebhookEvent: string
     case GROUPS_MEMBERSHIP_CREATED = 'groups.v2.events.membership.created';
     case GROUPS_MEMBERSHIP_UPDATED = 'groups.v2.events.membership.updated';
     case GROUPS_MEMBERSHIP_DESTROYED = 'groups.v2.events.membership.destroyed';
+
+    public function toString(): string
+    {
+        return (string)$this->value;
+    }
 }
