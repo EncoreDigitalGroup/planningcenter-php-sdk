@@ -18,4 +18,4 @@ jobs:
       pre_release: false
   BuildsDocs:
     name: Build Documentation
-    uses: ./.github/workflows/build_documentation.yml
+    uses: ./.github/workflows/process_documentation.yml

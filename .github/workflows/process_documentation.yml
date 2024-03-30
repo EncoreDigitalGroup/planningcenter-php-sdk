@@ -1,16 +1,17 @@
-name: Build Documentation
+name: ProcessDocumentation
 on:
   workflow_dispatch:
   workflow_call:
 
 jobs:
-  Extract:
+  ExtractDocumentation:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+
     steps:
       - uses: actions/checkout@v2
-      - name: 'Extract Docs'
+      - name: ExtractDocumentation
         run: |
           rm -rf ./docs
           unzip webHelpIN2-all.zip -d ./docs
@@ -20,3 +21,9 @@ jobs:
           git add .
           git commit -m "Build Documentation"
           git push origin main
+      - uses: actions/checkout@v2
+
+  DeployDocumentation:
+    needs: ExtractDocumentation
+    name: DeployDocumentation
+    uses: ./.github/workflows/deploy-github-pages.yml
