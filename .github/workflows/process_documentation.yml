@@ -25,4 +25,8 @@ jobs:
   DeployDocumentation:
     needs: ExtractDocumentation
     name: DeployDocumentation
-    uses: ./.github/workflows/deploy-github-pages.yml
+    uses: EncoreDigitalGroup/.github/.github/workflows/deploy-github-pages.yml@main
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
