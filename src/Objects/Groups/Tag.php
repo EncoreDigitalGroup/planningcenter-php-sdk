@@ -6,11 +6,10 @@ use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 use GuzzleHttp\Psr7\Request;
 
-class TagGroup
+class Tag
 {
     use HasPlanningCenterClient;
 
-    public int $tagGroupId;
     public int $tagId;
 
     public function all(array $query = []): ClientResponse
@@ -24,22 +23,25 @@ class TagGroup
         return $this->client->send($request);
     }
 
-    public function tags(array $query = []): ClientResponse
+    public function get(array $query = []): ClientResponse
     {
         $headers = $this->buildHeaders();
 
         $query = http_build_query($query);
 
-        $request = new Request('GET', 'groups/v2/tag_groups/' . $this->tagGroupId . '/tags?' . $query, $headers);
+        $request = new Request('GET', 'groups/v2/tags/' . $this->tagId . '?' . $query, $headers);
 
         return $this->client->send($request);
     }
 
-    public function tag(array $query = []): ClientResponse
+    public function groups(array $query = []): ClientResponse
     {
-        $tag = new Tag($this->client);
-        $tag->tagId = $this->tagId;
+        $headers = $this->buildHeaders();
 
-        return $tag->get($query);
+        $query = http_build_query($query);
+
+        $request = new Request('GET', 'groups/v2/tags/' . $this->tagId . '/groups?' . $query, $headers);
+
+        return $this->client->send($request);
     }
 }
