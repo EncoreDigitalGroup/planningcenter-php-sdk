@@ -21,7 +21,6 @@ jobs:
           git add .
           git commit -m "Build Documentation"
           git push origin main
-      - uses: actions/checkout@v2
 
   DeployDocumentation:
     needs: ExtractDocumentation
