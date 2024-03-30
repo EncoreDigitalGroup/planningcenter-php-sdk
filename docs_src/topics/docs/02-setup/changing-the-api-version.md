@@ -12,16 +12,16 @@ SDK better. They are listed below:
 
 To change the API Version that the SDK will use, use the following methods:
 ```php
-$PlanningCenterClientConfiguration->setCalendarApiVersion('2021-07-20');
-$PlanningCenterClientConfiguration->setGroupsApiVersion('2023-07-10');
-$PlanningCenterClientConfiguration->setPeopleApiVersion('2023-02-15');
+$clientConfig->setCalendarApiVersion('2021-07-20');
+$clientConfig->setGroupsApiVersion('2023-07-10');
+$clientConfig->setPeopleApiVersion('2023-02-15');
 ```
 
 These methods are only required if you wish to change the version of the Planning Center API your application uses.
 To revert the default, simply don't pass a value into any one of these methods.
 
 ```php
-$PlanningCenterClientConfiguration->setCalendarApiVersion();
-$PlanningCenterClientConfiguration->setGroupsApiVersion();
-$PlanningCenterClientConfiguration->setPeopleApiVersion();
+$clientConfig->setCalendarApiVersion();
+$clientConfig->setGroupsApiVersion();
+$clientConfig->setPeopleApiVersion();
 ```

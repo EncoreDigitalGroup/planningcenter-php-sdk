@@ -9,19 +9,19 @@ use EncoreDigitalGroup\PlanningCenter\ClientConfiguration;
 
 The first thing we need to do is to create an instance of `ClientConfiguration`.
 ```php
-$PlanningCenterClientConfiguration = new ClientConfiguration();
+$clientConfig = new ClientConfiguration();
 ```
 
 To authenticate to the Planning Center API, you need to configure the client with an access token.
 ```PHP
-$PlanningCenterClientConfiguration->setAuthorizationType('Basic');
-$PlanningCenterClientConfiguration->setAuthorizationToken('PCO_APPLICATION_ID:PCO_APPLICATION_SECRET');
+$clientConfig->setAuthorizationType('Basic');
+$clientConfig->setAuthorizationToken('PCO_APPLICATION_ID:PCO_APPLICATION_SECRET');
 ```
 Currently, the client only supports Basic Authentication, but OAuth Authentication is on the roadmap. Once released, this documentation will reflect that.
 
 Now we can create the PlanningCenterClient like so:
 ```php
-$PlanningCenterClient = new PlanningCenterClient($PlanningCenterClientConfiguration);
+$client = new PlanningCenterClient($clientConfig);
 ```
 
 <note>
