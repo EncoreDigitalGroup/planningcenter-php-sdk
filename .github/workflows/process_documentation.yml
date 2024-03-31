@@ -1,7 +1,11 @@
 name: ProcessDocumentation
 on:
   workflow_dispatch:
-  workflow_call:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
 
 jobs:
   ExtractDocumentation:
@@ -27,6 +31,6 @@ jobs:
     name: DeployDocumentation
     uses: EncoreDigitalGroup/.github/.github/workflows/deploy-github-pages.yml@main
     permissions:
-      contents: read
+      contents: write
       pages: write
       id-token: write
