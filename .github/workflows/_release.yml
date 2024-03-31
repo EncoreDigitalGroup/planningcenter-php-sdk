@@ -11,11 +11,12 @@ jobs:
   CreateRelease:
     name: Create Release
     uses: EncoreDigitalGroup/.github/.github/workflows/create-release.yml@main
-    with:
+    secrets:
       token: ${{ secrets.GITHUB_TOKEN }}
+    with:
       generate_release_notes: true
       is_draft: false
       pre_release: false
-  BuildsDocs:
-    name: Build Documentation
+  ProcessDocumenation:
+    name: ProcessDocumentation
     uses: ./.github/workflows/process_documentation.yml

@@ -22,10 +22,10 @@
             <toc-element topic="calendar-events.md"/>
             <toc-element topic="calendar-tag-groups.md"/>
         </toc-element>
-        <toc-element toc-title="Groups (Coming Soon)">
+        <toc-element toc-title="Groups (Finalizing Docs)">
             <toc-element topic="groups-home.md"/>
         </toc-element>
-        <toc-element toc-title="People (Documentation Being Written Right Now!)">
+        <toc-element toc-title="People (Finalizing Docs)">
             <toc-element topic="people-home.md"/>
             <toc-element topic="people-person.md"/>
         </toc-element>

@@ -25,9 +25,10 @@
     ],
     "minimum-stability": "stable",
     "require": {
+        "php": "^8.2.0",
         "guzzlehttp/guzzle": "^7.7",
-        "php": "^8.1",
-        "jms/serializer": "^3.28"
+        "jms/serializer": "^3.28",
+        "encoredigitalgroup/foundation": "^1.1"
     },
     "require-dev": {
         "phpstan/phpstan": "^1.10",
