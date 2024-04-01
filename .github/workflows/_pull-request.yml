@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   Duster:
-    name: Dust
+    name: Duster
     uses: EncoreDigitalGroup/.github/.github/workflows/duster-fix-blame.yml@main
     permissions:
       contents: write

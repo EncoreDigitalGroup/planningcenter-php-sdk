@@ -9,7 +9,7 @@ on:
 
 jobs:
   CreateRelease:
-    name: Create Release
+    name: CreateRelease
     uses: EncoreDigitalGroup/.github/.github/workflows/create-pre-release.yml@main
     with:
       token: ${{ secrets.GITHUB_TOKEN }}
