@@ -1,4 +1,8 @@
 <?php
+/*
+ * Encore Digital Group - Planning Center PHP SDK
+ * Copyright (c) 2024. Encore Digital Group
+ */
 
 declare(strict_types=1);
 
