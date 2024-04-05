@@ -18,6 +18,6 @@ enum PlanningCenterWebhookEvent: string
 
     public function toString(): string
     {
-        return (string)$this->value;
+        return (string) $this->value;
     }
 }
