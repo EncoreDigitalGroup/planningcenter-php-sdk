@@ -14,17 +14,21 @@ jobs:
       contents: write
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: ExtractDocumentation
         run: |
           rm -rf ./docs
           unzip webHelpIN2-all.zip -d ./docs
           echo "pco.oss.encoredigitalgroup.com" > ./docs/CNAME
-          git config --local user.email "github-actions@users.noreply.github.com"
-          git config --local user.name "github-actions"
-          git add .
-          git commit -m "Build Documentation"
-          git push origin main
+
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          branch: main
+          commit_message: 'Process Documentation'
+          commit_user_name: EncoreBot
+          commit_user_email: ghbot@encoredigitalgroup.com
+
+      - uses: actions/checkout@v4
 
   DeployDocumentation:
     needs: ExtractDocumentation
