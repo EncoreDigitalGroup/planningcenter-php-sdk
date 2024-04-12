@@ -6,7 +6,9 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects;
 
-class PageContainer
+use EncoreDigitalGroup\SdkClientFoundation\SdkObjects\PageContainer as BasePageContainer;
+
+class PageContainer extends BasePageContainer
 {
     public ?int $next;
     public ?int $previous;
