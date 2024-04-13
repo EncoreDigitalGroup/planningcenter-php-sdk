@@ -34,8 +34,6 @@ class ClientResponse extends BaseClientResponse
         $this->sdk->outcome->rateLimited = $rateLimited ?? false;
         $this->sdk->outcome->http->statusCode = $httpStatusCode ?? null;
         $this->sdk->outcome->http->message = $httpMessage ?? null;
-        /** @deprecated use http->service instead */
-        $this->sdk->outcome->http->pco = $responseBody;
         $this->sdk->outcome->http->service = $responseBody;
         $this->sdk->outcome->http->attempts = $this->attempts ?? 1;
 
