@@ -6,11 +6,14 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects;
 
-class OutcomeContainer
+use EncoreDigitalGroup\SdkClientFoundation\SdkObjects\HttpContainer as BaseHttpContainer;
+use EncoreDigitalGroup\SdkClientFoundation\SdkObjects\OutcomeContainer as BaseOutcomeContainer;
+
+class OutcomeContainer extends BaseOutcomeContainer
 {
     public bool $success;
     public bool $rateLimited;
-    public HttpContainer $http;
+    public BaseHttpContainer $http;
 
     public function __construct()
     {

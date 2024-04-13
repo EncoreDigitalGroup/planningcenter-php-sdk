@@ -6,10 +6,8 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects;
 
-class HttpContainer
+use EncoreDigitalGroup\SdkClientFoundation\SdkObjects\HttpContainer as BaseHttpContainer;
+
+class HttpContainer extends BaseHttpContainer
 {
-    public ?int $statusCode;
-    public string $message;
-    public string $pco;
-    public int $attempts;
 }

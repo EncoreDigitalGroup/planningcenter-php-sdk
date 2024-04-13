@@ -16,7 +16,7 @@ class Email
 {
     use HasPlanningCenterClient;
 
-    public ?string $personId;
+    public string|int|null $personId;
     public ?string $emailAddressId;
     public string $address;
     public string $location;
