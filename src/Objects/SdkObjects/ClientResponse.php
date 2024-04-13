@@ -7,8 +7,8 @@
 namespace EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects;
 
 use EncoreDigitalGroup\SdkClientFoundation\HttpStatusCode;
-use EncoreDigitalGroup\SdkClientFoundation\SdkObjects\SdkContainer as BaseSdkContainer;
 use EncoreDigitalGroup\SdkClientFoundation\SdkObjects\ClientResponse as BaseClientResponse;
+use EncoreDigitalGroup\SdkClientFoundation\SdkObjects\SdkContainer as BaseSdkContainer;
 
 class ClientResponse extends BaseClientResponse
 {

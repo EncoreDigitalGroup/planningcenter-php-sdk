@@ -6,9 +6,9 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects;
 
-use EncoreDigitalGroup\SdkClientFoundation\SdkObjects\SdkContainer as BaseSdkContainer;
 use EncoreDigitalGroup\SdkClientFoundation\SdkObjects\OutcomeContainer as BaseOutcomeContainer;
 use EncoreDigitalGroup\SdkClientFoundation\SdkObjects\PageContainer as BasePageContainer;
+use EncoreDigitalGroup\SdkClientFoundation\SdkObjects\SdkContainer as BaseSdkContainer;
 
 class SdkContainer extends BaseSdkContainer
 {

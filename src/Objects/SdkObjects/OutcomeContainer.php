@@ -6,8 +6,8 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects;
 
-use EncoreDigitalGroup\SdkClientFoundation\SdkObjects\OutcomeContainer as BaseOutcomeContainer;
 use EncoreDigitalGroup\SdkClientFoundation\SdkObjects\HttpContainer as BaseHttpContainer;
+use EncoreDigitalGroup\SdkClientFoundation\SdkObjects\OutcomeContainer as BaseOutcomeContainer;
 
 class OutcomeContainer extends BaseOutcomeContainer
 {
