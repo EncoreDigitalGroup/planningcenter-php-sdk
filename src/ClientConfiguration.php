@@ -7,7 +7,9 @@
 
 namespace EncoreDigitalGroup\PlanningCenter;
 
-class ClientConfiguration
+use EncoreDigitalGroup\SdkClientFoundation\ClientConfiguration as BaseClientConfiguration;
+
+class ClientConfiguration extends BaseClientConfiguration
 {
     const CALENDAR_API_VERSION = '2021-07-20';
     const GROUPS_API_VERSION = '2023-07-10';
