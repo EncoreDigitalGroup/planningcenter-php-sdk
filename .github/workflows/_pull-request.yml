@@ -14,10 +14,14 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
+
   StaticAnalysis:
     needs: Duster
-    name: "Run Larastan"
+    name: StaticAnalysis
     uses: EncoreDigitalGroup/.github/.github/workflows/larastan.yml@main
+    with:
+      path: 'src/'
+
   AutoMerge:
     needs: StaticAnalysis
     name: AutoMerge
