@@ -10,8 +10,4 @@ use EncoreDigitalGroup\SdkClientFoundation\SdkObjects\HttpContainer as BaseHttpC
 
 class HttpContainer extends BaseHttpContainer
 {
-    public ?int $statusCode;
-    public string $message;
-    public string $pco;
-    public int $attempts;
 }
