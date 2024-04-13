@@ -6,10 +6,14 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects;
 
-class SdkContainer
+use EncoreDigitalGroup\SdkClientFoundation\SdkObjects\SdkContainer as BaseSdkContainer;
+use EncoreDigitalGroup\SdkClientFoundation\SdkObjects\OutcomeContainer as BaseOutcomeContainer;
+use EncoreDigitalGroup\SdkClientFoundation\SdkObjects\PageContainer as BasePageContainer;
+
+class SdkContainer extends BaseSdkContainer
 {
-    public OutcomeContainer $outcome;
-    public PageContainer $page;
+    public BaseOutcomeContainer $outcome;
+    public BasePageContainer $page;
 
     public function __construct()
     {
