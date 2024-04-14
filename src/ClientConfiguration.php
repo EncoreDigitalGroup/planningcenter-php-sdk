@@ -24,6 +24,8 @@ class ClientConfiguration extends BaseClientConfiguration
 
     public function __construct()
     {
+        $this->setBaseUri('https://api.planningcenteronline.com');
+
         $this->calendar = [
             'apiVersion' => $this->getCalenderApiVersion(),
         ];
