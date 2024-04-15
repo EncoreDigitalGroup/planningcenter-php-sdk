@@ -13,37 +13,9 @@ permissions:
   id-token: write
 
 jobs:
-  ExtractDocumentation:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-
-    steps:
-      - uses: actions/checkout@v2
-      - name: ExtractDocumentation
-        run: |
-          rm -rf ./docs
-          unzip webHelpIN2-all.zip -d ./docs
-          echo "pco.oss.encoredigitalgroup.com" > ./docs/CNAME
-          git config --local user.email "github-actions@users.noreply.github.com"
-          git config --local user.name "github-actions"
-          git add .
-          git commit -m "Build Documentation"
-          git push origin main
-
-  DeployDocumentation:
-    needs: ExtractDocumentation
-    name: DeployDocumentation
-    uses: EncoreDigitalGroup/.github/.github/workflows/deploy-github-pages.yml@main
-    permissions:
-      contents: write
-      pages: write
-      id-token: write
-
   CreateRelease:
-    needs: DeployDocumentation
     name: CreateRelease
-    uses: EncoreDigitalGroup/.github/.github/workflows/create-release.yml@main
+    uses: EncoreDigitalGroup/.github/.github/workflows/createRelease.yml@main
     secrets:
       token: ${{ secrets.GITHUB_TOKEN }}
     with:
