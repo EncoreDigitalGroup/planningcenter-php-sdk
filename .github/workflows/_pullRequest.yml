@@ -10,7 +10,7 @@ permissions:
 jobs:
   Duster:
     name: Duster
-    uses: EncoreDigitalGroup/.github/.github/workflows/duster-fix-blame.yml@main
+    uses: EncoreDigitalGroup/.github/.github/workflows/dusterFixBlame.yml@v1
     permissions:
       contents: write
       pull-requests: write
@@ -18,11 +18,11 @@ jobs:
   StaticAnalysis:
     needs: Duster
     name: StaticAnalysis
-    uses: EncoreDigitalGroup/.github/.github/workflows/larastan.yml@main
+    uses: EncoreDigitalGroup/.github/.github/workflows/larastan.yml@v1
     with:
       path: 'src/'
 
   AutoMerge:
     needs: StaticAnalysis
     name: AutoMerge
-    uses: EncoreDigitalGroup/.github/.github/workflows/dependabot-auto-merge.yml@main
+    uses: EncoreDigitalGroup/.github/.github/workflows/dependabotAutoMerge.yml@v1

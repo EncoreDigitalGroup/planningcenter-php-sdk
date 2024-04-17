@@ -11,7 +11,7 @@ permissions:
 jobs:
   GitHubPages:
     name: GitHubPages
-    uses: EncoreDigitalGroup/.github/.github/workflows/deploy-github-pages.yml@main
+    uses: EncoreDigitalGroup/.github/.github/workflows/deplotGitHubPages.yml@v1
     permissions:
       contents: write
       pages: write

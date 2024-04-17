@@ -10,7 +10,7 @@ on:
 jobs:
   CreateRelease:
     name: CreateRelease
-    uses: EncoreDigitalGroup/.github/.github/workflows/create-pre-release.yml@main
+    uses: EncoreDigitalGroup/.github/.github/workflows/createPreRelease.yml@v1
     with:
       token: ${{ secrets.GITHUB_TOKEN }}
       generate_release_notes: true

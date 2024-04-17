@@ -33,7 +33,7 @@ jobs:
   DeployDocumentation:
     needs: ExtractDocumentation
     name: DeployDocumentation
-    uses: EncoreDigitalGroup/.github/.github/workflows/deployGitHubPages.yml@latest
+    uses: EncoreDigitalGroup/.github/.github/workflows/deployGitHubPages.yml@v1
     permissions:
       contents: write
       pages: write
