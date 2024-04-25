@@ -13,7 +13,7 @@ use EncoreDigitalGroup\SdkClientFoundation\SdkObjects\SdkContainer as BaseSdkCon
 class ClientResponse extends BaseClientResponse
 {
     public BaseSdkContainer $sdk;
-    public object $pco;
+    public ?object $pco = null;
 
     public function __construct(mixed $clientResponse)
     {
