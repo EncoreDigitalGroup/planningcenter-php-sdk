@@ -10,6 +10,6 @@ use EncoreDigitalGroup\SdkClientFoundation\SdkObjects\PageContainer as BasePageC
 
 class PageContainer extends BasePageContainer
 {
-    public ?int $next;
-    public ?int $previous;
+    public ?int $next = null;
+    public ?int $previous = null;
 }
