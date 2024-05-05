@@ -10,7 +10,7 @@ jobs:
   DirectorySync:
     uses: EncoreDigitalGroup/.github/.github/workflows/directorySync.yml@v1
     with:
-      source: 'docsSrc/'
+      source: 'docSrc/'
       targetRepo: 'encoredigitalgroup/docs.encoredigitalgroup.com'
       targetDirectory: 'docs/code/php/packages/planningcenter-php-sdk'
     secrets:
