@@ -14,5 +14,4 @@ class NonIdealResponseEncounteredException extends Exception
     {
         parent::__construct('Non-Ideal Planning Center Response Encountered');
     }
-
 }
