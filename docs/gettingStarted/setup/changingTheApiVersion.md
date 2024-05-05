@@ -4,13 +4,12 @@ The PlanningCenterClient allows you to change the Planning Center API Version. P
 setting the default API version that your application will use. We have defined default API versions to support this
 SDK better. They are listed below:
 
-<list>
-<li>PCO Calendar: 2021-07-20</li>
-<li>PCO Groups: 2023-07-10</li>
-<li>PCO People: 2023-02-15</li>
-</list>
+- PCO Calendar: 2021-07-20
+- PCO Groups: 2023-07-10
+- PCO People: 2023-02-15
 
 To change the API Version that the SDK will use, use the following methods:
+
 ```php
 $clientConfig->setCalendarApiVersion('2021-07-20');
 $clientConfig->setGroupsApiVersion('2023-07-10');
