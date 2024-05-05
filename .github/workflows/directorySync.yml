@@ -1,0 +1,17 @@
+name: DirectorySync
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  DirectorySync:
+    uses: EncoreDigitalGroup/.github/.github/workflows/directorySync.yml@v1
+    with:
+      source: 'docsSrc/'
+      targetRepo: 'encoredigitalgroup/docs.encoredigitalgroup.com'
+      targetDirectory: 'docs/code/php/packages/planningcenter-php-sdk'
+    secrets:
+      token: ${{ secrets.GH_GENERAL_ACCESS_TOKEN }}
