@@ -14,6 +14,6 @@ jobs:
     with:
       source: 'docs/'
       targetRepo: 'encoredigitalgroup/docs.encoredigitalgroup.com'
-      targetDirectory: 'docs/Code/PHP/Packages/PlanningCenter-PHP-SDK'
+      targetDirectory: 'documentationImport/PlanningCenter-PHP-SDK'
     secrets:
       token: ${{ secrets.GH_GENERAL_ACCESS_TOKEN }}
