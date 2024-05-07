@@ -21,6 +21,7 @@ jobs:
     uses: EncoreDigitalGroup/.github/.github/workflows/larastan.yml@v1
     with:
       path: 'src/'
+      branch: ${{ github.head_ref }}
 
   AutoMerge:
     needs: StaticAnalysis
