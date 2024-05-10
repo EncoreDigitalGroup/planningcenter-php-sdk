@@ -1,4 +1,4 @@
 # PlanningCenter-PHP-SDK
 
-- [Documentation](http://docs.encoredigitalgroup.com/code/php/packages/planningcenter-php-sdk/docs/)
+- [Documentation](https://docs.encoredigitalgroup.com/Packages/PlanningCenter-PHP-SDK/)
 - [Roadmap](https://github.com/orgs/EncoreDigitalGroup/projects/2)
