@@ -10,6 +10,7 @@ use DateTime;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 use GuzzleHttp\Psr7\Request;
+use Illuminate\Support\Carbon;
 use stdClass;
 
 class Email
@@ -21,8 +22,8 @@ class Email
     public string $address;
     public string $location;
     public bool $primary;
-    public DateTime $created_at;
-    public DateTime $updated_at;
+    public DateTime|Carbon $created_at;
+    public DateTime|Carbon $updated_at;
     public mixed $blocked;
 
     private static function prepareDataObject(self $email): stdClass

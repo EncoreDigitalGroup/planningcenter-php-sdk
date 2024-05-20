@@ -10,6 +10,7 @@ use DateTime;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 use GuzzleHttp\Psr7\Request;
+use Illuminate\Support\Carbon;
 use stdClass;
 
 class Person
@@ -22,8 +23,8 @@ class Person
     public string $nickname;
     public ?string $middle_name;
     public string $last_name;
-    public DateTime $birthdate;
-    public DateTime $anniversary;
+    public DateTime|Carbon $birthdate;
+    public DateTime|Carbon $anniversary;
     public string $gender;
     public int $grade;
     public bool $child;
@@ -32,11 +33,11 @@ class Person
     public bool $accounting_administrator;
     public string $people_permissions;
     public string $membership;
-    public DateTime $inactivated_at;
+    public DateTime|Carbon $inactivated_at;
     public string $medical_notes;
     public bool $mfa_configured;
-    public DateTime $created_at;
-    public DateTime $updated_at;
+    public DateTime|Carbon $created_at;
+    public DateTime|Carbon $updated_at;
     public string $avatar;
     public string $name;
     public string $demographic_avatar_url;
