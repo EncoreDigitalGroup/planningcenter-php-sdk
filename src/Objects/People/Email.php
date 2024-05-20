@@ -19,11 +19,11 @@ class Email
 
     public string|int|null $personId;
     public ?string $emailAddressId;
-    public string $address;
-    public string $location;
-    public bool $primary;
-    public DateTime|Carbon $created_at;
-    public DateTime|Carbon $updated_at;
+    public ?string $address;
+    public ?string $location;
+    public ?bool $primary;
+    public DateTime|Carbon|null $created_at;
+    public DateTime|Carbon|null $updated_at;
     public mixed $blocked;
 
     private static function prepareDataObject(self $email): stdClass
