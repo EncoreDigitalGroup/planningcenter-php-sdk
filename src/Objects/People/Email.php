@@ -41,7 +41,7 @@ class Email
     {
         $headers = $this->buildHeaders();
 
-        $request = new Request('GET', 'people/v2/people/' . $this->personId . '/emails', $headers, json_not_null($this));
+        $request = new Request('GET', 'people/v2/people/' . $this->personId . '/emails', $headers);
 
         return $this->client->send($request);
     }
