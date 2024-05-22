@@ -8,7 +8,7 @@ namespace EncoreDigitalGroup\PlanningCenter;
 
 enum PlanningCenterWebhookEvent: string
 {
-    case PEOPLE_PERSON_UPDATED = 'people.v2.events.person.updates';
+    case PEOPLE_PERSON_UPDATED = 'people.v2.events.person.updated';
     case GROUPS_GROUP_CREATED = 'groups.v2.events.group.created';
     case GROUPS_GROUP_UPDATED = 'groups.v2.events.group.updated';
     case GROUPS_GROUP_DESTROYED = 'groups.v2.events.group.destroyed';
