@@ -34,7 +34,7 @@
     "require-dev": {
         "phpstan/phpstan": "^1.10",
         "rector/rector": "^1.0",
-        "tightenco/duster": "^2.3"
+        "tightenco/duster": "^2.3 || ^3.0"
     },
     "scripts": {
         "analize": "vendor/bin/phpstan analyse"
