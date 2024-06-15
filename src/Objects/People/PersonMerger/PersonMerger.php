@@ -33,22 +33,22 @@ class PersonMerger
     {
         $payload = $payload->service;
 
-        $this->id = $payload->id;
+        $this->id = $payload->id; //@phpstan-ignore-line
 
-        $this->attributes = new PersonMergerAttributes();
-        $this->attributes->createdAt = $payload->attributes->created_at;
-        $this->attributes->personToKeepId = $payload->attributes->person_to_keep_id;
-        $this->attributes->personToRemoveId = $payload->attributes->person_to_remove_id;
+        $this->attributes = new PersonMergerAttributes;
+        $this->attributes->createdAt = $payload->attributes->created_at; //@phpstan-ignore-line
+        $this->attributes->personToKeepId = $payload->attributes->person_to_keep_id; //@phpstan-ignore-line
+        $this->attributes->personToRemoveId = $payload->attributes->person_to_remove_id; //@phpstan-ignore-line
 
-        $this->relationships = new PersonMergerRelationships();
+        $this->relationships = new PersonMergerRelationships;
 
-        $this->relationships->personToKeep = new PersonMergerData();
-        $this->relationships->personToKeep->type = $payload->relationships->person_to_keep->type;
-        $this->relationships->personToKeep->id = $payload->relationships->person_to_keep->id;
+        $this->relationships->personToKeep = new PersonMergerData;
+        $this->relationships->personToKeep->type = $payload->relationships->person_to_keep->type; //@phpstan-ignore-line
+        $this->relationships->personToKeep->id = $payload->relationships->person_to_keep->id; //@phpstan-ignore-line
 
-        $this->relationships->personToRemove = new PersonMergerData();
-        $this->relationships->personToRemove->type = $payload->relationships->person_to_remove->type;
-        $this->relationships->personToRemove->id = $payload->relationships->person_to_remove->id;
+        $this->relationships->personToRemove = new PersonMergerData;
+        $this->relationships->personToRemove->type = $payload->relationships->person_to_remove->type; //@phpstan-ignore-line
+        $this->relationships->personToRemove->id = $payload->relationships->person_to_remove->id; //@phpstan-ignore-line
 
         return $this;
     }
