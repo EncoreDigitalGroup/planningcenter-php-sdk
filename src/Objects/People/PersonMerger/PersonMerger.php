@@ -22,7 +22,7 @@ class PersonMerger
     {
         $headers = $this->buildHeaders();
 
-        $request = new Request('GET', 'people/v2/people/' . $this->id, $headers);
+        $request = new Request('GET', 'people/v2/person_mergers/' . $this->id, $headers);
 
         $response = $this->client->send($request);
 
