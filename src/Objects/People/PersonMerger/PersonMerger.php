@@ -32,7 +32,7 @@ class PersonMerger
     protected function map(ClientResponse $payload): static
     {
         $this->clientResponse = $payload;
-        $payload = $payload->service;
+        $payload = $payload->pco->data; //@phpstan-ignore-line
 
         $this->id = $payload->id; //@phpstan-ignore-line
 
@@ -44,12 +44,12 @@ class PersonMerger
         $this->relationships = new PersonMergerRelationships;
 
         $this->relationships->personToKeep = new PersonMergerData;
-        $this->relationships->personToKeep->type = $payload->relationships->person_to_keep->type; //@phpstan-ignore-line
-        $this->relationships->personToKeep->id = $payload->relationships->person_to_keep->id; //@phpstan-ignore-line
+        $this->relationships->personToKeep->type = $payload->relationships->person_to_keep->data->type; //@phpstan-ignore-line
+        $this->relationships->personToKeep->id = $payload->relationships->person_to_keep->data->id; //@phpstan-ignore-line
 
         $this->relationships->personToRemove = new PersonMergerData;
-        $this->relationships->personToRemove->type = $payload->relationships->person_to_remove->type; //@phpstan-ignore-line
-        $this->relationships->personToRemove->id = $payload->relationships->person_to_remove->id; //@phpstan-ignore-line
+        $this->relationships->personToRemove->type = $payload->relationships->person_to_remove->data->type; //@phpstan-ignore-line
+        $this->relationships->personToRemove->id = $payload->relationships->person_to_remove->data->id; //@phpstan-ignore-line
 
         return $this;
     }
