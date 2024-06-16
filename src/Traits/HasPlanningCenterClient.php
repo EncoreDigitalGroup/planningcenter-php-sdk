@@ -6,15 +6,23 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Traits;
 
+use EncoreDigitalGroup\SdkClientFoundation\SdkObjects\ClientResponse;
+
 trait HasPlanningCenterClient
 {
     protected mixed $config;
     protected mixed $client;
+    protected ClientResponse $clientResponse;
 
     public function __construct(mixed $client)
     {
         $this->config = $client->getConfiguration();
         $this->client = $client;
+    }
+
+    public function getClientResponse(): ClientResponse
+    {
+        return $this->clientResponse;
     }
 
     private function buildHeaders(): array

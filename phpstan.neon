@@ -3,10 +3,10 @@ parameters:
     paths:
         - src
     reportUnmatchedIgnoredErrors: false
-    checkMissingIterableValueType: false
-    checkGenericClassInNonGenericObjectType: false
     checkDynamicProperties: false
     checkTooWideReturnTypesInProtectedAndPublicMethods: false
     ignoreErrors:
+        - identifier: missingType.generics
+        - identifier: missingType.iterableValue
         - '#PHPDoc tag .+ #'
 #    excludePaths:
