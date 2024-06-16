@@ -31,6 +31,7 @@ class PersonMerger
 
     protected function map(ClientResponse $payload): static
     {
+        $this->clientResponse = $payload;
         $payload = $payload->service;
 
         $this->id = $payload->id; //@phpstan-ignore-line
