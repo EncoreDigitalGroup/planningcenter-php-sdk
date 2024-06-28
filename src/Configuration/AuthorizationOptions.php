@@ -9,7 +9,8 @@ namespace EncoreDigitalGroup\PlanningCenter\Configuration;
 class AuthorizationOptions
 {
     protected string $type;
-    protected string $token;
+    protected string $clientId;
+    protected string $clientSecret;
 
     public function setType(string $type): static
     {
@@ -23,15 +24,27 @@ class AuthorizationOptions
         return $this->type;
     }
 
-    public function setToken(string $token): static
+    public function setClientId(string $clientId): static
     {
-        $this->token = $token;
+        $this->clientId = $clientId;
 
         return $this;
     }
 
-    public function getToken(): string
+    public function getClientId(): string
     {
-        return $this->token;
+        return $this->clientId;
+    }
+
+    public function setClientSecret(string $clientSecret): static
+    {
+        $this->clientSecret = $clientSecret;
+
+        return $this;
+    }
+
+    public function getClientSecret(): string
+    {
+        return $this->clientSecret;
     }
 }

@@ -6,6 +6,9 @@
 
 namespace EncoreDigitalGroup\PlanningCenter;
 
+use EncoreDigitalGroup\PlanningCenter\Configuration\ClientConfiguration;
+use PHPGenesis\Common\Container\PhpGenesisContainer;
+use PHPGenesis\Http\HttpClient;
 use PHPGenesis\Http\HttpClientBuilder;
 
 class PlanningCenterClient
@@ -14,6 +17,12 @@ class PlanningCenterClient
 
     public function __construct()
     {
+        PhpGenesisContainer::getInstance()->singleton(ClientConfiguration::class, function () {
+            return new Configuration\ClientConfiguration;
+        });
+
         $this->builder = new HttpClientBuilder;
+
+        HttpClient::baseUrl('https://api.planningcenteronline.com');
     }
 }

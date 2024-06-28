@@ -6,12 +6,18 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Objects\People;
 
+use EncoreDigitalGroup\PlanningCenter\Configuration\AuthorizationOptions;
+use EncoreDigitalGroup\PlanningCenter\Configuration\ClientConfiguration;
 use EncoreDigitalGroup\PlanningCenter\Objects\People\Attributes\PersonAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\PlanningCenterClient;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Arr;
+use PHPGenesis\Common\Container\PhpGenesisContainer;
 use PHPGenesis\Http\HttpClient;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use stdClass;
 
 class Person
@@ -20,16 +26,19 @@ class Person
 
     public int|string|null $id;
     public PersonAttributes $attributes;
+    protected AuthorizationOptions $auth;
 
     public function __construct(?PlanningCenterClient $client = null)
     {
         $this->client = $client ?? new PlanningCenterClient;
         $this->attributes = new PersonAttributes;
+        $this->auth = PhpGenesisContainer::getInstance()->get(ClientConfiguration::class)->authorization();
     }
+
 
     public function all(?array $query = null): ClientResponse
     {
-        $http = HttpClient::baseUrl($this->baseUrl)
+        $http = HttpClient::withBasicAuth($this->auth->getClientId(), $this->auth->getClientSecret())
             ->get('people/v2/people', $query);
 
         $response = new ClientResponse($http);
@@ -46,7 +55,7 @@ class Person
 
     public function get(?array $query = null): ClientResponse
     {
-        $http = HttpClient::baseUrl($this->baseUrl)
+        $http = HttpClient::withBasicAuth($this->auth->getClientId(), $this->auth->getClientSecret())
             ->get('people/v2/people/' . $this->id, $query);
 
         $response = new ClientResponse($http);
@@ -58,7 +67,7 @@ class Person
 
     public function create(): ClientResponse
     {
-        $http = HttpClient::baseUrl($this->baseUrl)
+        $http = HttpClient::withBasicAuth($this->auth->getClientId(), $this->auth->getClientSecret())
             ->post('people/v2/people', $this->mapToPco());
 
         $response = new ClientResponse($http);
@@ -70,7 +79,8 @@ class Person
 
     public function update(): ClientResponse
     {
-        $http = HttpClient::patch('people/v2/people/' . $this->id, $this->mapToPco());
+        $http = HttpClient::withBasicAuth($this->auth->getClientId(), $this->auth->getClientSecret())
+            ->patch('people/v2/people/' . $this->id, $this->mapToPco());
 
         $response = new ClientResponse($http);
         $this->mapFromPco($http->json('data'));
@@ -81,7 +91,8 @@ class Person
 
     public function delete(): ClientResponse
     {
-        $http = HttpClient::delete('people/v2/people/' . $this->id);
+        $http = HttpClient::withBasicAuth($this->auth->getClientId(), $this->auth->getClientSecret())
+            ->delete('people/v2/people/' . $this->id);
 
         $response = new ClientResponse($http);
         $this->mapFromPco($http->json('data'));
