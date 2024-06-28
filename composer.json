@@ -31,7 +31,6 @@
         "phpgenesis/phpgenesis": "*"
     },
     "require-dev": {
-        "encoredigitalgroup/gauntlet": "^0.1.5",
         "phpstan/phpstan": "^1.10",
         "rector/rector": "^1.0",
         "tightenco/duster": "^3.0"
