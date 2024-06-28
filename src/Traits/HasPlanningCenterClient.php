@@ -13,8 +13,8 @@ trait HasPlanningCenterClient
     protected string $baseUrl = 'https://api.planningcenteronline.com';
     protected PlanningCenterClient $client;
 
-    public function __construct(PlanningCenterClient $client)
+    public function __construct(?PlanningCenterClient $client = null)
     {
-        $this->client = $client;
+        $this->client = $client ?? new PlanningCenterClient();
     }
 }
