@@ -6,42 +6,19 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects;
 
-use EncoreDigitalGroup\SdkClientFoundation\HttpStatusCode;
-use EncoreDigitalGroup\SdkClientFoundation\SdkObjects\ClientResponse as BaseClientResponse;
-use EncoreDigitalGroup\SdkClientFoundation\SdkObjects\SdkContainer as BaseSdkContainer;
+use Illuminate\Http\Client\Response;
 
-class ClientResponse extends BaseClientResponse
+class ClientResponse
 {
-    public BaseSdkContainer $sdk;
-    public ?object $pco = null;
+    public MetaContainer $meta;
+    public array|object|null $data;
 
-    public function __construct(mixed $clientResponse)
+    public function __construct(Response $response)
     {
-        $responseBody = $clientResponse->getBody()->getContents();
-        $httpStatusCode = $clientResponse->getStatusCode();
-        $httpMessage = $clientResponse->getReasonPhrase();
-
-        if ($httpStatusCode >= HttpStatusCode::OK && $httpStatusCode < HttpStatusCode::MULTIPLE_CHOICES) {
-            $success = true;
-        }
-
-        if ($httpStatusCode == HttpStatusCode::TOO_MANY_REQUESTS) {
-            $rateLimited = true;
-        }
-
-        $this->sdk = new SdkContainer;
-        $this->sdk->outcome->success = $success ?? false;
-        $this->sdk->outcome->rateLimited = $rateLimited ?? false;
-        $this->sdk->outcome->http->statusCode = $httpStatusCode ?? null;
-        $this->sdk->outcome->http->message = $httpMessage ?? null;
-        $this->sdk->outcome->http->service = $responseBody;
-        $this->sdk->outcome->http->attempts = $this->attempts ?? 1;
-
-        if ($success ?? false) {
-            $responseBody = json_decode($responseBody);
-            $this->pco = $responseBody;
-            $this->sdk->page->previous = $responseBody->meta->prev->offset ?? null;
-            $this->sdk->page->next = $responseBody->meta->next->offset ?? null;
-        }
+        $this->meta = new MetaContainer();
+        $this->meta->response = $response;
+        $this->meta->success = $this->meta->response->successful();
+        $this->meta->nextPage = $this->meta->response->json('meta.next.offset');
+        $this->meta->previousPage = $this->meta->response->json('meta.prev.offset');
     }
 }
