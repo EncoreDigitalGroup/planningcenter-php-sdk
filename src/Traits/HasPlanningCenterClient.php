@@ -6,30 +6,15 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Traits;
 
-use EncoreDigitalGroup\SdkClientFoundation\SdkObjects\ClientResponse;
+use EncoreDigitalGroup\PlanningCenter\PlanningCenterClient;
 
 trait HasPlanningCenterClient
 {
-    protected mixed $config;
-    protected mixed $client;
-    protected ClientResponse $clientResponse;
+    protected string $baseUrl = 'https://api.planningcenteronline.com';
+    protected PlanningCenterClient $client;
 
-    public function __construct(mixed $client)
+    public function __construct(PlanningCenterClient $client)
     {
-        $this->config = $client->getConfiguration();
         $this->client = $client;
-    }
-
-    public function getClientResponse(): ClientResponse
-    {
-        return $this->clientResponse;
-    }
-
-    private function buildHeaders(): array
-    {
-        return [
-            'Authorization' => $this->config->getAuthorization(),
-            'X-PCO-API-Version' => $this->config->getGroupsApiVersion(),
-        ];
     }
 }

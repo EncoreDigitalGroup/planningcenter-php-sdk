@@ -9,8 +9,8 @@ namespace EncoreDigitalGroup\PlanningCenter\Objects\People;
 use DateTime;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
-use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Carbon;
+use PHPGenesis\Http\HttpClient;
 use stdClass;
 
 class Person
@@ -50,75 +50,61 @@ class Person
     public ?int $primary_campus_id;
     public ?int $remote_id;
 
-    private static function prepareDataObject(self $person): stdClass
+    private static function mapToPco(self $person): stdClass
     {
-        $Person = new stdClass;
-        $Person->data = new stdClass;
-        $Person->data->attributes = new stdClass;
-        $Person->data->attributes->first_name = $person->first_name;
-        $Person->data->attributes->middle_name = $person->middle_name;
-        $Person->data->attributes->last_name = $person->last_name;
-        $Person->data->attributes->birthdate = $person->birthdate;
-        $Person->data->attributes->anniversary = $person->anniversary;
-        $Person->data->attributes->gender = $person->gender;
-        $Person->data->attributes->grade = $person->grade;
-        $Person->data->attributes->child = $person->child;
-        $Person->data->attributes->graduation_year = $person->graduation_year;
-        $Person->data->attributes->membership = $person->membership;
-        $Person->data->attributes->status = $person->status;
+        $pco = new stdClass;
+        $pco->data = new stdClass;
+        $pco->data->attributes = new stdClass;
+        $pco->data->attributes->first_name = $person->first_name;
+        $pco->data->attributes->middle_name = $person->middle_name;
+        $pco->data->attributes->last_name = $person->last_name;
+        $pco->data->attributes->birthdate = $person->birthdate;
+        $pco->data->attributes->anniversary = $person->anniversary;
+        $pco->data->attributes->gender = $person->gender;
+        $pco->data->attributes->grade = $person->grade;
+        $pco->data->attributes->child = $person->child;
+        $pco->data->attributes->graduation_year = $person->graduation_year;
+        $pco->data->attributes->membership = $person->membership;
+        $pco->data->attributes->status = $person->status;
 
-        return $Person;
+        return $pco;
     }
 
-    public function all(array $query = []): ClientResponse
+    public function all(array $query = [])
     {
-        $headers = $this->buildHeaders();
-
-        $query = http_build_query($query);
-
-        $request = new Request('GET', 'people/v2/people?' . $query, $headers);
-
-        return $this->client->send($request);
+        $http = HttpClient::baseUrl($this->baseUrl)
+            ->get('people/v2/people', $query);
     }
 
-    public function get(array $query = []): ClientResponse
+    public function get(array $query = [])
     {
-        $headers = $this->buildHeaders();
-
-        $query = http_build_query($query);
-
-        $request = new Request('GET', 'people/v2/people/' . $this->personId . '?' . $query, $headers);
-
-        return $this->client->send($request);
+        $http = HttpClient::baseUrl($this->baseUrl)
+            ->get('people/v2/people/' . $this->personId, $query);
     }
 
-    public function create(): ClientResponse
+    public function create()
     {
-        $headers = $this->buildHeaders();
-
-        $request = new Request('POST', 'people/v2/people', $headers, json_not_null($this));
-
-        return $this->client->send($request);
+        $http = HttpClient::baseUrl($this->baseUrl)
+            ->post('people/v2/people', [
+                'first_name' => $this->first_name,
+                'middle_name' => $this->middle_name,
+                'last_name' => $this->last_name,
+            ]);
     }
 
-    public function update(): ClientResponse
+    public function update()
     {
-        $headers = $this->buildHeaders();
 
-        $Person = self::prepareDataObject($this);
-
-        $request = new Request('PATCH', 'people/v2/people/' . $this->personId, $headers, json_not_null($Person));
-
-        return $this->client->send($request);
+        $http = HttpClient::patch('people/v2/people/' . $this->personId, [
+            'first_name' => $this->first_name,
+            'middle_name' => $this->middle_name,
+            'last_name' => $this->last_name,
+        ]);
     }
 
-    public function delete(): ClientResponse
+    public function delete()
     {
-        $headers = $this->buildHeaders();
-
-        $request = new Request('DELETE', 'people/v2/people/' . $this->personId, $headers, json_not_null($this));
-
-        return $this->client->send($request);
+        $http = HttpClient::delete('people/v2/people/' . $this->personId);
     }
 
     public function email(): ClientResponse
