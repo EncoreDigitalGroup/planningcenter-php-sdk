@@ -12,12 +12,9 @@ use EncoreDigitalGroup\PlanningCenter\Objects\People\Attributes\PersonAttributes
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\PlanningCenterClient;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
-use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Arr;
 use PHPGenesis\Common\Container\PhpGenesisContainer;
 use PHPGenesis\Http\HttpClient;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
 use stdClass;
 
 class Person

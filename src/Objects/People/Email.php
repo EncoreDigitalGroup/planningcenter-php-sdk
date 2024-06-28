@@ -7,6 +7,8 @@
 namespace EncoreDigitalGroup\PlanningCenter\Objects\People;
 
 use DateTime;
+use EncoreDigitalGroup\PlanningCenter\Configuration\AuthorizationOptions;
+use EncoreDigitalGroup\PlanningCenter\Configuration\ClientConfiguration;
 use EncoreDigitalGroup\PlanningCenter\Objects\People\Attributes\EmailAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\PlanningCenterClient;
@@ -14,6 +16,7 @@ use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
+use PHPGenesis\Common\Container\PhpGenesisContainer;
 use PHPGenesis\Http\HttpClient;
 use stdClass;
 
@@ -23,16 +26,18 @@ class Email
 
     public int|string|null $id;
     public EmailAttributes $attributes;
+    protected AuthorizationOptions $auth;
 
     public function __construct(?PlanningCenterClient $client = null)
     {
         $this->client = $client ?? new PlanningCenterClient;
         $this->attributes = new EmailAttributes;
+        $this->auth = PhpGenesisContainer::getInstance()->get(ClientConfiguration::class)->authorization();
     }
 
     public function get(): ClientResponse
     {
-        $http = HttpClient::baseUrl($this->baseUrl)
+        $http = HttpClient::withBasicAuth($this->auth->getClientId(), $this->auth->getClientSecret())
             ->get('people/v2/emails/' . $this->id);
 
         $response = new ClientResponse($http);
@@ -45,7 +50,7 @@ class Email
 
     public function forPerson(): ClientResponse
     {
-        $http = HttpClient::baseUrl($this->baseUrl)
+        $http = HttpClient::withBasicAuth($this->auth->getClientId(), $this->auth->getClientSecret())
             ->get('people/v2/people/' . $this->attributes->personId . '/emails');
 
         $response = new ClientResponse($http);
@@ -62,7 +67,7 @@ class Email
 
     public function update(): ClientResponse
     {
-        $http = HttpClient::baseUrl($this->baseUrl)
+        $http = HttpClient::withBasicAuth($this->auth->getClientId(), $this->auth->getClientSecret())
             ->patch('people/v2/emails/' . $this->id, $this->mapToPco());
 
         $response = new ClientResponse($http);
