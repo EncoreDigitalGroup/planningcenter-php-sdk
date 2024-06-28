@@ -7,53 +7,90 @@
 namespace EncoreDigitalGroup\PlanningCenter\Objects\People;
 
 use DateTime;
+use EncoreDigitalGroup\PlanningCenter\Objects\People\Attributes\EmailAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
+use EncoreDigitalGroup\PlanningCenter\PlanningCenterClient;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 use GuzzleHttp\Psr7\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
+use PHPGenesis\Http\HttpClient;
 use stdClass;
 
 class Email
 {
     use HasPlanningCenterClient;
 
-    public string|int|null $personId;
-    public ?string $emailAddressId;
-    public ?string $address;
-    public ?string $location;
-    public ?bool $primary;
-    public DateTime|Carbon|null $created_at;
-    public DateTime|Carbon|null $updated_at;
-    public mixed $blocked;
+    public int|string|null $id;
+    public EmailAttributes $attributes;
 
-    private static function prepareDataObject(self $email): stdClass
+    public function __construct(?PlanningCenterClient $client = null)
     {
-        $Email = new stdClass;
-        $Email->data = new stdClass;
-        $Email->data->attributes = new stdClass;
-        $Email->data->attributes->address = $email->address;
-        $Email->data->attributes->primary = $email->primary;
-
-        return $Email;
+        $this->client = $client ?? new PlanningCenterClient;
+        $this->attributes = new EmailAttributes;
     }
 
     public function get(): ClientResponse
     {
-        $headers = $this->buildHeaders();
+        $http = HttpClient::baseUrl($this->baseUrl)
+            ->get('people/v2/emails/' . $this->id);
 
-        $request = new Request('GET', 'people/v2/people/' . $this->personId . '/emails', $headers);
+        $response = new ClientResponse($http);
+        $this->mapFromPco($http->json('data'));
+        $response->data = $this->attributes;
 
-        return $this->client->send($request);
+        return $response;
+
+    }
+
+    public function forPerson(): ClientResponse
+    {
+        $http = HttpClient::baseUrl($this->baseUrl)
+            ->get('people/v2/people/' . $this->attributes->personId . '/emails');
+
+        $response = new ClientResponse($http);
+        $response->data = [];
+
+        foreach ($http->json('data') as $email) {
+            $e = new Email($this->client);
+            $e->mapFromPco($email);
+            $response->data[] = $e;
+        }
+
+        return $response;
     }
 
     public function update(): ClientResponse
     {
-        $headers = $this->buildHeaders();
+        $http = HttpClient::baseUrl($this->baseUrl)
+            ->patch('people/v2/emails/' . $this->id, $this->mapToPco());
 
-        $emailObj = self::prepareDataObject($this);
+        $response = new ClientResponse($http);
+        $this->mapFromPco($http->json('data'));
+        $response->data = $this->attributes;
 
-        $request = new Request('PATCH', 'people/v2/emails/' . $this->emailAddressId, $headers, json_not_null($emailObj));
+        return $response;
+    }
 
-        return $this->client->send($request);
+    private function mapFromPco(stdClass $pco): void
+    {
+        $this->id = $pco->id;
+        $this->attributes->emailAddressId = $pco->id;
+        $this->attributes->address = $pco->attributes->address;
+        $this->attributes->primary = $pco->attributes->primary;
+    }
+
+    private function mapToPco(): array
+    {
+        $email = [
+            'data' => [
+                'attributes' => [
+                    'address' => $this->attributes->address,
+                    'primary' => $this->attributes->primary,
+                ],
+            ],
+        ];
+
+        return Arr::whereNotNull($email);
     }
 }

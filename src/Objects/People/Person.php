@@ -93,9 +93,9 @@ class Person
     public function email(): ClientResponse
     {
         $email = new Email($this->client);
-        $email->personId = $this->id;
+        $email->attributes->personId = $this->id;
 
-        return $email->get();
+        return $email->forPerson();
     }
 
     private function mapFromPco(stdClass $pco): void
@@ -136,44 +136,48 @@ class Person
     private function mapToPco(): array
     {
         $person = [
-            'id' => $this->attributes->personId ?? null,
-            'first_name' => $this->attributes->firstName ?? null,
-            'middle_name' => $this->attributes->middleName ?? null,
-            'last_name' => $this->attributes->lastName ?? null,
-            'birthdate' => $this->attributes->birthdate ?? null,
-            'anniversary' => $this->attributes->anniversary ?? null,
-            'gender' => $this->attributes->gender ?? null,
-            'grade' => $this->attributes->grade ?? null,
-            'child' => $this->attributes->child ?? null,
-            'graduation_year' => $this->attributes->graduationYear ?? null,
-            'site_administrator' => $this->attributes->siteAdministrator ?? null,
-            'accounting_administrator' => $this->attributes->accountingAdministrator ?? null,
-            'people_permissions' => $this->attributes->peoplePermissions ?? null,
-            'membership' => $this->attributes->membership ?? null,
-            'inactivated_at' => $this->attributes->inactivatedAt ?? null,
-            'medical_notes' => $this->attributes->medicalNotes ?? null,
-            'mfa_configured' => $this->attributes->mfaConfigured ?? null,
-            'created_at' => $this->attributes->createdAt ?? null,
-            'updated_at' => $this->attributes->updatedAt ?? null,
-            'avatar' => $this->attributes->avatar ?? null,
-            'name' => $this->attributes->name ?? null,
-            'demographic_avatar_url' => $this->attributes->demographicAvatarUrl ?? null,
-            'directory_status' => $this->attributes->directoryStatus ?? null,
-            'passed_background_check' => $this->attributes->passedBackgroundCheck ?? null,
-            'can_create_forms' => $this->attributes->canCreateForms ?? null,
-            'can_email_lists' => $this->attributes->canEmailLists ?? null,
-            'school_type' => $this->attributes->schoolType ?? null,
-            'status' => $this->attributes->status ?? null,
-            'primary_campus_id' => $this->attributes->primaryCampusId ?? null,
-            'remote_id' => $this->attributes->remoteId ?? null,
+            'data' => [
+                'attributes' => [
+                    'id' => $this->attributes->personId ?? null,
+                    'first_name' => $this->attributes->firstName ?? null,
+                    'middle_name' => $this->attributes->middleName ?? null,
+                    'last_name' => $this->attributes->lastName ?? null,
+                    'birthdate' => $this->attributes->birthdate ?? null,
+                    'anniversary' => $this->attributes->anniversary ?? null,
+                    'gender' => $this->attributes->gender ?? null,
+                    'grade' => $this->attributes->grade ?? null,
+                    'child' => $this->attributes->child ?? null,
+                    'graduation_year' => $this->attributes->graduationYear ?? null,
+                    'site_administrator' => $this->attributes->siteAdministrator ?? null,
+                    'accounting_administrator' => $this->attributes->accountingAdministrator ?? null,
+                    'people_permissions' => $this->attributes->peoplePermissions ?? null,
+                    'membership' => $this->attributes->membership ?? null,
+                    'inactivated_at' => $this->attributes->inactivatedAt ?? null,
+                    'medical_notes' => $this->attributes->medicalNotes ?? null,
+                    'mfa_configured' => $this->attributes->mfaConfigured ?? null,
+                    'created_at' => $this->attributes->createdAt ?? null,
+                    'updated_at' => $this->attributes->updatedAt ?? null,
+                    'avatar' => $this->attributes->avatar ?? null,
+                    'name' => $this->attributes->name ?? null,
+                    'demographic_avatar_url' => $this->attributes->demographicAvatarUrl ?? null,
+                    'directory_status' => $this->attributes->directoryStatus ?? null,
+                    'passed_background_check' => $this->attributes->passedBackgroundCheck ?? null,
+                    'can_create_forms' => $this->attributes->canCreateForms ?? null,
+                    'can_email_lists' => $this->attributes->canEmailLists ?? null,
+                    'school_type' => $this->attributes->schoolType ?? null,
+                    'status' => $this->attributes->status ?? null,
+                    'primary_campus_id' => $this->attributes->primaryCampusId ?? null,
+                    'remote_id' => $this->attributes->remoteId ?? null,
+                ],
+            ],
         ];
 
-        unset($person['id']);
-        unset($person['created_at']);
-        unset($person['updated_at']);
-        unset($person['name']);
-        unset($person['demographic_avatar_url']);
+        unset($person['data']['attributes']['id']);
+        unset($person['data']['attributes']['created_at']);
+        unset($person['data']['attributes']['updated_at']);
+        unset($person['data']['attributes']['name']);
+        unset($person['data']['attributes']['demographic_avatar_url']);
 
-        return Arr::whereNotNull($person);
+        return Arr::whereNotNull($person['data']['attributes']);
     }
 }
