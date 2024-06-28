@@ -6,16 +6,13 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Objects\People;
 
-use DateTime;
 use EncoreDigitalGroup\PlanningCenter\Configuration\AuthorizationOptions;
 use EncoreDigitalGroup\PlanningCenter\Configuration\ClientConfiguration;
 use EncoreDigitalGroup\PlanningCenter\Objects\People\Attributes\EmailAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\PlanningCenterClient;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
-use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Carbon;
 use PHPGenesis\Common\Container\PhpGenesisContainer;
 use PHPGenesis\Http\HttpClient;
 use stdClass;
@@ -26,6 +23,7 @@ class Email
 
     public int|string|null $id;
     public EmailAttributes $attributes;
+
     protected AuthorizationOptions $auth;
 
     public function __construct(?PlanningCenterClient $client = null)

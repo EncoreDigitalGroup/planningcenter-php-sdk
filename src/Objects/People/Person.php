@@ -23,6 +23,7 @@ class Person
 
     public int|string|null $id;
     public PersonAttributes $attributes;
+
     protected AuthorizationOptions $auth;
 
     public function __construct(?PlanningCenterClient $client = null)
@@ -31,7 +32,6 @@ class Person
         $this->attributes = new PersonAttributes;
         $this->auth = PhpGenesisContainer::getInstance()->get(ClientConfiguration::class)->authorization();
     }
-
 
     public function all(?array $query = null): ClientResponse
     {

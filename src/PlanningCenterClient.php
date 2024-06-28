@@ -18,7 +18,7 @@ class PlanningCenterClient
     public function __construct()
     {
         PhpGenesisContainer::getInstance()->singleton(ClientConfiguration::class, function () {
-            return new Configuration\ClientConfiguration;
+            return new ClientConfiguration;
         });
 
         $this->builder = new HttpClientBuilder;
