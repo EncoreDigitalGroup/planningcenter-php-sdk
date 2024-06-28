@@ -9,5 +9,6 @@ namespace EncoreDigitalGroup\PlanningCenter\Objects\People\PersonMerger;
 class PersonMergerData
 {
     public string $type;
+
     public string $id;
 }

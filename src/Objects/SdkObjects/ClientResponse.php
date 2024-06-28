@@ -11,11 +11,12 @@ use Illuminate\Http\Client\Response;
 class ClientResponse
 {
     public MetaContainer $meta;
+
     public array|object|null $data;
 
     public function __construct(Response $response)
     {
-        $this->meta = new MetaContainer;
+        $this->meta = new MetaContainer();
         $this->meta->response = $response;
         $this->meta->success = $this->meta->response->successful();
         $this->meta->nextPage = $this->meta->response->json('meta.next.offset');

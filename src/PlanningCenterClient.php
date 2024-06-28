@@ -18,10 +18,10 @@ class PlanningCenterClient
     public function __construct()
     {
         PhpGenesisContainer::getInstance()->singleton(ClientConfiguration::class, function () {
-            return new ClientConfiguration;
+            return new ClientConfiguration();
         });
 
-        $this->builder = new HttpClientBuilder;
+        $this->builder = new HttpClientBuilder();
 
         HttpClient::baseUrl('https://api.planningcenteronline.com');
     }

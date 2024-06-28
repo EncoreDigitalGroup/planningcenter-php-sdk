@@ -15,7 +15,9 @@ class Event
     use HasPlanningCenterClient;
 
     public int $eventId;
+
     public int $eventInstanceId;
+
     public int $connectionId;
 
     public function all(array $query = []): ClientResponse

@@ -11,7 +11,10 @@ use Illuminate\Http\Client\Response;
 class MetaContainer
 {
     public Response $response;
+
     public bool $success;
+
     public ?int $nextPage;
+
     public ?int $previousPage;
 }

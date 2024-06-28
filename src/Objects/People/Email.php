@@ -22,14 +22,15 @@ class Email
     use HasPlanningCenterClient;
 
     public int|string|null $id;
+
     public EmailAttributes $attributes;
 
     protected AuthorizationOptions $auth;
 
     public function __construct(?PlanningCenterClient $client = null)
     {
-        $this->client = $client ?? new PlanningCenterClient;
-        $this->attributes = new EmailAttributes;
+        $this->client = $client ?? new PlanningCenterClient();
+        $this->attributes = new EmailAttributes();
         $this->auth = PhpGenesisContainer::getInstance()->get(ClientConfiguration::class)->authorization();
     }
 

@@ -15,7 +15,9 @@ class PersonMerger
     use HasPlanningCenterClient;
 
     public string $id;
+
     public PersonMergerAttributes $attributes;
+
     public PersonMergerRelationships $relationships;
 
     public function get(): static
@@ -36,18 +38,18 @@ class PersonMerger
 
         $this->id = $payload->id; //@phpstan-ignore-line
 
-        $this->attributes = new PersonMergerAttributes;
+        $this->attributes = new PersonMergerAttributes();
         $this->attributes->createdAt = $payload->attributes->created_at; //@phpstan-ignore-line
         $this->attributes->personToKeepId = $payload->attributes->person_to_keep_id; //@phpstan-ignore-line
         $this->attributes->personToRemoveId = $payload->attributes->person_to_remove_id; //@phpstan-ignore-line
 
-        $this->relationships = new PersonMergerRelationships;
+        $this->relationships = new PersonMergerRelationships();
 
-        $this->relationships->personToKeep = new PersonMergerData;
+        $this->relationships->personToKeep = new PersonMergerData();
         $this->relationships->personToKeep->type = $payload->relationships->person_to_keep->data->type; //@phpstan-ignore-line
         $this->relationships->personToKeep->id = $payload->relationships->person_to_keep->data->id; //@phpstan-ignore-line
 
-        $this->relationships->personToRemove = new PersonMergerData;
+        $this->relationships->personToRemove = new PersonMergerData();
         $this->relationships->personToRemove->type = $payload->relationships->person_to_remove->data->type; //@phpstan-ignore-line
         $this->relationships->personToRemove->id = $payload->relationships->person_to_remove->data->id; //@phpstan-ignore-line
 

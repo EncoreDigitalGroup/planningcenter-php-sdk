@@ -21,6 +21,7 @@ class TagGroup
     use HasPlanningCenterClient;
 
     public int $tagGroupId;
+
     public int $tagId;
 
     public function all(array $query = []): ClientResponse

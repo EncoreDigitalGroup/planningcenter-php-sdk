@@ -22,14 +22,15 @@ class Person
     use HasPlanningCenterClient;
 
     public int|string|null $id;
+
     public PersonAttributes $attributes;
 
     protected AuthorizationOptions $auth;
 
     public function __construct(?PlanningCenterClient $client = null)
     {
-        $this->client = $client ?? new PlanningCenterClient;
-        $this->attributes = new PersonAttributes;
+        $this->client = $client ?? new PlanningCenterClient();
+        $this->attributes = new PersonAttributes();
         $this->auth = PhpGenesisContainer::getInstance()->get(ClientConfiguration::class)->authorization();
     }
 

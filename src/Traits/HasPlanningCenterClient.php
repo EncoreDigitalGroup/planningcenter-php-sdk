@@ -11,11 +11,12 @@ use EncoreDigitalGroup\PlanningCenter\PlanningCenterClient;
 trait HasPlanningCenterClient
 {
     protected string $baseUrl = 'https://api.planningcenteronline.com';
+
     protected PlanningCenterClient $client;
 
     public function __construct(?PlanningCenterClient $client = null)
     {
-        $this->client = $client ?? new PlanningCenterClient;
+        $this->client = $client ?? new PlanningCenterClient();
     }
 
     public function client(): PlanningCenterClient
