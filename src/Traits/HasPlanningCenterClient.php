@@ -17,4 +17,9 @@ trait HasPlanningCenterClient
     {
         $this->client = $client ?? new PlanningCenterClient;
     }
+
+    public function client(): PlanningCenterClient
+    {
+        return $this->client;
+    }
 }
