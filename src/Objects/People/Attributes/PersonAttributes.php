@@ -7,7 +7,6 @@
 namespace EncoreDigitalGroup\PlanningCenter\Objects\People\Attributes;
 
 use DateTime;
-use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 use Illuminate\Support\Carbon;
 
 class PersonAttributes
