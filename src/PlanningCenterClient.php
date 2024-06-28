@@ -14,6 +14,6 @@ class PlanningCenterClient
 
     public function __construct()
     {
-        $this->builder = new HttpClientBuilder();
+        $this->builder = new HttpClientBuilder;
     }
 }

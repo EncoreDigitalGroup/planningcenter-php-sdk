@@ -8,6 +8,7 @@ namespace EncoreDigitalGroup\PlanningCenter\Objects\People;
 
 use EncoreDigitalGroup\PlanningCenter\Objects\People\Attributes\PersonAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
+use EncoreDigitalGroup\PlanningCenter\PlanningCenterClient;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 use Illuminate\Support\Arr;
 use PHPGenesis\Http\HttpClient;
@@ -18,7 +19,13 @@ class Person
     use HasPlanningCenterClient;
 
     public int|string|null $id;
-    public ?PersonAttributes $attributes;
+    public PersonAttributes $attributes;
+
+    public function __construct(?PlanningCenterClient $client = null)
+    {
+        $this->client = $client ?? new PlanningCenterClient;
+        $this->attributes = new PersonAttributes;
+    }
 
     public function all(?array $query = null): ClientResponse
     {
@@ -28,7 +35,7 @@ class Person
         $response = new ClientResponse($http);
         $response->data = [];
 
-        foreach($http->json('data') as $person) {
+        foreach ($http->json('data') as $person) {
             $p = new Person($this->client);
             $p->mapFromPco($person);
             $response->data[] = $p;
@@ -61,7 +68,7 @@ class Person
         return $response;
     }
 
-    public function update()
+    public function update(): ClientResponse
     {
         $http = HttpClient::patch('people/v2/people/' . $this->id, $this->mapToPco());
 

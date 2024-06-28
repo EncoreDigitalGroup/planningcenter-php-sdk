@@ -15,6 +15,6 @@ trait HasPlanningCenterClient
 
     public function __construct(?PlanningCenterClient $client = null)
     {
-        $this->client = $client ?? new PlanningCenterClient();
+        $this->client = $client ?? new PlanningCenterClient;
     }
 }
