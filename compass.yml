@@ -1,0 +1,18 @@
+name: planningcenter-php-sdk
+id: ari:cloud:compass:a57b5c9f-fc28-4c14-a65e-d979766b2faf:component/cb6ca8be-3842-41bc-b36f-1dcdb1ce2bc3/a0279caa-0142-4999-a67b-440868840b6c
+description: A simple PHP SDK for PlanningCenter.com
+configVersion: 1
+typeId: LIBRARY
+ownerId: ari:cloud:identity::team/6f2be99b-bb9d-493e-9061-aae45c1332b2
+fields:
+  tier: 4
+links:
+  - name: null
+    type: REPOSITORY
+    url: https://github.com/EncoreDigitalGroup/planningcenter-php-sdk
+relationships:
+  DEPENDS_ON: []
+labels:
+  - language:php
+  - source:github
+customFields: null
