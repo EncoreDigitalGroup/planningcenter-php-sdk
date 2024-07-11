@@ -8,6 +8,4 @@ namespace EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects;
 
 use EncoreDigitalGroup\SdkClientFoundation\SdkObjects\HttpContainer as BaseHttpContainer;
 
-class HttpContainer extends BaseHttpContainer
-{
-}
+class HttpContainer extends BaseHttpContainer {}
