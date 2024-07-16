@@ -13,7 +13,6 @@ use EncoreDigitalGroup\PlanningCenter\PlanningCenterClient;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 use PHPGenesis\Common\Container\PhpGenesisContainer;
 use PHPGenesis\Http\HttpClient;
-use stdClass;
 
 class PersonMerger
 {
@@ -36,11 +35,11 @@ class PersonMerger
         $http = HttpClient::withBasicAuth($this->auth->getClientId(), $this->auth->getClientSecret())
             ->get('people/v2/person_mergers/' . $this->id, $query);
 
-        $response = new ClientResponse($http);
+        $clientResponse = new ClientResponse($http);
         $this->mapFromPco($http->json('data'));
-        $response->data = $this->attributes;
+        $clientResponse->data = $this->attributes;
 
-        return $response;
+        return $clientResponse;
 
     }
 

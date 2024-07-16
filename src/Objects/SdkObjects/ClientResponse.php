@@ -11,7 +11,6 @@ use Illuminate\Http\Client\Response;
 class ClientResponse
 {
     public MetaContainer $meta;
-
     public array|object|null $data;
 
     public function __construct(Response $response)

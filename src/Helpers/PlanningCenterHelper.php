@@ -13,20 +13,12 @@ class PlanningCenterHelper
 {
     public static function wasSuccessful(BaseClientResponse|ClientResponse $response): bool
     {
-        if ($response->sdk->outcome->success) {
-            return true;
-        }
-
-        return false;
+        return (bool) $response->sdk->outcome->success;
     }
 
     public static function wasNotSuccessful(BaseClientResponse|ClientResponse $response): bool
     {
-        if (!$response->sdk->outcome->success) {
-            return true;
-        }
-
-        return false;
+        return !$response->sdk->outcome->success;
     }
 
     public static function wasUnsuccessful(BaseClientResponse|ClientResponse $res): bool
@@ -36,37 +28,21 @@ class PlanningCenterHelper
 
     public static function wasRateLimited(BaseClientResponse|ClientResponse $response): bool
     {
-        if ($response->sdk->outcome->rateLimited) {
-            return true;
-        }
-
-        return false;
+        return (bool) $response->sdk->outcome->rateLimited;
     }
 
     public static function wasNotRateLimited(BaseClientResponse|ClientResponse $response): bool
     {
-        if (!$response->sdk->outcome->rateLimited) {
-            return true;
-        }
-
-        return false;
+        return !$response->sdk->outcome->rateLimited;
     }
 
     public static function serviceError(BaseClientResponse|ClientResponse $response): bool
     {
-        if ($response->sdk->outcome->http->statusCode >= 500) {
-            return true;
-        }
-
-        return false;
+        return $response->sdk->outcome->http->statusCode >= 500;
     }
 
     public static function idealRequestOutcome(BaseClientResponse|ClientResponse $response): bool
     {
-        if (self::wasNotSuccessful($response) || self::wasRateLimited($response) || self::serviceError($response)) {
-            return false;
-        }
-
-        return true;
+        return !(self::wasNotSuccessful($response) || self::wasRateLimited($response) || self::serviceError($response));
     }
 }

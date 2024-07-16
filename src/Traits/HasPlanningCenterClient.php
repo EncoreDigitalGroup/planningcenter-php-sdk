@@ -11,7 +11,6 @@ use EncoreDigitalGroup\PlanningCenter\PlanningCenterClient;
 trait HasPlanningCenterClient
 {
     protected string $baseUrl = 'https://api.planningcenteronline.com';
-
     protected PlanningCenterClient $client;
 
     public function __construct(?PlanningCenterClient $client = null)

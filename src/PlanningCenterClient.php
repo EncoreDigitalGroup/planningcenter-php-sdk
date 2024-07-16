@@ -17,7 +17,7 @@ class PlanningCenterClient
 
     public function __construct()
     {
-        PhpGenesisContainer::getInstance()->singleton(ClientConfiguration::class, function () {
+        PhpGenesisContainer::getInstance()->singleton(ClientConfiguration::class, function (): \EncoreDigitalGroup\PlanningCenter\Configuration\ClientConfiguration {
             return new ClientConfiguration();
         });
 

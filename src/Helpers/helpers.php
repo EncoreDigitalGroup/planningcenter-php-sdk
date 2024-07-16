@@ -19,7 +19,7 @@ if (!function_exists('json_not_null')) {
             return '';
         }
 
-        $array = array_filter($array, function ($value) {
+        $array = array_filter($array, function ($value): bool {
             return $value !== null;
         });
 

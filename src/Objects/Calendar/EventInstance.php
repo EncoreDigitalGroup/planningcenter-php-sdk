@@ -15,7 +15,6 @@ class EventInstance
     use HasPlanningCenterClient;
 
     public int $eventInstanceId;
-
     public int $eventId;
 
     public function all(array $query = []): ClientResponse

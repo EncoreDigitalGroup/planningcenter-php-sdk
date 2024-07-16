@@ -22,9 +22,7 @@ class Email
     use HasPlanningCenterClient;
 
     public int|string|null $id;
-
     public EmailAttributes $attributes;
-
     protected AuthorizationOptions $auth;
 
     public function __construct(?PlanningCenterClient $client = null)
@@ -39,11 +37,11 @@ class Email
         $http = HttpClient::withBasicAuth($this->auth->getClientId(), $this->auth->getClientSecret())
             ->get('people/v2/emails/' . $this->id);
 
-        $response = new ClientResponse($http);
+        $clientResponse = new ClientResponse($http);
         $this->mapFromPco($http->json('data'));
-        $response->data = $this->attributes;
+        $clientResponse->data = $this->attributes;
 
-        return $response;
+        return $clientResponse;
 
     }
 
@@ -52,16 +50,16 @@ class Email
         $http = HttpClient::withBasicAuth($this->auth->getClientId(), $this->auth->getClientSecret())
             ->get('people/v2/people/' . $this->attributes->personId . '/emails');
 
-        $response = new ClientResponse($http);
-        $response->data = [];
+        $clientResponse = new ClientResponse($http);
+        $clientResponse->data = [];
 
         foreach ($http->json('data') as $email) {
             $e = new Email($this->client);
             $e->mapFromPco($email);
-            $response->data[] = $e;
+            $clientResponse->data[] = $e;
         }
 
-        return $response;
+        return $clientResponse;
     }
 
     public function update(): ClientResponse
@@ -69,11 +67,11 @@ class Email
         $http = HttpClient::withBasicAuth($this->auth->getClientId(), $this->auth->getClientSecret())
             ->patch('people/v2/emails/' . $this->id, $this->mapToPco());
 
-        $response = new ClientResponse($http);
+        $clientResponse = new ClientResponse($http);
         $this->mapFromPco($http->json('data'));
-        $response->data = $this->attributes;
+        $clientResponse->data = $this->attributes;
 
-        return $response;
+        return $clientResponse;
     }
 
     private function mapFromPco(stdClass $pco): void

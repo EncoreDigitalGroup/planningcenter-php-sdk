@@ -15,9 +15,7 @@ class Event
     use HasPlanningCenterClient;
 
     public int $eventId;
-
     public int $eventInstanceId;
-
     public int $connectionId;
 
     public function all(array $query = []): ClientResponse
@@ -65,10 +63,10 @@ class Event
 
     public function instances(array $query = []): ClientResponse
     {
-        $eventInstances = new EventInstance($this->client);
-        $eventInstances->eventId = $this->eventId;
+        $eventInstance = new EventInstance($this->client);
+        $eventInstance->eventId = $this->eventId;
 
-        return $eventInstances->all($query);
+        return $eventInstance->all($query);
     }
 
     public function connection(array $query = []): ClientResponse

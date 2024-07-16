@@ -9,6 +9,5 @@ namespace EncoreDigitalGroup\PlanningCenter\Objects\People\PersonMerger;
 class PersonMergerRelationships
 {
     public PersonMergerData $personToKeep;
-
     public PersonMergerData $personToRemove;
 }

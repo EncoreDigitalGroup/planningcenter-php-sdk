@@ -10,17 +10,12 @@ namespace EncoreDigitalGroup\PlanningCenter\Configuration;
 class ClientConfiguration
 {
     const CALENDAR_API_VERSION = '2021-07-20';
-
     const GROUPS_API_VERSION = '2023-07-10';
-
     const PEOPLE_API_VERSION = '2023-02-15';
 
     protected AuthorizationOptions $authorization;
-
     protected PcoConfigOptions $calendar;
-
     protected PcoConfigOptions $groups;
-
     protected PcoConfigOptions $people;
 
     public function __construct()

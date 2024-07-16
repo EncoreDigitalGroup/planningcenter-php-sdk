@@ -9,9 +9,7 @@ namespace EncoreDigitalGroup\PlanningCenter\Configuration;
 class AuthorizationOptions
 {
     protected string $type;
-
     protected string $clientId;
-
     protected string $clientSecret;
 
     public function setType(string $type): static
