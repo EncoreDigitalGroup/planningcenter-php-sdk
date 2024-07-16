@@ -6,35 +6,43 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Objects\People\PersonMerger;
 
+use EncoreDigitalGroup\PlanningCenter\Configuration\AuthorizationOptions;
+use EncoreDigitalGroup\PlanningCenter\Configuration\ClientConfiguration;
+use EncoreDigitalGroup\PlanningCenter\PlanningCenterClient;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
-use EncoreDigitalGroup\SdkClientFoundation\SdkObjects\ClientResponse;
-use GuzzleHttp\Psr7\Request;
+use PHPGenesis\Common\Container\PhpGenesisContainer;
+use PHPGenesis\Http\HttpClient;
 
 class PersonMerger
 {
     use HasPlanningCenterClient;
 
     public string $id;
-
     public PersonMergerAttributes $attributes;
-
     public PersonMergerRelationships $relationships;
+    protected AuthorizationOptions $auth;
 
-    public function get(): static
+    public function __construct(?PlanningCenterClient $client = null)
     {
-        $headers = $this->buildHeaders();
-
-        $request = new Request('GET', 'people/v2/person_mergers/' . $this->id, $headers);
-
-        $response = $this->client->send($request);
-
-        return $this->map($response);
+        $this->client = $client ?? new PlanningCenterClient();
+        $this->attributes = new PersonMergerAttributes();
+        $this->auth = PhpGenesisContainer::getInstance()->get(ClientConfiguration::class)->authorization();
     }
 
-    protected function map(ClientResponse $payload): static
+    public function get(?array $query = []): static
     {
-        $this->clientResponse = $payload;
-        $payload = $payload->pco->data; //@phpstan-ignore-line
+        $http = HttpClient::withBasicAuth($this->auth->getClientId(), $this->auth->getClientSecret())
+            ->get('people/v2/person_mergers/' . $this->id, $query);
+
+        $this->mapFromPco($http->json('data'));
+
+        return $this;
+
+    }
+
+    protected function mapFromPco(mixed $payload): static
+    {
+        $payload = objectify($payload);
 
         $this->id = $payload->id; //@phpstan-ignore-line
 
