@@ -8,10 +8,12 @@ namespace EncoreDigitalGroup\PlanningCenter\Objects\People\PersonMerger;
 
 use EncoreDigitalGroup\PlanningCenter\Configuration\AuthorizationOptions;
 use EncoreDigitalGroup\PlanningCenter\Configuration\ClientConfiguration;
+use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\PlanningCenterClient;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 use PHPGenesis\Common\Container\PhpGenesisContainer;
 use PHPGenesis\Http\HttpClient;
+use stdClass;
 
 class PersonMerger
 {
@@ -29,21 +31,22 @@ class PersonMerger
         $this->auth = PhpGenesisContainer::getInstance()->get(ClientConfiguration::class)->authorization();
     }
 
-    public function get(?array $query = []): static
+    public function get(?array $query = []): ClientResponse
     {
         $http = HttpClient::withBasicAuth($this->auth->getClientId(), $this->auth->getClientSecret())
             ->get('people/v2/person_mergers/' . $this->id, $query);
 
+        $response = new ClientResponse($http);
         $this->mapFromPco($http->json('data'));
+        $response->data = $this->attributes;
 
-        return $this;
+        return $response;
 
     }
 
     protected function mapFromPco(mixed $payload): static
     {
         $payload = objectify($payload);
-
         $this->id = $payload->id; //@phpstan-ignore-line
 
         $this->attributes = new PersonMergerAttributes();
