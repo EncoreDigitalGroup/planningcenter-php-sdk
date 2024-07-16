@@ -6,7 +6,12 @@ parameters:
     checkDynamicProperties: false
     checkTooWideReturnTypesInProtectedAndPublicMethods: false
     ignoreErrors:
-        - identifier: missingType.generics
         - identifier: missingType.iterableValue
-        - '#PHPDoc tag .+ #'
-#    excludePaths:
+        - identifier: missingType.generics
+    unused_public:
+        methods: true
+        properties: true
+        constants: true
+    cognitive_complexity:
+            class: 50
+            function: 10
