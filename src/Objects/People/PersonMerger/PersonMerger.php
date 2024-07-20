@@ -33,7 +33,7 @@ class PersonMerger
     public function get(?array $query = []): ClientResponse
     {
         $http = HttpClient::withBasicAuth($this->auth->getClientId(), $this->auth->getClientSecret())
-            ->get('people/v2/person_mergers/' . $this->id, $query);
+            ->get($this->client->getBaseUrl() . '/people/v2/person_mergers/' . $this->id, $query);
 
         $clientResponse = new ClientResponse($http);
         $this->mapFromPco($http->json('data'));

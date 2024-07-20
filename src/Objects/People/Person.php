@@ -35,7 +35,7 @@ class Person
     public function all(?array $query = null): ClientResponse
     {
         $http = HttpClient::withBasicAuth($this->auth->getClientId(), $this->auth->getClientSecret())
-            ->get('people/v2/people', $query);
+            ->get($this->client->getBaseUrl() . '/people/v2/people', $query);
 
         $clientResponse = new ClientResponse($http);
         $clientResponse->data = [];
@@ -52,7 +52,7 @@ class Person
     public function get(?array $query = null): ClientResponse
     {
         $http = HttpClient::withBasicAuth($this->auth->getClientId(), $this->auth->getClientSecret())
-            ->get('people/v2/people/' . $this->id, $query);
+            ->get($this->client->getBaseUrl() . '/people/v2/people/' . $this->id, $query);
 
         $clientResponse = new ClientResponse($http);
         $this->mapFromPco($http->json('data'));
@@ -64,7 +64,7 @@ class Person
     public function create(): ClientResponse
     {
         $http = HttpClient::withBasicAuth($this->auth->getClientId(), $this->auth->getClientSecret())
-            ->post('people/v2/people', $this->mapToPco());
+            ->post($this->client->getBaseUrl() . '/people/v2/people', $this->mapToPco());
 
         $clientResponse = new ClientResponse($http);
         $this->mapFromPco($http->json('data'));
@@ -76,7 +76,7 @@ class Person
     public function update(): ClientResponse
     {
         $http = HttpClient::withBasicAuth($this->auth->getClientId(), $this->auth->getClientSecret())
-            ->patch('people/v2/people/' . $this->id, $this->mapToPco());
+            ->patch($this->client->getBaseUrl() . '/people/v2/people/' . $this->id, $this->mapToPco());
 
         $clientResponse = new ClientResponse($http);
         $this->mapFromPco($http->json('data'));
@@ -88,7 +88,7 @@ class Person
     public function delete(): ClientResponse
     {
         $http = HttpClient::withBasicAuth($this->auth->getClientId(), $this->auth->getClientSecret())
-            ->delete('people/v2/people/' . $this->id);
+            ->delete($this->client->getBaseUrl() . '/people/v2/people/' . $this->id);
 
         $clientResponse = new ClientResponse($http);
         $this->mapFromPco($http->json('data'));

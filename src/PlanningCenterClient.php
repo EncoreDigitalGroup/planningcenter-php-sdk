@@ -14,15 +14,26 @@ use PHPGenesis\Http\HttpClientBuilder;
 class PlanningCenterClient
 {
     protected HttpClientBuilder $builder;
+    protected string $baseUrl = 'https://api.planningcenteronline.com/';
 
     public function __construct()
     {
-        PhpGenesisContainer::getInstance()->singleton(ClientConfiguration::class, function (): \EncoreDigitalGroup\PlanningCenter\Configuration\ClientConfiguration {
+        PhpGenesisContainer::getInstance()->singleton(ClientConfiguration::class, function (): ClientConfiguration {
             return new ClientConfiguration();
         });
 
         $this->builder = new HttpClientBuilder();
+    }
 
-        HttpClient::baseUrl('https://api.planningcenteronline.com');
+    public function getBaseUrl(): string
+    {
+        return $this->baseUrl;
+    }
+
+    public function setBaseUrl(string $baseUrl): static
+    {
+        $this->baseUrl = $baseUrl;
+
+        return $this;
     }
 }

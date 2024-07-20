@@ -35,7 +35,7 @@ class Email
     public function get(): ClientResponse
     {
         $http = HttpClient::withBasicAuth($this->auth->getClientId(), $this->auth->getClientSecret())
-            ->get('people/v2/emails/' . $this->id);
+            ->get($this->client->getBaseUrl() . '/people/v2/emails/' . $this->id);
 
         $clientResponse = new ClientResponse($http);
         $this->mapFromPco($http->json('data'));
@@ -48,7 +48,7 @@ class Email
     public function forPerson(): ClientResponse
     {
         $http = HttpClient::withBasicAuth($this->auth->getClientId(), $this->auth->getClientSecret())
-            ->get('people/v2/people/' . $this->attributes->personId . '/emails');
+            ->get($this->client->getBaseUrl() . '/people/v2/people/' . $this->attributes->personId . '/emails');
 
         $clientResponse = new ClientResponse($http);
         $clientResponse->data = [];
@@ -65,7 +65,7 @@ class Email
     public function update(): ClientResponse
     {
         $http = HttpClient::withBasicAuth($this->auth->getClientId(), $this->auth->getClientSecret())
-            ->patch('people/v2/emails/' . $this->id, $this->mapToPco());
+            ->patch($this->client->getBaseUrl() . '/people/v2/emails/' . $this->id, $this->mapToPco());
 
         $clientResponse = new ClientResponse($http);
         $this->mapFromPco($http->json('data'));
