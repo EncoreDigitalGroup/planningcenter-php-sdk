@@ -35,12 +35,7 @@ class PersonMerger
         $http = HttpClient::withBasicAuth($this->auth->getClientId(), $this->auth->getClientSecret())
             ->get($this->client->getBaseUrl() . '/people/v2/person_mergers/' . $this->id, $query);
 
-        $clientResponse = new ClientResponse($http);
-        $this->mapFromPco($http->json('data'));
-        $clientResponse->data = $this->attributes;
-
-        return $clientResponse;
-
+        return $this->processResponse($http);
     }
 
     protected function mapFromPco(mixed $payload): static

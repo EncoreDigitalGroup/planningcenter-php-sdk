@@ -54,11 +54,7 @@ class Person
         $http = HttpClient::withBasicAuth($this->auth->getClientId(), $this->auth->getClientSecret())
             ->get($this->client->getBaseUrl() . '/people/v2/people/' . $this->id, $query);
 
-        $clientResponse = new ClientResponse($http);
-        $this->mapFromPco($http->json('data'));
-        $clientResponse->data = $this->attributes;
-
-        return $clientResponse;
+        return $this->processResponse($http);
     }
 
     public function create(): ClientResponse
@@ -66,11 +62,7 @@ class Person
         $http = HttpClient::withBasicAuth($this->auth->getClientId(), $this->auth->getClientSecret())
             ->post($this->client->getBaseUrl() . '/people/v2/people', $this->mapToPco());
 
-        $clientResponse = new ClientResponse($http);
-        $this->mapFromPco($http->json('data'));
-        $clientResponse->data = $this->attributes;
-
-        return $clientResponse;
+        return $this->processResponse($http);
     }
 
     public function update(): ClientResponse
@@ -78,11 +70,7 @@ class Person
         $http = HttpClient::withBasicAuth($this->auth->getClientId(), $this->auth->getClientSecret())
             ->patch($this->client->getBaseUrl() . '/people/v2/people/' . $this->id, $this->mapToPco());
 
-        $clientResponse = new ClientResponse($http);
-        $this->mapFromPco($http->json('data'));
-        $clientResponse->data = $this->attributes;
-
-        return $clientResponse;
+        return $this->processResponse($http);
     }
 
     public function delete(): ClientResponse
@@ -90,11 +78,7 @@ class Person
         $http = HttpClient::withBasicAuth($this->auth->getClientId(), $this->auth->getClientSecret())
             ->delete($this->client->getBaseUrl() . '/people/v2/people/' . $this->id);
 
-        $clientResponse = new ClientResponse($http);
-        $this->mapFromPco($http->json('data'));
-        $clientResponse->data = $this->attributes;
-
-        return $clientResponse;
+        return $this->processResponse($http);
     }
 
     public function email(): ClientResponse
@@ -105,8 +89,10 @@ class Person
         return $email->forPerson();
     }
 
-    private function mapFromPco(stdClass $pco): void
+    private function mapFromPco(array $pco): void
     {
+        $pco = objectify($pco);
+
         $this->id = $pco->data->id;
         $this->attributes->personId = $pco->data->id;
         $this->attributes->firstName = $pco->data->attributes->first_name;

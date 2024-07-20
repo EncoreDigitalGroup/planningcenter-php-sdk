@@ -37,11 +37,7 @@ class Email
         $http = HttpClient::withBasicAuth($this->auth->getClientId(), $this->auth->getClientSecret())
             ->get($this->client->getBaseUrl() . '/people/v2/emails/' . $this->id);
 
-        $clientResponse = new ClientResponse($http);
-        $this->mapFromPco($http->json('data'));
-        $clientResponse->data = $this->attributes;
-
-        return $clientResponse;
+        return $this->processResponse($http);
 
     }
 
@@ -67,11 +63,7 @@ class Email
         $http = HttpClient::withBasicAuth($this->auth->getClientId(), $this->auth->getClientSecret())
             ->patch($this->client->getBaseUrl() . '/people/v2/emails/' . $this->id, $this->mapToPco());
 
-        $clientResponse = new ClientResponse($http);
-        $this->mapFromPco($http->json('data'));
-        $clientResponse->data = $this->attributes;
-
-        return $clientResponse;
+        return $this->processResponse($http);
     }
 
     private function mapFromPco(stdClass $pco): void
