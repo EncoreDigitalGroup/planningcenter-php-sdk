@@ -6,7 +6,9 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Traits;
 
+use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\PlanningCenterClient;
+use Illuminate\Http\Client\Response;
 
 trait HasPlanningCenterClient
 {
@@ -21,5 +23,14 @@ trait HasPlanningCenterClient
     public function client(): PlanningCenterClient
     {
         return $this->client;
+    }
+
+    protected function processResponse(Response $http): ClientResponse
+    {
+        $clientResponse = new ClientResponse($http);
+        $this->mapFromPco($http->json('data'));
+        $clientResponse->data = $this->attributes;
+
+        return $clientResponse;
     }
 }
