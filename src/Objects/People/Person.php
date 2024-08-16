@@ -33,6 +33,11 @@ class Person
         $this->auth = PhpGenesisContainer::getInstance()->get(ClientConfiguration::class)->authorization();
     }
 
+    public static function make(?PlanningCenterClient $client = null): static
+    {
+        return new static($client); //@phpstan-ignore-line
+    }
+
     public function all(?array $query = null): ClientResponse
     {
         $http = HttpClient::withBasicAuth($this->auth->getClientId(), $this->auth->getClientSecret())
