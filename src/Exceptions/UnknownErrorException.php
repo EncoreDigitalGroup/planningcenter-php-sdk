@@ -8,6 +8,7 @@ namespace EncoreDigitalGroup\PlanningCenter\Exceptions;
 
 use Exception;
 
+/** @api */
 class UnknownErrorException extends Exception
 {
     public function __construct()

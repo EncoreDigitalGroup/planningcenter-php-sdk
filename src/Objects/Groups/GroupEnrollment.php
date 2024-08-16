@@ -15,7 +15,10 @@ use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 use PHPGenesis\Common\Container\PhpGenesisContainer;
 use PHPGenesis\Http\HttpClient;
 
-/** @internal */
+/**
+ * @internal
+ * @api
+ */
 class GroupEnrollment
 {
     use HasPlanningCenterClient;

@@ -17,6 +17,7 @@ use PHPGenesis\Common\Container\PhpGenesisContainer;
 use PHPGenesis\Http\HttpClient;
 use stdClass;
 
+/** @api */
 class Email
 {
     use HasPlanningCenterClient;

@@ -6,6 +6,7 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Configuration;
 
+/** @api */
 class PcoConfigOptions
 {
     protected string $apiVersion;

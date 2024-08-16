@@ -10,6 +10,7 @@ use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 use GuzzleHttp\Psr7\Request;
 
+/** @api */
 class Event
 {
     use HasPlanningCenterClient;

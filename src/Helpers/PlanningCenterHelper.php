@@ -9,6 +9,7 @@ namespace EncoreDigitalGroup\PlanningCenter\Helpers;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\SdkClientFoundation\SdkObjects\ClientResponse as BaseClientResponse;
 
+/** @api */
 class PlanningCenterHelper
 {
     public static function wasSuccessful(BaseClientResponse|ClientResponse $response): bool

@@ -15,6 +15,7 @@ use GuzzleHttp\Psr7\Request;
  *
  * @property int $tagGroupId
  * @property int $tagId
+ * @api
  */
 class TagGroup
 {

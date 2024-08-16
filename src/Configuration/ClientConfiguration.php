@@ -7,6 +7,7 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Configuration;
 
+/** @api */
 class ClientConfiguration
 {
     const CALENDAR_API_VERSION = '2021-07-20';

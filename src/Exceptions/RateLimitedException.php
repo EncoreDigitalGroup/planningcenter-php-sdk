@@ -8,6 +8,7 @@ namespace EncoreDigitalGroup\PlanningCenter\Exceptions;
 
 use Exception;
 
+/** @api */
 class RateLimitedException extends Exception
 {
     public function __construct()

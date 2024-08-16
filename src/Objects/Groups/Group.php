@@ -16,6 +16,7 @@ use GuzzleHttp\Psr7\Request;
 use PHPGenesis\Common\Container\PhpGenesisContainer;
 use PHPGenesis\Http\HttpClient;
 
+/** @api */
 class Group
 {
     use HasPlanningCenterClient;
