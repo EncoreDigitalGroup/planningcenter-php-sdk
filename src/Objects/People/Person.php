@@ -9,6 +9,7 @@ namespace EncoreDigitalGroup\PlanningCenter\Objects\People;
 use EncoreDigitalGroup\PlanningCenter\Configuration\AuthorizationOptions;
 use EncoreDigitalGroup\PlanningCenter\Configuration\ClientConfiguration;
 use EncoreDigitalGroup\PlanningCenter\Objects\People\Attributes\PersonAttributes;
+use EncoreDigitalGroup\PlanningCenter\Objects\People\Traits\HasEmails;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\PlanningCenterClient;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
@@ -20,7 +21,7 @@ use stdClass;
 /** @api */
 class Person
 {
-    use HasPlanningCenterClient;
+    use HasPlanningCenterClient, HasEmails;
 
     public int|string|null $id;
     public PersonAttributes $attributes;
@@ -55,6 +56,11 @@ class Person
         return $clientResponse;
     }
 
+    private static function dummy()
+    {
+        return self::make()->withEmails()->all();
+    }
+
     public function get(?array $query = null): ClientResponse
     {
         $http = HttpClient::withBasicAuth($this->auth->getClientId(), $this->auth->getClientSecret())
@@ -85,14 +91,6 @@ class Person
             ->delete($this->client->getBaseUrl() . '/people/v2/people/' . $this->id);
 
         return $this->processResponse($http);
-    }
-
-    public function email(): ClientResponse
-    {
-        $email = new Email($this->client);
-        $email->attributes->personId = $this->id;
-
-        return $email->forPerson();
     }
 
     private function mapFromPco(array $pco): void
