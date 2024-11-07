@@ -6,89 +6,74 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Objects\People;
 
-use EncoreDigitalGroup\PlanningCenter\Configuration\AuthorizationOptions;
-use EncoreDigitalGroup\PlanningCenter\Configuration\ClientConfiguration;
 use EncoreDigitalGroup\PlanningCenter\Objects\People\Attributes\PersonAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\People\Traits\HasEmails;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
-use EncoreDigitalGroup\PlanningCenter\PlanningCenterClient;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 use Illuminate\Support\Arr;
-use PHPGenesis\Common\Container\PhpGenesisContainer;
-use PHPGenesis\Http\HttpClient;
-use stdClass;
 
 /** @api */
 class Person
 {
+    protected const PEOPLE_ENDPOINT = '/people/v2/people';
+
     use HasPlanningCenterClient, HasEmails;
 
     public int|string|null $id;
     public PersonAttributes $attributes;
-    protected AuthorizationOptions $auth;
 
-    public function __construct(?PlanningCenterClient $client = null)
+    public static function make(?string $clientId = null, ?string $clientSecret = null): static
     {
-        $this->client = $client ?? new PlanningCenterClient();
-        $this->attributes = new PersonAttributes();
-        $this->auth = PhpGenesisContainer::getInstance()->get(ClientConfiguration::class)->authorization();
-    }
+        $person = new static($clientId, $clientSecret);
+        $person->attributes = new PersonAttributes();
 
-    public static function make(?PlanningCenterClient $client = null): static
-    {
-        return new static($client); //@phpstan-ignore-line
+        return $person;
     }
 
     public function all(?array $query = null): ClientResponse
     {
-        $http = HttpClient::withBasicAuth($this->auth->getClientId(), $this->auth->getClientSecret())
-            ->get($this->client->getBaseUrl() . '/people/v2/people', $query);
+        $http = $this->client()
+            ->get($this->hostname() . self::PEOPLE_ENDPOINT, $query);
 
         $clientResponse = new ClientResponse($http);
-        $clientResponse->data = [];
 
         foreach ($http->json('data') as $person) {
-            $p = new Person($this->client);
-            $p->mapFromPco($person);
-            $clientResponse->data[] = $p;
+            $pcoPerson = new Person($this->clientId, $this->clientSecret);
+            $pcoPerson->mapFromPco($person);
+            $clientResponse->data->push($pcoPerson);
         }
 
         return $clientResponse;
     }
 
-    private static function dummy()
-    {
-        return self::make()->withEmails()->all();
-    }
-
     public function get(?array $query = null): ClientResponse
     {
-        $http = HttpClient::withBasicAuth($this->auth->getClientId(), $this->auth->getClientSecret())
-            ->get($this->client->getBaseUrl() . '/people/v2/people/' . $this->id, $query);
+        $http = $this->client()
+            ->get($this->hostname() . self::PEOPLE_ENDPOINT . '/' . $this->id, $query);
 
         return $this->processResponse($http);
     }
 
     public function create(): ClientResponse
     {
-        $http = HttpClient::withBasicAuth($this->auth->getClientId(), $this->auth->getClientSecret())
-            ->post($this->client->getBaseUrl() . '/people/v2/people', $this->mapToPco());
+        $http = $this->client()
+            ->post($this->hostname() . self::PEOPLE_ENDPOINT, $this->mapToPco());
 
         return $this->processResponse($http);
     }
 
     public function update(): ClientResponse
     {
-        $http = HttpClient::withBasicAuth($this->auth->getClientId(), $this->auth->getClientSecret())
-            ->patch($this->client->getBaseUrl() . '/people/v2/people/' . $this->id, $this->mapToPco());
+        $http = $this->client()
+            ->patch($this->hostname() . self::PEOPLE_ENDPOINT . '/' . $this->id, $this->mapToPco());
 
         return $this->processResponse($http);
     }
 
     public function delete(): ClientResponse
     {
-        $http = HttpClient::withBasicAuth($this->auth->getClientId(), $this->auth->getClientSecret())
-            ->delete($this->client->getBaseUrl() . '/people/v2/people/' . $this->id);
+        $http = $this->client()
+            ->delete($this->hostname() . self::PEOPLE_ENDPOINT . '/' . $this->id);
 
         return $this->processResponse($http);
     }
