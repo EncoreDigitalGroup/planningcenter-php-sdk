@@ -12,9 +12,9 @@ use Illuminate\Support\Carbon;
 class GroupAttributes
 {
     public string $groupId;
-    public DateTime|Carbon|null $archivedAt;
+    public ?Carbon $archivedAt;
     public ?string $contactEmail;
-    public DateTime|Carbon|null $createdAt;
+    public ?Carbon $createdAt;
     public ?string $description;
     public ?string $eventVisibility;
     public ?GroupHeaderImage $headerImage;

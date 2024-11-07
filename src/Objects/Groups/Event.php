@@ -6,10 +6,10 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Objects\Groups;
 
+use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Attributes\EventAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
-use GuzzleHttp\Psr7\Request;
-use Illuminate\Http\Client\Response;
+use Illuminate\Support\Carbon;
 use stdClass;
 
 /** @api */
@@ -22,6 +22,14 @@ class Event
     public int|string|null $id;
     public EventAttributes $attributes;
 
+    public static function make(string $clientId, string $clientSecret): Event
+    {
+        $event = new self($clientId, $clientSecret);
+        $event->attributes = new EventAttributes;
+
+        return $event;
+    }
+
 
     public function all(array $query = []): ClientResponse
     {
@@ -32,7 +40,6 @@ class Event
 
         foreach ($http->json('data') as $groupEvent) {
             $pcoGroupEvent = new Event($this->clientId, $this->clientSecret);
-            // TODO: Create mapFromPco method.
             $pcoGroupEvent->mapFromPco($groupEvent);
             $clientResponse->data->push($pcoGroupEvent);
         }
@@ -50,6 +57,20 @@ class Event
 
     private function mapFromPco(stdClass $pco): void
     {
-
+        $this->attributes->attendanceRequestsEnabled = $pco->attributes->attendance_requests_enabled;
+        $this->attributes->automatedReminderEnabled = $pco->attributes->automated_reminder_enabled;
+        $this->attributes->canceled = $pco->attributes->canceled;
+        $this->attributes->canceledAt = Carbon::createFromFormat('c', $pco->attributes->canceled_at);
+        $this->attributes->description = $pco->attributes->description;
+        $this->attributes->endsAt = Carbon::createFromFormat('c', $pco->attributes->description);
+        $this->attributes->locationTypePreference = $pco->attributes->location_type_preference;
+        $this->attributes->multiDay = $pco->attributes->multi_day;
+        $this->attributes->name = $pco->attributes->name;
+        $this->attributes->remindersSent = $pco->attributes->reminders_sent;
+        $this->attributes->remindersSentAt = Carbon::createFromFormat('c', $pco->attributes->reminders_sent_at);
+        $this->attributes->repeating = $pco->attributes->repeating;
+        $this->attributes->startsAt = Carbon::createFromFormat('c', $pco->attributes->starts_at);
+        $this->attributes->virtualLocationUrl = $pco->attributes->virtual_location_url;
+        $this->attributes->visitorsCount = $pco->attributes->visitors_count;
     }
 }
