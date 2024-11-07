@@ -9,33 +9,47 @@ namespace EncoreDigitalGroup\PlanningCenter\Objects\Groups;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 use GuzzleHttp\Psr7\Request;
+use Illuminate\Http\Client\Response;
+use stdClass;
 
 /** @api */
 class Event
 {
     use HasPlanningCenterClient;
 
-    public int $eventId;
+    public const EVENT_ENDPOINT = '/groups/v2/events';
+
+    public int|string|null $id;
+    public EventAttributes $attributes;
+
 
     public function all(array $query = []): ClientResponse
     {
-        $headers = $this->buildHeaders();
+        $http = $this->client()
+            ->get($this->hostname() . self::EVENT_ENDPOINT, $query);
 
-        $query = http_build_query($query);
+        $clientResponse = new ClientResponse($http);
 
-        $request = new Request('GET', 'groups/v2/events?' . $query, $headers);
+        foreach ($http->json('data') as $groupEvent) {
+            $pcoGroupEvent = new Event($this->clientId, $this->clientSecret);
+            // TODO: Create mapFromPco method.
+            $pcoGroupEvent->mapFromPco($groupEvent);
+            $clientResponse->data->push($pcoGroupEvent);
+        }
 
-        return $this->client->send($request);
+        return $clientResponse;
     }
 
     public function get(array $query = []): ClientResponse
     {
-        $headers = $this->buildHeaders();
+        $http = $this->client()
+            ->get($this->hostname() . self::EVENT_ENDPOINT . '/' . $this->id, $query);
 
-        $query = http_build_query($query);
+        return $this->processResponse($http);
+    }
 
-        $request = new Request('GET', 'groups/v2/events/' . $this->eventId . '?' . $query, $headers);
+    private function mapFromPco(stdClass $pco): void
+    {
 
-        return $this->client->send($request);
     }
 }
