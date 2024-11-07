@@ -39,7 +39,7 @@ trait HasPlanningCenterClient
     {
         $clientResponse = new ClientResponse($http);
         $this->mapFromPco($http->json('data'));
-        $clientResponse->data = $this->attributes;
+        $clientResponse->data->add($this->attributes);
 
         return $clientResponse;
     }
