@@ -15,7 +15,7 @@ use Illuminate\Support\Arr;
 /** @api */
 class Person
 {
-    protected const PEOPLE_ENDPOINT = '/people/v2/people';
+    public const PEOPLE_ENDPOINT = '/people/v2/people';
 
     use HasPlanningCenterClient, HasEmails;
 

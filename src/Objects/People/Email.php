@@ -6,15 +6,10 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Objects\People;
 
-use EncoreDigitalGroup\PlanningCenter\Configuration\AuthorizationOptions;
-use EncoreDigitalGroup\PlanningCenter\Configuration\ClientConfiguration;
 use EncoreDigitalGroup\PlanningCenter\Objects\People\Attributes\EmailAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
-use EncoreDigitalGroup\PlanningCenter\PlanningCenterClient;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 use Illuminate\Support\Arr;
-use PHPGenesis\Common\Container\PhpGenesisContainer;
-use PHPGenesis\Http\HttpClient;
 use stdClass;
 
 /** @api */
@@ -22,21 +17,23 @@ class Email
 {
     use HasPlanningCenterClient;
 
+    public const EMAIL_ENDPOINT = '/people/v2/emails';
+
     public int|string|null $id;
     public EmailAttributes $attributes;
-    protected AuthorizationOptions $auth;
 
-    public function __construct(?PlanningCenterClient $client = null)
+    public static function make(?string $clientId = null, ?string $clientSecret = null): self
     {
-        $this->client = $client ?? new PlanningCenterClient();
-        $this->attributes = new EmailAttributes();
-        $this->auth = PhpGenesisContainer::getInstance()->get(ClientConfiguration::class)->authorization();
+        $email = new self($clientId, $clientSecret);
+        $email->attributes = new EmailAttributes();
+
+        return $email;
     }
 
     public function get(): ClientResponse
     {
-        $http = HttpClient::withBasicAuth($this->auth->getClientId(), $this->auth->getClientSecret())
-            ->get($this->client->getBaseUrl() . '/people/v2/emails/' . $this->id);
+        $http = $this->client()
+            ->get($this->hostname() . self::EMAIL_ENDPOINT . '/' . $this->id);
 
         return $this->processResponse($http);
 
@@ -44,16 +41,15 @@ class Email
 
     public function forPerson(): ClientResponse
     {
-        $http = HttpClient::withBasicAuth($this->auth->getClientId(), $this->auth->getClientSecret())
-            ->get($this->client->getBaseUrl() . '/people/v2/people/' . $this->attributes->personId . '/emails');
+        $http = $this->client()
+            ->get($this->hostname() . Person::PEOPLE_ENDPOINT . '/' . $this->attributes->personId . '/emails');
 
         $clientResponse = new ClientResponse($http);
-        $clientResponse->data = [];
 
         foreach ($http->json('data') as $email) {
-            $e = new Email($this->client);
-            $e->mapFromPco($email);
-            $clientResponse->data[] = $e;
+            $pcoEmail = new Email($this->clientId, $this->clientSecret);
+            $pcoEmail->mapFromPco($email);
+            $clientResponse->data->push($pcoEmail);
         }
 
         return $clientResponse;
@@ -61,8 +57,8 @@ class Email
 
     public function update(): ClientResponse
     {
-        $http = HttpClient::withBasicAuth($this->auth->getClientId(), $this->auth->getClientSecret())
-            ->patch($this->client->getBaseUrl() . '/people/v2/emails/' . $this->id, $this->mapToPco());
+        $http = $this->client()
+            ->patch($this->hostname() . self::EMAIL_ENDPOINT . '/' . $this->id, $this->mapToPco());
 
         return $this->processResponse($http);
     }
