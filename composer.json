@@ -29,7 +29,7 @@
         "php": "^8.2.0",
         "guzzlehttp/guzzle": "^7.7",
         "illuminate/support": "^10.0|^11.0",
-        "phpgenesis/phpgenesis": "^0.2"
+        "phpgenesis/http": "^0.2"
     },
     "require-dev": {
         "phpstan/extension-installer": "^1.3",

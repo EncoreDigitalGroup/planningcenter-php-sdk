@@ -8,21 +8,31 @@ namespace EncoreDigitalGroup\PlanningCenter\Traits;
 
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\PlanningCenterClient;
+use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\Response;
+use PHPGenesis\Http\HttpClient;
 
 trait HasPlanningCenterClient
 {
-    protected string $baseUrl = 'https://api.planningcenteronline.com';
-    protected PlanningCenterClient $client;
+    protected const HOSTNAME = 'https://api.planningcenteronline.com';
 
-    public function __construct(?PlanningCenterClient $client = null)
+    protected string $clientId;
+    protected string $clientSecret;
+
+    public function __construct(?string $clientId = null, ?string $clientSecret = null)
     {
-        $this->client = $client ?? new PlanningCenterClient();
+        $this->clientId = $clientId ?? '';
+        $this->clientSecret = $clientSecret ?? '';
     }
 
-    public function client(): PlanningCenterClient
+    public function client(): PendingRequest
     {
-        return $this->client;
+        return HttpClient::withBasicAuth($this->clientId, $this->clientSecret);
+    }
+
+    public function hostname(): string
+    {
+        return self::HOSTNAME;
     }
 
     protected function processResponse(Response $http): ClientResponse

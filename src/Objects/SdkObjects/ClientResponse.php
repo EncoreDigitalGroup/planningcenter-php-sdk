@@ -7,11 +7,12 @@
 namespace EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects;
 
 use Illuminate\Http\Client\Response;
+use Illuminate\Support\Collection;
 
 class ClientResponse
 {
     public MetaContainer $meta;
-    public array|object|null $data;
+    public Collection $data;
 
     public function __construct(Response $response)
     {
@@ -20,5 +21,7 @@ class ClientResponse
         $this->meta->success = $this->meta->response->successful();
         $this->meta->nextPage = $this->meta->response->json('meta.next.offset');
         $this->meta->previousPage = $this->meta->response->json('meta.prev.offset');
+
+        $this->data = new Collection();
     }
 }
