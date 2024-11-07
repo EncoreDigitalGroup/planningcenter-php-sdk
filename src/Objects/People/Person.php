@@ -12,6 +12,7 @@ use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
+use stdClass;
 
 /** @api */
 class Person
@@ -79,10 +80,8 @@ class Person
         return $this->processResponse($http);
     }
 
-    private function mapFromPco(array $pco): void
+    private function mapFromPco(stdClass $pco): void
     {
-        $pco = objectify($pco);
-
         $this->id = $pco->data->id;
         $this->attributes->personId = $pco->data->id;
         $this->attributes->firstName = $pco->data->attributes->first_name;
