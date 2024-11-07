@@ -17,8 +17,8 @@ class PersonAttributes
     public ?string $nickname;
     public ?string $middleName;
     public ?string $lastName;
-    public DateTime|Carbon|null $birthdate;
-    public DateTime|Carbon|null $anniversary;
+    public ?Carbon $birthdate;
+    public ?Carbon $anniversary;
     public ?string $gender;
     public ?int $grade;
     public ?bool $child;
@@ -27,11 +27,11 @@ class PersonAttributes
     public ?bool $accountingAdministrator;
     public ?string $peoplePermissions;
     public ?string $membership;
-    public DateTime|Carbon|null $inactivatedAt;
+    public ?Carbon $inactivatedAt;
     public ?string $medicalNotes;
     public ?bool $mfaConfigured;
-    public DateTime|Carbon|null $createdAt;
-    public DateTime|Carbon|null $updatedAt;
+    public ?Carbon $createdAt;
+    public ?Carbon $updatedAt;
     public ?string $avatar;
     public ?string $name;
     public ?string $demographicAvatarUrl;

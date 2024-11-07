@@ -16,7 +16,7 @@ class EmailAttributes
     public ?string $address;
     public ?string $location;
     public ?bool $primary;
-    public DateTime|Carbon|null $createdAt;
-    public DateTime|Carbon|null $updatedAt;
+    public ?Carbon $createdAt;
+    public ?Carbon $updatedAt;
     public mixed $blocked;
 }

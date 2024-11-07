@@ -8,9 +8,12 @@ namespace EncoreDigitalGroup\PlanningCenter\Objects\People\Traits;
 
 use EncoreDigitalGroup\PlanningCenter\Objects\People\Email;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
+use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 
 trait HasEmails
 {
+    use HasPlanningCenterClient;
+
     protected bool $withEmails = false;
 
     public function withEmails(bool $include = true): static
@@ -22,7 +25,7 @@ trait HasEmails
 
     public function email(): ClientResponse
     {
-        $email = new Email($this->client);
+        $email = Email::make($this->clientId, $this->clientSecret);
         $email->attributes->personId = $this->id;
 
         return $email->forPerson();

@@ -11,6 +11,7 @@ use EncoreDigitalGroup\PlanningCenter\Objects\People\Traits\HasEmails;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Carbon;
 
 /** @api */
 class Person
@@ -87,8 +88,8 @@ class Person
         $this->attributes->firstName = $pco->data->attributes->first_name;
         $this->attributes->middleName = $pco->data->attributes->middle_name;
         $this->attributes->lastName = $pco->data->attributes->last_name;
-        $this->attributes->birthdate = $pco->data->attributes->birthdate;
-        $this->attributes->anniversary = $pco->data->attributes->anniversary;
+        $this->attributes->birthdate = Carbon::createFromFormat('Y-m-d', $pco->data->attributes->birthdate);
+        $this->attributes->anniversary = Carbon::createFromFormat('Y-m-d', $pco->data->attributes->anniversary);
         $this->attributes->gender = $pco->data->attributes->gender;
         $this->attributes->grade = $pco->data->attributes->grade;
         $this->attributes->child = $pco->data->attributes->child;
@@ -97,11 +98,11 @@ class Person
         $this->attributes->accountingAdministrator = $pco->data->attributes->accounting_administrator;
         $this->attributes->peoplePermissions = $pco->data->attributes->people_permissions;
         $this->attributes->membership = $pco->data->attributes->membership;
-        $this->attributes->inactivatedAt = $pco->data->attributes->inactivated_at;
+        $this->attributes->inactivatedAt = Carbon::createFromFormat('c', $pco->data->attributes->inactivated_at);
         $this->attributes->medicalNotes = $pco->data->attributes->medical_notes;
         $this->attributes->mfaConfigured = $pco->data->attributes->mfa_configured;
-        $this->attributes->createdAt = $pco->data->attributes->created_at;
-        $this->attributes->updatedAt = $pco->data->attributes->updated_at;
+        $this->attributes->createdAt = Carbon::createFromFormat('c', $pco->data->attributes->created_at);
+        $this->attributes->updatedAt = Carbon::createFromFormat('c', $pco->data->attributes->updated_at);
         $this->attributes->avatar = $pco->data->attributes->avatar;
         $this->attributes->name = $pco->data->attributes->name;
         $this->attributes->demographicAvatarUrl = $pco->data->attributes->demographic_avatar_url;

@@ -11,6 +11,7 @@ use EncoreDigitalGroup\PlanningCenter\Configuration\ClientConfiguration;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\PlanningCenterClient;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
+use Illuminate\Support\Carbon;
 use PHPGenesis\Common\Container\PhpGenesisContainer;
 use PHPGenesis\Http\HttpClient;
 
@@ -18,22 +19,25 @@ class PersonMerger
 {
     use HasPlanningCenterClient;
 
+    public const PERSON_MERGER_ENDPOINT = '/people/v2/person_mergers';
+
     public string $id;
     public PersonMergerAttributes $attributes;
     public PersonMergerRelationships $relationships;
-    protected AuthorizationOptions $auth;
 
-    public function __construct(?PlanningCenterClient $client = null)
+    public static function make(string $clientId, string $clientSecret): PersonMerger
     {
-        $this->client = $client ?? new PlanningCenterClient();
-        $this->attributes = new PersonMergerAttributes();
-        $this->auth = PhpGenesisContainer::getInstance()->get(ClientConfiguration::class)->authorization();
+        $personMerger = new self($clientId, $clientSecret);
+        $personMerger->attributes = new PersonMergerAttributes();
+        $personMerger->relationships = new PersonMergerRelationships();
+
+        return $personMerger;
     }
 
     public function get(?array $query = []): ClientResponse
     {
-        $http = HttpClient::withBasicAuth($this->auth->getClientId(), $this->auth->getClientSecret())
-            ->get($this->client->getBaseUrl() . '/people/v2/person_mergers/' . $this->id, $query);
+        $http = $this->client()
+            ->get($this->hostname() . self::PERSON_MERGER_ENDPOINT . '/' . $this->id, $query);
 
         return $this->processResponse($http);
     }
@@ -44,7 +48,7 @@ class PersonMerger
         $this->id = $payload->id; //@phpstan-ignore-line
 
         $this->attributes = new PersonMergerAttributes();
-        $this->attributes->createdAt = $payload->attributes->created_at; //@phpstan-ignore-line
+        $this->attributes->createdAt = Carbon::createFromFormat('c', $payload->attributes->created_at); //@phpstan-ignore-line
         $this->attributes->personToKeepId = $payload->attributes->person_to_keep_id; //@phpstan-ignore-line
         $this->attributes->personToRemoveId = $payload->attributes->person_to_remove_id; //@phpstan-ignore-line
 

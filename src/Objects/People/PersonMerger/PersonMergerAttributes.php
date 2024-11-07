@@ -11,7 +11,7 @@ use Illuminate\Support\Carbon;
 
 class PersonMergerAttributes
 {
-    public DateTime|Carbon|string $createdAt;
+    public Carbon $createdAt;
     public int $personToKeepId;
     public int $personToRemoveId;
 }
