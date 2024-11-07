@@ -23,9 +23,9 @@ class Person
     public int|string|null $id;
     public PersonAttributes $attributes;
 
-    public static function make(?string $clientId = null, ?string $clientSecret = null): static
+    public static function make(?string $clientId = null, ?string $clientSecret = null): Person
     {
-        $person = new static($clientId, $clientSecret);
+        $person = new self($clientId, $clientSecret);
         $person->attributes = new PersonAttributes();
 
         return $person;

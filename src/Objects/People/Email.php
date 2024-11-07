@@ -22,7 +22,7 @@ class Email
     public int|string|null $id;
     public EmailAttributes $attributes;
 
-    public static function make(?string $clientId = null, ?string $clientSecret = null): self
+    public static function make(?string $clientId = null, ?string $clientSecret = null): Email
     {
         $email = new self($clientId, $clientSecret);
         $email->attributes = new EmailAttributes();
