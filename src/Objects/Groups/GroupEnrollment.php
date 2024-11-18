@@ -8,6 +8,7 @@ namespace EncoreDigitalGroup\PlanningCenter\Objects\Groups;
 
 use EncoreDigitalGroup\PlanningCenter\Configuration\AuthorizationOptions;
 use EncoreDigitalGroup\PlanningCenter\Configuration\ClientConfiguration;
+use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Attributes\GroupAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Attributes\GroupEnrollmentAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\PlanningCenterClient;
@@ -26,17 +27,18 @@ class GroupEnrollment
     public GroupEnrollmentAttributes $attributes;
     protected AuthorizationOptions $auth;
 
-    public function __construct(?PlanningCenterClient $client = null)
+    public static function make(string $clientId, string $clientSecret): GroupEnrollment
     {
-        $this->client = $client ?? new PlanningCenterClient();
-        $this->attributes = new GroupEnrollmentAttributes();
-        $this->auth = PhpGenesisContainer::getInstance()->get(ClientConfiguration::class)->authorization();
+        $group = new self($clientId, $clientSecret);
+        $group->attributes = new GroupEnrollmentAttributes;
+
+        return $group;
     }
 
     public function get(array $query = []): ClientResponse
     {
-        $http = HttpClient::withBasicAuth($this->auth->getClientId(), $this->auth->getClientSecret())
-            ->get($this->client->getBaseUrl() . '/groups/v2/groups/' . $this->attributes->groupId . '/enrollment', $query);
+        $http = $this->client()
+            ->get($this->hostname() . Group::GROUPS_ENDPOINT . $this->attributes->groupId . '/enrollment', $query);
 
         return $this->processResponse($http);
     }

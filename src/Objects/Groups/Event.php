@@ -30,7 +30,6 @@ class Event
         return $event;
     }
 
-
     public function all(array $query = []): ClientResponse
     {
         $http = $this->client()

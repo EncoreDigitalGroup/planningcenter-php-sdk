@@ -8,6 +8,7 @@ namespace EncoreDigitalGroup\PlanningCenter\Objects\Groups;
 
 use EncoreDigitalGroup\PlanningCenter\Configuration\AuthorizationOptions;
 use EncoreDigitalGroup\PlanningCenter\Configuration\ClientConfiguration;
+use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Attributes\EventAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Attributes\GroupAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\PlanningCenterClient;
@@ -21,20 +22,23 @@ class Group
 {
     use HasPlanningCenterClient;
 
+    public const GROUPS_ENDPOINT = '/groups/v2/groups';
+
     public GroupAttributes $attributes;
     protected AuthorizationOptions $auth;
 
-    public function __construct(?PlanningCenterClient $client = null)
+    public static function make(string $clientId, string $clientSecret): Group
     {
-        $this->client = $client ?? new PlanningCenterClient();
-        $this->attributes = new GroupAttributes();
-        $this->auth = PhpGenesisContainer::getInstance()->get(ClientConfiguration::class)->authorization();
+        $group = new self($clientId, $clientSecret);
+        $group->attributes = new GroupAttributes;
+
+        return $group;
     }
 
     public function all(array $query = []): ClientResponse
     {
-        $http = HttpClient::withBasicAuth($this->auth->getClientId(), $this->auth->getClientSecret())
-            ->get($this->client->getBaseUrl() . '/groups/v2/groups', $query);
+        $http = $this->client()
+            ->get($this->hostname() . self::GROUPS_ENDPOINT, $query);
 
         return $this->processResponse($http);
     }
@@ -51,8 +55,8 @@ class Group
 
     public function get(array $query = []): ClientResponse
     {
-        $http = HttpClient::withBasicAuth($this->auth->getClientId(), $this->auth->getClientSecret())
-            ->get($this->client->getBaseUrl() . '/groups/v2/groups/' . $this->attributes->groupId, $query);
+        $http = $this->client()
+            ->get($this->hostname() . self::GROUPS_ENDPOINT . '/' . $this->attributes->groupId, $query);
 
         return $this->processResponse($http);
     }
@@ -67,35 +71,26 @@ class Group
 
     public function event(array $query = []): ClientResponse
     {
-        $headers = $this->buildHeaders();
+        $http = $this->client()
+            ->get($this->hostname() . self::GROUPS_ENDPOINT . '/' . $this->attributes->groupId . '/events', $query);
 
-        $query = http_build_query($query);
-
-        $request = new Request('GET', 'groups/v2/groups/' . $this->groupId . '/events?' . $query, $headers);
-
-        return $this->client->send($request);
+        return $this->processResponse($http);
     }
 
     public function membership(array $query = []): ClientResponse
     {
-        $headers = $this->buildHeaders();
+        $http = $this->client()
+            ->get($this->hostname() . self::GROUPS_ENDPOINT . '/' . $this->attributes->groupId . '/memberships', $query);
 
-        $query = http_build_query($query);
-
-        $request = new Request('GET', 'groups/v2/groups/' . $this->groupId . '/memberships?' . $query, $headers);
-
-        return $this->client->send($request);
+        return $this->processResponse($http);
     }
 
     public function people(array $query = []): ClientResponse
     {
-        $headers = $this->buildHeaders();
+        $http = $this->client()
+            ->get($this->hostname() . self::GROUPS_ENDPOINT . '/' . $this->attributes->groupId . '/people', $query);
 
-        $query = http_build_query($query);
-
-        $request = new Request('GET', 'groups/v2/groups/' . $this->groupId . '/people?' . $query, $headers);
-
-        return $this->client->send($request);
+        return $this->processResponse($http);
     }
 
     protected function mapFromPco(array $pco): void
