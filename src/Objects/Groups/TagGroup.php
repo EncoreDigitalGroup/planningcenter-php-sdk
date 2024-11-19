@@ -6,45 +6,51 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Objects\Groups;
 
+use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Attributes\TagGroupAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
-use GuzzleHttp\Psr7\Request;
 
 /** @api */
 class TagGroup
 {
     use HasPlanningCenterClient;
 
-    public int $tagGroupId;
-    public int $tagId;
+    public const TAG_GROUP_ENDPOINT = '/groups/v2/tag_groups';
+
+    public TagGroupAttributes $attributes;
+
+    public static function make(string $clientId, string $clientSecret): TagGroup
+    {
+        $tagGroup = new self($clientId, $clientSecret);
+        $tagGroup->attributes = new TagGroupAttributes;
+
+        return $tagGroup;
+    }
 
     public function all(array $query = []): ClientResponse
     {
-        $headers = $this->buildHeaders();
+        $http = $this->client()
+            ->get($this->hostname() . self::TAG_GROUP_ENDPOINT, $query);
 
-        $query = http_build_query($query);
-
-        $request = new Request('GET', 'groups/v2/tag_groups?' . $query, $headers);
-
-        return $this->client->send($request);
+        return $this->processResponse($http);
     }
 
     public function tags(array $query = []): ClientResponse
     {
-        $headers = $this->buildHeaders();
+        $http = $this->client()
+            ->get($this->hostname() . self::TAG_GROUP_ENDPOINT . '/' . $this->attributes->tagGroupId . '/tags', $query);
 
-        $query = http_build_query($query);
-
-        $request = new Request('GET', 'groups/v2/tag_groups/' . $this->tagGroupId . '/tags?' . $query, $headers);
-
-        return $this->client->send($request);
+        return $this->processResponse($http);
     }
 
-    public function tag(array $query = []): ClientResponse
+    protected function mapFromPco(array $pco): void
     {
-        $tag = new Tag($this->client);
-        $tag->tagId = $this->tagId;
+        $pco = objectify($pco);
 
-        return $tag->get($query);
+        $this->attributes->tagGroupId = $pco->id;
+        $this->attributes->displayPublicly = $pco->attributes->display_publicly;
+        $this->attributes->multipleOptionsEnabled = $pco->attributes->multiple_options_enabled;
+        $this->attributes->name = $pco->attributes->name;
+        $this->attributes->position = $pco->attributes->position;
     }
 }

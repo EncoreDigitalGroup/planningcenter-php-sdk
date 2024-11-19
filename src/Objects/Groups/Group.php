@@ -25,7 +25,6 @@ class Group
     public const GROUPS_ENDPOINT = '/groups/v2/groups';
 
     public GroupAttributes $attributes;
-    protected AuthorizationOptions $auth;
 
     public static function make(string $clientId, string $clientSecret): Group
     {
@@ -112,7 +111,5 @@ class Group
         $this->attributes->publicChurchCenterUrl = $pco->attributes->public_church_center_url;
         $this->attributes->schedule = $pco->attributes->schedule;
         $this->attributes->virtualLocationUrl = $pco->attributes->virtual_location_url;
-
-
     }
 }
