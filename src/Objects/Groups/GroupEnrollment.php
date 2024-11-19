@@ -6,8 +6,8 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Objects\Groups;
 
-use EncoreDigitalGroup\PlanningCenter\Configuration\AuthorizationOptions;
-use EncoreDigitalGroup\PlanningCenter\Configuration\ClientConfiguration;
+use EncoreDigitalGroup\PlanningCenter\Support\AuthorizationOptions;
+use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Attributes\GroupAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Attributes\GroupEnrollmentAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
@@ -25,12 +25,12 @@ class GroupEnrollment
     use HasPlanningCenterClient;
 
     public GroupEnrollmentAttributes $attributes;
-    protected AuthorizationOptions $auth;
 
     public static function make(string $clientId, string $clientSecret): GroupEnrollment
     {
         $group = new self($clientId, $clientSecret);
         $group->attributes = new GroupEnrollmentAttributes;
+        $group->setApiVersion(PlanningCenterApiVersion::GROUPS_DEFAULT);
 
         return $group;
     }

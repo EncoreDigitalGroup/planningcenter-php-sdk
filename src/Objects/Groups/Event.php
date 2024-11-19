@@ -8,6 +8,7 @@ namespace EncoreDigitalGroup\PlanningCenter\Objects\Groups;
 
 use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Attributes\EventAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
+use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 use Illuminate\Support\Carbon;
 use stdClass;
@@ -26,6 +27,7 @@ class Event
     {
         $event = new self($clientId, $clientSecret);
         $event->attributes = new EventAttributes;
+        $event->setApiVersion(PlanningCenterApiVersion::GROUPS_DEFAULT);
 
         return $event;
     }

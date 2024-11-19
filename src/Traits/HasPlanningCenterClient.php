@@ -8,6 +8,7 @@ namespace EncoreDigitalGroup\PlanningCenter\Traits;
 
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\PlanningCenterClient;
+use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\Response;
 use PHPGenesis\Http\HttpClient;
@@ -18,6 +19,7 @@ trait HasPlanningCenterClient
 
     protected string $clientId;
     protected string $clientSecret;
+    protected string $apiVersion = '';
 
     public function __construct(?string $clientId = null, ?string $clientSecret = null)
     {
@@ -27,7 +29,8 @@ trait HasPlanningCenterClient
 
     public function client(): PendingRequest
     {
-        return HttpClient::withBasicAuth($this->clientId, $this->clientSecret);
+        return HttpClient::withBasicAuth($this->clientId, $this->clientSecret)
+            ->withHeader('X-PCO-API-Version', $this->apiVersion);
     }
 
     public function hostname(): string
@@ -35,11 +38,26 @@ trait HasPlanningCenterClient
         return self::HOSTNAME;
     }
 
+    public function setApiVersion(string $apiVersion): static
+    {
+        $this->apiVersion = $apiVersion;
+
+        return $this;
+    }
+
     protected function processResponse(Response $http): ClientResponse
     {
         $clientResponse = new ClientResponse($http);
-        $this->mapFromPco($http->json('data'));
-        $clientResponse->data->add($this->attributes);
+
+        if (
+            $this->apiVersion == PlanningCenterApiVersion::PEOPLE_DEFAULT
+            || $this->apiVersion == PlanningCenterApiVersion::GROUPS_DEFAULT
+            || $this->apiVersion == PlanningCenterApiVersion::CALENDAR_DEFAULT
+        ) {
+            $this->mapFromPco($http->json('data'));
+            $clientResponse->data->add($this->attributes);
+        }
+
 
         return $clientResponse;
     }

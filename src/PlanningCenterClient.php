@@ -6,7 +6,7 @@
 
 namespace EncoreDigitalGroup\PlanningCenter;
 
-use EncoreDigitalGroup\PlanningCenter\Configuration\ClientConfiguration;
+use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use PHPGenesis\Common\Container\PhpGenesisContainer;
 use PHPGenesis\Http\HttpClient;
 use PHPGenesis\Http\HttpClientBuilder;
@@ -18,8 +18,8 @@ class PlanningCenterClient
 
     public function __construct()
     {
-        PhpGenesisContainer::getInstance()->singleton(ClientConfiguration::class, function (): ClientConfiguration {
-            return new ClientConfiguration();
+        PhpGenesisContainer::getInstance()->singleton(PlanningCenterApiVersion::class, function (): PlanningCenterApiVersion {
+            return new PlanningCenterApiVersion();
         });
 
         $this->builder = new HttpClientBuilder();

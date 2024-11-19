@@ -6,8 +6,8 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Objects\People\PersonMerger;
 
-use EncoreDigitalGroup\PlanningCenter\Configuration\AuthorizationOptions;
-use EncoreDigitalGroup\PlanningCenter\Configuration\ClientConfiguration;
+use EncoreDigitalGroup\PlanningCenter\Support\AuthorizationOptions;
+use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\PlanningCenterClient;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;

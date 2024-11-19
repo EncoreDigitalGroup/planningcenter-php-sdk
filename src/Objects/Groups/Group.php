@@ -6,8 +6,8 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Objects\Groups;
 
-use EncoreDigitalGroup\PlanningCenter\Configuration\AuthorizationOptions;
-use EncoreDigitalGroup\PlanningCenter\Configuration\ClientConfiguration;
+use EncoreDigitalGroup\PlanningCenter\Support\AuthorizationOptions;
+use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Attributes\EventAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Attributes\GroupAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
@@ -30,6 +30,7 @@ class Group
     {
         $group = new self($clientId, $clientSecret);
         $group->attributes = new GroupAttributes;
+        $group->setApiVersion(PlanningCenterApiVersion::GROUPS_DEFAULT);
 
         return $group;
     }

@@ -9,6 +9,7 @@ namespace EncoreDigitalGroup\PlanningCenter\Objects\People;
 use EncoreDigitalGroup\PlanningCenter\Objects\People\Attributes\PersonAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\People\Traits\HasEmails;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
+use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
@@ -28,6 +29,7 @@ class Person
     {
         $person = new self($clientId, $clientSecret);
         $person->attributes = new PersonAttributes();
+        $person->setApiVersion(PlanningCenterApiVersion::PEOPLE_DEFAULT);
 
         return $person;
     }
