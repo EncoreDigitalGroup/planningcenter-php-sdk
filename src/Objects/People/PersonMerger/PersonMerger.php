@@ -8,6 +8,7 @@ namespace EncoreDigitalGroup\PlanningCenter\Objects\People\PersonMerger;
 
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\Relationships\BasicRelationshipData;
+use EncoreDigitalGroup\PlanningCenter\Support\AttributeMapper;
 use EncoreDigitalGroup\PlanningCenter\Support\AuthorizationOptions;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 use Illuminate\Support\Carbon;
@@ -42,21 +43,28 @@ class PersonMerger
     {
         $payload = objectify($payload);
 
+        $attributeMap = [
+            'personMergerId' => 'id',
+            'createdAt' => 'created_at',
+            'personToKeepId' => 'person_to_keep_id',
+            'personToRemoveId' => 'person_to_remove_id',
+        ];
+
         $this->attributes = new PersonMergerAttributes();
-        $this->attributes->personMergerId = $payload->id; //@phpstan-ignore-line
-        $this->attributes->createdAt = Carbon::createFromFormat('c', $payload->attributes->created_at); //@phpstan-ignore-line
-        $this->attributes->personToKeepId = $payload->attributes->person_to_keep_id; //@phpstan-ignore-line
-        $this->attributes->personToRemoveId = $payload->attributes->person_to_remove_id; //@phpstan-ignore-line
+        AttributeMapper::from($payload, $this->attributes, $attributeMap);
 
         $this->relationships = new PersonMergerRelationships();
 
+        $personToAttributeMap = [
+            'type' => 'type',
+            'id' => 'id',
+        ];
+
         $this->relationships->personToKeep = new BasicRelationshipData();
-        $this->relationships->personToKeep->type = $payload->relationships->person_to_keep->data->type; //@phpstan-ignore-line
-        $this->relationships->personToKeep->id = $payload->relationships->person_to_keep->data->id; //@phpstan-ignore-line
+        AttributeMapper::from($payload, $this->relationships->personToKeep, $personToAttributeMap);
 
         $this->relationships->personToRemove = new BasicRelationshipData();
-        $this->relationships->personToRemove->type = $payload->relationships->person_to_remove->data->type; //@phpstan-ignore-line
-        $this->relationships->personToRemove->id = $payload->relationships->person_to_remove->data->id; //@phpstan-ignore-line
+        AttributeMapper::from($payload, $this->relationships->personToRemove, $personToAttributeMap);
 
         return $this;
     }
