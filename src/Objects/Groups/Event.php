@@ -20,7 +20,6 @@ class Event
 
     public const EVENT_ENDPOINT = '/groups/v2/events';
 
-    public int|string|null $id;
     public EventAttributes $attributes;
 
     public static function make(string $clientId, string $clientSecret): Event
