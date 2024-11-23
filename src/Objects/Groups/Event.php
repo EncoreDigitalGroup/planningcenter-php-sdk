@@ -18,7 +18,7 @@ class Event
 {
     use HasPlanningCenterClient;
 
-    public const EVENT_ENDPOINT = '/groups/v2/events';
+    public const string EVENT_ENDPOINT = '/groups/v2/events';
 
     public EventAttributes $attributes;
 

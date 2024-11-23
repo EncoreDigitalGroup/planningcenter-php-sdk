@@ -22,7 +22,7 @@ class Group
 {
     use HasPlanningCenterClient;
 
-    public const GROUPS_ENDPOINT = '/groups/v2/groups';
+    public const string GROUPS_ENDPOINT = '/groups/v2/groups';
 
     public GroupAttributes $attributes;
 

@@ -18,7 +18,7 @@ use stdClass;
 /** @api */
 class Person
 {
-    public const PEOPLE_ENDPOINT = '/people/v2/people';
+    public const string PEOPLE_ENDPOINT = '/people/v2/people';
 
     use HasPlanningCenterClient, HasEmails;
 

@@ -16,7 +16,7 @@ class PersonMerger
 {
     use HasPlanningCenterClient;
 
-    public const PERSON_MERGER_ENDPOINT = '/people/v2/person_mergers';
+    public const string PERSON_MERGER_ENDPOINT = '/people/v2/person_mergers';
 
     public PersonMergerAttributes $attributes;
     public PersonMergerRelationships $relationships;

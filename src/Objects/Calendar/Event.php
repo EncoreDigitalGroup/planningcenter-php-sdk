@@ -10,14 +10,13 @@ use EncoreDigitalGroup\PlanningCenter\Objects\Calendar\Attributes\EventAttribute
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
-use GuzzleHttp\Psr7\Request;
 
 /** @api */
 class Event
 {
     use HasPlanningCenterClient;
 
-    public const EVENT_ENDPOINT = '/calendar/v2/events';
+    public const string EVENT_ENDPOINT = '/calendar/v2/events';
 
     public EventAttributes $attributes;
 

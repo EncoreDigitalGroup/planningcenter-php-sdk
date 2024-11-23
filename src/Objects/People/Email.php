@@ -18,7 +18,7 @@ class Email
 {
     use HasPlanningCenterClient;
 
-    public const EMAIL_ENDPOINT = '/people/v2/emails';
+    public const string EMAIL_ENDPOINT = '/people/v2/emails';
 
     public EmailAttributes $attributes;
 

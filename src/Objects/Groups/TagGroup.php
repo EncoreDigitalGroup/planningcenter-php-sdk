@@ -16,7 +16,7 @@ class TagGroup
 {
     use HasPlanningCenterClient;
 
-    public const TAG_GROUP_ENDPOINT = '/groups/v2/tag_groups';
+    public const string TAG_GROUP_ENDPOINT = '/groups/v2/tag_groups';
 
     public TagGroupAttributes $attributes;
 

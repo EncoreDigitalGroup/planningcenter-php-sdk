@@ -21,7 +21,7 @@ class TagGroup
 {
     use HasPlanningCenterClient;
 
-    public const TAG_GROUP_ENDPOINT = '/calendar/v2/tag_groups';
+    public const string TAG_GROUP_ENDPOINT = '/calendar/v2/tag_groups';
 
     public function all(array $query = []): ClientResponse
     {
