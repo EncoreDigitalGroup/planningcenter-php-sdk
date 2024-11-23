@@ -54,7 +54,7 @@ class Person
     public function get(?array $query = null): ClientResponse
     {
         $http = $this->client()
-            ->get($this->hostname() . self::PEOPLE_ENDPOINT . '/' . $this->id, $query);
+            ->get($this->hostname() . self::PEOPLE_ENDPOINT . '/' . $this->attributes->personId, $query);
 
         return $this->processResponse($http);
     }
@@ -70,7 +70,7 @@ class Person
     public function update(): ClientResponse
     {
         $http = $this->client()
-            ->patch($this->hostname() . self::PEOPLE_ENDPOINT . '/' . $this->id, $this->mapToPco());
+            ->patch($this->hostname() . self::PEOPLE_ENDPOINT . '/' . $this->attributes->personId, $this->mapToPco());
 
         return $this->processResponse($http);
     }
@@ -78,7 +78,7 @@ class Person
     public function delete(): ClientResponse
     {
         $http = $this->client()
-            ->delete($this->hostname() . self::PEOPLE_ENDPOINT . '/' . $this->id);
+            ->delete($this->hostname() . self::PEOPLE_ENDPOINT . '/' . $this->attributes->personId);
 
         return $this->processResponse($http);
     }

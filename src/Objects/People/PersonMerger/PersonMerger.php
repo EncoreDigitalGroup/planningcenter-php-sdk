@@ -34,7 +34,7 @@ class PersonMerger
     public function get(?array $query = []): ClientResponse
     {
         $http = $this->client()
-            ->get($this->hostname() . self::PERSON_MERGER_ENDPOINT . '/' . $this->id, $query);
+            ->get($this->hostname() . self::PERSON_MERGER_ENDPOINT . '/' . $this->attributes->personMergerId, $query);
 
         return $this->processResponse($http);
     }

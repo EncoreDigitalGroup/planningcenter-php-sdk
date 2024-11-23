@@ -35,7 +35,7 @@ class Email
     public function get(): ClientResponse
     {
         $http = $this->client()
-            ->get($this->hostname() . self::EMAIL_ENDPOINT . '/' . $this->id);
+            ->get($this->hostname() . self::EMAIL_ENDPOINT . '/' . $this->attributes->emailAddressId);
 
         return $this->processResponse($http);
 
@@ -60,7 +60,7 @@ class Email
     public function update(): ClientResponse
     {
         $http = $this->client()
-            ->patch($this->hostname() . self::EMAIL_ENDPOINT . '/' . $this->id, $this->mapToPco());
+            ->patch($this->hostname() . self::EMAIL_ENDPOINT . '/' . $this->attributes->emailAddressId, $this->mapToPco());
 
         return $this->processResponse($http);
     }

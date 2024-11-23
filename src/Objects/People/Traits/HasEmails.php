@@ -26,7 +26,7 @@ trait HasEmails
     public function email(): ClientResponse
     {
         $email = Email::make($this->clientId, $this->clientSecret);
-        $email->attributes->personId = $this->id;
+        $email->attributes->personId = $this->attributes->personId;
 
         return $email->forPerson();
     }
