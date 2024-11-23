@@ -6,16 +6,12 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Objects\Groups;
 
+use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Attributes\GroupEnrollmentAttributes;
 use EncoreDigitalGroup\PlanningCenter\Support\AttributeMapper;
-use EncoreDigitalGroup\PlanningCenter\Support\AuthorizationOptions;
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
-use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Attributes\EventAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Attributes\GroupAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
-use EncoreDigitalGroup\PlanningCenter\PlanningCenterClient;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
-use GuzzleHttp\Psr7\Request;
-use PHPGenesis\Common\Container\PhpGenesisContainer;
 use PHPGenesis\Http\HttpClient;
 
 /** @api */
@@ -46,10 +42,8 @@ class Group
 
     public function mine(array $query = []): ClientResponse
     {
-        $query = array_merge(['filter' => 'my_groups'], $query);
-
-        $http = HttpClient::withBasicAuth($this->auth->getClientId(), $this->auth->getClientSecret())
-            ->get($this->client->getBaseUrl() . '/groups/v2/groups', $query);
+        $http = $this->client()
+            ->get($this->hostname() . self::GROUPS_ENDPOINT, array_merge(['filter' => 'my_groups'], $query));
 
         return $this->processResponse($http);
     }
@@ -64,7 +58,12 @@ class Group
 
     public function enrollment(): ClientResponse
     {
-        $enrollment = new GroupEnrollment($this->client);
+        $enrollment = new GroupEnrollment($this->clientId, $this->clientSecret);
+
+        if (!isset($enrollment->attributes)) {
+            $enrollment->attributes = new GroupEnrollmentAttributes;
+        }
+
         $enrollment->attributes->groupId = $this->attributes->groupId;
 
         return $enrollment->get();

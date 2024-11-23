@@ -51,7 +51,7 @@ class Event
     public function get(array $query = []): ClientResponse
     {
         $http = $this->client()
-            ->get($this->hostname() . self::EVENT_ENDPOINT . '/' . $this->id, $query);
+            ->get($this->hostname() . self::EVENT_ENDPOINT . '/' . $this->attributes->eventId, $query);
 
         return $this->processResponse($http);
     }
@@ -61,6 +61,7 @@ class Event
         $pco = objectify($pco);
 
         $attributeMap = [
+            'eventId' => 'id',
             'attendanceRequestsEnabled' => 'attendance_requests_enabled',
             'automatedReminderEnabled' => 'automated_reminder_enabled',
             'canceled' => 'canceled',
