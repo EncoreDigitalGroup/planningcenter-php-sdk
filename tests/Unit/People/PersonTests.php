@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\People;
 
+use EncoreDigitalGroup\PlanningCenter\Objects\People\Attributes\PersonAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\People\Person;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use Illuminate\Support\Collection;
@@ -14,9 +15,13 @@ test('People: Can Create Person', function () {
     $person->attributes->lastName = "Smith";
 
     $response = $person->create();
+    /** @var PersonAttributes $personAttributes */
+    $personAttributes = $response->data->first();
 
-    expect($response)->toBeInstanceOf(ClientResponse::class);
-})->only();
+    expect($response)->toBeInstanceOf(ClientResponse::class)
+        ->and($personAttributes->firstName)->toBe(PeopleMocks::FIRST_NAME)
+        ->and($personAttributes->lastName)->toBe(PeopleMocks::LAST_NAME);
+});
 
 test('People: Can List All', function () {
     $response = $this->person->all();
