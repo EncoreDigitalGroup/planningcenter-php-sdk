@@ -4,9 +4,9 @@
  * Copyright (c) 2024. Encore Digital Group
  */
 
-namespace EncoreDigitalGroup\PlanningCenter\Objects\People\PersonMerger;
+namespace EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\Relationships;
 
-class PersonMergerData
+class BasicRelationshipData
 {
     public string $type;
     public string $id;
