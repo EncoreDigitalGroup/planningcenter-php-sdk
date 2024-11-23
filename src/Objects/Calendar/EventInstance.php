@@ -6,7 +6,11 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Objects\Calendar;
 
+use EncoreDigitalGroup\PlanningCenter\Objects\Calendar\Attributes\EventAttributes;
+use EncoreDigitalGroup\PlanningCenter\Objects\Calendar\Attributes\EventInstanceAttributes;
+use EncoreDigitalGroup\PlanningCenter\Objects\Calendar\Relationships\EventInstanceRelationships;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
+use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 use GuzzleHttp\Psr7\Request;
 
@@ -15,28 +19,33 @@ class EventInstance
 {
     use HasPlanningCenterClient;
 
-    public int $eventInstanceId;
-    public int $eventId;
+    public const string EVENT_INSTANCE_ENDPOINT = 'calendar/v2/event_instances';
+
+    public EventInstanceAttributes $attributes;
+    public EventInstanceRelationships $relationships;
+
+    public static function make(string $clientId, string $clientSecret): EventInstance
+    {
+        $event = new self($clientId, $clientSecret);
+        $event->attributes = new EventInstanceAttributes;
+        $event->setApiVersion(PlanningCenterApiVersion::CALENDAR_DEFAULT);
+
+        return $event;
+    }
 
     public function all(array $query = []): ClientResponse
     {
-        $headers = $this->buildHeaders();
+        $http = $this->client()
+            ->get($this->hostname() . Event::EVENT_ENDPOINT . '/' . $this->relationships->event->data->id . '/event_instances', $query);
 
-        $query = http_build_query($query);
-
-        $request = new Request('GET', 'calendar/v2/events/' . $this->eventId . '/event_instances/?' . $query, $headers);
-
-        return $this->client->send($request);
+        return $this->processResponse($http);
     }
 
     public function get(array $query = []): ClientResponse
     {
-        $headers = $this->buildHeaders();
+        $http = $this->client()
+            ->get($this->hostname() . self::EVENT_INSTANCE_ENDPOINT . '/' . $this->attributes->eventInstanceId, $query);
 
-        $query = http_build_query($query);
-
-        $request = new Request('GET', 'calendar/v2/event_instances/' . $this->eventInstanceId . '?' . $query, $headers);
-
-        return $this->client->send($request);
+        return $this->processResponse($http);
     }
 }

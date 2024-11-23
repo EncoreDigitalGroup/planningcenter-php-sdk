@@ -21,44 +21,21 @@ class TagGroup
 {
     use HasPlanningCenterClient;
 
-    public int $tagGroupId;
-    public int $tagId;
+    public const TAG_GROUP_ENDPOINT = '/calendar/v2/tag_groups';
 
     public function all(array $query = []): ClientResponse
     {
-        $headers = $this->buildHeaders();
+        $http = $this->client()
+            ->get($this->hostname() . self::TAG_GROUP_ENDPOINT, $query);
 
-        $query = http_build_query($query);
-
-        $request = new Request('GET', 'calendar/v2/tag_groups?' . $query, $headers);
-
-        return $this->client->send($request);
+        return $this->processResponse($http);
     }
 
     public function tags(array $query = []): ClientResponse
     {
-        $headers = $this->buildHeaders();
+        $http = $this->client()
+            ->get($this->hostname() . self::TAG_GROUP_ENDPOINT . '/' . $this->attributes->tagGroupId . '/tags', $query);
 
-        $query = http_build_query($query);
-
-        $tagGroupId = $this->tagGroupId ?? '';
-
-        $request = new Request('GET', 'calendar/v2/tag_groups/' . $tagGroupId . '/tags?' . $query, $headers);
-
-        return $this->client->send($request);
-    }
-
-    public function tag(array $query = []): ClientResponse
-    {
-
-        $headers = $this->buildHeaders();
-
-        $query = http_build_query($query);
-
-        $tagGroupId = $this->tagGroupId ?? '';
-
-        $request = new Request('GET', 'calendar/v2/tag_groups/' . $tagGroupId . '/tags/' . $this->tagId . '?' . $query, $headers);
-
-        return $this->client->send($request);
+        return $this->processResponse($http);
     }
 }
