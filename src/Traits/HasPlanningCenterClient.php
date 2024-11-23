@@ -7,7 +7,6 @@
 namespace EncoreDigitalGroup\PlanningCenter\Traits;
 
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
-use EncoreDigitalGroup\PlanningCenter\PlanningCenterClient;
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\Response;
@@ -15,7 +14,7 @@ use PHPGenesis\Http\HttpClient;
 
 trait HasPlanningCenterClient
 {
-    protected const HOSTNAME = 'https://api.planningcenteronline.com';
+    protected const string HOSTNAME = 'https://api.planningcenteronline.com';
 
     protected string $clientId;
     protected string $clientSecret;
