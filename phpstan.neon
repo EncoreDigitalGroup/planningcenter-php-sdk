@@ -8,10 +8,7 @@ parameters:
     ignoreErrors:
         - identifier: missingType.iterableValue
         - identifier: missingType.generics
-    unused_public:
-        methods: true
-        properties: true
-        constants: true
+        - '#Cognitive complexity for "EncoreDigitalGroup\\PlanningCenter\\Support\\AttributeMapper[^\\s]+#'
     cognitive_complexity:
             class: 50
             function: 10

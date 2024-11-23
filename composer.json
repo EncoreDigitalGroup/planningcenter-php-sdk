@@ -36,8 +36,7 @@
         "phpstan/phpstan": "^1.10",
         "rector/rector": "^1.0",
         "tightenco/duster": "^3.0",
-        "tomasvotruba/cognitive-complexity": "^0.2.3",
-        "tomasvotruba/unused-public": "^0.3.7"
+        "tomasvotruba/cognitive-complexity": "^0.2.3"
     },
     "autoload": {
         "psr-4": {
