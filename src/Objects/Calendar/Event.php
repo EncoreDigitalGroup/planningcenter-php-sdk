@@ -8,8 +8,11 @@ namespace EncoreDigitalGroup\PlanningCenter\Objects\Calendar;
 
 use EncoreDigitalGroup\PlanningCenter\Objects\Calendar\Attributes\EventAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
+use EncoreDigitalGroup\PlanningCenter\Support\AttributeMapper;
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
+use Illuminate\Support\Carbon;
+use stdClass;
 
 /** @api */
 class Event
@@ -59,5 +62,26 @@ class Event
         $eventInstance->eventId = $this->attributes->eventId;
 
         return $eventInstance->all($query);
+    }
+
+    private function mapFromPco(stdClass $pco): void
+    {
+        $attributeMap = [
+            'eventId' => 'id',
+            'approvalStatus' => 'approval_status',
+            'createdAt' => 'created_at',
+            'description' => 'description',
+            'featured' => 'featured',
+            'imageUrl' => 'image_url',
+            'name' => 'name',
+            'percentApproved' => 'percent_approved',
+            'percentRejected' => 'percent_rejected',
+            'registrationUrl' => 'registration_url',
+            'summary' => 'summary',
+            'updatedAt' => 'updated_at',
+            'visibleInChurchCenter' => 'visible_in_church_center',
+        ];
+
+        AttributeMapper::from($pco, $this->attributes, $attributeMap, ['created_at', 'updated_at']);
     }
 }
