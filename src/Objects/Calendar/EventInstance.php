@@ -6,13 +6,12 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Objects\Calendar;
 
-use EncoreDigitalGroup\PlanningCenter\Objects\Calendar\Attributes\EventAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\Calendar\Attributes\EventInstanceAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\Calendar\Relationships\EventInstanceRelationships;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
+use EncoreDigitalGroup\PlanningCenter\Support\AttributeMapper;
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
-use GuzzleHttp\Psr7\Request;
 
 /** @api */
 class EventInstance
@@ -28,6 +27,7 @@ class EventInstance
     {
         $event = new self($clientId, $clientSecret);
         $event->attributes = new EventInstanceAttributes;
+        $event->relationships = new EventInstanceRelationships;
         $event->setApiVersion(PlanningCenterApiVersion::CALENDAR_DEFAULT);
 
         return $event;
@@ -47,5 +47,26 @@ class EventInstance
             ->get($this->hostname() . self::EVENT_INSTANCE_ENDPOINT . '/' . $this->attributes->eventInstanceId, $query);
 
         return $this->processResponse($http);
+    }
+
+    private function mapFromPco(mixed $pco): void
+    {
+        $attributeMap = [
+            'eventInstanceId' => 'id',
+            'allDayEvent' => 'all_day_event',
+            'compactRecurrenceDescription' => 'compact_recurrence_description',
+            'createdAt' => 'created_at',
+            'endsAt' => 'ends_at',
+            'location' => 'location',
+            'recurrence' => 'recurrence',
+            'recurrenceDescription' => 'recurrence_description',
+            'startsAt' => 'starts_at',
+            'updatedAt' => 'updated_at',
+            'churchCenterUrl' => 'church_center_url',
+            'publishedStartAt' => 'published_start_at',
+            'publishedEndsAt' => 'published_ends_at',
+        ];
+
+        AttributeMapper::from($pco, $this->attributes, $attributeMap, ['createdAt', 'endsAt', 'startsAt', 'updatedAt']);
     }
 }

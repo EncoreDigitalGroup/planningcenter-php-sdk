@@ -7,6 +7,8 @@
 namespace EncoreDigitalGroup\PlanningCenter\Objects\Calendar;
 
 use EncoreDigitalGroup\PlanningCenter\Objects\Calendar\Attributes\EventAttributes;
+use EncoreDigitalGroup\PlanningCenter\Objects\Calendar\Relationships\EventInstanceRelationships;
+use EncoreDigitalGroup\PlanningCenter\Objects\Calendar\Relationships\EventRelationships;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\Support\AttributeMapper;
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
@@ -22,6 +24,7 @@ class Event
     public const string EVENT_ENDPOINT = '/calendar/v2/events';
 
     public EventAttributes $attributes;
+    public EventRelationships $relationships;
 
     public static function make(string $clientId, string $clientSecret): Event
     {
@@ -59,7 +62,12 @@ class Event
     public function instances(array $query = []): ClientResponse
     {
         $eventInstance = new EventInstance($this->clientId, $this->clientSecret);
-        $eventInstance->eventId = $this->attributes->eventId;
+
+        if (!isset($eventInstance->relationships)) {
+            $eventInstance->relationships = new EventInstanceRelationships;
+        }
+
+        $eventInstance->relationships->event->data->id = $this->attributes->eventId;
 
         return $eventInstance->all($query);
     }
@@ -84,6 +92,6 @@ class Event
             'visibleInChurchCenter' => 'visible_in_church_center',
         ];
 
-        AttributeMapper::from($pco, $this->attributes, $attributeMap, ['created_at', 'updated_at']);
+        AttributeMapper::from($pco, $this->attributes, $attributeMap, ['createdAt', 'updatedAt']);
     }
 }
