@@ -22,7 +22,6 @@ class Person
 
     use HasPlanningCenterClient, HasEmails;
 
-    public int|string|null $id;
     public PersonAttributes $attributes;
 
     public static function make(?string $clientId = null, ?string $clientSecret = null): Person
@@ -84,7 +83,6 @@ class Person
 
     private function mapFromPco(stdClass $pco): void
     {
-        $this->id = $pco->data->id;
         $this->attributes->personId = $pco->data->id;
         $this->attributes->firstName = $pco->data->attributes->first_name;
         $this->attributes->middleName = $pco->data->attributes->middle_name;

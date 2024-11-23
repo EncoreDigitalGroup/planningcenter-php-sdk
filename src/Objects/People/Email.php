@@ -20,7 +20,6 @@ class Email
 
     public const EMAIL_ENDPOINT = '/people/v2/emails';
 
-    public int|string|null $id;
     public EmailAttributes $attributes;
 
     public static function make(?string $clientId = null, ?string $clientSecret = null): Email
@@ -67,7 +66,6 @@ class Email
 
     private function mapFromPco(stdClass $pco): void
     {
-        $this->id = $pco->id;
         $this->attributes->emailAddressId = $pco->id;
         $this->attributes->address = $pco->attributes->address;
         $this->attributes->primary = $pco->attributes->primary;
