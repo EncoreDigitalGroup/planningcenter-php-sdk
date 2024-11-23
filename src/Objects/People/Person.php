@@ -40,7 +40,7 @@ class Person
         $clientResponse = new ClientResponse($http);
 
         foreach ($http->json('data') as $person) {
-            $pcoPerson = new Person($this->clientId, $this->clientSecret);
+            $pcoPerson = Person::make($this->clientId, $this->clientSecret);
             $pcoPerson->mapFromPco($person);
             $clientResponse->data->push($pcoPerson);
         }
@@ -82,10 +82,17 @@ class Person
 
     private function mapFromPco(mixed $pco): void
     {
+        if (is_null($pco)) {
+            return;
+        }
+
         $pco = objectify($pco);
 
+        if (is_array($pco)) {
+            $pco = $pco[0];
+        }
+
         $attributeMap = [
-            'personId' => 'id',
             'firstName' => 'first_name',
             'middleName' => 'middle_name',
             'lastName' => 'last_name',
@@ -117,7 +124,15 @@ class Person
             'remoteId' => 'remote_id',
         ];
 
-        AttributeMapper::from($pco, $this->attributes, $attributeMap);
+        $this->attributes->personId = $pco->id;
+
+        AttributeMapper::from($pco, $this->attributes, $attributeMap, [
+            'birthdate',
+            'anniversary',
+            'created_at',
+            'updated_at',
+            'inactivated_at',
+        ]);
     }
 
     private function mapToPco(): array

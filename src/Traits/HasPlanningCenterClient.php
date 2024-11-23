@@ -54,7 +54,9 @@ trait HasPlanningCenterClient
             || $this->apiVersion == PlanningCenterApiVersion::CALENDAR_DEFAULT
         ) {
             $this->mapFromPco($http->json('data'));
-            $clientResponse->data->add($this->attributes);
+            if (!is_null($http->json('data'))) {
+                $clientResponse->data->add($this->attributes);
+            }
         }
 
 

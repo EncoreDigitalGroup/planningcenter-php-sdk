@@ -14,26 +14,66 @@ class PeopleMocks
 {
     use HasPlanningCenterClient;
 
+    public const string PERSON_ID = '1';
     public const string FIRST_NAME = 'John';
     public const string LAST_NAME = 'Smith';
 
     public static function setup(): void
     {
-        self::useCreatePerson();
+        self::useProfileCollection();
+        self::useSpecificProfile();
     }
 
-    public static function useCreatePerson(): void
+    public static function useProfileCollection(): void
     {
         HttpClient::fake([
-            self::HOSTNAME . Person::PEOPLE_ENDPOINT . '*' => HttpClient::response([
-                'data' => [
-                    self::personProfileMock(),
-                ],
-            ]),
+            self::HOSTNAME . Person::PEOPLE_ENDPOINT => function ($request) {
+                return match ($request->method()) {
+                    'POST' => HttpClient::response(self::getSingleProfileResponse()),
+                    'GET', => HttpClient::response(self::getProfilesResponse()),
+                    default => HttpClient::response([], 405),
+                };
+            },
         ]);
     }
 
-    private static function personProfileMock(): array
+    public static function useSpecificProfile(): void
+    {
+        HttpClient::fake([
+            self::HOSTNAME . Person::PEOPLE_ENDPOINT . '/1' => function ($request) {
+                return match ($request->method()) {
+                    'PUT', 'PATCH', 'GET', => HttpClient::response(self::getSingleProfileResponse()),
+                    'DELETE' => HttpClient::response(self::deleteProfileResponse()),
+                    default => HttpClient::response([], 405),
+                };
+            },
+        ]);
+    }
+
+    private static function getProfilesResponse(): array
+    {
+        return [
+            'data' => [
+                self::profile(),
+            ],
+        ];
+    }
+
+    private static function getSingleProfileResponse(): array
+    {
+        return [
+            'data' => self::profile(),
+        ];
+    }
+
+    private static function deleteProfileResponse(): array
+    {
+        return [
+            'data' => null,
+        ];
+    }
+
+    private static function profile(): array
     {
         return [
             "type" => "Person",

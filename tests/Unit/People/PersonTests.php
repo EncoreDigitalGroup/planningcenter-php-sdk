@@ -9,7 +9,6 @@ use Illuminate\Support\Collection;
 use Tests\Helpers\TestConstants;
 
 test('People: Can Create Person', function () {
-    PeopleMocks::useCreatePerson();
     $person = Person::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
     $person->attributes->firstName = "John";
     $person->attributes->lastName = "Smith";
@@ -24,32 +23,48 @@ test('People: Can Create Person', function () {
 });
 
 test('People: Can List All', function () {
-    $response = $this->person->all();
+    $person = Person::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
 
-    expect($response)->toBeInstanceOf(ClientResponse::class);
-    expect($response->data)->toBeInstanceOf(Collection::class);
+    $response = $person->all();
+
+    expect($response)->toBeInstanceOf(ClientResponse::class)
+        ->and($response->data)->toBeInstanceOf(Collection::class)
+        ->and($response->data->count())->toBe(1);
 });
 
 test('People: Can Get Person By ID', function () {
-    $this->person->attributes->personId = 'person_id';
+    $person = Person::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
+    $person->attributes->personId = "1";
 
-    $response = $this->person->get();
+    $response = $person->get();
+    /** @var PersonAttributes $personAttributes */
+    $personAttributes = $response->data->first();
 
-    expect($response)->toBeInstanceOf(ClientResponse::class);
+    expect($response)->toBeInstanceOf(ClientResponse::class)
+        ->and($personAttributes->firstName)->toBe(PeopleMocks::FIRST_NAME)
+        ->and($personAttributes->lastName)->toBe(PeopleMocks::LAST_NAME)
+        ->and($personAttributes->personId)->toBe(PeopleMocks::PERSON_ID);
 });
 
 test('People: Can Update Person Profile', function () {
-    $this->person->attributes->personId = 'person_id';
+    $person = Person::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
+    $person->attributes->personId = "1";
 
-    $response = $this->person->update();
+    $response = $person->update();
+    /** @var PersonAttributes $personAttributes */
+    $personAttributes = $response->data->first();
 
-    expect($response)->toBeInstanceOf(ClientResponse::class);
+    expect($response)->toBeInstanceOf(ClientResponse::class)
+        ->and($personAttributes->firstName)->toBe(PeopleMocks::FIRST_NAME)
+        ->and($personAttributes->lastName)->toBe(PeopleMocks::LAST_NAME)
+        ->and($personAttributes->personId)->toBe(PeopleMocks::PERSON_ID);
 });
 
 test('People: Can Delete Person Profile', function () {
-    $this->person->attributes->personId = 'person_id';
+    $person = Person::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
+    $person->attributes->personId = "1";
 
-    $response = $this->person->delete();
+    $response = $person->delete();
 
-    expect($response)->toBeInstanceOf(ClientResponse::class);
+    expect($response->data->isEmpty())->toBeTrue();
 });

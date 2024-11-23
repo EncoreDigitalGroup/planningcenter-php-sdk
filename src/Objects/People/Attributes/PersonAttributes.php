@@ -11,7 +11,7 @@ use Illuminate\Support\Carbon;
 
 class PersonAttributes
 {
-    public int $personId;
+    public string $personId;
     public ?string $givenName;
     public ?string $firstName;
     public ?string $nickname;
