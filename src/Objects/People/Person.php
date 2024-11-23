@@ -13,9 +13,6 @@ use EncoreDigitalGroup\PlanningCenter\Support\AttributeMapper;
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Carbon;
-use PHPGenesis\Common\Helpers\Objectify;
-use stdClass;
 
 /** @api */
 class Person
