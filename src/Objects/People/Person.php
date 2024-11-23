@@ -9,10 +9,12 @@ namespace EncoreDigitalGroup\PlanningCenter\Objects\People;
 use EncoreDigitalGroup\PlanningCenter\Objects\People\Attributes\PersonAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\People\Traits\HasEmails;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
+use EncoreDigitalGroup\PlanningCenter\Support\AttributeMapper;
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
+use PHPGenesis\Common\Helpers\Objectify;
 use stdClass;
 
 /** @api */
@@ -81,38 +83,44 @@ class Person
         return $this->processResponse($http);
     }
 
-    private function mapFromPco(stdClass $pco): void
+    private function mapFromPco(mixed $pco): void
     {
-        $this->attributes->personId = $pco->data->id;
-        $this->attributes->firstName = $pco->data->attributes->first_name;
-        $this->attributes->middleName = $pco->data->attributes->middle_name;
-        $this->attributes->lastName = $pco->data->attributes->last_name;
-        $this->attributes->birthdate = Carbon::createFromFormat('Y-m-d', $pco->data->attributes->birthdate);
-        $this->attributes->anniversary = Carbon::createFromFormat('Y-m-d', $pco->data->attributes->anniversary);
-        $this->attributes->gender = $pco->data->attributes->gender;
-        $this->attributes->grade = $pco->data->attributes->grade;
-        $this->attributes->child = $pco->data->attributes->child;
-        $this->attributes->graduationYear = $pco->data->attributes->graduation_year;
-        $this->attributes->siteAdministrator = $pco->data->attributes->site_administrator;
-        $this->attributes->accountingAdministrator = $pco->data->attributes->accounting_administrator;
-        $this->attributes->peoplePermissions = $pco->data->attributes->people_permissions;
-        $this->attributes->membership = $pco->data->attributes->membership;
-        $this->attributes->inactivatedAt = Carbon::createFromFormat('c', $pco->data->attributes->inactivated_at);
-        $this->attributes->medicalNotes = $pco->data->attributes->medical_notes;
-        $this->attributes->mfaConfigured = $pco->data->attributes->mfa_configured;
-        $this->attributes->createdAt = Carbon::createFromFormat('c', $pco->data->attributes->created_at);
-        $this->attributes->updatedAt = Carbon::createFromFormat('c', $pco->data->attributes->updated_at);
-        $this->attributes->avatar = $pco->data->attributes->avatar;
-        $this->attributes->name = $pco->data->attributes->name;
-        $this->attributes->demographicAvatarUrl = $pco->data->attributes->demographic_avatar_url;
-        $this->attributes->directoryStatus = $pco->data->attributes->directory_status;
-        $this->attributes->passedBackgroundCheck = $pco->data->attributes->passed_background_check;
-        $this->attributes->canCreateForms = $pco->data->attributes->can_create_forms;
-        $this->attributes->canEmailLists = $pco->data->attributes->can_email_lists;
-        $this->attributes->schoolType = $pco->data->attributes->school_type;
-        $this->attributes->status = $pco->data->attributes->status;
-        $this->attributes->primaryCampusId = $pco->data->attributes->primary_campus_id;
-        $this->attributes->remoteId = $pco->data->attributes->remote_id;
+        $pco = objectify($pco);
+
+        $attributeMap = [
+            'personId' => 'id',
+            'firstName' => 'first_name',
+            'middleName' => 'middle_name',
+            'lastName' => 'last_name',
+            'birthdate' => 'birthdate',
+            'anniversary' => 'anniversary',
+            'gender' => 'gender',
+            'grade' => 'grade',
+            'child' => 'child',
+            'graduationYear' => 'graduation_year',
+            'siteAdministrator' => 'site_administrator',
+            'accountingAdministrator' => 'accounting_administrator',
+            'peoplePermissions' => 'people_permissions',
+            'membership' => 'membership',
+            'inactivatedAt' => 'inactivated_at',
+            'medicalNotes' => 'medical_notes',
+            'mfaConfigured' => 'mfa_configured',
+            'createdAt' => 'created_at',
+            'updatedAt' => 'updated_at',
+            'avatar' => 'avatar',
+            'name' => 'name',
+            'demographicAvatarUrl' => 'demographic_avatar_url',
+            'directoryStatus' => 'directory_status',
+            'passedBackgroundCheck' => 'passed_background_check',
+            'canCreateForms' => 'can_create_forms',
+            'canEmailLists' => 'can_email_lists',
+            'schoolType' => 'school_type',
+            'status' => 'status',
+            'primaryCampusId' => 'primary_campus_id',
+            'remoteId' => 'remote_id',
+        ];
+
+        AttributeMapper::from($pco, $this->attributes, $attributeMap);
     }
 
     private function mapToPco(): array

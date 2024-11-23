@@ -6,6 +6,7 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Objects\Groups;
 
+use EncoreDigitalGroup\PlanningCenter\Support\AttributeMapper;
 use EncoreDigitalGroup\PlanningCenter\Support\AuthorizationOptions;
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Attributes\EventAttributes;
@@ -97,20 +98,24 @@ class Group
     {
         $pco = objectify($pco);
 
-        $this->attributes->groupId = $pco->id;
-        $this->attributes->archivedAt = $pco->attributes->archived_at;
-        $this->attributes->contactEmail = $pco->attributes->contact_email;
-        $this->attributes->createdAt = $pco->attributes->created_at;
-        $this->attributes->description = $pco->attributes->description;
-        $this->attributes->eventVisibility = $pco->attributes->event_visibility;
-        $this->attributes->headerImage->thumbnail = $pco->attributes->header_image->thumbnail;
-        $this->attributes->headerImage->medium = $pco->attributes->header_image->medium;
-        $this->attributes->headerImage->original = $pco->attributes->header_image->original;
-        $this->attributes->locationTypePreference = $pco->attributes->location_type_preference;
-        $this->attributes->membershipsCount = $pco->attributes->memberships_count;
-        $this->attributes->name = $pco->attributes->name;
-        $this->attributes->publicChurchCenterUrl = $pco->attributes->public_church_center_url;
-        $this->attributes->schedule = $pco->attributes->schedule;
-        $this->attributes->virtualLocationUrl = $pco->attributes->virtual_location_url;
+        $attributeMap = [
+            'groupId' => 'id',
+            'archivedAt' => 'archived_at',
+            'contactEmail' => 'contact_email',
+            'createdAt' => 'created_at',
+            'description' => 'description',
+            'eventVisibility' => 'event_visibility',
+            'headerImageThumbnail' => 'header_image.thumbnail',
+            'headerImageMedium' => 'header_image.medium',
+            'headerImageOriginal' => 'header_image.original',
+            'locationTypePreference' => 'location_type_preference',
+            'membershipsCount' => 'memberships_count',
+            'name' => 'name',
+            'publicChurchCenterUrl' => 'public_church_center_url',
+            'schedule' => 'schedule',
+            'virtualLocationUrl' => 'virtual_location_url',
+        ];
+
+        AttributeMapper::from($pco, $this->attributes, $attributeMap);
     }
 }

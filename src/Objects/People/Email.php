@@ -8,6 +8,7 @@ namespace EncoreDigitalGroup\PlanningCenter\Objects\People;
 
 use EncoreDigitalGroup\PlanningCenter\Objects\People\Attributes\EmailAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
+use EncoreDigitalGroup\PlanningCenter\Support\AttributeMapper;
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 use Illuminate\Support\Arr;
@@ -64,11 +65,17 @@ class Email
         return $this->processResponse($http);
     }
 
-    private function mapFromPco(stdClass $pco): void
+    private function mapFromPco(mixed $pco): void
     {
-        $this->attributes->emailAddressId = $pco->id;
-        $this->attributes->address = $pco->attributes->address;
-        $this->attributes->primary = $pco->attributes->primary;
+        $pco = objectify($pco);
+
+        $attributeMap = [
+            'emailAddressId' => 'id',
+            'address' => 'address',
+            'primary' => 'primary',
+        ];
+
+        AttributeMapper::from($pco, $this->attributes, $attributeMap);
     }
 
     private function mapToPco(): array

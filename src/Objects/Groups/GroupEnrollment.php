@@ -6,6 +6,7 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Objects\Groups;
 
+use EncoreDigitalGroup\PlanningCenter\Support\AttributeMapper;
 use EncoreDigitalGroup\PlanningCenter\Support\AuthorizationOptions;
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Attributes\GroupAttributes;
@@ -47,14 +48,18 @@ class GroupEnrollment
     {
         $pco = objectify($pco);
 
-        $this->attributes->groupId = $pco->id;
-        $this->attributes->autoClosed = $pco->attributes->auto_closed;
-        $this->attributes->autoClosedReason = $pco->attributes->auto_closed_reason;
-        $this->attributes->dateLimit = $pco->attributes->date_limit;
-        $this->attributes->dateLimitReached = $pco->attributes->date_limit_reached;
-        $this->attributes->memberLimit = $pco->attributes->member_limit;
-        $this->attributes->memberLimitReached = $pco->attributes->member_limit_reached;
-        $this->attributes->status = $pco->attributes->status;
-        $this->attributes->strategy = $pco->attributes->strategy;
+        $attributeMap = [
+            'groupId' => 'id',
+            'autoClosed' => 'auto_closed',
+            'autoClosedReason' => 'auto_closed_reason',
+            'dateLimit' => 'date_limit',
+            'dateLimitReached' => 'date_limit_reached',
+            'memberLimit' => 'member_limit',
+            'memberLimitReached' => 'member_limit_reached',
+            'status' => 'status',
+            'strategy' => 'strategy',
+        ];
+
+        AttributeMapper::from($pco, $this->attributes, $attributeMap);
     }
 }

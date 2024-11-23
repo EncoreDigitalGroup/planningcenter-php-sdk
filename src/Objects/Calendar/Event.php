@@ -64,8 +64,10 @@ class Event
         return $eventInstance->all($query);
     }
 
-    private function mapFromPco(stdClass $pco): void
+    private function mapFromPco(mixed $pco): void
     {
+        $pco = objectify($pco);
+
         $attributeMap = [
             'eventId' => 'id',
             'approvalStatus' => 'approval_status',

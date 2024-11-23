@@ -8,6 +8,7 @@ namespace EncoreDigitalGroup\PlanningCenter\Objects\Groups;
 
 use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Attributes\EventAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
+use EncoreDigitalGroup\PlanningCenter\Support\AttributeMapper;
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 use Illuminate\Support\Carbon;
@@ -55,22 +56,28 @@ class Event
         return $this->processResponse($http);
     }
 
-    private function mapFromPco(stdClass $pco): void
+    private function mapFromPco(mixed $pco): void
     {
-        $this->attributes->attendanceRequestsEnabled = $pco->attributes->attendance_requests_enabled;
-        $this->attributes->automatedReminderEnabled = $pco->attributes->automated_reminder_enabled;
-        $this->attributes->canceled = $pco->attributes->canceled;
-        $this->attributes->canceledAt = Carbon::createFromFormat('c', $pco->attributes->canceled_at);
-        $this->attributes->description = $pco->attributes->description;
-        $this->attributes->endsAt = Carbon::createFromFormat('c', $pco->attributes->description);
-        $this->attributes->locationTypePreference = $pco->attributes->location_type_preference;
-        $this->attributes->multiDay = $pco->attributes->multi_day;
-        $this->attributes->name = $pco->attributes->name;
-        $this->attributes->remindersSent = $pco->attributes->reminders_sent;
-        $this->attributes->remindersSentAt = Carbon::createFromFormat('c', $pco->attributes->reminders_sent_at);
-        $this->attributes->repeating = $pco->attributes->repeating;
-        $this->attributes->startsAt = Carbon::createFromFormat('c', $pco->attributes->starts_at);
-        $this->attributes->virtualLocationUrl = $pco->attributes->virtual_location_url;
-        $this->attributes->visitorsCount = $pco->attributes->visitors_count;
+        $pco = objectify($pco);
+
+        $attributeMap = [
+            'attendanceRequestsEnabled' => 'attendance_requests_enabled',
+            'automatedReminderEnabled' => 'automated_reminder_enabled',
+            'canceled' => 'canceled',
+            'canceledAt' => 'canceled_at',
+            'description' => 'description',
+            'endsAt' => 'ends_at',
+            'locationTypePreference' => 'location_type_preference',
+            'multiDay' => 'multi_day',
+            'name' => 'name',
+            'remindersSent' => 'reminders_sent',
+            'remindersSentAt' => 'reminders_sent_at',
+            'repeating' => 'repeating',
+            'startsAt' => 'starts_at',
+            'virtualLocationUrl' => 'virtual_location_url',
+            'visitorsCount' => 'visitors_count',
+        ];
+
+        AttributeMapper::from($pco, $this->attributes, $attributeMap, ['canceledAt', 'endsAt', 'remindersSentAt', 'startsAt']);
     }
 }

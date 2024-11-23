@@ -8,6 +8,7 @@ namespace EncoreDigitalGroup\PlanningCenter\Objects\Groups;
 
 use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Attributes\TagAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
+use EncoreDigitalGroup\PlanningCenter\Support\AttributeMapper;
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 
@@ -45,12 +46,16 @@ class Tag
         return $this->processResponse($http);
     }
 
-    protected function mapFromPco(array $pco): void
+    protected function mapFromPco(mixed $pco): void
     {
         $pco = objectify($pco);
 
-        $this->attributes->tagId = $pco->id;
-        $this->attributes->name = $pco->attributes->name;
-        $this->attributes->position = $pco->attributes->position;
+        $attributeMap = [
+            'tagId' => 'id',
+            'name' => 'name',
+            'position' => 'position',
+        ];
+
+        AttributeMapper::from($pco, $this->attributes, $attributeMap);
     }
 }

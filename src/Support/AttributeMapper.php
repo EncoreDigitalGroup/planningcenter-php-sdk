@@ -8,22 +8,24 @@ use stdClass;
 
 class AttributeMapper
 {
-    public static function from(stdClass $pco, mixed $attributes, array $attributeMap, array $dateTimeAttributes = []): void
+    public static function from(array|stdClass $pco, mixed $attributes, array $attributeMap, array $dateTimeAttributes = []): void
     {
-        foreach ($attributeMap as $property => $attribute) {
-            if (property_exists($pco->attributes, $attribute)) {
-                if (in_array($attribute, $dateTimeAttributes)) {
-                    try {
-                        $attributes->$property = Carbon::createFromFormat('c', $pco->attributes->$attribute);
-                    } catch (InvalidFormatException) {
+        if (!is_array($pco)) {
+            foreach ($attributeMap as $property => $attribute) {
+                if (property_exists($pco->attributes, $attribute)) {
+                    if (in_array($attribute, $dateTimeAttributes)) {
                         try {
-                            $attributes->$property = Carbon::createFromFormat('Y-m-d', $pco->attributes->$attribute);
+                            $attributes->$property = Carbon::createFromFormat('c', $pco->attributes->$attribute);
                         } catch (InvalidFormatException) {
-                            $attributes->$property = null;
+                            try {
+                                $attributes->$property = Carbon::createFromFormat('Y-m-d', $pco->attributes->$attribute);
+                            } catch (InvalidFormatException) {
+                                $attributes->$property = null;
+                            }
                         }
+                    } else {
+                        $attributes->$property = $pco->attributes->$attribute;
                     }
-                } else {
-                    $attributes->$property = $pco->attributes->$attribute;
                 }
             }
         }
