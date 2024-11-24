@@ -11,12 +11,18 @@ use Illuminate\Support\Carbon;
 
 class EmailAttributes
 {
-    public string|int|null $personId;
-    public ?string $emailAddressId;
-    public ?string $address;
-    public ?string $location;
-    public ?bool $primary;
-    public ?Carbon $createdAt;
-    public ?Carbon $updatedAt;
-    public mixed $blocked;
+    public function __construct(
+        public string|int|null $personId = null,
+        public ?string         $emailAddressId = null,
+        public ?string         $address = null,
+        public ?string         $location = null,
+        public ?bool           $primary = null,
+        public ?Carbon         $createdAt = null,
+        public ?Carbon         $updatedAt = null,
+        public mixed           $blocked = null,
+
+    )
+    {
+    }
+
 }
