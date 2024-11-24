@@ -10,6 +10,8 @@ use EncoreDigitalGroup\PlanningCenter\Objects\Calendar\Attributes\EventAttribute
 use EncoreDigitalGroup\PlanningCenter\Objects\Calendar\Relationships\EventInstanceRelationships;
 use EncoreDigitalGroup\PlanningCenter\Objects\Calendar\Relationships\EventRelationships;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
+use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\Relationships\BasicRelationship;
+use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\Relationships\BasicRelationshipData;
 use EncoreDigitalGroup\PlanningCenter\Support\AttributeMapper;
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
@@ -61,9 +63,9 @@ class Event
     {
         $eventInstance = EventInstance::make($this->clientId, $this->clientSecret);
 
-        if (!isset($eventInstance->relationships)) {
-            $eventInstance->relationships = new EventInstanceRelationships;
-        }
+        $eventInstance->relationships = $eventInstance->relationships ?? new EventInstanceRelationships;
+        $eventInstance->relationships->event = $eventInstance->relationships->event ?? new BasicRelationship;
+        $eventInstance->relationships->event->data = $eventInstance->relationships->event->data ?? new BasicRelationshipData;
 
         $eventInstance->relationships->event->data->id = $this->attributes->eventId;
 

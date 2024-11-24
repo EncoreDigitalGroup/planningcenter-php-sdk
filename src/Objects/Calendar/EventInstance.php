@@ -9,6 +9,8 @@ namespace EncoreDigitalGroup\PlanningCenter\Objects\Calendar;
 use EncoreDigitalGroup\PlanningCenter\Objects\Calendar\Attributes\EventInstanceAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\Calendar\Relationships\EventInstanceRelationships;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
+use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\Relationships\BasicRelationship;
+use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\Relationships\BasicRelationshipData;
 use EncoreDigitalGroup\PlanningCenter\Support\AttributeMapper;
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Support\RelationshipMapper;
@@ -36,6 +38,9 @@ class EventInstance
 
     public function all(array $query = []): ClientResponse
     {
+        $this->relationships->event = $this->relationships->event ?? new BasicRelationship;
+        $this->relationships->event->data = $this->relationships->event->data ?? new BasicRelationshipData;
+
         $http = $this->client()
             ->get($this->hostname() . Event::EVENT_ENDPOINT . "/{$this->relationships->event->data->id}/event_instances", $query);
 
