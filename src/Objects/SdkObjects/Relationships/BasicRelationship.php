@@ -8,5 +8,9 @@ namespace EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\Relationships;
 
 class BasicRelationship
 {
-    public BasicRelationshipData $data;
+    public function __construct(public ?BasicRelationshipData $data = null)
+    {
+        $this->data = $data ?? new BasicRelationshipData;
+    }
+
 }

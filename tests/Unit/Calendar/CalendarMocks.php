@@ -7,6 +7,7 @@
 namespace Tests\Unit\Calendar;
 
 use EncoreDigitalGroup\PlanningCenter\Objects\Calendar\Event;
+use EncoreDigitalGroup\PlanningCenter\Objects\Calendar\EventInstance;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 use PHPGenesis\Http\HttpClient;
 use Tests\Helpers\BaseMock;
@@ -18,11 +19,14 @@ class CalendarMocks extends BaseMock
 
     public const string EVENT_ID = '1';
     public const string EVENT_NAME = 'Sample Event';
+    public const string EVENT_INSTANCE_ID = "1";
 
     public static function setup(): void
     {
         self::useEventCollection();
         self::useSpecificEvent();
+        self::useEventInstanceCollection();
+        self::useSpecificEventInstance();
     }
 
     public static function useEventCollection(): void
@@ -45,6 +49,30 @@ class CalendarMocks extends BaseMock
                 return match ($request->method()) {
                     'PUT', 'PATCH', 'GET' => HttpClient::response(self::useSingleResponse(ObjectType::Event)),
                     'DELETE' => HttpClient::response(self::deleteResponse()),
+                    default => HttpClient::response([], 405),
+                };
+            },
+        ]);
+    }
+
+    public static function useEventInstanceCollection(): void
+    {
+        HttpClient::fake([
+            self::HOSTNAME . Event::EVENT_ENDPOINT . "/1/event_instances" => function ($request) {
+                return match ($request->method()) {
+                    'GET' => HttpClient::response(self::useCollectionResponse(ObjectType::EventInstance)),
+                    default => HttpClient::response([], 405),
+                };
+            },
+        ]);
+    }
+
+    public static function useSpecificEventInstance(): void
+    {
+        HttpClient::fake([
+            self::HOSTNAME . EventInstance::EVENT_INSTANCE_ENDPOINT . '/1' => function ($request) {
+                return match ($request->method()) {
+                    'GET' => HttpClient::response(self::useSingleResponse(ObjectType::EventInstance)),
                     default => HttpClient::response([], 405),
                 };
             },
@@ -74,6 +102,36 @@ class CalendarMocks extends BaseMock
                 'owner' => [
                     'data' => [
                         'type' => 'Person',
+                        'id' => '1',
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    protected static function eventInstance(): array
+    {
+        return [
+            'type' => 'EventInstance',
+            'id' => '1',
+            'attributes' => [
+                'all_day_event' => true,
+                'compact_recurrence_description' => 'string',
+                'created_at' => '2000-01-01T12:00:00Z',
+                'ends_at' => '2000-01-01T12:00:00Z',
+                'location' => 'string',
+                'recurrence' => 'string',
+                'recurrence_description' => 'string',
+                'starts_at' => '2000-01-01T12:00:00Z',
+                'updated_at' => '2000-01-01T12:00:00Z',
+                'church_center_url' => 'string',
+                'published_starts_at' => 'string',
+                'published_ends_at' => 'string',
+            ],
+            'relationships' => [
+                'event' => [
+                    'data' => [
+                        'type' => 'Event',
                         'id' => '1',
                     ],
                 ],

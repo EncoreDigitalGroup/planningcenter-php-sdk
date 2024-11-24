@@ -11,6 +11,7 @@ use EncoreDigitalGroup\PlanningCenter\Objects\Calendar\Relationships\EventInstan
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\Support\AttributeMapper;
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
+use EncoreDigitalGroup\PlanningCenter\Support\RelationshipMapper;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 
 /** @api */
@@ -36,7 +37,7 @@ class EventInstance
     public function all(array $query = []): ClientResponse
     {
         $http = $this->client()
-            ->get($this->hostname() . Event::EVENT_ENDPOINT . '/' . $this->relationships->event->data->id . '/event_instances', $query);
+            ->get($this->hostname() . Event::EVENT_ENDPOINT . "/{$this->relationships->event->data->id}/event_instances", $query);
 
         return $this->processResponse($http);
     }
@@ -51,8 +52,15 @@ class EventInstance
 
     private function mapFromPco(mixed $pco): void
     {
+        $pco = pco_objectify($pco);
+
+        if (is_null($pco)) {
+            return;
+        }
+
+        $this->attributes->eventInstanceId = $pco->id;
+
         $attributeMap = [
-            'eventInstanceId' => 'id',
             'allDayEvent' => 'all_day_event',
             'compactRecurrenceDescription' => 'compact_recurrence_description',
             'createdAt' => 'created_at',
@@ -67,6 +75,12 @@ class EventInstance
             'publishedEndsAt' => 'published_ends_at',
         ];
 
-        AttributeMapper::from($pco, $this->attributes, $attributeMap, ['createdAt', 'endsAt', 'startsAt', 'updatedAt']);
+        AttributeMapper::from($pco, $this->attributes, $attributeMap, ['created_at', 'ends_at', 'starts_at', 'updated_at']);
+
+        $relationshipMap = [
+            'event' => 'event',
+        ];
+
+        RelationshipMapper::from($pco, $this->relationships, $relationshipMap);
     }
 }

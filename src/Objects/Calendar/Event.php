@@ -59,7 +59,7 @@ class Event
 
     public function instances(array $query = []): ClientResponse
     {
-        $eventInstance = new EventInstance($this->clientId, $this->clientSecret);
+        $eventInstance = EventInstance::make($this->clientId, $this->clientSecret);
 
         if (!isset($eventInstance->relationships)) {
             $eventInstance->relationships = new EventInstanceRelationships;
