@@ -55,7 +55,7 @@ trait HasPlanningCenterClient
         ) {
             $this->mapFromPco($http->json('data'));
             if (!is_null($http->json('data'))) {
-                $clientResponse->data->add($this->attributes);
+                $clientResponse->data->add($this);
             }
         }
 
