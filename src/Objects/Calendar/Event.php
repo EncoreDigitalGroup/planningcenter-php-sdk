@@ -13,8 +13,6 @@ use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\Support\AttributeMapper;
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
-use Illuminate\Support\Carbon;
-use stdClass;
 
 /** @api */
 class Event
@@ -74,7 +72,11 @@ class Event
 
     private function mapFromPco(mixed $pco): void
     {
-        $pco = objectify($pco);
+        $pco = pco_objectify($pco);
+
+        if (is_null($pco)) {
+            return;
+        }
 
         $attributeMap = [
             'eventId' => 'id',
@@ -92,6 +94,6 @@ class Event
             'visibleInChurchCenter' => 'visible_in_church_center',
         ];
 
-        AttributeMapper::from($pco, $this->attributes, $attributeMap, ['createdAt', 'updatedAt']);
+        AttributeMapper::from($pco, $this->attributes, $attributeMap, ['created_at', 'updated_at']);
     }
 }
