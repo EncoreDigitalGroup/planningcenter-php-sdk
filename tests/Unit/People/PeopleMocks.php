@@ -9,14 +9,17 @@ namespace Tests\Unit\People;
 use EncoreDigitalGroup\PlanningCenter\Objects\People\Person;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 use PHPGenesis\Http\HttpClient;
+use Tests\Helpers\BaseMock;
 
-class PeopleMocks
+class PeopleMocks extends BaseMock
 {
     use HasPlanningCenterClient;
 
     public const string PERSON_ID = '1';
     public const string FIRST_NAME = 'John';
     public const string LAST_NAME = 'Smith';
+    public const string EMAIL_ID = '1';
+    public const string EMAIL_ADDRESS = 'john.smith@example.com';
 
     public static function setup(): void
     {
@@ -29,8 +32,8 @@ class PeopleMocks
         HttpClient::fake([
             self::HOSTNAME . Person::PEOPLE_ENDPOINT => function ($request) {
                 return match ($request->method()) {
-                    'POST' => HttpClient::response(self::getSingleProfileResponse()),
-                    'GET', => HttpClient::response(self::getProfilesResponse()),
+                    'POST' => HttpClient::response(self::useSingleResponse("profile")),
+                    'GET', => HttpClient::response(self::useCollectionResponse("profile")),
                     default => HttpClient::response([], 405),
                 };
             },
@@ -42,38 +45,28 @@ class PeopleMocks
         HttpClient::fake([
             self::HOSTNAME . Person::PEOPLE_ENDPOINT . '/1' => function ($request) {
                 return match ($request->method()) {
-                    'PUT', 'PATCH', 'GET', => HttpClient::response(self::getSingleProfileResponse()),
-                    'DELETE' => HttpClient::response(self::deleteProfileResponse()),
+                    'PUT', 'PATCH', 'GET', => HttpClient::response(self::useSingleResponse("profile")),
+                    'DELETE' => HttpClient::response(self::deleteResponse()),
                     default => HttpClient::response([], 405),
                 };
             },
         ]);
     }
 
-    private static function getProfilesResponse(): array
+    public static function useEmailCollection(): void
     {
-        return [
-            'data' => [
-                self::profile(),
-            ],
-        ];
+        HttpClient::fake([
+            self::HOSTNAME . Person::PEOPLE_ENDPOINT => function ($request) {
+                return match ($request->method()) {
+                    'POST' => HttpClient::response(self::useSingleResponse("email")),
+                    'GET', => HttpClient::response(self::useCollectionResponse("email")),
+                    default => HttpClient::response([], 405),
+                };
+            },
+        ]);
     }
 
-    private static function getSingleProfileResponse(): array
-    {
-        return [
-            'data' => self::profile(),
-        ];
-    }
-
-    private static function deleteProfileResponse(): array
-    {
-        return [
-            'data' => null,
-        ];
-    }
-
-    private static function profile(): array
+    protected static function profile(): array
     {
         return [
             "type" => "Person",
@@ -125,6 +118,30 @@ class PeopleMocks
                     "data" => [
                         "type" => "Gender",
                         "id" => "1",
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    protected static function email(): array
+    {
+        return [
+            'type' => 'Email',
+            'id' => '1',
+            'attributes' => [
+                'address' => 'john.smith@example.com',
+                'location' => 'home',
+                'primary' => true,
+                'created_at' => '2000-01-01T12:00:00Z',
+                'updated_at' => '2000-01-01T12:00:00Z',
+                'blocked' => true,
+            ],
+            'relationships' => [
+                'person' => [
+                    'data' => [
+                        'type' => 'Person',
+                        'id' => '1',
                     ],
                 ],
             ],
