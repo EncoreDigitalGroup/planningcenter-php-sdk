@@ -10,5 +10,9 @@ use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\Relationships\BasicRela
 
 class EventRelationships
 {
-    public BasicRelationship $owner;
+    public function __construct(public ?BasicRelationship $owner = null)
+    {
+        $this->owner = $owner ?? new BasicRelationship;
+    }
+
 }

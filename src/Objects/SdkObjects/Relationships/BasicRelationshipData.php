@@ -8,6 +8,11 @@ namespace EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\Relationships;
 
 class BasicRelationshipData
 {
-    public string $type;
-    public string $id;
+    public function __construct(
+        public ?string $type = null,
+        public ?string $id = null,
+    )
+    {
+    }
+
 }
