@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\Calendar;
 
-use EncoreDigitalGroup\PlanningCenter\Objects\Calendar\Attributes\EventAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\Calendar\Event;
 use EncoreDigitalGroup\PlanningCenter\Objects\Calendar\EventInstance;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
@@ -15,12 +14,12 @@ describe('Calendar Event Tests', function () {
         $event->attributes->eventId = "1";
 
         $response = $event->get();
-        /** @var EventAttributes $eventAttributes */
-        $eventAttributes = $response->data->first();
+        /** @var Event $calendarEvent */
+        $calendarEvent = $response->data->first();
 
         expect($response)->toBeInstanceOf(ClientResponse::class)
-            ->and($eventAttributes->name)->toBe(CalendarMocks::EVENT_NAME)
-            ->and($eventAttributes->eventId)->toBe(CalendarMocks::EVENT_ID);
+            ->and($calendarEvent->attributes->name)->toBe(CalendarMocks::EVENT_NAME)
+            ->and($calendarEvent->attributes->eventId)->toBe(CalendarMocks::EVENT_ID);
     });
 
     test('Event: Can List All Events', function () {
@@ -33,7 +32,7 @@ describe('Calendar Event Tests', function () {
             ->and($response->data->count())->toBe(1);
     });
 
-    test('Event: Can List All Event Instances', function () {
+    test('Event: Can List All Event Instances For A Specific Event', function () {
         $event = Event::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
         $event->attributes->eventId = "1";
 

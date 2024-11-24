@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\People;
 
-use EncoreDigitalGroup\PlanningCenter\Objects\People\Attributes\PersonAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\People\Person;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use Illuminate\Support\Collection;
@@ -15,12 +14,12 @@ describe('People Profile Tests', function () {
         $person->attributes->lastName = "Smith";
 
         $response = $person->create();
-        /** @var PersonAttributes $personAttributes */
-        $personAttributes = $response->data->first();
+        /** @var Person $personProfile */
+        $personProfile = $response->data->first();
 
         expect($response)->toBeInstanceOf(ClientResponse::class)
-            ->and($personAttributes->firstName)->toBe(PeopleMocks::FIRST_NAME)
-            ->and($personAttributes->lastName)->toBe(PeopleMocks::LAST_NAME);
+            ->and($personProfile->attributes->firstName)->toBe(PeopleMocks::FIRST_NAME)
+            ->and($personProfile->attributes->lastName)->toBe(PeopleMocks::LAST_NAME);
     });
 
     test('People: Can List All', function () {
@@ -38,13 +37,13 @@ describe('People Profile Tests', function () {
         $person->attributes->personId = "1";
 
         $response = $person->get();
-        /** @var PersonAttributes $personAttributes */
-        $personAttributes = $response->data->first();
+        /** @var Person $personProfile */
+        $personProfile = $response->data->first();
 
         expect($response)->toBeInstanceOf(ClientResponse::class)
-            ->and($personAttributes->firstName)->toBe(PeopleMocks::FIRST_NAME)
-            ->and($personAttributes->lastName)->toBe(PeopleMocks::LAST_NAME)
-            ->and($personAttributes->personId)->toBe(PeopleMocks::PERSON_ID);
+            ->and($personProfile->attributes->firstName)->toBe(PeopleMocks::FIRST_NAME)
+            ->and($personProfile->attributes->lastName)->toBe(PeopleMocks::LAST_NAME)
+            ->and($personProfile->attributes->personId)->toBe(PeopleMocks::PERSON_ID);
     });
 
     test('People: Can Update Person Profile', function () {
@@ -52,13 +51,13 @@ describe('People Profile Tests', function () {
         $person->attributes->personId = "1";
 
         $response = $person->update();
-        /** @var PersonAttributes $personAttributes */
-        $personAttributes = $response->data->first();
+        /** @var Person $personProfile */
+        $personProfile = $response->data->first();
 
         expect($response)->toBeInstanceOf(ClientResponse::class)
-            ->and($personAttributes->firstName)->toBe(PeopleMocks::FIRST_NAME)
-            ->and($personAttributes->lastName)->toBe(PeopleMocks::LAST_NAME)
-            ->and($personAttributes->personId)->toBe(PeopleMocks::PERSON_ID);
+            ->and($personProfile->attributes->firstName)->toBe(PeopleMocks::FIRST_NAME)
+            ->and($personProfile->attributes->lastName)->toBe(PeopleMocks::LAST_NAME)
+            ->and($personProfile->attributes->personId)->toBe(PeopleMocks::PERSON_ID);
     });
 
     test('People: Can Delete Person Profile', function () {

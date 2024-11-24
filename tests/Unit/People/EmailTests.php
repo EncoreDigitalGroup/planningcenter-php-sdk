@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\People;
 
-use EncoreDigitalGroup\PlanningCenter\Objects\People\Attributes\EmailAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\People\Email;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use Illuminate\Support\Collection;
@@ -14,12 +13,12 @@ describe('People Email Tests', function () {
         $email->attributes->emailAddressId = "1";
 
         $response = $email->get();
-        /** @var EmailAttributes $emailAttributes */
-        $emailAttributes = $response->data->first();
+        /** @var Email $emailAddress */
+        $emailAddress = $response->data->first();
 
         expect($response)->toBeInstanceOf(ClientResponse::class)
-            ->and($emailAttributes->address)->toBe(PeopleMocks::EMAIL_ADDRESS)
-            ->and($emailAttributes->emailAddressId)->toBe(PeopleMocks::EMAIL_ID);
+            ->and($emailAddress->attributes->address)->toBe(PeopleMocks::EMAIL_ADDRESS)
+            ->and($emailAddress->attributes->emailAddressId)->toBe(PeopleMocks::EMAIL_ID);
     });
 
     test('Email: Can List All Emails For Person', function () {
@@ -39,12 +38,12 @@ describe('People Email Tests', function () {
         $email->attributes->address = "john.smith@example.com";
 
         $response = $email->update();
-        /** @var EmailAttributes $emailAttributes */
-        $emailAttributes = $response->data->first();
+        /** @var Email $emailAddress */
+        $emailAddress = $response->data->first();
 
         expect($response)->toBeInstanceOf(ClientResponse::class)
-            ->and($emailAttributes->address)->toBe(PeopleMocks::EMAIL_ADDRESS)
-            ->and($emailAttributes->emailAddressId)->toBe(PeopleMocks::EMAIL_ID);
+            ->and($emailAddress->attributes->address)->toBe(PeopleMocks::EMAIL_ADDRESS)
+            ->and($emailAddress->attributes->emailAddressId)->toBe(PeopleMocks::EMAIL_ID);
     });
 })->group('people.email');
 
