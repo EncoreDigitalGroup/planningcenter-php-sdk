@@ -9,6 +9,7 @@ parameters:
         - identifier: missingType.iterableValue
         - identifier: missingType.generics
         - '#Cognitive complexity for "EncoreDigitalGroup\\PlanningCenter\\Support\\AttributeMapper[^\\s]+#'
+        - '#Cognitive complexity for "EncoreDigitalGroup\\PlanningCenter\\Support\\RelationshipMapper[^\\s]+#'
     cognitive_complexity:
             class: 50
             function: 10
