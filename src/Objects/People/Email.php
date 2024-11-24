@@ -26,7 +26,7 @@ class Email
     public static function make(?string $clientId = null, ?string $clientSecret = null): Email
     {
         $email = new self($clientId, $clientSecret);
-        $email->attributes = new EmailAttributes();
+        $email->attributes = new EmailAttributes;
         $email->setApiVersion(PlanningCenterApiVersion::PEOPLE_DEFAULT);
 
         return $email;
@@ -67,7 +67,11 @@ class Email
 
     private function mapFromPco(mixed $pco): void
     {
-        $pco = objectify($pco);
+        $pco = pco_objectify($pco);
+
+        if (is_null($pco)) {
+            return;
+        }
 
         $attributeMap = [
             'emailAddressId' => 'id',

@@ -82,14 +82,10 @@ class Person
 
     private function mapFromPco(mixed $pco): void
     {
+        $pco = pco_objectify($pco);
+
         if (is_null($pco)) {
             return;
-        }
-
-        $pco = objectify($pco);
-
-        if (is_array($pco)) {
-            $pco = $pco[0];
         }
 
         $attributeMap = [
