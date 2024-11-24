@@ -6,6 +6,7 @@
 
 namespace Tests\Unit\People;
 
+use EncoreDigitalGroup\PlanningCenter\Objects\People\Email;
 use EncoreDigitalGroup\PlanningCenter\Objects\People\Person;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 use PHPGenesis\Http\HttpClient;
@@ -25,6 +26,7 @@ class PeopleMocks extends BaseMock
     {
         self::useProfileCollection();
         self::useSpecificProfile();
+        self::useEmailCollection();
     }
 
     public static function useProfileCollection(): void
@@ -56,7 +58,7 @@ class PeopleMocks extends BaseMock
     public static function useEmailCollection(): void
     {
         HttpClient::fake([
-            self::HOSTNAME . Person::PEOPLE_ENDPOINT => function ($request) {
+            self::HOSTNAME . Email::EMAIL_ENDPOINT => function ($request) {
                 return match ($request->method()) {
                     'POST' => HttpClient::response(self::useSingleResponse("email")),
                     'GET', => HttpClient::response(self::useCollectionResponse("email")),
