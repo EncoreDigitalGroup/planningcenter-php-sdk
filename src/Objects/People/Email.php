@@ -38,7 +38,6 @@ class Email
             ->get($this->hostname() . self::EMAIL_ENDPOINT . '/' . $this->attributes->emailAddressId);
 
         return $this->processResponse($http);
-
     }
 
     public function forPerson(): ClientResponse
@@ -49,7 +48,7 @@ class Email
         $clientResponse = new ClientResponse($http);
 
         foreach ($http->json('data') as $email) {
-            $pcoEmail = new Email($this->clientId, $this->clientSecret);
+            $pcoEmail = Email::make($this->clientId, $this->clientSecret);
             $pcoEmail->mapFromPco($email);
             $clientResponse->data->push($pcoEmail);
         }

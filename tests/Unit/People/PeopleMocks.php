@@ -11,6 +11,7 @@ use EncoreDigitalGroup\PlanningCenter\Objects\People\Person;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 use PHPGenesis\Http\HttpClient;
 use Tests\Helpers\BaseMock;
+use Tests\Helpers\ObjectType;
 
 class PeopleMocks extends BaseMock
 {
@@ -27,6 +28,7 @@ class PeopleMocks extends BaseMock
         self::useProfileCollection();
         self::useSpecificProfile();
         self::useEmailCollection();
+        self::useSpecificEmail();
     }
 
     public static function useProfileCollection(): void
@@ -34,8 +36,8 @@ class PeopleMocks extends BaseMock
         HttpClient::fake([
             self::HOSTNAME . Person::PEOPLE_ENDPOINT => function ($request) {
                 return match ($request->method()) {
-                    'POST' => HttpClient::response(self::useSingleResponse("profile")),
-                    'GET', => HttpClient::response(self::useCollectionResponse("profile")),
+                    'POST' => HttpClient::response(self::useSingleResponse(ObjectType::Profile)),
+                    'GET', => HttpClient::response(self::useCollectionResponse(ObjectType::Profile)),
                     default => HttpClient::response([], 405),
                 };
             },
@@ -47,7 +49,7 @@ class PeopleMocks extends BaseMock
         HttpClient::fake([
             self::HOSTNAME . Person::PEOPLE_ENDPOINT . '/1' => function ($request) {
                 return match ($request->method()) {
-                    'PUT', 'PATCH', 'GET', => HttpClient::response(self::useSingleResponse("profile")),
+                    'PUT', 'PATCH', 'GET', => HttpClient::response(self::useSingleResponse(ObjectType::Profile)),
                     'DELETE' => HttpClient::response(self::deleteResponse()),
                     default => HttpClient::response([], 405),
                 };
@@ -58,10 +60,23 @@ class PeopleMocks extends BaseMock
     public static function useEmailCollection(): void
     {
         HttpClient::fake([
-            self::HOSTNAME . Email::EMAIL_ENDPOINT => function ($request) {
+            self::HOSTNAME . Person::PEOPLE_ENDPOINT . "/1/emails" => function ($request) {
                 return match ($request->method()) {
-                    'POST' => HttpClient::response(self::useSingleResponse("email")),
-                    'GET', => HttpClient::response(self::useCollectionResponse("email")),
+                    'POST' => HttpClient::response(self::useSingleResponse(ObjectType::Email)),
+                    'GET', => HttpClient::response(self::useCollectionResponse(ObjectType::Email)),
+                    default => HttpClient::response([], 405),
+                };
+            },
+        ]);
+    }
+
+    public static function useSpecificEmail(): void
+    {
+        HttpClient::fake([
+            self::HOSTNAME . Email::EMAIL_ENDPOINT . '/1' => function ($request) {
+                return match ($request->method()) {
+                    'PUT', 'PATCH', 'GET', => HttpClient::response(self::useSingleResponse(ObjectType::Email)),
+                    'DELETE' => HttpClient::response(self::deleteResponse()),
                     default => HttpClient::response([], 405),
                 };
             },

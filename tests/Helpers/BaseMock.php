@@ -8,8 +8,10 @@ namespace Tests\Helpers;
 
 class BaseMock
 {
-    protected static function useCollectionResponse(string $method): array
+    protected static function useCollectionResponse(ObjectType $type): array
     {
+        $method = $type->value;
+
         return [
             'data' => [
                 static::$method(),
@@ -17,8 +19,10 @@ class BaseMock
         ];
     }
 
-    protected static function useSingleResponse(string $method): array
+    protected static function useSingleResponse(ObjectType $type): array
     {
+        $method = $type->value;
+
         return [
             'data' => static::$method(),
         ];
