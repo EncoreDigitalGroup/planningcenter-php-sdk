@@ -9,16 +9,9 @@ namespace EncoreDigitalGroup\PlanningCenter\Objects\Calendar;
 use EncoreDigitalGroup\PlanningCenter\Objects\Calendar\Attributes\TagGroupAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\Support\AttributeMapper;
+use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
-use GuzzleHttp\Psr7\Request;
 
-/**
- * Class TagGroup
- *
- * @property int $tagGroupId
- * @property int $tagId
- * @api
- */
 class TagGroup
 {
     use HasPlanningCenterClient;
@@ -26,6 +19,15 @@ class TagGroup
     public const string TAG_GROUP_ENDPOINT = '/calendar/v2/tag_groups';
 
     public TagGroupAttributes $attributes;
+
+    public static function make(string $clientId, string $clientSecret): TagGroup
+    {
+        $tagGroup = new self($clientId, $clientSecret);
+        $tagGroup->attributes = new TagGroupAttributes;
+        $tagGroup->setApiVersion(PlanningCenterApiVersion::CALENDAR_DEFAULT);
+
+        return $tagGroup;
+    }
 
     public function all(array $query = []): ClientResponse
     {
@@ -45,11 +47,18 @@ class TagGroup
 
     private function mapFromPco(mixed $pco): void
     {
+        $pco = pco_objectify($pco);
+
+        if (is_null($pco)) {
+            return;
+        }
+
+        $this->attributes->tagGroupId = $pco->id;
+
         $attributeMap = [
-            'tagGroupId' => 'id',
-            'createAt' => 'create_at',
+            'createdAt' => 'created_at',
             'name' => 'name',
-            'updateAt' => 'updated_at',
+            'updatedAt' => 'updated_at',
             'required' => 'required',
         ];
 

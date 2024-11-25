@@ -8,6 +8,7 @@ namespace Tests\Unit\Calendar;
 
 use EncoreDigitalGroup\PlanningCenter\Objects\Calendar\Event;
 use EncoreDigitalGroup\PlanningCenter\Objects\Calendar\EventInstance;
+use EncoreDigitalGroup\PlanningCenter\Objects\Calendar\TagGroup;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 use PHPGenesis\Http\HttpClient;
 use Tests\Helpers\BaseMock;
@@ -20,6 +21,7 @@ class CalendarMocks extends BaseMock
     public const string EVENT_ID = '1';
     public const string EVENT_NAME = 'Sample Event';
     public const string EVENT_INSTANCE_ID = "1";
+    public const string TAG_GROUP_ID = "1";
 
     public static function setup(): void
     {
@@ -27,6 +29,8 @@ class CalendarMocks extends BaseMock
         self::useSpecificEvent();
         self::useEventInstanceCollection();
         self::useSpecificEventInstance();
+        self::useTagGroupCollection();
+        self::useSpecificTagGroup();
     }
 
     public static function useEventCollection(): void
@@ -73,6 +77,30 @@ class CalendarMocks extends BaseMock
             self::HOSTNAME . EventInstance::EVENT_INSTANCE_ENDPOINT . '/1' => function ($request) {
                 return match ($request->method()) {
                     'GET' => HttpClient::response(self::useSingleResponse(ObjectType::EventInstance)),
+                    default => HttpClient::response([], 405),
+                };
+            },
+        ]);
+    }
+
+    public static function useTagGroupCollection(): void
+    {
+        HttpClient::fake([
+            self::HOSTNAME . TagGroup::TAG_GROUP_ENDPOINT => function ($request) {
+                return match ($request->method()) {
+                    'GET' => HttpClient::response(self::useCollectionResponse(ObjectType::TagGroup)),
+                    default => HttpClient::response([], 405),
+                };
+            },
+        ]);
+    }
+
+    public static function useSpecificTagGroup(): void
+    {
+        HttpClient::fake([
+            self::HOSTNAME . TagGroup::TAG_GROUP_ENDPOINT . '/1/tags' => function ($request) {
+                return match ($request->method()) {
+                    'GET' => HttpClient::response(self::useSingleResponse(ObjectType::TagGroup)),
                     default => HttpClient::response([], 405),
                 };
             },
@@ -136,6 +164,21 @@ class CalendarMocks extends BaseMock
                     ],
                 ],
             ],
+        ];
+    }
+
+    protected static function tagGroup(): array
+    {
+        return [
+            'type' => 'TagGroup',
+            'id' => '1',
+            'attributes' => [
+                'created_at' => '2000-01-01T12:00:00Z',
+                'name' => 'string',
+                'updated_at' => '2000-01-01T12:00:00Z',
+                'required' => true,
+            ],
+            'relationships' => [],
         ];
     }
 }

@@ -12,4 +12,5 @@ enum ObjectType: string
     case Email = "email";
     case Event = "event";
     case EventInstance = "eventInstance";
+    case TagGroup = "tagGroup";
 }
