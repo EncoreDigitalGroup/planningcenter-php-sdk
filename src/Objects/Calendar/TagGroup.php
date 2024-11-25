@@ -16,7 +16,7 @@ class TagGroup
 {
     use HasPlanningCenterClient;
 
-    public const string TAG_GROUP_ENDPOINT = '/calendar/v2/tag_groups';
+    public const string TAG_GROUP_ENDPOINT = "/calendar/v2/tag_groups";
 
     public TagGroupAttributes $attributes;
 
@@ -40,7 +40,7 @@ class TagGroup
     public function tags(array $query = []): ClientResponse
     {
         $http = $this->client()
-            ->get($this->hostname() . self::TAG_GROUP_ENDPOINT . '/' . $this->attributes->tagGroupId . '/tags', $query);
+            ->get($this->hostname() . self::TAG_GROUP_ENDPOINT . "/" . $this->attributes->tagGroupId . "/tags", $query);
 
         return $this->processResponse($http);
     }
@@ -56,12 +56,12 @@ class TagGroup
         $this->attributes->tagGroupId = $pco->id;
 
         $attributeMap = [
-            'createdAt' => 'created_at',
-            'name' => 'name',
-            'updatedAt' => 'updated_at',
-            'required' => 'required',
+            "createdAt" => "created_at",
+            "name" => "name",
+            "updatedAt" => "updated_at",
+            "required" => "required",
         ];
 
-        AttributeMapper::from($pco, $this->attributes, $attributeMap, ['created_at', 'updated_at']);
+        AttributeMapper::from($pco, $this->attributes, $attributeMap, ["created_at", "updated_at"]);
     }
 }

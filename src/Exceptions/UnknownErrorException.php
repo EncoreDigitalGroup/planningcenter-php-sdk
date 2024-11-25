@@ -13,6 +13,6 @@ class UnknownErrorException extends Exception
 {
     public function __construct()
     {
-        parent::__construct('Planning Center SDK Encountered an Unknown Error');
+        parent::__construct("Planning Center SDK Encountered an Unknown Error");
     }
 }

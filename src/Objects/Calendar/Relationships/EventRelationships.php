@@ -14,5 +14,4 @@ class EventRelationships
     {
         $this->owner = $owner ?? new BasicRelationship;
     }
-
 }

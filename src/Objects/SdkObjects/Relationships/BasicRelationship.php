@@ -12,5 +12,4 @@ class BasicRelationship
     {
         $this->data = $data ?? new BasicRelationshipData;
     }
-
 }

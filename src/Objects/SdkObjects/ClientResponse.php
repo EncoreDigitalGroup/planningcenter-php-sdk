@@ -16,12 +16,12 @@ class ClientResponse
 
     public function __construct(Response $response)
     {
-        $this->meta = new MetaContainer();
+        $this->meta = new MetaContainer;
         $this->meta->response = $response;
         $this->meta->success = $this->meta->response->successful();
-        $this->meta->nextPage = $this->meta->response->json('meta.next.offset');
-        $this->meta->previousPage = $this->meta->response->json('meta.prev.offset');
+        $this->meta->nextPage = $this->meta->response->json("meta.next.offset");
+        $this->meta->previousPage = $this->meta->response->json("meta.prev.offset");
 
-        $this->data = new Collection();
+        $this->data = new Collection;
     }
 }

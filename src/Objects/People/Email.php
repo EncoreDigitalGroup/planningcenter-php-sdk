@@ -12,14 +12,13 @@ use EncoreDigitalGroup\PlanningCenter\Support\AttributeMapper;
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 use Illuminate\Support\Arr;
-use stdClass;
 
 /** @api */
 class Email
 {
     use HasPlanningCenterClient;
 
-    public const string EMAIL_ENDPOINT = '/people/v2/emails';
+    public const string EMAIL_ENDPOINT = "/people/v2/emails";
 
     public EmailAttributes $attributes;
 
@@ -35,7 +34,7 @@ class Email
     public function get(): ClientResponse
     {
         $http = $this->client()
-            ->get($this->hostname() . self::EMAIL_ENDPOINT . '/' . $this->attributes->emailAddressId);
+            ->get($this->hostname() . self::EMAIL_ENDPOINT . "/" . $this->attributes->emailAddressId);
 
         return $this->processResponse($http);
     }
@@ -43,11 +42,11 @@ class Email
     public function forPerson(): ClientResponse
     {
         $http = $this->client()
-            ->get($this->hostname() . Person::PEOPLE_ENDPOINT . '/' . $this->attributes->personId . '/emails');
+            ->get($this->hostname() . Person::PEOPLE_ENDPOINT . "/" . $this->attributes->personId . "/emails");
 
         $clientResponse = new ClientResponse($http);
 
-        foreach ($http->json('data') as $email) {
+        foreach ($http->json("data") as $email) {
             $pcoEmail = Email::make($this->clientId, $this->clientSecret);
             $pcoEmail->mapFromPco($email);
             $clientResponse->data->push($pcoEmail);
@@ -59,7 +58,7 @@ class Email
     public function update(): ClientResponse
     {
         $http = $this->client()
-            ->patch($this->hostname() . self::EMAIL_ENDPOINT . '/' . $this->attributes->emailAddressId, $this->mapToPco());
+            ->patch($this->hostname() . self::EMAIL_ENDPOINT . "/" . $this->attributes->emailAddressId, $this->mapToPco());
 
         return $this->processResponse($http);
     }
@@ -73,9 +72,9 @@ class Email
         }
 
         $attributeMap = [
-            'emailAddressId' => 'id',
-            'address' => 'address',
-            'primary' => 'primary',
+            "emailAddressId" => "id",
+            "address" => "address",
+            "primary" => "primary",
         ];
 
         AttributeMapper::from($pco, $this->attributes, $attributeMap);
@@ -84,10 +83,10 @@ class Email
     private function mapToPco(): array
     {
         $email = [
-            'data' => [
-                'attributes' => [
-                    'address' => $this->attributes->address,
-                    'primary' => $this->attributes->primary,
+            "data" => [
+                "attributes" => [
+                    "address" => $this->attributes->address,
+                    "primary" => $this->attributes->primary,
                 ],
             ],
         ];

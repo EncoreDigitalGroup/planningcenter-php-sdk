@@ -17,16 +17,16 @@ use Illuminate\Support\Arr;
 /** @api */
 class Person
 {
-    public const string PEOPLE_ENDPOINT = '/people/v2/people';
+    use HasEmails, HasPlanningCenterClient;
 
-    use HasPlanningCenterClient, HasEmails;
+    public const string PEOPLE_ENDPOINT = "/people/v2/people";
 
     public PersonAttributes $attributes;
 
     public static function make(?string $clientId = null, ?string $clientSecret = null): Person
     {
         $person = new self($clientId, $clientSecret);
-        $person->attributes = new PersonAttributes();
+        $person->attributes = new PersonAttributes;
         $person->setApiVersion(PlanningCenterApiVersion::PEOPLE_DEFAULT);
 
         return $person;
@@ -39,7 +39,7 @@ class Person
 
         $clientResponse = new ClientResponse($http);
 
-        foreach ($http->json('data') as $person) {
+        foreach ($http->json("data") as $person) {
             $pcoPerson = Person::make($this->clientId, $this->clientSecret);
             $pcoPerson->mapFromPco($person);
             $clientResponse->data->push($pcoPerson);
@@ -51,7 +51,7 @@ class Person
     public function get(?array $query = null): ClientResponse
     {
         $http = $this->client()
-            ->get($this->hostname() . self::PEOPLE_ENDPOINT . '/' . $this->attributes->personId, $query);
+            ->get($this->hostname() . self::PEOPLE_ENDPOINT . "/" . $this->attributes->personId, $query);
 
         return $this->processResponse($http);
     }
@@ -67,7 +67,7 @@ class Person
     public function update(): ClientResponse
     {
         $http = $this->client()
-            ->patch($this->hostname() . self::PEOPLE_ENDPOINT . '/' . $this->attributes->personId, $this->mapToPco());
+            ->patch($this->hostname() . self::PEOPLE_ENDPOINT . "/" . $this->attributes->personId, $this->mapToPco());
 
         return $this->processResponse($http);
     }
@@ -75,7 +75,7 @@ class Person
     public function delete(): ClientResponse
     {
         $http = $this->client()
-            ->delete($this->hostname() . self::PEOPLE_ENDPOINT . '/' . $this->attributes->personId);
+            ->delete($this->hostname() . self::PEOPLE_ENDPOINT . "/" . $this->attributes->personId);
 
         return $this->processResponse($http);
     }
@@ -89,93 +89,89 @@ class Person
         }
 
         $attributeMap = [
-            'firstName' => 'first_name',
-            'middleName' => 'middle_name',
-            'lastName' => 'last_name',
-            'birthdate' => 'birthdate',
-            'anniversary' => 'anniversary',
-            'gender' => 'gender',
-            'grade' => 'grade',
-            'child' => 'child',
-            'graduationYear' => 'graduation_year',
-            'siteAdministrator' => 'site_administrator',
-            'accountingAdministrator' => 'accounting_administrator',
-            'peoplePermissions' => 'people_permissions',
-            'membership' => 'membership',
-            'inactivatedAt' => 'inactivated_at',
-            'medicalNotes' => 'medical_notes',
-            'mfaConfigured' => 'mfa_configured',
-            'createdAt' => 'created_at',
-            'updatedAt' => 'updated_at',
-            'avatar' => 'avatar',
-            'name' => 'name',
-            'demographicAvatarUrl' => 'demographic_avatar_url',
-            'directoryStatus' => 'directory_status',
-            'passedBackgroundCheck' => 'passed_background_check',
-            'canCreateForms' => 'can_create_forms',
-            'canEmailLists' => 'can_email_lists',
-            'schoolType' => 'school_type',
-            'status' => 'status',
-            'primaryCampusId' => 'primary_campus_id',
-            'remoteId' => 'remote_id',
+            "firstName" => "first_name",
+            "middleName" => "middle_name",
+            "lastName" => "last_name",
+            "birthdate" => "birthdate",
+            "anniversary" => "anniversary",
+            "gender" => "gender",
+            "grade" => "grade",
+            "child" => "child",
+            "graduationYear" => "graduation_year",
+            "siteAdministrator" => "site_administrator",
+            "accountingAdministrator" => "accounting_administrator",
+            "peoplePermissions" => "people_permissions",
+            "membership" => "membership",
+            "inactivatedAt" => "inactivated_at",
+            "medicalNotes" => "medical_notes",
+            "mfaConfigured" => "mfa_configured",
+            "createdAt" => "created_at",
+            "updatedAt" => "updated_at",
+            "avatar" => "avatar",
+            "name" => "name",
+            "demographicAvatarUrl" => "demographic_avatar_url",
+            "directoryStatus" => "directory_status",
+            "passedBackgroundCheck" => "passed_background_check",
+            "canCreateForms" => "can_create_forms",
+            "canEmailLists" => "can_email_lists",
+            "schoolType" => "school_type",
+            "status" => "status",
+            "primaryCampusId" => "primary_campus_id",
+            "remoteId" => "remote_id",
         ];
 
         $this->attributes->personId = $pco->id;
 
         AttributeMapper::from($pco, $this->attributes, $attributeMap, [
-            'birthdate',
-            'anniversary',
-            'created_at',
-            'updated_at',
-            'inactivated_at',
+            "birthdate",
+            "anniversary",
+            "created_at",
+            "updated_at",
+            "inactivated_at",
         ]);
     }
 
     private function mapToPco(): array
     {
         $person = [
-            'data' => [
-                'attributes' => [
-                    'id' => $this->attributes->personId ?? null,
-                    'first_name' => $this->attributes->firstName ?? null,
-                    'middle_name' => $this->attributes->middleName ?? null,
-                    'last_name' => $this->attributes->lastName ?? null,
-                    'birthdate' => $this->attributes->birthdate ?? null,
-                    'anniversary' => $this->attributes->anniversary ?? null,
-                    'gender' => $this->attributes->gender ?? null,
-                    'grade' => $this->attributes->grade ?? null,
-                    'child' => $this->attributes->child ?? null,
-                    'graduation_year' => $this->attributes->graduationYear ?? null,
-                    'site_administrator' => $this->attributes->siteAdministrator ?? null,
-                    'accounting_administrator' => $this->attributes->accountingAdministrator ?? null,
-                    'people_permissions' => $this->attributes->peoplePermissions ?? null,
-                    'membership' => $this->attributes->membership ?? null,
-                    'inactivated_at' => $this->attributes->inactivatedAt ?? null,
-                    'medical_notes' => $this->attributes->medicalNotes ?? null,
-                    'mfa_configured' => $this->attributes->mfaConfigured ?? null,
-                    'created_at' => $this->attributes->createdAt ?? null,
-                    'updated_at' => $this->attributes->updatedAt ?? null,
-                    'avatar' => $this->attributes->avatar ?? null,
-                    'name' => $this->attributes->name ?? null,
-                    'demographic_avatar_url' => $this->attributes->demographicAvatarUrl ?? null,
-                    'directory_status' => $this->attributes->directoryStatus ?? null,
-                    'passed_background_check' => $this->attributes->passedBackgroundCheck ?? null,
-                    'can_create_forms' => $this->attributes->canCreateForms ?? null,
-                    'can_email_lists' => $this->attributes->canEmailLists ?? null,
-                    'school_type' => $this->attributes->schoolType ?? null,
-                    'status' => $this->attributes->status ?? null,
-                    'primary_campus_id' => $this->attributes->primaryCampusId ?? null,
-                    'remote_id' => $this->attributes->remoteId ?? null,
+            "data" => [
+                "attributes" => [
+                    "id" => $this->attributes->personId ?? null,
+                    "first_name" => $this->attributes->firstName ?? null,
+                    "middle_name" => $this->attributes->middleName ?? null,
+                    "last_name" => $this->attributes->lastName ?? null,
+                    "birthdate" => $this->attributes->birthdate ?? null,
+                    "anniversary" => $this->attributes->anniversary ?? null,
+                    "gender" => $this->attributes->gender ?? null,
+                    "grade" => $this->attributes->grade ?? null,
+                    "child" => $this->attributes->child ?? null,
+                    "graduation_year" => $this->attributes->graduationYear ?? null,
+                    "site_administrator" => $this->attributes->siteAdministrator ?? null,
+                    "accounting_administrator" => $this->attributes->accountingAdministrator ?? null,
+                    "people_permissions" => $this->attributes->peoplePermissions ?? null,
+                    "membership" => $this->attributes->membership ?? null,
+                    "inactivated_at" => $this->attributes->inactivatedAt ?? null,
+                    "medical_notes" => $this->attributes->medicalNotes ?? null,
+                    "mfa_configured" => $this->attributes->mfaConfigured ?? null,
+                    "created_at" => $this->attributes->createdAt ?? null,
+                    "updated_at" => $this->attributes->updatedAt ?? null,
+                    "avatar" => $this->attributes->avatar ?? null,
+                    "name" => $this->attributes->name ?? null,
+                    "demographic_avatar_url" => $this->attributes->demographicAvatarUrl ?? null,
+                    "directory_status" => $this->attributes->directoryStatus ?? null,
+                    "passed_background_check" => $this->attributes->passedBackgroundCheck ?? null,
+                    "can_create_forms" => $this->attributes->canCreateForms ?? null,
+                    "can_email_lists" => $this->attributes->canEmailLists ?? null,
+                    "school_type" => $this->attributes->schoolType ?? null,
+                    "status" => $this->attributes->status ?? null,
+                    "primary_campus_id" => $this->attributes->primaryCampusId ?? null,
+                    "remote_id" => $this->attributes->remoteId ?? null,
                 ],
             ],
         ];
 
-        unset($person['data']['attributes']['id']);
-        unset($person['data']['attributes']['created_at']);
-        unset($person['data']['attributes']['updated_at']);
-        unset($person['data']['attributes']['name']);
-        unset($person['data']['attributes']['demographic_avatar_url']);
+        unset($person["data"]["attributes"]["id"], $person["data"]["attributes"]["created_at"], $person["data"]["attributes"]["updated_at"], $person["data"]["attributes"]["name"], $person["data"]["attributes"]["demographic_avatar_url"]);
 
-        return Arr::whereNotNull($person['data']['attributes']);
+        return Arr::whereNotNull($person["data"]["attributes"]);
     }
 }

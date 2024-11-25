@@ -13,6 +13,6 @@ class RateLimitedException extends Exception
 {
     public function __construct()
     {
-        parent::__construct('Rate Limited by Planning Center');
+        parent::__construct("Rate Limited by Planning Center");
     }
 }

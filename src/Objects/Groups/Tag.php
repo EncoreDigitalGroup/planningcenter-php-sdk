@@ -17,7 +17,7 @@ class Tag
 {
     use HasPlanningCenterClient;
 
-    public const string TAGS_ENDPOINT = '/groups/v2/tags';
+    public const string TAGS_ENDPOINT = "/groups/v2/tags";
 
     public TagAttributes $attributes;
 
@@ -33,7 +33,7 @@ class Tag
     public function get(array $query = []): ClientResponse
     {
         $http = $this->client()
-            ->get($this->hostname() . self::TAGS_ENDPOINT . '/' . $this->attributes->tagId, $query);
+            ->get($this->hostname() . self::TAGS_ENDPOINT . "/" . $this->attributes->tagId, $query);
 
         return $this->processResponse($http);
     }
@@ -41,7 +41,7 @@ class Tag
     public function groups(array $query = []): ClientResponse
     {
         $http = $this->client()
-            ->get($this->hostname() . self::TAGS_ENDPOINT . '/' . $this->attributes->tagId, $query);
+            ->get($this->hostname() . self::TAGS_ENDPOINT . "/" . $this->attributes->tagId, $query);
 
         return $this->processResponse($http);
     }
@@ -51,9 +51,9 @@ class Tag
         $pco = objectify($pco);
 
         $attributeMap = [
-            'tagId' => 'id',
-            'name' => 'name',
-            'position' => 'position',
+            "tagId" => "id",
+            "name" => "name",
+            "position" => "position",
         ];
 
         AttributeMapper::from($pco, $this->attributes, $attributeMap);

@@ -13,6 +13,6 @@ class NonIdealResponseEncounteredException extends Exception
 {
     public function __construct()
     {
-        parent::__construct('Non-Ideal Planning Center Response Encountered');
+        parent::__construct("Non-Ideal Planning Center Response Encountered");
     }
 }

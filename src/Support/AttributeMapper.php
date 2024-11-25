@@ -15,16 +15,16 @@ class AttributeMapper
                 if (property_exists($pco->attributes, $attribute)) {
                     if (in_array($attribute, $dateTimeAttributes)) {
                         try {
-                            $attributes->$property = Carbon::createFromFormat('c', $pco->attributes->$attribute);
+                            $attributes->{$property} = Carbon::createFromFormat("c", $pco->attributes->{$attribute});
                         } catch (InvalidFormatException) {
                             try {
-                                $attributes->$property = Carbon::createFromFormat('Y-m-d', $pco->attributes->$attribute);
+                                $attributes->{$property} = Carbon::createFromFormat("Y-m-d", $pco->attributes->{$attribute});
                             } catch (InvalidFormatException) {
-                                $attributes->$property = null;
+                                $attributes->{$property} = null;
                             }
                         }
                     } else {
-                        $attributes->$property = $pco->attributes->$attribute;
+                        $attributes->{$property} = $pco->attributes->{$attribute};
                     }
                 }
             }

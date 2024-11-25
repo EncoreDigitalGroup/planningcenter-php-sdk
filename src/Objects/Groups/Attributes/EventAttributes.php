@@ -26,5 +26,4 @@ class EventAttributes
     public ?Carbon $startsAt;
     public ?string $virtualLocationUrl;
     public ?int $visitorsCount;
-
 }

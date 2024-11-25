@@ -6,7 +6,6 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Objects\Groups\Attributes;
 
-use DateTime;
 use Illuminate\Support\Carbon;
 
 class GroupAttributes
@@ -27,6 +26,6 @@ class GroupAttributes
 
     public function __construct()
     {
-        $this->headerImage = new GroupHeaderImage();
+        $this->headerImage = new GroupHeaderImage;
     }
 }

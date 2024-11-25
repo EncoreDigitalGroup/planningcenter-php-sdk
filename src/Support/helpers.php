@@ -4,7 +4,7 @@
  * Copyright (c) 2024. Encore Digital Group
  */
 
-if (!function_exists('pco_objectify')) {
+if (!function_exists("pco_objectify")) {
     function pco_objectify(array|stdClass|null $value): ?stdClass
     {
         if (is_null($value)) {

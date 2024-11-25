@@ -6,7 +6,6 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Objects\People\PersonMerger;
 
-use DateTime;
 use Illuminate\Support\Carbon;
 
 class PersonMergerAttributes

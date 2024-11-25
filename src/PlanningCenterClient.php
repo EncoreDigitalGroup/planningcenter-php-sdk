@@ -8,21 +8,20 @@ namespace EncoreDigitalGroup\PlanningCenter;
 
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use PHPGenesis\Common\Container\PhpGenesisContainer;
-use PHPGenesis\Http\HttpClient;
 use PHPGenesis\Http\HttpClientBuilder;
 
 class PlanningCenterClient
 {
     protected HttpClientBuilder $builder;
-    protected string $baseUrl = 'https://api.planningcenteronline.com/';
+    protected string $baseUrl = "https://api.planningcenteronline.com/";
 
     public function __construct()
     {
         PhpGenesisContainer::getInstance()->singleton(PlanningCenterApiVersion::class, function (): PlanningCenterApiVersion {
-            return new PlanningCenterApiVersion();
+            return new PlanningCenterApiVersion;
         });
 
-        $this->builder = new HttpClientBuilder();
+        $this->builder = new HttpClientBuilder;
     }
 
     public function getBaseUrl(): string

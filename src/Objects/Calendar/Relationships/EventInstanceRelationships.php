@@ -14,5 +14,4 @@ class EventInstanceRelationships
     {
         $this->event = $event ?? new BasicRelationship;
     }
-
 }

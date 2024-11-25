@@ -21,7 +21,7 @@ class Event
 {
     use HasPlanningCenterClient;
 
-    public const string EVENT_ENDPOINT = '/calendar/v2/events';
+    public const string EVENT_ENDPOINT = "/calendar/v2/events";
 
     public EventAttributes $attributes;
     public EventRelationships $relationships;
@@ -46,7 +46,7 @@ class Event
     public function future(array $query = []): ClientResponse
     {
         $http = $this->client()
-            ->get($this->hostname() . self::EVENT_ENDPOINT, array_merge(['filter' => 'future'], $query));
+            ->get($this->hostname() . self::EVENT_ENDPOINT, array_merge(["filter" => "future"], $query));
 
         return $this->processResponse($http);
     }
@@ -54,7 +54,7 @@ class Event
     public function get(array $query = []): ClientResponse
     {
         $http = $this->client()
-            ->get($this->hostname() . self::EVENT_ENDPOINT . '/' . $this->attributes->eventId, $query);
+            ->get($this->hostname() . self::EVENT_ENDPOINT . "/" . $this->attributes->eventId, $query);
 
         return $this->processResponse($http);
     }
@@ -81,21 +81,21 @@ class Event
         }
 
         $attributeMap = [
-            'eventId' => 'id',
-            'approvalStatus' => 'approval_status',
-            'createdAt' => 'created_at',
-            'description' => 'description',
-            'featured' => 'featured',
-            'imageUrl' => 'image_url',
-            'name' => 'name',
-            'percentApproved' => 'percent_approved',
-            'percentRejected' => 'percent_rejected',
-            'registrationUrl' => 'registration_url',
-            'summary' => 'summary',
-            'updatedAt' => 'updated_at',
-            'visibleInChurchCenter' => 'visible_in_church_center',
+            "eventId" => "id",
+            "approvalStatus" => "approval_status",
+            "createdAt" => "created_at",
+            "description" => "description",
+            "featured" => "featured",
+            "imageUrl" => "image_url",
+            "name" => "name",
+            "percentApproved" => "percent_approved",
+            "percentRejected" => "percent_rejected",
+            "registrationUrl" => "registration_url",
+            "summary" => "summary",
+            "updatedAt" => "updated_at",
+            "visibleInChurchCenter" => "visible_in_church_center",
         ];
 
-        AttributeMapper::from($pco, $this->attributes, $attributeMap, ['created_at', 'updated_at']);
+        AttributeMapper::from($pco, $this->attributes, $attributeMap, ["created_at", "updated_at"]);
     }
 }

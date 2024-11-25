@@ -21,7 +21,7 @@ class EventInstance
 {
     use HasPlanningCenterClient;
 
-    public const string EVENT_INSTANCE_ENDPOINT = 'calendar/v2/event_instances';
+    public const string EVENT_INSTANCE_ENDPOINT = "calendar/v2/event_instances";
 
     public EventInstanceAttributes $attributes;
     public EventInstanceRelationships $relationships;
@@ -50,7 +50,7 @@ class EventInstance
     public function get(array $query = []): ClientResponse
     {
         $http = $this->client()
-            ->get($this->hostname() . self::EVENT_INSTANCE_ENDPOINT . '/' . $this->attributes->eventInstanceId, $query);
+            ->get($this->hostname() . self::EVENT_INSTANCE_ENDPOINT . "/" . $this->attributes->eventInstanceId, $query);
 
         return $this->processResponse($http);
     }
@@ -66,24 +66,24 @@ class EventInstance
         $this->attributes->eventInstanceId = $pco->id;
 
         $attributeMap = [
-            'allDayEvent' => 'all_day_event',
-            'compactRecurrenceDescription' => 'compact_recurrence_description',
-            'createdAt' => 'created_at',
-            'endsAt' => 'ends_at',
-            'location' => 'location',
-            'recurrence' => 'recurrence',
-            'recurrenceDescription' => 'recurrence_description',
-            'startsAt' => 'starts_at',
-            'updatedAt' => 'updated_at',
-            'churchCenterUrl' => 'church_center_url',
-            'publishedStartAt' => 'published_start_at',
-            'publishedEndsAt' => 'published_ends_at',
+            "allDayEvent" => "all_day_event",
+            "compactRecurrenceDescription" => "compact_recurrence_description",
+            "createdAt" => "created_at",
+            "endsAt" => "ends_at",
+            "location" => "location",
+            "recurrence" => "recurrence",
+            "recurrenceDescription" => "recurrence_description",
+            "startsAt" => "starts_at",
+            "updatedAt" => "updated_at",
+            "churchCenterUrl" => "church_center_url",
+            "publishedStartAt" => "published_start_at",
+            "publishedEndsAt" => "published_ends_at",
         ];
 
-        AttributeMapper::from($pco, $this->attributes, $attributeMap, ['created_at', 'ends_at', 'starts_at', 'updated_at']);
+        AttributeMapper::from($pco, $this->attributes, $attributeMap, ["created_at", "ends_at", "starts_at", "updated_at"]);
 
         $relationshipMap = [
-            'event' => 'event',
+            "event" => "event",
         ];
 
         RelationshipMapper::from($pco, $this->relationships, $relationshipMap);

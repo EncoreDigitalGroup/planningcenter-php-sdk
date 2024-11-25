@@ -11,8 +11,5 @@ class BasicRelationshipData
     public function __construct(
         public ?string $type = null,
         public ?string $id = null,
-    )
-    {
-    }
-
+    ) {}
 }

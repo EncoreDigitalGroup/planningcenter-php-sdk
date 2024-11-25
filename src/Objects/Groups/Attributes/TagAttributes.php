@@ -6,7 +6,6 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Objects\Groups\Attributes;
 
-
 class TagAttributes
 {
     public string $tagId;

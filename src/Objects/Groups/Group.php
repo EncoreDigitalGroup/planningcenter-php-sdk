@@ -6,20 +6,19 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Objects\Groups;
 
+use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Attributes\GroupAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Attributes\GroupEnrollmentAttributes;
+use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\Support\AttributeMapper;
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
-use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Attributes\GroupAttributes;
-use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
-use PHPGenesis\Http\HttpClient;
 
 /** @api */
 class Group
 {
     use HasPlanningCenterClient;
 
-    public const string GROUPS_ENDPOINT = '/groups/v2/groups';
+    public const string GROUPS_ENDPOINT = "/groups/v2/groups";
 
     public GroupAttributes $attributes;
 
@@ -43,7 +42,7 @@ class Group
     public function mine(array $query = []): ClientResponse
     {
         $http = $this->client()
-            ->get($this->hostname() . self::GROUPS_ENDPOINT, array_merge(['filter' => 'my_groups'], $query));
+            ->get($this->hostname() . self::GROUPS_ENDPOINT, array_merge(["filter" => "my_groups"], $query));
 
         return $this->processResponse($http);
     }
@@ -51,7 +50,7 @@ class Group
     public function get(array $query = []): ClientResponse
     {
         $http = $this->client()
-            ->get($this->hostname() . self::GROUPS_ENDPOINT . '/' . $this->attributes->groupId, $query);
+            ->get($this->hostname() . self::GROUPS_ENDPOINT . "/" . $this->attributes->groupId, $query);
 
         return $this->processResponse($http);
     }
@@ -72,7 +71,7 @@ class Group
     public function event(array $query = []): ClientResponse
     {
         $http = $this->client()
-            ->get($this->hostname() . self::GROUPS_ENDPOINT . '/' . $this->attributes->groupId . '/events', $query);
+            ->get($this->hostname() . self::GROUPS_ENDPOINT . "/" . $this->attributes->groupId . "/events", $query);
 
         return $this->processResponse($http);
     }
@@ -80,7 +79,7 @@ class Group
     public function membership(array $query = []): ClientResponse
     {
         $http = $this->client()
-            ->get($this->hostname() . self::GROUPS_ENDPOINT . '/' . $this->attributes->groupId . '/memberships', $query);
+            ->get($this->hostname() . self::GROUPS_ENDPOINT . "/" . $this->attributes->groupId . "/memberships", $query);
 
         return $this->processResponse($http);
     }
@@ -88,7 +87,7 @@ class Group
     public function people(array $query = []): ClientResponse
     {
         $http = $this->client()
-            ->get($this->hostname() . self::GROUPS_ENDPOINT . '/' . $this->attributes->groupId . '/people', $query);
+            ->get($this->hostname() . self::GROUPS_ENDPOINT . "/" . $this->attributes->groupId . "/people", $query);
 
         return $this->processResponse($http);
     }
@@ -98,21 +97,21 @@ class Group
         $pco = objectify($pco);
 
         $attributeMap = [
-            'groupId' => 'id',
-            'archivedAt' => 'archived_at',
-            'contactEmail' => 'contact_email',
-            'createdAt' => 'created_at',
-            'description' => 'description',
-            'eventVisibility' => 'event_visibility',
-            'headerImageThumbnail' => 'header_image.thumbnail',
-            'headerImageMedium' => 'header_image.medium',
-            'headerImageOriginal' => 'header_image.original',
-            'locationTypePreference' => 'location_type_preference',
-            'membershipsCount' => 'memberships_count',
-            'name' => 'name',
-            'publicChurchCenterUrl' => 'public_church_center_url',
-            'schedule' => 'schedule',
-            'virtualLocationUrl' => 'virtual_location_url',
+            "groupId" => "id",
+            "archivedAt" => "archived_at",
+            "contactEmail" => "contact_email",
+            "createdAt" => "created_at",
+            "description" => "description",
+            "eventVisibility" => "event_visibility",
+            "headerImageThumbnail" => "header_image.thumbnail",
+            "headerImageMedium" => "header_image.medium",
+            "headerImageOriginal" => "header_image.original",
+            "locationTypePreference" => "location_type_preference",
+            "membershipsCount" => "memberships_count",
+            "name" => "name",
+            "publicChurchCenterUrl" => "public_church_center_url",
+            "schedule" => "schedule",
+            "virtualLocationUrl" => "virtual_location_url",
         ];
 
         AttributeMapper::from($pco, $this->attributes, $attributeMap);

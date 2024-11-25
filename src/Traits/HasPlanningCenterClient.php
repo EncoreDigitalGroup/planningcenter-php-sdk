@@ -14,22 +14,22 @@ use PHPGenesis\Http\HttpClient;
 
 trait HasPlanningCenterClient
 {
-    protected const string HOSTNAME = 'https://api.planningcenteronline.com';
+    protected const string HOSTNAME = "https://api.planningcenteronline.com";
 
     protected string $clientId;
     protected string $clientSecret;
-    protected string $apiVersion = '';
+    protected string $apiVersion = "";
 
     public function __construct(?string $clientId = null, ?string $clientSecret = null)
     {
-        $this->clientId = $clientId ?? '';
-        $this->clientSecret = $clientSecret ?? '';
+        $this->clientId = $clientId ?? "";
+        $this->clientSecret = $clientSecret ?? "";
     }
 
     public function client(): PendingRequest
     {
         return HttpClient::withBasicAuth($this->clientId, $this->clientSecret)
-            ->withHeader('X-PCO-API-Version', $this->apiVersion);
+            ->withHeader("X-PCO-API-Version", $this->apiVersion);
     }
 
     public function hostname(): string
@@ -53,12 +53,11 @@ trait HasPlanningCenterClient
             || $this->apiVersion == PlanningCenterApiVersion::GROUPS_DEFAULT
             || $this->apiVersion == PlanningCenterApiVersion::CALENDAR_DEFAULT
         ) {
-            $this->mapFromPco($http->json('data'));
-            if (!is_null($http->json('data'))) {
+            $this->mapFromPco($http->json("data"));
+            if (!is_null($http->json("data"))) {
                 $clientResponse->data->add($this);
             }
         }
-
 
         return $clientResponse;
     }

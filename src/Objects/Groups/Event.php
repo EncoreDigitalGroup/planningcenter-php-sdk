@@ -11,15 +11,13 @@ use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\Support\AttributeMapper;
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
-use Illuminate\Support\Carbon;
-use stdClass;
 
 /** @api */
 class Event
 {
     use HasPlanningCenterClient;
 
-    public const string EVENT_ENDPOINT = '/groups/v2/events';
+    public const string EVENT_ENDPOINT = "/groups/v2/events";
 
     public EventAttributes $attributes;
 
@@ -39,7 +37,7 @@ class Event
 
         $clientResponse = new ClientResponse($http);
 
-        foreach ($http->json('data') as $groupEvent) {
+        foreach ($http->json("data") as $groupEvent) {
             $pcoGroupEvent = new Event($this->clientId, $this->clientSecret);
             $pcoGroupEvent->mapFromPco($groupEvent);
             $clientResponse->data->push($pcoGroupEvent);
@@ -51,7 +49,7 @@ class Event
     public function get(array $query = []): ClientResponse
     {
         $http = $this->client()
-            ->get($this->hostname() . self::EVENT_ENDPOINT . '/' . $this->attributes->eventId, $query);
+            ->get($this->hostname() . self::EVENT_ENDPOINT . "/" . $this->attributes->eventId, $query);
 
         return $this->processResponse($http);
     }
@@ -61,24 +59,24 @@ class Event
         $pco = objectify($pco);
 
         $attributeMap = [
-            'eventId' => 'id',
-            'attendanceRequestsEnabled' => 'attendance_requests_enabled',
-            'automatedReminderEnabled' => 'automated_reminder_enabled',
-            'canceled' => 'canceled',
-            'canceledAt' => 'canceled_at',
-            'description' => 'description',
-            'endsAt' => 'ends_at',
-            'locationTypePreference' => 'location_type_preference',
-            'multiDay' => 'multi_day',
-            'name' => 'name',
-            'remindersSent' => 'reminders_sent',
-            'remindersSentAt' => 'reminders_sent_at',
-            'repeating' => 'repeating',
-            'startsAt' => 'starts_at',
-            'virtualLocationUrl' => 'virtual_location_url',
-            'visitorsCount' => 'visitors_count',
+            "eventId" => "id",
+            "attendanceRequestsEnabled" => "attendance_requests_enabled",
+            "automatedReminderEnabled" => "automated_reminder_enabled",
+            "canceled" => "canceled",
+            "canceledAt" => "canceled_at",
+            "description" => "description",
+            "endsAt" => "ends_at",
+            "locationTypePreference" => "location_type_preference",
+            "multiDay" => "multi_day",
+            "name" => "name",
+            "remindersSent" => "reminders_sent",
+            "remindersSentAt" => "reminders_sent_at",
+            "repeating" => "repeating",
+            "startsAt" => "starts_at",
+            "virtualLocationUrl" => "virtual_location_url",
+            "visitorsCount" => "visitors_count",
         ];
 
-        AttributeMapper::from($pco, $this->attributes, $attributeMap, ['canceledAt', 'endsAt', 'remindersSentAt', 'startsAt']);
+        AttributeMapper::from($pco, $this->attributes, $attributeMap, ["canceledAt", "endsAt", "remindersSentAt", "startsAt"]);
     }
 }
