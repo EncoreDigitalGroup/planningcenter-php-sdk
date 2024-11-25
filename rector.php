@@ -7,17 +7,21 @@
 
 declare(strict_types=1);
 
+use PHPGenesis\Common\Resources\Rector\ReplaceSingleQuotesWithDoubleRector;
 use Rector\CodeQuality\Rector\Equal\UseIdenticalOverEqualWithSameTypeRector;
 use Rector\CodeQuality\Rector\FuncCall\CompactToVariablesRector;
+use Rector\CodeQuality\Rector\If_\CompleteMissingIfElseBracketRector;
 use Rector\CodeQuality\Rector\LogicalAnd\LogicalToBooleanRector;
 use Rector\CodingStyle\Rector\Catch_\CatchExceptionNameMatchingTypeRector;
 use Rector\CodingStyle\Rector\Encapsed\EncapsedStringsToSprintfRector;
 use Rector\CodingStyle\Rector\Stmt\NewlineAfterStatementRector;
 use Rector\CodingStyle\Rector\Use_\SeparateMultiUseImportsRector;
 use Rector\Config\RectorConfig;
-use Rector\DeadCode\Rector\ClassMethod\RemoveUnusedPrivateMethodRector;
+use Rector\EarlyReturn\Rector\StmtsAwareInterface\ReturnEarlyIfVariableRector;
 use Rector\Naming\Rector\Assign\RenameVariableToMatchMethodCallReturnTypeRector;
+use Rector\Naming\Rector\Class_\RenamePropertyToMatchTypeRector;
 use Rector\Naming\Rector\ClassMethod\RenameParamToMatchTypeRector;
+use Rector\Naming\Rector\ClassMethod\RenameVariableToMatchNewTypeRector;
 use Rector\Naming\Rector\Foreach_\RenameForeachValueVariableToMatchExprVariableRector;
 use Rector\Php71\Rector\FuncCall\RemoveExtraParametersRector;
 use Rector\Strict\Rector\BooleanNot\BooleanInBooleanNotRuleFixerRector;
@@ -31,27 +35,25 @@ return RectorConfig::configure()
     // ->withPhpSets()
     ->withRules([
         AddVoidReturnTypeWhereNoReturnRector::class,
+        ReplaceSingleQuotesWithDoubleRector::class,
     ])
     ->withSkip([
-        CompactToVariablesRector::class,
-        UseIdenticalOverEqualWithSameTypeRector::class,
-        LogicalToBooleanRector::class,
+        BooleanInBooleanNotRuleFixerRector::class,
         CatchExceptionNameMatchingTypeRector::class,
+        CompactToVariablesRector::class,
+        CompleteMissingIfElseBracketRector::class,
         EncapsedStringsToSprintfRector::class,
+        LogicalToBooleanRector::class,
+        NewlineAfterStatementRector::class,
+        RemoveExtraParametersRector::class,
         RenameForeachValueVariableToMatchExprVariableRector::class,
         RenameParamToMatchTypeRector::class,
+        RenamePropertyToMatchTypeRector::class,
         RenameVariableToMatchMethodCallReturnTypeRector::class,
+        RenameVariableToMatchNewTypeRector::class,
+        ReturnEarlyIfVariableRector::class,
         SeparateMultiUseImportsRector::class,
-        RemoveExtraParametersRector::class,
-        NewlineAfterStatementRector::class,
-        BooleanInBooleanNotRuleFixerRector::class,
-
-        /**
-         * This should not last long here. It is here for Calendar Tagging Settings not having the applyDefaultSettings Method called while tenancy is being implemented
-         * and settings schemas are being migrated. Once default settings are implemented for Calendar Tags, RemoveUnusedPrivateMethodRector should be removed from
-         * this list.
-         */
-        RemoveUnusedPrivateMethodRector::class,
+        UseIdenticalOverEqualWithSameTypeRector::class,
     ])
     ->withPreparedSets(
         deadCode: true,
