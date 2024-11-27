@@ -6,30 +6,62 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Traits;
 
-use EncoreDigitalGroup\SdkClientFoundation\SdkObjects\ClientResponse;
+use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
+use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
+use Illuminate\Http\Client\PendingRequest;
+use Illuminate\Http\Client\Response;
+use PHPGenesis\Http\HttpClient;
+use PHPGenesis\Http\HttpClientBuilder;
 
 trait HasPlanningCenterClient
 {
-    protected mixed $config;
-    protected mixed $client;
-    protected ClientResponse $clientResponse;
+    protected const string HOSTNAME = "https://api.planningcenteronline.com";
 
-    public function __construct(mixed $client)
+    protected string $clientId;
+    protected string $clientSecret;
+    protected string $apiVersion = "";
+
+    public function __construct(?string $clientId = null, ?string $clientSecret = null)
     {
-        $this->config = $client->getConfiguration();
-        $this->client = $client;
+        $this->clientId = $clientId ?? "";
+        $this->clientSecret = $clientSecret ?? "";
+
+        $builder = new HttpClientBuilder;
     }
 
-    public function getClientResponse(): ClientResponse
+    public function client(): PendingRequest
     {
-        return $this->clientResponse;
+        return HttpClient::withBasicAuth($this->clientId, $this->clientSecret)
+            ->withHeader("X-PCO-API-Version", $this->apiVersion);
     }
 
-    private function buildHeaders(): array
+    public function hostname(): string
     {
-        return [
-            'Authorization' => $this->config->getAuthorization(),
-            'X-PCO-API-Version' => $this->config->getGroupsApiVersion(),
-        ];
+        return self::HOSTNAME;
+    }
+
+    public function setApiVersion(string $apiVersion): static
+    {
+        $this->apiVersion = $apiVersion;
+
+        return $this;
+    }
+
+    protected function processResponse(Response $http): ClientResponse
+    {
+        $clientResponse = new ClientResponse($http);
+
+        if (
+            $this->apiVersion == PlanningCenterApiVersion::PEOPLE_DEFAULT
+            || $this->apiVersion == PlanningCenterApiVersion::GROUPS_DEFAULT
+            || $this->apiVersion == PlanningCenterApiVersion::CALENDAR_DEFAULT
+        ) {
+            $this->mapFromPco($http->json("data"));
+            if (!is_null($http->json("data"))) {
+                $clientResponse->data->add($this);
+            }
+        }
+
+        return $clientResponse;
     }
 }

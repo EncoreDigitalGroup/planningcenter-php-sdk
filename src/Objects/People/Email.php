@@ -6,54 +6,91 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Objects\People;
 
-use DateTime;
+use EncoreDigitalGroup\PlanningCenter\Objects\People\Attributes\EmailAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
+use EncoreDigitalGroup\PlanningCenter\Support\AttributeMapper;
+use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
-use GuzzleHttp\Psr7\Request;
-use Illuminate\Support\Carbon;
-use stdClass;
+use Illuminate\Support\Arr;
 
+/** @api */
 class Email
 {
     use HasPlanningCenterClient;
 
-    public string|int|null $personId;
-    public ?string $emailAddressId;
-    public ?string $address;
-    public ?string $location;
-    public ?bool $primary;
-    public DateTime|Carbon|null $created_at;
-    public DateTime|Carbon|null $updated_at;
-    public mixed $blocked;
+    public const string EMAIL_ENDPOINT = "/people/v2/emails";
 
-    private static function prepareDataObject(self $email): stdClass
+    public EmailAttributes $attributes;
+
+    public static function make(?string $clientId = null, ?string $clientSecret = null): Email
     {
-        $Email = new stdClass;
-        $Email->data = new stdClass;
-        $Email->data->attributes = new stdClass;
-        $Email->data->attributes->address = $email->address;
-        $Email->data->attributes->primary = $email->primary;
+        $email = new self($clientId, $clientSecret);
+        $email->attributes = new EmailAttributes;
+        $email->setApiVersion(PlanningCenterApiVersion::PEOPLE_DEFAULT);
 
-        return $Email;
+        return $email;
     }
 
     public function get(): ClientResponse
     {
-        $headers = $this->buildHeaders();
+        $http = $this->client()
+            ->get($this->hostname() . self::EMAIL_ENDPOINT . "/" . $this->attributes->emailAddressId);
 
-        $request = new Request('GET', 'people/v2/people/' . $this->personId . '/emails', $headers);
+        return $this->processResponse($http);
+    }
 
-        return $this->client->send($request);
+    public function forPerson(): ClientResponse
+    {
+        $http = $this->client()
+            ->get($this->hostname() . Person::PEOPLE_ENDPOINT . "/" . $this->attributes->personId . "/emails");
+
+        $clientResponse = new ClientResponse($http);
+
+        foreach ($http->json("data") as $email) {
+            $pcoEmail = Email::make($this->clientId, $this->clientSecret);
+            $pcoEmail->mapFromPco($email);
+            $clientResponse->data->push($pcoEmail);
+        }
+
+        return $clientResponse;
     }
 
     public function update(): ClientResponse
     {
-        $headers = $this->buildHeaders();
+        $http = $this->client()
+            ->patch($this->hostname() . self::EMAIL_ENDPOINT . "/" . $this->attributes->emailAddressId, $this->mapToPco());
 
-        $emailObj = self::prepareDataObject($this);
+        return $this->processResponse($http);
+    }
 
-        $request = new Request('PATCH', 'people/v2/emails/' . $this->emailAddressId, $headers, json_not_null($emailObj));
+    private function mapFromPco(mixed $pco): void
+    {
+        $pco = pco_objectify($pco);
 
-        return $this->client->send($request);
+        if (is_null($pco)) {
+            return;
+        }
+
+        $attributeMap = [
+            "emailAddressId" => "id",
+            "address" => "address",
+            "primary" => "primary",
+        ];
+
+        AttributeMapper::from($pco, $this->attributes, $attributeMap);
+    }
+
+    private function mapToPco(): array
+    {
+        $email = [
+            "data" => [
+                "attributes" => [
+                    "address" => $this->attributes->address,
+                    "primary" => $this->attributes->primary,
+                ],
+            ],
+        ];
+
+        return Arr::whereNotNull($email);
     }
 }

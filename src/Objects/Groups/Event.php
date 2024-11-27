@@ -6,35 +6,77 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Objects\Groups;
 
+use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Attributes\EventAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
+use EncoreDigitalGroup\PlanningCenter\Support\AttributeMapper;
+use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
-use GuzzleHttp\Psr7\Request;
 
+/** @api */
 class Event
 {
     use HasPlanningCenterClient;
 
-    public int $eventId;
+    public const string EVENT_ENDPOINT = "/groups/v2/events";
+
+    public EventAttributes $attributes;
+
+    public static function make(string $clientId, string $clientSecret): Event
+    {
+        $event = new self($clientId, $clientSecret);
+        $event->attributes = new EventAttributes;
+        $event->setApiVersion(PlanningCenterApiVersion::GROUPS_DEFAULT);
+
+        return $event;
+    }
 
     public function all(array $query = []): ClientResponse
     {
-        $headers = $this->buildHeaders();
+        $http = $this->client()
+            ->get($this->hostname() . self::EVENT_ENDPOINT, $query);
 
-        $query = http_build_query($query);
+        $clientResponse = new ClientResponse($http);
 
-        $request = new Request('GET', 'groups/v2/events?' . $query, $headers);
+        foreach ($http->json("data") as $groupEvent) {
+            $pcoGroupEvent = new Event($this->clientId, $this->clientSecret);
+            $pcoGroupEvent->mapFromPco($groupEvent);
+            $clientResponse->data->push($pcoGroupEvent);
+        }
 
-        return $this->client->send($request);
+        return $clientResponse;
     }
 
     public function get(array $query = []): ClientResponse
     {
-        $headers = $this->buildHeaders();
+        $http = $this->client()
+            ->get($this->hostname() . self::EVENT_ENDPOINT . "/" . $this->attributes->eventId, $query);
 
-        $query = http_build_query($query);
+        return $this->processResponse($http);
+    }
 
-        $request = new Request('GET', 'groups/v2/events/' . $this->eventId . '?' . $query, $headers);
+    private function mapFromPco(mixed $pco): void
+    {
+        $pco = objectify($pco);
 
-        return $this->client->send($request);
+        $attributeMap = [
+            "eventId" => "id",
+            "attendanceRequestsEnabled" => "attendance_requests_enabled",
+            "automatedReminderEnabled" => "automated_reminder_enabled",
+            "canceled" => "canceled",
+            "canceledAt" => "canceled_at",
+            "description" => "description",
+            "endsAt" => "ends_at",
+            "locationTypePreference" => "location_type_preference",
+            "multiDay" => "multi_day",
+            "name" => "name",
+            "remindersSent" => "reminders_sent",
+            "remindersSentAt" => "reminders_sent_at",
+            "repeating" => "repeating",
+            "startsAt" => "starts_at",
+            "virtualLocationUrl" => "virtual_location_url",
+            "visitorsCount" => "visitors_count",
+        ];
+
+        AttributeMapper::from($pco, $this->attributes, $attributeMap, ["canceledAt", "endsAt", "remindersSentAt", "startsAt"]);
     }
 }

@@ -6,12 +6,12 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Objects\People\PersonMerger;
 
-use DateTime;
 use Illuminate\Support\Carbon;
 
 class PersonMergerAttributes
 {
-    public DateTime|Carbon|string $createdAt;
+    public string $personMergerId;
+    public Carbon $createdAt;
     public int $personToKeepId;
     public int $personToRemoveId;
 }

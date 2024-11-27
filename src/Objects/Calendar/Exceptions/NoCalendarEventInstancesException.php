@@ -12,6 +12,6 @@ class NoCalendarEventInstancesException extends Exception
 {
     public function __construct()
     {
-        parent::__construct('Calendar Event Has No Event Instances');
+        parent::__construct("Calendar Event Has No Event Instances");
     }
 }

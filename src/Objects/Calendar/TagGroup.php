@@ -6,58 +6,61 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Objects\Calendar;
 
+use EncoreDigitalGroup\PlanningCenter\Objects\Calendar\Attributes\TagGroupAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
+use EncoreDigitalGroup\PlanningCenter\Support\AttributeMapper;
+use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
-use GuzzleHttp\Psr7\Request;
 
-/**
- * Class TagGroup
- *
- * @property int $tagGroupId
- * @property int $tagId
- */
 class TagGroup
 {
     use HasPlanningCenterClient;
 
-    public int $tagGroupId;
-    public int $tagId;
+    public const string TAG_GROUP_ENDPOINT = "/calendar/v2/tag_groups";
+
+    public TagGroupAttributes $attributes;
+
+    public static function make(string $clientId, string $clientSecret): TagGroup
+    {
+        $tagGroup = new self($clientId, $clientSecret);
+        $tagGroup->attributes = new TagGroupAttributes;
+        $tagGroup->setApiVersion(PlanningCenterApiVersion::CALENDAR_DEFAULT);
+
+        return $tagGroup;
+    }
 
     public function all(array $query = []): ClientResponse
     {
-        $headers = $this->buildHeaders();
+        $http = $this->client()
+            ->get($this->hostname() . self::TAG_GROUP_ENDPOINT, $query);
 
-        $query = http_build_query($query);
-
-        $request = new Request('GET', 'calendar/v2/tag_groups?' . $query, $headers);
-
-        return $this->client->send($request);
+        return $this->processResponse($http);
     }
 
     public function tags(array $query = []): ClientResponse
     {
-        $headers = $this->buildHeaders();
-
-        $query = http_build_query($query);
-
-        $tagGroupId = $this->tagGroupId ?? '';
-
-        $request = new Request('GET', 'calendar/v2/tag_groups/' . $tagGroupId . '/tags?' . $query, $headers);
-
-        return $this->client->send($request);
+        return Tag::make($this->clientId, $this->clientSecret)
+            ->inTagGroup($this->attributes->tagGroupId)
+            ->all($query);
     }
 
-    public function tag(array $query = []): ClientResponse
+    private function mapFromPco(mixed $pco): void
     {
+        $pco = pco_objectify($pco);
 
-        $headers = $this->buildHeaders();
+        if (is_null($pco)) {
+            return;
+        }
 
-        $query = http_build_query($query);
+        $this->attributes->tagGroupId = $pco->id;
 
-        $tagGroupId = $this->tagGroupId ?? '';
+        $attributeMap = [
+            "createdAt" => "created_at",
+            "name" => "name",
+            "updatedAt" => "updated_at",
+            "required" => "required",
+        ];
 
-        $request = new Request('GET', 'calendar/v2/tag_groups/' . $tagGroupId . '/tags/' . $this->tagId . '?' . $query, $headers);
-
-        return $this->client->send($request);
+        AttributeMapper::from($pco, $this->attributes, $attributeMap, ["created_at", "updated_at"]);
     }
 }
