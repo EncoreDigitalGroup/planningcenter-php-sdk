@@ -10,6 +10,7 @@ use Illuminate\Http\Client\Factory as HttpFactory;
 use Illuminate\Support\Facades\Facade;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use Tests\Unit\Calendar\CalendarMocks;
+use Tests\Unit\Groups\GroupMocks;
 use Tests\Unit\People\PeopleMocks;
 
 class TestCase extends OrchestraTestCase
@@ -23,6 +24,7 @@ class TestCase extends OrchestraTestCase
 
         PeopleMocks::setup();
         CalendarMocks::setup();
+        GroupMocks::setup();
     }
 
     protected function getEnvironmentSetup($app): void

@@ -92,20 +92,20 @@ class Group
         return $this->processResponse($http);
     }
 
-    protected function mapFromPco(array $pco): void
+    protected function mapFromPco(mixed $pco): void
     {
-        $pco = objectify($pco);
+        $pco = pco_objectify($pco);
+
+        if (is_null($pco)) {
+            return;
+        }
 
         $attributeMap = [
-            "groupId" => "id",
             "archivedAt" => "archived_at",
             "contactEmail" => "contact_email",
             "createdAt" => "created_at",
             "description" => "description",
             "eventVisibility" => "event_visibility",
-            "headerImageThumbnail" => "header_image.thumbnail",
-            "headerImageMedium" => "header_image.medium",
-            "headerImageOriginal" => "header_image.original",
             "locationTypePreference" => "location_type_preference",
             "membershipsCount" => "memberships_count",
             "name" => "name",
@@ -114,6 +114,16 @@ class Group
             "virtualLocationUrl" => "virtual_location_url",
         ];
 
-        AttributeMapper::from($pco, $this->attributes, $attributeMap);
+        $this->attributes->groupId = $pco->id;
+
+        AttributeMapper::from($pco, $this->attributes, $attributeMap, ["archived_at", "created_at"]);
+
+        $headerImageAttributeMap = [
+            "thumbnail" => "thumbnail",
+            "medium" => "medium",
+            "original" => "original",
+        ];
+
+        AttributeMapper::from($pco->attributes->header_image, $this->attributes->headerImage, $headerImageAttributeMap);
     }
 }
