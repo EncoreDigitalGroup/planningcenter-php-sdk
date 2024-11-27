@@ -2,15 +2,55 @@ name: Pull Request
 
 on:
   pull_request_target:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.repository }}-${{ github.event.pull_request.number }}-pullRequest
+  cancel-in-progress: true
 
 permissions:
   contents: write
   pull-requests: write
 
 jobs:
+  GitStatusCheck:
+    name: GitStatusCheck
+    runs-on: ubuntu-latest
+    outputs:
+      shouldRun: ${{ steps.GitStatusCheck.outputs.shouldRun }}
+    steps:
+      - name: GitStatusCheck
+        id: GitStatusCheck
+        uses: EncoreDigitalGroup/ci-workflows/actions/php/gitStatusCheck@v2
+
+  FormatTitle:
+    name: FormatTitle
+    runs-on: ubuntu-latest
+    steps:
+      - name: FormatTitle
+        uses: EncoreDigitalGroup/ci-workflows/actions/github/formatPullRequestTitle@v2
+        with:
+          branch: ${{ github.head_ref }}
+          pullRequestNumber: ${{ github.event.number }}
+          repository: ${{ github.repository }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  Rector:
+    needs: GitStatusCheck
+    name: Rector
+    if: needs.GitStatusCheck.outputs.shouldRun == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Rector
+        uses: EncoreDigitalGroup/ci-workflows/actions/php/rector@v2
+        with:
+          branch: "${{ github.ref }}"
+          repository: "${{ github.repository }}"
+
   Duster:
+    needs: Rector
     name: Duster
-    uses: EncoreDigitalGroup/.github/.github/workflows/dusterFixBlame.yml@v1
+    uses: EncoreDigitalGroup/ci-workflows/.github/workflows/php_dusterFix.yml@v2
     permissions:
       contents: write
       pull-requests: write
@@ -18,12 +58,20 @@ jobs:
   StaticAnalysis:
     needs: Duster
     name: StaticAnalysis
-    uses: EncoreDigitalGroup/.github/.github/workflows/larastan.yml@v1
+    uses: EncoreDigitalGroup/ci-workflows/.github/workflows/php_larastan.yml@v2
     with:
       path: 'src/'
       branch: ${{ github.head_ref }}
 
+  Test:
+    needs: Duster
+    name: Test
+    uses: EncoreDigitalGroup/ci-workflows/.github/workflows/php_pest.yml@v2
+    with:
+      branch: ${{ github.head_ref }}
+      runParallel: true
+
   AutoMerge:
-    needs: StaticAnalysis
-    name: AutoMerge
-    uses: EncoreDigitalGroup/.github/.github/workflows/dependabotAutoMerge.yml@v1
+    needs: [ StaticAnalysis, Test ]
+    name: Auto-Merge
+    uses: EncoreDigitalGroup/ci-workflows/.github/workflows/github_dependabotAutoMerge.yml@v2

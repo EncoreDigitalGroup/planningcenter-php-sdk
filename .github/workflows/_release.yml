@@ -15,10 +15,10 @@ permissions:
 jobs:
   CreateRelease:
     name: CreateRelease
-    uses: EncoreDigitalGroup/.github/.github/workflows/createRelease.yml@main
+    uses: EncoreDigitalGroup/ci-workflows/.github/workflows/github_createRelease.yml@v2
     secrets:
       token: ${{ secrets.GITHUB_TOKEN }}
     with:
-      generate_release_notes: true
-      is_draft: false
-      pre_release: false
+      generateReleaseNotes: true
+      isDraft: false
+      preRelease: false
