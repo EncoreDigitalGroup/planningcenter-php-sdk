@@ -10,6 +10,7 @@ use EncoreDigitalGroup\PlanningCenter\Objects\People\Email;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 
+/** @codeCoverageIgnore */
 trait HasEmails
 {
     use HasPlanningCenterClient;
