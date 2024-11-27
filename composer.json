@@ -54,9 +54,6 @@
             "Tests\\": "tests/"
         }
     },
-    "scripts": {
-        "analize": "vendor/bin/phpstan analyse"
-    },
     "minimum-stability": "stable",
     "prefer-stable": true
 }
