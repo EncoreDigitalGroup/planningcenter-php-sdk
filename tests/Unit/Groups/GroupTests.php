@@ -4,7 +4,6 @@ namespace Tests\Unit\Groups;
 
 use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Attributes\GroupAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Attributes\GroupMemberPersonAttributes;
-use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Attributes\GroupMembershipAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Group;
 use EncoreDigitalGroup\PlanningCenter\Objects\Groups\GroupMembership;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
@@ -84,4 +83,8 @@ describe('Group Tests', function () {
             ->and($groupMember->firstName)->toBe(GroupMocks::MEMBER_FIRST_NAME)
             ->and($groupMember->lastName)->toBe(GroupMocks::MEMBER_LAST_NAME);
     });
+
+    test("Group: Can List Tags Assigned to Group", function () {
+        // Test Content Goes Here.
+    })->todo("Write test that lists the tags assigned to a group", enum(TaskAssignee::MarcBeinder));
 })->group('groups.group');
