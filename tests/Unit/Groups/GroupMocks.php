@@ -27,6 +27,9 @@ class GroupMocks extends BaseMock
     public const string MEMBER_PROFILE_ID = "1";
     public const string MEMBER_FIRST_NAME = "John";
     public const string MEMBER_LAST_NAME = "Smith";
+    public const string TAG_ID = "1";
+    public const string TAG_NAME = "Demo Tag";
+    public const int TAG_POSITION = 1;
 
     public static function setup(): void
     {
@@ -34,6 +37,7 @@ class GroupMocks extends BaseMock
         self::useSpecificGroup();
         self::useMembershipCollection();
         self::useGroupMemberPersonCollection();
+        self::useGroupTagRelationshipCollection();
     }
 
     protected static function useGroupCollection(): void
@@ -87,6 +91,18 @@ class GroupMocks extends BaseMock
             self::HOSTNAME . Group::GROUPS_ENDPOINT . "/1/people" => function ($request) {
                 return match ($request->method()) {
                     'GET' => HttpClient::response(self::useCollectionResponse(ObjectType::GroupMembers)),
+                    default => HttpClient::response([], 405),
+                };
+            },
+        ]);
+    }
+
+    protected static function useGroupTagRelationshipCollection(): void
+    {
+        HttpClient::fake([
+            self::HOSTNAME . Group::GROUPS_ENDPOINT . "/1/tags" => function ($request) {
+                return match ($request->method()) {
+                    'GET' => HttpClient::response(self::useCollectionResponse(ObjectType::Tag)),
                     default => HttpClient::response([], 405),
                 };
             },
@@ -175,6 +191,26 @@ class GroupMocks extends BaseMock
                 "phone_numbers" => [],
             ],
             "relationships" => [],
+        ];
+    }
+
+    protected static function tag(): array
+    {
+        return [
+            "type" => "Tag",
+            "id" => self::TAG_ID,
+            "attributes" => [
+                "name" => self::TAG_NAME,
+                "position" => self::TAG_POSITION,
+            ],
+            "relationships" => [
+                "tag_group" => [
+                    "data" => [
+                        "type" => "TagGroup",
+                        "id" => "1",
+                    ],
+                ],
+            ],
         ];
     }
 }

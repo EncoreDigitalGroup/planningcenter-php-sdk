@@ -6,6 +6,7 @@ use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Attributes\GroupAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Attributes\GroupMemberPersonAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Group;
 use EncoreDigitalGroup\PlanningCenter\Objects\Groups\GroupMembership;
+use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Tag;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use Illuminate\Support\Collection;
 use Tests\Helpers\TaskAssignee;
@@ -85,8 +86,21 @@ describe('Group Tests', function () {
     });
 
     test("Group: Can List Tags Assigned to Group", function () {
-        // Test Content Goes Here.
-    })->todo("Write test that lists the tags assigned to a group", enum(TaskAssignee::MarcBeinder));
+        $group = Group::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
+        $group->attributes->groupId = "1";
+
+        $response = $group->tags();
+
+        /** @var Tag $tag */
+        $tag = $response->data->first();
+
+        expect($response)->toBeInstanceOf(ClientResponse::class)
+            ->and($response->data)->toBeInstanceOf(Collection::class)
+            ->and($response->data->count())->toBe(1)
+            ->and($tag->attributes->tagId)->toBe(GroupMocks::TAG_ID)
+            ->and($tag->attributes->name)->toBe(GroupMocks::TAG_NAME)
+            ->and($tag->attributes->position)->toBe(GroupMocks::TAG_POSITION);
+    });
 
     test("Group: Can Get Group Enrollment Details", function () {
         // Test Content Goes Here.
