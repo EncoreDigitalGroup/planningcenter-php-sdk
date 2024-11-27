@@ -24,12 +24,16 @@ class GroupMocks extends BaseMock
     public const string GROUP_NAME = "Demo Group";
     public const string MEMBERSHIP_ID = "1";
     public const string MEMBERSHIP_ROLE = "leader";
+    public const string MEMBER_PROFILE_ID = "1";
+    public const string MEMBER_FIRST_NAME = "John";
+    public const string MEMBER_LAST_NAME = "Smith";
 
     public static function setup(): void
     {
         self::useGroupCollection();
         self::useSpecificGroup();
         self::useMembershipCollection();
+        self::useGroupMemberPersonCollection();
     }
 
     protected static function useGroupCollection(): void
@@ -71,6 +75,18 @@ class GroupMocks extends BaseMock
             self::HOSTNAME . Group::GROUPS_ENDPOINT . "/1/memberships" => function ($request) {
                 return match ($request->method()) {
                     'GET' => HttpClient::response(self::useCollectionResponse(ObjectType::GroupMembership)),
+                    default => HttpClient::response([], 405),
+                };
+            },
+        ]);
+    }
+
+    protected static function useGroupMemberPersonCollection(): void
+    {
+        HttpClient::fake([
+            self::HOSTNAME . Group::GROUPS_ENDPOINT . "/1/people" => function ($request) {
+                return match ($request->method()) {
+                    'GET' => HttpClient::response(self::useCollectionResponse(ObjectType::GroupMembers)),
                     default => HttpClient::response([], 405),
                 };
             },
@@ -139,6 +155,26 @@ class GroupMocks extends BaseMock
                     ],
                 ],
             ],
+        ];
+    }
+
+    protected static function people(): array
+    {
+        return [
+            "type" => "Person",
+            "id" => self::MEMBER_PROFILE_ID,
+            "attributes" => [
+                "addresses" => [],
+                "avatar_url" => "string",
+                "child" => true,
+                "created_at" => "2000-01-01T12:00:00Z",
+                "email_addresses" => [],
+                "first_name" => self::MEMBER_FIRST_NAME,
+                "last_name" => self::MEMBER_LAST_NAME,
+                "permissions" => "string",
+                "phone_numbers" => [],
+            ],
+            "relationships" => [],
         ];
     }
 }

@@ -85,10 +85,9 @@ class Group
 
     public function people(array $query = []): ClientResponse
     {
-        $http = $this->client()
-            ->get($this->hostname() . self::GROUPS_ENDPOINT . "/{$this->attributes->groupId}/people", $query);
-
-        return $this->processResponse($http);
+        return GroupMemberPerson::make($this->clientId, $this->clientSecret)
+            ->forGroupId($this->attributes->groupId)
+            ->get($query);
     }
 
     protected function mapFromPco(mixed $pco): void

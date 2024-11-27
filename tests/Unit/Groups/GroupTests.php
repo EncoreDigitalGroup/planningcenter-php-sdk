@@ -3,6 +3,7 @@
 namespace Tests\Unit\Groups;
 
 use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Attributes\GroupAttributes;
+use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Attributes\GroupMemberPersonAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Attributes\GroupMembershipAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Group;
 use EncoreDigitalGroup\PlanningCenter\Objects\Groups\GroupMembership;
@@ -73,8 +74,14 @@ describe('Group Tests', function () {
 
         $response = $group->people();
 
+        /** @var GroupMemberPersonAttributes $groupMember */
+        $groupMember = $response->data->first()->attributes;
+
         expect($response)->toBeInstanceOf(ClientResponse::class)
             ->and($response->data)->toBeInstanceOf(Collection::class)
-            ->and($response->data->count())->toBe(1);
-    })->todo("Create Group Person Relationship Object", enum(TaskAssignee::MarcBeinder));
+            ->and($response->data->count())->toBe(1)
+            ->and($groupMember->personId)->toBe(GroupMocks::MEMBER_PROFILE_ID)
+            ->and($groupMember->firstName)->toBe(GroupMocks::MEMBER_FIRST_NAME)
+            ->and($groupMember->lastName)->toBe(GroupMocks::MEMBER_LAST_NAME);
+    });
 })->group('groups.group');
