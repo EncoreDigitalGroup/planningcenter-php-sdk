@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Calendar;
 
+use EncoreDigitalGroup\PlanningCenter\Objects\Calendar\Attributes\TagAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\Calendar\Attributes\TagGroupAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\Calendar\TagGroup;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
@@ -29,8 +30,13 @@ describe('TagGroup Tests', function () {
 
         $response = $tagGroup->tags();
 
+        /** @var TagAttributes $tagAttributes */
+        $tagAttributes = $response->data->first()->attributes;
+
         expect($response)->toBeInstanceOf(ClientResponse::class)
             ->and($response->data)->toBeInstanceOf(Collection::class)
-            ->and($response->data->count())->toBe(1);
-    })->todo("Create Tag Relationship Object", "onairmarc");
+            ->and($response->data->count())->toBe(1)
+            ->and($tagAttributes->tagId)->toBe(CalendarMocks::TAG_ID)
+            ->and($tagAttributes->name)->toBe(CalendarMocks::TAG_NAME);
+    });
 })->group('calendar.tagGroup');

@@ -6,25 +6,23 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Objects\Calendar;
 
-use EncoreDigitalGroup\PlanningCenter\Objects\Calendar\Attributes\TagGroupAttributes;
-use EncoreDigitalGroup\PlanningCenter\Objects\Calendar\Relationships\TagGroupRelationships;
+use EncoreDigitalGroup\PlanningCenter\Objects\Calendar\Attributes\TagAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\Support\AttributeMapper;
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 
-class TagGroup
+class Tag
 {
     use HasPlanningCenterClient;
 
-    public const string TAG_GROUP_ENDPOINT = "/calendar/v2/tag_groups";
+    public TagAttributes $attributes;
+    private string $tagGroupId;
 
-    public TagGroupAttributes $attributes;
-
-    public static function make(string $clientId, string $clientSecret): TagGroup
+    public static function make(string $clientId, string $clientSecret): Tag
     {
         $tagGroup = new self($clientId, $clientSecret);
-        $tagGroup->attributes = new TagGroupAttributes;
+        $tagGroup->attributes = new TagAttributes;
         $tagGroup->setApiVersion(PlanningCenterApiVersion::CALENDAR_DEFAULT);
 
         return $tagGroup;
@@ -33,16 +31,16 @@ class TagGroup
     public function all(array $query = []): ClientResponse
     {
         $http = $this->client()
-            ->get($this->hostname() . self::TAG_GROUP_ENDPOINT, $query);
+            ->get($this->hostname() . TagGroup::TAG_GROUP_ENDPOINT . "/{$this->tagGroupId}/tags", $query);
 
         return $this->processResponse($http);
     }
 
-    public function tags(array $query = []): ClientResponse
+    public function inTagGroup(string $tagGroupId): static
     {
-        return Tag::make($this->clientId, $this->clientSecret)
-            ->inTagGroup($this->attributes->tagGroupId)
-            ->all($query);
+        $this->tagGroupId = $tagGroupId;
+
+        return $this;
     }
 
     private function mapFromPco(mixed $pco): void
@@ -53,13 +51,15 @@ class TagGroup
             return;
         }
 
-        $this->attributes->tagGroupId = $pco->id;
+        $this->attributes->tagId = $pco->id;
 
         $attributeMap = [
+            "churchCenterCategory" => "church_center_category",
+            "color" => "color",
             "createdAt" => "created_at",
             "name" => "name",
+            "position" => "position",
             "updatedAt" => "updated_at",
-            "required" => "required",
         ];
 
         AttributeMapper::from($pco, $this->attributes, $attributeMap, ["created_at", "updated_at"]);

@@ -22,6 +22,8 @@ class CalendarMocks extends BaseMock
     public const string EVENT_NAME = 'Sample Event';
     public const string EVENT_INSTANCE_ID = "1";
     public const string TAG_GROUP_ID = "1";
+    public const string TAG_NAME = "Demo Tag";
+    public const string TAG_ID = "1";
 
     public static function setup(): void
     {
@@ -100,7 +102,7 @@ class CalendarMocks extends BaseMock
         HttpClient::fake([
             self::HOSTNAME . TagGroup::TAG_GROUP_ENDPOINT . '/1/tags' => function ($request) {
                 return match ($request->method()) {
-                    'GET' => HttpClient::response(self::useSingleResponse(ObjectType::TagGroup)),
+                    'GET' => HttpClient::response(self::useSingleResponse(ObjectType::Tag)),
                     default => HttpClient::response([], 405),
                 };
             },
@@ -174,11 +176,28 @@ class CalendarMocks extends BaseMock
             'id' => '1',
             'attributes' => [
                 'created_at' => '2000-01-01T12:00:00Z',
-                'name' => 'string',
+                'name' => 'Demo Tag Group',
                 'updated_at' => '2000-01-01T12:00:00Z',
                 'required' => true,
             ],
             'relationships' => [],
+        ];
+    }
+
+    protected static function tag(): array
+    {
+        return [
+            "type" => "Tag",
+            "id" => self::TAG_ID,
+            "attributes" => [
+                "church_center_category" => true,
+                "color" => "string",
+                "created_at" => "2000-01-01T12:00:00Z",
+                "name" => self::TAG_NAME,
+                "position" => 142,
+                "updated_at" => "2000-01-01T12:00:00Z",
+            ],
+            "relationships" => [],
         ];
     }
 }
