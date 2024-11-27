@@ -3,6 +3,7 @@
 namespace Tests\Unit\Groups;
 
 use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Attributes\GroupAttributes;
+use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Attributes\GroupEnrollmentAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Attributes\GroupMemberPersonAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Group;
 use EncoreDigitalGroup\PlanningCenter\Objects\Groups\GroupMembership;
@@ -103,6 +104,18 @@ describe('Group Tests', function () {
     });
 
     test("Group: Can Get Group Enrollment Details", function () {
-        // Test Content Goes Here.
-    })->todo("Write test gets group enrollment details", enum(TaskAssignee::MarcBeinder));
+        $group = Group::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
+        $group->attributes->groupId = "1";
+
+        $response = $group->enrollment();
+
+        /** @var GroupEnrollmentAttributes $enrollmentAttributes */
+        $enrollmentAttributes = $response->data->first()->attributes;
+
+        expect($response)->toBeInstanceOf(ClientResponse::class)
+            ->and($response->data)->toBeInstanceOf(Collection::class)
+            ->and($response->data->count())->toBe(1)
+            ->and($enrollmentAttributes->memberLimit)->toBe(GroupMocks::ENROLLMENT_MEMBER_LIMIT)
+            ->and($enrollmentAttributes->memberLimitReached)->toBe(GroupMocks::ENROLLMENT_MEMBER_LIMIT_REACHED);
+    });
 })->group('groups.group');

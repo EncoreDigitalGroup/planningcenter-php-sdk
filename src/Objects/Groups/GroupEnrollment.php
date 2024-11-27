@@ -35,17 +35,22 @@ class GroupEnrollment
     public function get(array $query = []): ClientResponse
     {
         $http = $this->client()
-            ->get($this->hostname() . Group::GROUPS_ENDPOINT . $this->attributes->groupId . "/enrollment", $query);
+            ->get($this->hostname() . Group::GROUPS_ENDPOINT . "/{$this->attributes->groupId}/enrollment", $query);
 
         return $this->processResponse($http);
     }
 
-    protected function mapFromPco(array $pco): void
+    protected function mapFromPco(mixed $pco): void
     {
-        $pco = objectify($pco);
+        $pco = pco_objectify($pco);
+
+        if (is_null($pco)) {
+            return;
+        }
+
+        $this->attributes->groupId = $pco->id;
 
         $attributeMap = [
-            "groupId" => "id",
             "autoClosed" => "auto_closed",
             "autoClosedReason" => "auto_closed_reason",
             "dateLimit" => "date_limit",
@@ -56,6 +61,6 @@ class GroupEnrollment
             "strategy" => "strategy",
         ];
 
-        AttributeMapper::from($pco, $this->attributes, $attributeMap);
+        AttributeMapper::from($pco, $this->attributes, $attributeMap, ["date_limit"]);
     }
 }

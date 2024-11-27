@@ -11,13 +11,13 @@ use Illuminate\Support\Carbon;
 
 class GroupEnrollmentAttributes
 {
-    public string|int|null $groupId;
-    public ?bool $autoClosed = false;
-    public ?string $autoClosedReason;
-    public DateTime|Carbon|null $dateLimit;
+    public string $groupId;
+    public ?bool $autoClosed = null;
+    public ?string $autoClosedReason = null;
+    public ?Carbon $dateLimit = null;
     public ?bool $dateLimitReached = false;
-    public ?int $memberLimit;
-    public ?bool $memberLimitReached = false;
-    public ?string $status;
-    public ?string $strategy;
+    public ?int $memberLimit = null;
+    public ?bool $memberLimitReached = null;
+    public ?string $status = null;
+    public ?string $strategy = null;
 }

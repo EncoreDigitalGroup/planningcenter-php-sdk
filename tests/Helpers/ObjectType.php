@@ -8,13 +8,14 @@ namespace Tests\Helpers;
 
 enum ObjectType: string
 {
-    case Profile = "profile";
     case Email = "email";
+    case Enrollment = "enrollment";
     case Event = "event";
     case EventInstance = "eventInstance";
+    case Group = "group";
+    case GroupMembers = "people";
+    case GroupMembership = "membership";
+    case Profile = "profile";
     case TagGroup = "tagGroup";
     case Tag = "tag";
-    case Group = "group";
-    case GroupMembership = "membership";
-    case GroupMembers = "people";
 }

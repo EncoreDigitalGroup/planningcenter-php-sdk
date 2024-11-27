@@ -57,7 +57,7 @@ class Group
 
     public function enrollment(): ClientResponse
     {
-        $enrollment = new GroupEnrollment($this->clientId, $this->clientSecret);
+        $enrollment = GroupEnrollment::make($this->clientId, $this->clientSecret);
 
         if (!isset($enrollment->attributes)) {
             $enrollment->attributes = new GroupEnrollmentAttributes;

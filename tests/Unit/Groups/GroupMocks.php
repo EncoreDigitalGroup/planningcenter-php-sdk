@@ -30,6 +30,8 @@ class GroupMocks extends BaseMock
     public const string TAG_ID = "1";
     public const string TAG_NAME = "Demo Tag";
     public const int TAG_POSITION = 1;
+    public const int ENROLLMENT_MEMBER_LIMIT = 1;
+    public const bool ENROLLMENT_MEMBER_LIMIT_REACHED = true;
 
     public static function setup(): void
     {
@@ -38,6 +40,7 @@ class GroupMocks extends BaseMock
         self::useMembershipCollection();
         self::useGroupMemberPersonCollection();
         self::useGroupTagRelationshipCollection();
+        self::useEnrollmentCollection();
     }
 
     protected static function useGroupCollection(): void
@@ -103,6 +106,18 @@ class GroupMocks extends BaseMock
             self::HOSTNAME . Group::GROUPS_ENDPOINT . "/1/tags" => function ($request) {
                 return match ($request->method()) {
                     'GET' => HttpClient::response(self::useCollectionResponse(ObjectType::Tag)),
+                    default => HttpClient::response([], 405),
+                };
+            },
+        ]);
+    }
+
+    protected static function useEnrollmentCollection(): void
+    {
+        HttpClient::fake([
+            self::HOSTNAME . Group::GROUPS_ENDPOINT . "/1/enrollment" => function ($request) {
+                return match ($request->method()) {
+                    'GET' => HttpClient::response(self::useCollectionResponse(ObjectType::Enrollment)),
                     default => HttpClient::response([], 405),
                 };
             },
@@ -207,6 +222,32 @@ class GroupMocks extends BaseMock
                 "tag_group" => [
                     "data" => [
                         "type" => "TagGroup",
+                        "id" => "1",
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    protected static function enrollment(): array
+    {
+        return [
+            "type" => "Enrollment",
+            "id" => "1",
+            "attributes" => [
+                "auto_closed" => true,
+                "auto_closed_reason" => "string",
+                "date_limit" => "string",
+                "date_limit_reached" => true,
+                "member_limit" => self::ENROLLMENT_MEMBER_LIMIT,
+                "member_limit_reached" => self::ENROLLMENT_MEMBER_LIMIT_REACHED,
+                "status" => "string",
+                "strategy" => "string",
+            ],
+            "relationships" => [
+                "group" => [
+                    "data" => [
+                        "type" => "Group",
                         "id" => "1",
                     ],
                 ],

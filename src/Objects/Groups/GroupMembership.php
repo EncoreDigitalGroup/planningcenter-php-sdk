@@ -6,7 +6,6 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Objects\Groups;
 
-use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Attributes\GroupEnrollmentAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Attributes\GroupMembershipAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Relationships\GroupMembershipRelationships;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
