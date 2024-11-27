@@ -14,6 +14,7 @@ use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 use PHPGenesis\Http\HttpClient;
 use Tests\Helpers\BaseMock;
 use Tests\Helpers\ObjectType;
+use Tests\Unit\People\PeopleMocks;
 
 class GroupMocks extends BaseMock
 {
@@ -21,11 +22,14 @@ class GroupMocks extends BaseMock
 
     public const string GROUP_ID = "1";
     public const string GROUP_NAME = "Demo Group";
+    public const string MEMBERSHIP_ID = "1";
+    public const string MEMBERSHIP_ROLE = "leader";
 
     public static function setup(): void
     {
         self::useGroupCollection();
         self::useSpecificGroup();
+        self::useMembershipCollection();
     }
 
     protected static function useGroupCollection(): void
@@ -55,6 +59,18 @@ class GroupMocks extends BaseMock
             self::HOSTNAME . Group::GROUPS_ENDPOINT . "/1" => function ($request) {
                 return match ($request->method()) {
                     'GET' => HttpClient::response(self::useSingleResponse(ObjectType::Group)),
+                    default => HttpClient::response([], 405),
+                };
+            },
+        ]);
+    }
+
+    protected static function useMembershipCollection(): void
+    {
+        HttpClient::fake([
+            self::HOSTNAME . Group::GROUPS_ENDPOINT . "/1/memberships" => function ($request) {
+                return match ($request->method()) {
+                    'GET' => HttpClient::response(self::useCollectionResponse(ObjectType::GroupMembership)),
                     default => HttpClient::response([], 405),
                 };
             },
@@ -94,6 +110,32 @@ class GroupMocks extends BaseMock
                     "data" => [
                         "type" => "Location",
                         "id" => "1",
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    protected static function membership(): array
+    {
+        return [
+            "type" => "Membership",
+            "id" => self::MEMBERSHIP_ID,
+            "attributes" => [
+                "joined_at" => "2000-01-01T12:00:00Z",
+                "role" => self::MEMBERSHIP_ROLE,
+            ],
+            "relationships" => [
+                "group" => [
+                    "data" => [
+                        "type" => "Group",
+                        "id" => self::GROUP_ID,
+                    ],
+                ],
+                "person" => [
+                    "data" => [
+                        "type" => "Person",
+                        "id" => PeopleMocks::PERSON_ID,
                     ],
                 ],
             ],

@@ -78,16 +78,15 @@ class Group
 
     public function membership(array $query = []): ClientResponse
     {
-        $http = $this->client()
-            ->get($this->hostname() . self::GROUPS_ENDPOINT . "/" . $this->attributes->groupId . "/memberships", $query);
-
-        return $this->processResponse($http);
+        return GroupMembership::make($this->clientId, $this->clientSecret)
+            ->forGroupId($this->attributes->groupId)
+            ->get($query);
     }
 
     public function people(array $query = []): ClientResponse
     {
         $http = $this->client()
-            ->get($this->hostname() . self::GROUPS_ENDPOINT . "/" . $this->attributes->groupId . "/people", $query);
+            ->get($this->hostname() . self::GROUPS_ENDPOINT . "/{$this->attributes->groupId}/people", $query);
 
         return $this->processResponse($http);
     }
