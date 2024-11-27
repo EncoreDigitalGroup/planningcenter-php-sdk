@@ -11,6 +11,7 @@ use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\Response;
 use PHPGenesis\Http\HttpClient;
+use PHPGenesis\Http\HttpClientBuilder;
 
 trait HasPlanningCenterClient
 {
@@ -24,6 +25,8 @@ trait HasPlanningCenterClient
     {
         $this->clientId = $clientId ?? "";
         $this->clientSecret = $clientSecret ?? "";
+
+        $builder = new HttpClientBuilder;
     }
 
     public function client(): PendingRequest

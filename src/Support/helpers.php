@@ -14,7 +14,7 @@ if (!function_exists("pco_objectify")) {
         $value = objectify($value);
 
         if (is_array($value)) {
-            $value = $value[0];
+            return $value[0];
         }
 
         return $value;
