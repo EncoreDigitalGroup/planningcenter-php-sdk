@@ -87,4 +87,8 @@ describe('Group Tests', function () {
     test("Group: Can List Tags Assigned to Group", function () {
         // Test Content Goes Here.
     })->todo("Write test that lists the tags assigned to a group", enum(TaskAssignee::MarcBeinder));
+
+    test("Group: Can Get Group Enrollment Details", function () {
+        // Test Content Goes Here.
+    })->todo("Write test gets group enrollment details", enum(TaskAssignee::MarcBeinder));
 })->group('groups.group');
