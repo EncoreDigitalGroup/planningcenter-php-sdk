@@ -6,126 +6,172 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Objects\People;
 
-use DateTime;
+use EncoreDigitalGroup\PlanningCenter\Objects\People\Attributes\PersonAttributes;
+use EncoreDigitalGroup\PlanningCenter\Objects\People\Traits\HasEmails;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
+use EncoreDigitalGroup\PlanningCenter\Support\AttributeMapper;
+use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
-use GuzzleHttp\Psr7\Request;
-use Illuminate\Support\Carbon;
-use stdClass;
+use Illuminate\Support\Arr;
 
+/** @api */
 class Person
 {
-    use HasPlanningCenterClient;
+    use HasEmails, HasPlanningCenterClient;
 
-    public int $personId;
-    public ?string $given_name;
-    public ?string $first_name;
-    public ?string $nickname;
-    public ?string $middle_name;
-    public ?string $last_name;
-    public DateTime|Carbon|null $birthdate;
-    public DateTime|Carbon|null $anniversary;
-    public ?string $gender;
-    public ?int $grade;
-    public ?bool $child;
-    public ?int $graduation_year;
-    public ?bool $site_administrator;
-    public ?bool $accounting_administrator;
-    public ?string $people_permissions;
-    public ?string $membership;
-    public DateTime|Carbon|null $inactivated_at;
-    public ?string $medical_notes;
-    public ?bool $mfa_configured;
-    public DateTime|Carbon|null $created_at;
-    public DateTime|Carbon|null $updated_at;
-    public ?string $avatar;
-    public ?string $name;
-    public ?string $demographic_avatar_url;
-    public ?string $directory_status;
-    public ?bool $passed_background_check;
-    public ?bool $can_create_forms;
-    public ?bool $can_email_lists;
-    public ?string $school_type;
-    public ?string $status;
-    public ?int $primary_campus_id;
-    public ?int $remote_id;
+    public const string PEOPLE_ENDPOINT = "/people/v2/people";
 
-    private static function prepareDataObject(self $person): stdClass
+    public PersonAttributes $attributes;
+
+    public static function make(?string $clientId = null, ?string $clientSecret = null): Person
     {
-        $Person = new stdClass;
-        $Person->data = new stdClass;
-        $Person->data->attributes = new stdClass;
-        $Person->data->attributes->first_name = $person->first_name;
-        $Person->data->attributes->middle_name = $person->middle_name;
-        $Person->data->attributes->last_name = $person->last_name;
-        $Person->data->attributes->birthdate = $person->birthdate;
-        $Person->data->attributes->anniversary = $person->anniversary;
-        $Person->data->attributes->gender = $person->gender;
-        $Person->data->attributes->grade = $person->grade;
-        $Person->data->attributes->child = $person->child;
-        $Person->data->attributes->graduation_year = $person->graduation_year;
-        $Person->data->attributes->membership = $person->membership;
-        $Person->data->attributes->status = $person->status;
+        $person = new self($clientId, $clientSecret);
+        $person->attributes = new PersonAttributes;
+        $person->setApiVersion(PlanningCenterApiVersion::PEOPLE_DEFAULT);
 
-        return $Person;
+        return $person;
     }
 
-    public function all(array $query = []): ClientResponse
+    public function all(?array $query = null): ClientResponse
     {
-        $headers = $this->buildHeaders();
+        $http = $this->client()
+            ->get($this->hostname() . self::PEOPLE_ENDPOINT, $query);
 
-        $query = http_build_query($query);
+        $clientResponse = new ClientResponse($http);
 
-        $request = new Request('GET', 'people/v2/people?' . $query, $headers);
+        foreach ($http->json("data") as $person) {
+            $pcoPerson = Person::make($this->clientId, $this->clientSecret);
+            $pcoPerson->mapFromPco($person);
+            $clientResponse->data->push($pcoPerson);
+        }
 
-        return $this->client->send($request);
+        return $clientResponse;
     }
 
-    public function get(array $query = []): ClientResponse
+    public function get(?array $query = null): ClientResponse
     {
-        $headers = $this->buildHeaders();
+        $http = $this->client()
+            ->get($this->hostname() . self::PEOPLE_ENDPOINT . "/" . $this->attributes->personId, $query);
 
-        $query = http_build_query($query);
-
-        $request = new Request('GET', 'people/v2/people/' . $this->personId . '?' . $query, $headers);
-
-        return $this->client->send($request);
+        return $this->processResponse($http);
     }
 
     public function create(): ClientResponse
     {
-        $headers = $this->buildHeaders();
+        $http = $this->client()
+            ->post($this->hostname() . self::PEOPLE_ENDPOINT, $this->mapToPco());
 
-        $request = new Request('POST', 'people/v2/people', $headers, json_not_null($this));
-
-        return $this->client->send($request);
+        return $this->processResponse($http);
     }
 
     public function update(): ClientResponse
     {
-        $headers = $this->buildHeaders();
+        $http = $this->client()
+            ->patch($this->hostname() . self::PEOPLE_ENDPOINT . "/" . $this->attributes->personId, $this->mapToPco());
 
-        $Person = self::prepareDataObject($this);
-
-        $request = new Request('PATCH', 'people/v2/people/' . $this->personId, $headers, json_not_null($Person));
-
-        return $this->client->send($request);
+        return $this->processResponse($http);
     }
 
     public function delete(): ClientResponse
     {
-        $headers = $this->buildHeaders();
+        $http = $this->client()
+            ->delete($this->hostname() . self::PEOPLE_ENDPOINT . "/" . $this->attributes->personId);
 
-        $request = new Request('DELETE', 'people/v2/people/' . $this->personId, $headers, json_not_null($this));
-
-        return $this->client->send($request);
+        return $this->processResponse($http);
     }
 
-    public function email(): ClientResponse
+    private function mapFromPco(mixed $pco): void
     {
-        $email = new Email($this->client);
-        $email->personId = $this->personId;
+        $pco = pco_objectify($pco);
 
-        return $email->get();
+        if (is_null($pco)) {
+            return;
+        }
+
+        $attributeMap = [
+            "firstName" => "first_name",
+            "middleName" => "middle_name",
+            "lastName" => "last_name",
+            "birthdate" => "birthdate",
+            "anniversary" => "anniversary",
+            "gender" => "gender",
+            "grade" => "grade",
+            "child" => "child",
+            "graduationYear" => "graduation_year",
+            "siteAdministrator" => "site_administrator",
+            "accountingAdministrator" => "accounting_administrator",
+            "peoplePermissions" => "people_permissions",
+            "membership" => "membership",
+            "inactivatedAt" => "inactivated_at",
+            "medicalNotes" => "medical_notes",
+            "mfaConfigured" => "mfa_configured",
+            "createdAt" => "created_at",
+            "updatedAt" => "updated_at",
+            "avatar" => "avatar",
+            "name" => "name",
+            "demographicAvatarUrl" => "demographic_avatar_url",
+            "directoryStatus" => "directory_status",
+            "passedBackgroundCheck" => "passed_background_check",
+            "canCreateForms" => "can_create_forms",
+            "canEmailLists" => "can_email_lists",
+            "schoolType" => "school_type",
+            "status" => "status",
+            "primaryCampusId" => "primary_campus_id",
+            "remoteId" => "remote_id",
+        ];
+
+        $this->attributes->personId = $pco->id;
+
+        AttributeMapper::from($pco, $this->attributes, $attributeMap, [
+            "birthdate",
+            "anniversary",
+            "created_at",
+            "updated_at",
+            "inactivated_at",
+        ]);
+    }
+
+    private function mapToPco(): array
+    {
+        $person = [
+            "data" => [
+                "attributes" => [
+                    "id" => $this->attributes->personId ?? null,
+                    "first_name" => $this->attributes->firstName ?? null,
+                    "middle_name" => $this->attributes->middleName ?? null,
+                    "last_name" => $this->attributes->lastName ?? null,
+                    "birthdate" => $this->attributes->birthdate ?? null,
+                    "anniversary" => $this->attributes->anniversary ?? null,
+                    "gender" => $this->attributes->gender ?? null,
+                    "grade" => $this->attributes->grade ?? null,
+                    "child" => $this->attributes->child ?? null,
+                    "graduation_year" => $this->attributes->graduationYear ?? null,
+                    "site_administrator" => $this->attributes->siteAdministrator ?? null,
+                    "accounting_administrator" => $this->attributes->accountingAdministrator ?? null,
+                    "people_permissions" => $this->attributes->peoplePermissions ?? null,
+                    "membership" => $this->attributes->membership ?? null,
+                    "inactivated_at" => $this->attributes->inactivatedAt ?? null,
+                    "medical_notes" => $this->attributes->medicalNotes ?? null,
+                    "mfa_configured" => $this->attributes->mfaConfigured ?? null,
+                    "created_at" => $this->attributes->createdAt ?? null,
+                    "updated_at" => $this->attributes->updatedAt ?? null,
+                    "avatar" => $this->attributes->avatar ?? null,
+                    "name" => $this->attributes->name ?? null,
+                    "demographic_avatar_url" => $this->attributes->demographicAvatarUrl ?? null,
+                    "directory_status" => $this->attributes->directoryStatus ?? null,
+                    "passed_background_check" => $this->attributes->passedBackgroundCheck ?? null,
+                    "can_create_forms" => $this->attributes->canCreateForms ?? null,
+                    "can_email_lists" => $this->attributes->canEmailLists ?? null,
+                    "school_type" => $this->attributes->schoolType ?? null,
+                    "status" => $this->attributes->status ?? null,
+                    "primary_campus_id" => $this->attributes->primaryCampusId ?? null,
+                    "remote_id" => $this->attributes->remoteId ?? null,
+                ],
+            ],
+        ];
+
+        unset($person["data"]["attributes"]["id"], $person["data"]["attributes"]["created_at"], $person["data"]["attributes"]["updated_at"], $person["data"]["attributes"]["name"], $person["data"]["attributes"]["demographic_avatar_url"]);
+
+        return Arr::whereNotNull($person["data"]["attributes"]);
     }
 }

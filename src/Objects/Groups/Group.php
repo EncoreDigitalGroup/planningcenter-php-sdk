@@ -6,91 +6,129 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Objects\Groups;
 
+use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Attributes\GroupAttributes;
+use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Attributes\GroupEnrollmentAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
+use EncoreDigitalGroup\PlanningCenter\Support\AttributeMapper;
+use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
-use GuzzleHttp\Psr7\Request;
 
+/** @api */
 class Group
 {
     use HasPlanningCenterClient;
 
-    public int $groupId;
+    public const string GROUPS_ENDPOINT = "/groups/v2/groups";
+
+    public GroupAttributes $attributes;
+
+    public static function make(string $clientId, string $clientSecret): Group
+    {
+        $group = new self($clientId, $clientSecret);
+        $group->attributes = new GroupAttributes;
+        $group->setApiVersion(PlanningCenterApiVersion::GROUPS_DEFAULT);
+
+        return $group;
+    }
 
     public function all(array $query = []): ClientResponse
     {
-        $headers = $this->buildHeaders();
+        $http = $this->client()
+            ->get($this->hostname() . self::GROUPS_ENDPOINT, $query);
 
-        $query = http_build_query($query);
-
-        $request = new Request('GET', 'groups/v2/groups?' . $query, $headers);
-
-        return $this->client->send($request);
+        return $this->processResponse($http);
     }
 
     public function mine(array $query = []): ClientResponse
     {
-        $headers = $this->buildHeaders();
+        $http = $this->client()
+            ->get($this->hostname() . self::GROUPS_ENDPOINT, array_merge(["filter" => "my_groups"], $query));
 
-        $query = array_merge(['filter' => 'my_groups'], $query);
-        $query = http_build_query($query);
-
-        $request = new Request('GET', 'groups/v2/groups?' . $query, $headers);
-
-        return $this->client->send($request);
+        return $this->processResponse($http);
     }
 
     public function get(array $query = []): ClientResponse
     {
-        $headers = $this->buildHeaders();
+        $http = $this->client()
+            ->get($this->hostname() . self::GROUPS_ENDPOINT . "/" . $this->attributes->groupId, $query);
 
-        $query = http_build_query($query);
-
-        $request = new Request('GET', 'groups/v2/groups/' . $this->groupId . '?' . $query, $headers);
-
-        return $this->client->send($request);
+        return $this->processResponse($http);
     }
 
-    public function enrollment(array $query = []): ClientResponse
+    public function enrollment(): ClientResponse
     {
-        $headers = $this->buildHeaders();
+        $enrollment = GroupEnrollment::make($this->clientId, $this->clientSecret);
 
-        $query = http_build_query($query);
+        if (!isset($enrollment->attributes)) {
+            $enrollment->attributes = new GroupEnrollmentAttributes;
+        }
 
-        $request = new Request('GET', 'groups/v2/groups/' . $this->groupId . '/enrollment?' . $query, $headers);
+        $enrollment->attributes->groupId = $this->attributes->groupId;
 
-        return $this->client->send($request);
+        return $enrollment->get();
     }
 
     public function event(array $query = []): ClientResponse
     {
-        $headers = $this->buildHeaders();
+        $http = $this->client()
+            ->get($this->hostname() . self::GROUPS_ENDPOINT . "/" . $this->attributes->groupId . "/events", $query);
 
-        $query = http_build_query($query);
-
-        $request = new Request('GET', 'groups/v2/groups/' . $this->groupId . '/events?' . $query, $headers);
-
-        return $this->client->send($request);
+        return $this->processResponse($http);
     }
 
     public function membership(array $query = []): ClientResponse
     {
-        $headers = $this->buildHeaders();
-
-        $query = http_build_query($query);
-
-        $request = new Request('GET', 'groups/v2/groups/' . $this->groupId . '/memberships?' . $query, $headers);
-
-        return $this->client->send($request);
+        return GroupMembership::make($this->clientId, $this->clientSecret)
+            ->forGroupId($this->attributes->groupId)
+            ->get($query);
     }
 
     public function people(array $query = []): ClientResponse
     {
-        $headers = $this->buildHeaders();
+        return GroupMemberPerson::make($this->clientId, $this->clientSecret)
+            ->forGroupId($this->attributes->groupId)
+            ->get($query);
+    }
 
-        $query = http_build_query($query);
+    public function tags(array $query = []): ClientResponse
+    {
+        return Tag::make($this->clientId, $this->clientSecret)
+            ->forGroup($this->attributes->groupId)
+            ->groups($query);
+    }
 
-        $request = new Request('GET', 'groups/v2/groups/' . $this->groupId . '/people?' . $query, $headers);
+    protected function mapFromPco(mixed $pco): void
+    {
+        $pco = pco_objectify($pco);
 
-        return $this->client->send($request);
+        if (is_null($pco)) {
+            return;
+        }
+
+        $attributeMap = [
+            "archivedAt" => "archived_at",
+            "contactEmail" => "contact_email",
+            "createdAt" => "created_at",
+            "description" => "description",
+            "eventVisibility" => "event_visibility",
+            "locationTypePreference" => "location_type_preference",
+            "membershipsCount" => "memberships_count",
+            "name" => "name",
+            "publicChurchCenterUrl" => "public_church_center_url",
+            "schedule" => "schedule",
+            "virtualLocationUrl" => "virtual_location_url",
+        ];
+
+        $this->attributes->groupId = $pco->id;
+
+        AttributeMapper::from($pco, $this->attributes, $attributeMap, ["archived_at", "created_at"]);
+
+        $headerImageAttributeMap = [
+            "thumbnail" => "thumbnail",
+            "medium" => "medium",
+            "original" => "original",
+        ];
+
+        AttributeMapper::from($pco->attributes->header_image, $this->attributes->headerImage, $headerImageAttributeMap);
     }
 }

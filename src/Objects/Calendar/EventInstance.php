@@ -6,36 +6,86 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Objects\Calendar;
 
+use EncoreDigitalGroup\PlanningCenter\Objects\Calendar\Attributes\EventInstanceAttributes;
+use EncoreDigitalGroup\PlanningCenter\Objects\Calendar\Relationships\EventInstanceRelationships;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
+use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\Relationships\BasicRelationship;
+use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\Relationships\BasicRelationshipData;
+use EncoreDigitalGroup\PlanningCenter\Support\AttributeMapper;
+use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
+use EncoreDigitalGroup\PlanningCenter\Support\RelationshipMapper;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
-use GuzzleHttp\Psr7\Request;
 
+/** @api */
 class EventInstance
 {
     use HasPlanningCenterClient;
 
-    public int $eventInstanceId;
-    public int $eventId;
+    public const string EVENT_INSTANCE_ENDPOINT = "calendar/v2/event_instances";
+
+    public EventInstanceAttributes $attributes;
+    public EventInstanceRelationships $relationships;
+
+    public static function make(string $clientId, string $clientSecret): EventInstance
+    {
+        $event = new self($clientId, $clientSecret);
+        $event->attributes = new EventInstanceAttributes;
+        $event->relationships = new EventInstanceRelationships;
+        $event->setApiVersion(PlanningCenterApiVersion::CALENDAR_DEFAULT);
+
+        return $event;
+    }
 
     public function all(array $query = []): ClientResponse
     {
-        $headers = $this->buildHeaders();
+        $this->relationships->event = $this->relationships->event ?? new BasicRelationship;
+        $this->relationships->event->data = $this->relationships->event->data ?? new BasicRelationshipData;
 
-        $query = http_build_query($query);
+        $http = $this->client()
+            ->get($this->hostname() . Event::EVENT_ENDPOINT . "/{$this->relationships->event->data->id}/event_instances", $query);
 
-        $request = new Request('GET', 'calendar/v2/events/' . $this->eventId . '/event_instances/?' . $query, $headers);
-
-        return $this->client->send($request);
+        return $this->processResponse($http);
     }
 
     public function get(array $query = []): ClientResponse
     {
-        $headers = $this->buildHeaders();
+        $http = $this->client()
+            ->get($this->hostname() . self::EVENT_INSTANCE_ENDPOINT . "/" . $this->attributes->eventInstanceId, $query);
 
-        $query = http_build_query($query);
+        return $this->processResponse($http);
+    }
 
-        $request = new Request('GET', 'calendar/v2/event_instances/' . $this->eventInstanceId . '?' . $query, $headers);
+    private function mapFromPco(mixed $pco): void
+    {
+        $pco = pco_objectify($pco);
 
-        return $this->client->send($request);
+        if (is_null($pco)) {
+            return;
+        }
+
+        $this->attributes->eventInstanceId = $pco->id;
+
+        $attributeMap = [
+            "allDayEvent" => "all_day_event",
+            "compactRecurrenceDescription" => "compact_recurrence_description",
+            "createdAt" => "created_at",
+            "endsAt" => "ends_at",
+            "location" => "location",
+            "recurrence" => "recurrence",
+            "recurrenceDescription" => "recurrence_description",
+            "startsAt" => "starts_at",
+            "updatedAt" => "updated_at",
+            "churchCenterUrl" => "church_center_url",
+            "publishedStartAt" => "published_start_at",
+            "publishedEndsAt" => "published_ends_at",
+        ];
+
+        AttributeMapper::from($pco, $this->attributes, $attributeMap, ["created_at", "ends_at", "starts_at", "updated_at"]);
+
+        $relationshipMap = [
+            "event" => "event",
+        ];
+
+        RelationshipMapper::from($pco, $this->relationships, $relationshipMap);
     }
 }

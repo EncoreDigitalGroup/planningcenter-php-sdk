@@ -6,46 +6,69 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Objects\Groups;
 
+use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Attributes\TagAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
+use EncoreDigitalGroup\PlanningCenter\Support\AttributeMapper;
+use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
-use GuzzleHttp\Psr7\Request;
 
+/** @api */
 class Tag
 {
     use HasPlanningCenterClient;
 
-    public int $tagId;
+    public const string TAGS_ENDPOINT = "/groups/v2/tags";
 
-    public function all(array $query = []): ClientResponse
+    public TagAttributes $attributes;
+    private string $groupId;
+
+    public static function make(string $clientId, string $clientSecret): Tag
     {
-        $headers = $this->buildHeaders();
+        $tag = new self($clientId, $clientSecret);
+        $tag->attributes = new TagAttributes;
+        $tag->setApiVersion(PlanningCenterApiVersion::GROUPS_DEFAULT);
 
-        $query = http_build_query($query);
+        return $tag;
+    }
 
-        $request = new Request('GET', 'groups/v2/tag_groups?' . $query, $headers);
+    public function forGroup(string $groupId): static
+    {
+        $this->groupId = $groupId;
 
-        return $this->client->send($request);
+        return $this;
     }
 
     public function get(array $query = []): ClientResponse
     {
-        $headers = $this->buildHeaders();
+        $http = $this->client()
+            ->get($this->hostname() . self::TAGS_ENDPOINT . "/" . $this->attributes->tagId, $query);
 
-        $query = http_build_query($query);
-
-        $request = new Request('GET', 'groups/v2/tags/' . $this->tagId . '?' . $query, $headers);
-
-        return $this->client->send($request);
+        return $this->processResponse($http);
     }
 
     public function groups(array $query = []): ClientResponse
     {
-        $headers = $this->buildHeaders();
+        $http = $this->client()
+            ->get($this->hostname() . Group::GROUPS_ENDPOINT . "/{$this->groupId}/tags", $query);
 
-        $query = http_build_query($query);
+        return $this->processResponse($http);
+    }
 
-        $request = new Request('GET', 'groups/v2/tags/' . $this->tagId . '/groups?' . $query, $headers);
+    protected function mapFromPco(mixed $pco): void
+    {
+        $pco = pco_objectify($pco);
 
-        return $this->client->send($request);
+        if (is_null($pco)) {
+            return;
+        }
+
+        $this->attributes->tagId = $pco->id;
+
+        $attributeMap = [
+            "name" => "name",
+            "position" => "position",
+        ];
+
+        AttributeMapper::from($pco, $this->attributes, $attributeMap);
     }
 }

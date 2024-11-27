@@ -6,8 +6,10 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Objects\People\PersonMerger;
 
+use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\Relationships\BasicRelationshipData;
+
 class PersonMergerRelationships
 {
-    public PersonMergerData $personToKeep;
-    public PersonMergerData $personToRemove;
+    public BasicRelationshipData $personToKeep;
+    public BasicRelationshipData $personToRemove;
 }
