@@ -7,7 +7,6 @@
 namespace EncoreDigitalGroup\PlanningCenter\Objects\Calendar;
 
 use EncoreDigitalGroup\PlanningCenter\Objects\Calendar\Attributes\TagGroupAttributes;
-use EncoreDigitalGroup\PlanningCenter\Objects\Calendar\Relationships\TagGroupRelationships;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\Support\AttributeMapper;
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;

@@ -13,8 +13,7 @@ class GroupMembershipRelationships
     public function __construct(
         public ?BasicRelationship $group = null,
         public ?BasicRelationship $person = null
-    )
-    {
+    ) {
         $this->group = $group ?? new BasicRelationship;
         $this->person = $person ?? new BasicRelationship;
     }

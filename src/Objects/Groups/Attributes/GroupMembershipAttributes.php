@@ -6,7 +6,6 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Objects\Groups\Attributes;
 
-use DateTime;
 use Illuminate\Support\Carbon;
 
 class GroupMembershipAttributes
