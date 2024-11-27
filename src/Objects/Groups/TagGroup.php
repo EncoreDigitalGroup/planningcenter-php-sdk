@@ -48,7 +48,11 @@ class TagGroup
 
     protected function mapFromPco(mixed $pco): void
     {
-        $pco = objectify($pco);
+        $pco = pco_objectify($pco);
+
+        if (is_null($pco)) {
+            return;
+        }
 
         $attributeMap = [
             "tagGroupId" => "id",

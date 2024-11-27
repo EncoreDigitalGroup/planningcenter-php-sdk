@@ -90,6 +90,13 @@ class Group
             ->get($query);
     }
 
+    public function tags(array $query = []): ClientResponse
+    {
+        return Tag::make($this->clientId, $this->clientSecret)
+            ->forGroup($this->attributes->groupId)
+            ->groups($query);
+    }
+
     protected function mapFromPco(mixed $pco): void
     {
         $pco = pco_objectify($pco);

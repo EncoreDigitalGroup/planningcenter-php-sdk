@@ -20,6 +20,7 @@ class Tag
     public const string TAGS_ENDPOINT = "/groups/v2/tags";
 
     public TagAttributes $attributes;
+    private string $groupId;
 
     public static function make(string $clientId, string $clientSecret): Tag
     {
@@ -28,6 +29,13 @@ class Tag
         $tag->setApiVersion(PlanningCenterApiVersion::GROUPS_DEFAULT);
 
         return $tag;
+    }
+
+    public function forGroup(string $groupId): static
+    {
+        $this->groupId = $groupId;
+
+        return $this;
     }
 
     public function get(array $query = []): ClientResponse
@@ -41,17 +49,22 @@ class Tag
     public function groups(array $query = []): ClientResponse
     {
         $http = $this->client()
-            ->get($this->hostname() . self::TAGS_ENDPOINT . "/" . $this->attributes->tagId, $query);
+            ->get($this->hostname() . Group::GROUPS_ENDPOINT . "/{$this->groupId}/tags", $query);
 
         return $this->processResponse($http);
     }
 
     protected function mapFromPco(mixed $pco): void
     {
-        $pco = objectify($pco);
+        $pco = pco_objectify($pco);
+
+        if (is_null($pco)) {
+            return;
+        }
+
+        $this->attributes->tagId = $pco->id;
 
         $attributeMap = [
-            "tagId" => "id",
             "name" => "name",
             "position" => "position",
         ];
