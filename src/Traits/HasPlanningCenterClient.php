@@ -26,7 +26,7 @@ trait HasPlanningCenterClient
         $this->clientId = $clientId ?? "";
         $this->clientSecret = $clientSecret ?? "";
 
-        $builder = new HttpClientBuilder;
+        new HttpClientBuilder;
     }
 
     public function client(): PendingRequest
