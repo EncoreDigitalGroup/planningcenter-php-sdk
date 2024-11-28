@@ -42,7 +42,7 @@ class Email
     public function forPerson(): ClientResponse
     {
         $http = $this->client()
-            ->get($this->hostname() . Person::PEOPLE_ENDPOINT . "/" . $this->attributes->personId . "/emails");
+            ->get($this->hostname() . Person::PEOPLE_ENDPOINT . "/{$this->attributes->personId}/emails");
 
         $clientResponse = new ClientResponse($http);
 
@@ -58,7 +58,7 @@ class Email
     public function update(): ClientResponse
     {
         $http = $this->client()
-            ->patch($this->hostname() . self::EMAIL_ENDPOINT . "/" . $this->attributes->emailAddressId, $this->mapToPco());
+            ->patch($this->hostname() . self::EMAIL_ENDPOINT . "/{$this->attributes->emailAddressId}", $this->mapToPco());
 
         return $this->processResponse($http);
     }

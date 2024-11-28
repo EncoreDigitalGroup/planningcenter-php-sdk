@@ -29,10 +29,17 @@ class PersonMerger
         return $personMerger;
     }
 
+    public function forPersonId(string $personId): static
+    {
+        $this->attributes->personMergerId = $personId;
+
+        return $this;
+    }
+
     public function get(?array $query = []): ClientResponse
     {
         $http = $this->client()
-            ->get($this->hostname() . self::PERSON_MERGER_ENDPOINT . "/" . $this->attributes->personMergerId, $query);
+            ->get($this->hostname() . self::PERSON_MERGER_ENDPOINT . "/{$this->attributes->personMergerId}", $query);
 
         return $this->processResponse($http);
     }
