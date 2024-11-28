@@ -34,9 +34,8 @@ describe('People Profile Tests', function () {
 
     test('People: Can Get Person By ID', function () {
         $person = Person::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
-        $person->attributes->personId = "1";
 
-        $response = $person->get();
+        $response = $person->forPersonId("1")->get();
         /** @var Person $personProfile */
         $personProfile = $response->data->first();
 
