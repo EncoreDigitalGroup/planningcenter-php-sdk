@@ -33,6 +33,7 @@ class CalendarMocks extends BaseMock
         self::useSpecificEventInstance();
         self::useTagGroupCollection();
         self::useSpecificTagGroup();
+        self::useEventTagRelationshipCollection();
     }
 
     public static function useEventCollection(): void
@@ -103,6 +104,18 @@ class CalendarMocks extends BaseMock
             self::HOSTNAME . TagGroup::TAG_GROUP_ENDPOINT . '/1/tags' => function ($request) {
                 return match ($request->method()) {
                     'GET' => HttpClient::response(self::useSingleResponse(ObjectType::Tag)),
+                    default => HttpClient::response([], 405),
+                };
+            },
+        ]);
+    }
+
+    public static function useEventTagRelationshipCollection(): void
+    {
+        HttpClient::fake([
+            self::HOSTNAME . Event::EVENT_ENDPOINT . "/1/tags" => function ($request) {
+                return match ($request->method()) {
+                    'GET' => HttpClient::response(self::useCollectionResponse(ObjectType::Tag)),
                     default => HttpClient::response([], 405),
                 };
             },

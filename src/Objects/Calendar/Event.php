@@ -30,9 +30,17 @@ class Event
     {
         $event = new self($clientId, $clientSecret);
         $event->attributes = new EventAttributes;
+        $event->relationships = new EventRelationships;
         $event->setApiVersion(PlanningCenterApiVersion::CALENDAR_DEFAULT);
 
         return $event;
+    }
+
+    public function forEventId(string $eventId): static
+    {
+        $this->attributes->eventId = $eventId;
+
+        return $this;
     }
 
     public function all(array $query = []): ClientResponse
@@ -62,10 +70,6 @@ class Event
     public function instances(array $query = []): ClientResponse
     {
         $eventInstance = EventInstance::make($this->clientId, $this->clientSecret);
-
-        $eventInstance->relationships = $eventInstance->relationships ?? new EventInstanceRelationships;
-        $eventInstance->relationships->event = $eventInstance->relationships->event ?? new BasicRelationship;
-        $eventInstance->relationships->event->data = $eventInstance->relationships->event->data ?? new BasicRelationshipData;
 
         $eventInstance->relationships->event->data->id = $this->attributes->eventId;
 
