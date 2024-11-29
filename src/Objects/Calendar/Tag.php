@@ -43,7 +43,8 @@ class Tag
         return $this;
     }
 
-    private function mapFromPco(mixed $pco): void
+    /** @internal */
+    public function mapFromPco(mixed $pco): void
     {
         $pco = pco_objectify($pco);
 

@@ -51,11 +51,7 @@ trait HasPlanningCenterClient
     {
         $clientResponse = new ClientResponse($http);
 
-        if (
-            $this->apiVersion == PlanningCenterApiVersion::PEOPLE_DEFAULT
-            || $this->apiVersion == PlanningCenterApiVersion::GROUPS_DEFAULT
-            || $this->apiVersion == PlanningCenterApiVersion::CALENDAR_DEFAULT
-        ) {
+        if ($this->isUsingSupportedApiVersion()) {
             $this->mapFromPco($http->json("data"));
             if (!is_null($http->json("data"))) {
                 $clientResponse->data->add($this);
@@ -63,5 +59,18 @@ trait HasPlanningCenterClient
         }
 
         return $clientResponse;
+    }
+
+    protected function isUsingSupportedApiVersion(): bool
+    {
+        if (
+            $this->apiVersion == PlanningCenterApiVersion::PEOPLE_DEFAULT
+            || $this->apiVersion == PlanningCenterApiVersion::GROUPS_DEFAULT
+            || $this->apiVersion == PlanningCenterApiVersion::CALENDAR_DEFAULT
+        ) {
+            return true;
+        }
+
+        return false;
     }
 }
