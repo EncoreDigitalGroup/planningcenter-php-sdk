@@ -30,9 +30,17 @@ class Event
     {
         $event = new self($clientId, $clientSecret);
         $event->attributes = new EventAttributes;
+        $event->relationships = new EventRelationships;
         $event->setApiVersion(PlanningCenterApiVersion::CALENDAR_DEFAULT);
 
         return $event;
+    }
+
+    public function forEventId(string $eventId): static
+    {
+        $this->attributes->eventId = $eventId;
+
+        return $this;
     }
 
     public function all(array $query = []): ClientResponse
@@ -70,6 +78,26 @@ class Event
         $eventInstance->relationships->event->data->id = $this->attributes->eventId;
 
         return $eventInstance->all($query);
+    }
+
+    public function tags(array $query = []): ClientResponse
+    {
+        $http = $this->client()
+            ->get($this->hostname() . self::EVENT_ENDPOINT . "/{$this->attributes->eventId}/tags", $query);
+
+        if ($this->isUsingSupportedApiVersion()) {
+            $tags = $http->json("data");
+            foreach ($tags as $tag) {
+                $tagRecord = Tag::make($this->clientId, $this->clientSecret);
+                $tagRecord->mapFromPco($tag);
+                $this->relationships->tags->add($tagRecord);
+            }
+        }
+
+        $clientResponse = new ClientResponse($http);
+        $clientResponse->data->add($this);
+
+        return $clientResponse;
     }
 
     private function mapFromPco(mixed $pco): void

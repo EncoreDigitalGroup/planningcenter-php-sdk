@@ -14,8 +14,8 @@ use Tests\Helpers\TaskAssignee;
 use Tests\Helpers\TestConstants;
 use Tests\Unit\People\PeopleMocks;
 
-describe('Group Tests', function () {
-    test('Group: Can List All Groups', function () {
+describe("Group Tests", function (): void {
+    test("Group: Can List All Groups", function (): void {
         $group = Group::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
 
         $response = $group->all();
@@ -29,7 +29,7 @@ describe('Group Tests', function () {
             ->and($groupAttributes->groupId)->toBe(GroupMocks::GROUP_ID);
     });
 
-    test('Group: Can Get Group By ID', function () {
+    test("Group: Can Get Group By ID", function (): void {
         $group = Group::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
         $group->attributes->groupId = "1";
 
@@ -42,7 +42,7 @@ describe('Group Tests', function () {
             ->and($groupAttributes->groupId)->toBe(GroupMocks::GROUP_ID);
     });
 
-    test('Group: Can List My Groups', function () {
+    test("Group: Can List My Groups", function (): void {
         $group = Group::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
 
         $response = $group->mine();
@@ -52,7 +52,7 @@ describe('Group Tests', function () {
             ->and($response->data->count())->toBe(1);
     });
 
-    test('Group: Can List Group Memberships', function () {
+    test("Group: Can List Group Memberships", function (): void {
         $group = Group::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
         $group->attributes->groupId = "1";
 
@@ -69,7 +69,7 @@ describe('Group Tests', function () {
             ->and($membership->relationships->person->data->id)->toBe(PeopleMocks::PERSON_ID);
     });
 
-    test('Group: Can List Group People', function () {
+    test("Group: Can List Group People", function (): void {
         $group = Group::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
         $group->attributes->groupId = "1";
 
@@ -86,7 +86,7 @@ describe('Group Tests', function () {
             ->and($groupMember->lastName)->toBe(GroupMocks::MEMBER_LAST_NAME);
     });
 
-    test("Group: Can List Tags Assigned to Group", function () {
+    test("Group: Can List Tags Assigned to Group", function (): void {
         $group = Group::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
         $group->attributes->groupId = "1";
 
@@ -103,7 +103,7 @@ describe('Group Tests', function () {
             ->and($tag->attributes->position)->toBe(GroupMocks::TAG_POSITION);
     });
 
-    test("Group: Can Get Group Enrollment Details", function () {
+    test("Group: Can Get Group Enrollment Details", function (): void {
         $group = Group::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
         $group->attributes->groupId = "1";
 
@@ -118,4 +118,4 @@ describe('Group Tests', function () {
             ->and($enrollmentAttributes->memberLimit)->toBe(GroupMocks::ENROLLMENT_MEMBER_LIMIT)
             ->and($enrollmentAttributes->memberLimitReached)->toBe(GroupMocks::ENROLLMENT_MEMBER_LIMIT_REACHED);
     });
-})->group('groups.group');
+})->group("groups.group");

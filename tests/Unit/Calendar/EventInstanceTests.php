@@ -7,8 +7,8 @@ use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use Illuminate\Support\Collection;
 use Tests\Helpers\TestConstants;
 
-describe('Calendar EventInstance Tests', function () {
-    test('EventInstance: Can Get EventInstance By ID', function () {
+describe("Calendar EventInstance Tests", function (): void {
+    test("EventInstance: Can Get EventInstance By ID", function (): void {
         $eventInstance = EventInstance::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
         $eventInstance->attributes->eventInstanceId = "1";
 
@@ -21,7 +21,7 @@ describe('Calendar EventInstance Tests', function () {
             ->and($calendarEventInstance->relationships->event->data->id)->toBe(CalendarMocks::EVENT_ID);
     });
 
-    test('EventInstance: Can List All EventInstances', function () {
+    test("EventInstance: Can List All EventInstances", function (): void {
         $eventInstance = EventInstance::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
         $eventInstance->relationships->event->data->id = "1";
 
@@ -31,4 +31,4 @@ describe('Calendar EventInstance Tests', function () {
             ->and($response->data)->toBeInstanceOf(Collection::class)
             ->and($response->data->count())->toBe(1);
     });
-})->group('calendar.eventInstance');
+})->group("calendar.eventInstance");

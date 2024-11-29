@@ -9,8 +9,8 @@ use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use Illuminate\Support\Collection;
 use Tests\Helpers\TestConstants;
 
-describe('TagGroup Tests', function () {
-    test('TagGroup: Can List All TagGroups', function () {
+describe("TagGroup Tests", function (): void {
+    test("TagGroup: Can List All TagGroups", function (): void {
         $tagGroup = TagGroup::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
 
         $response = $tagGroup->all();
@@ -24,7 +24,7 @@ describe('TagGroup Tests', function () {
             ->and($tagGroupAttributes->tagGroupId)->toBe(CalendarMocks::TAG_GROUP_ID);
     });
 
-    test('TagGroup: Can List All Tags For A Specific TagGroup', function () {
+    test("TagGroup: Can List All Tags For A Specific TagGroup", function (): void {
         $tagGroup = TagGroup::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
         $tagGroup->attributes->tagGroupId = "1";
 
@@ -39,4 +39,4 @@ describe('TagGroup Tests', function () {
             ->and($tagAttributes->tagId)->toBe(CalendarMocks::TAG_ID)
             ->and($tagAttributes->name)->toBe(CalendarMocks::TAG_NAME);
     });
-})->group('calendar.tagGroup');
+})->group("calendar.tagGroup");

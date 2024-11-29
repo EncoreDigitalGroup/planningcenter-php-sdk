@@ -13,7 +13,7 @@ class BaseMock
         $method = $type->value;
 
         return [
-            'data' => [
+            "data" => [
                 static::$method(),
             ],
         ];
@@ -24,14 +24,14 @@ class BaseMock
         $method = $type->value;
 
         return [
-            'data' => static::$method(),
+            "data" => static::$method(),
         ];
     }
 
     protected static function deleteResponse(): array
     {
         return [
-            'data' => null,
+            "data" => null,
         ];
     }
 }

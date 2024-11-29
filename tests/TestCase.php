@@ -15,7 +15,7 @@ use Tests\Unit\People\PeopleMocks;
 
 class TestCase extends OrchestraTestCase
 {
-    protected const string HOSTNAME = 'https://api.planningcenteronline.com';
+    protected const string HOSTNAME = "https://api.planningcenteronline.com";
 
     protected function setUp(): void
     {
@@ -29,7 +29,7 @@ class TestCase extends OrchestraTestCase
 
     protected function getEnvironmentSetup($app): void
     {
-        $app->singleton('http', function () {
+        $app->singleton("http", function (): \Illuminate\Http\Client\Factory {
             return new HttpFactory();
         });
 

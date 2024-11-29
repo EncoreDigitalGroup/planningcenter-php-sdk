@@ -7,8 +7,8 @@ use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use Illuminate\Support\Collection;
 use Tests\Helpers\TestConstants;
 
-describe('People Profile Tests', function () {
-    test('People: Can Create Person', function () {
+describe("People Profile Tests", function (): void {
+    test("People: Can Create Person", function (): void {
         $person = Person::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
         $person->attributes->firstName = "John";
         $person->attributes->lastName = "Smith";
@@ -22,7 +22,7 @@ describe('People Profile Tests', function () {
             ->and($personProfile->attributes->lastName)->toBe(PeopleMocks::LAST_NAME);
     });
 
-    test('People: Can List All', function () {
+    test("People: Can List All", function (): void {
         $person = Person::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
 
         $response = $person->all();
@@ -32,7 +32,7 @@ describe('People Profile Tests', function () {
             ->and($response->data->count())->toBe(1);
     });
 
-    test('People: Can Get Person By ID', function () {
+    test("People: Can Get Person By ID", function (): void {
         $person = Person::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
 
         $response = $person->forPersonId("1")->get();
@@ -45,7 +45,7 @@ describe('People Profile Tests', function () {
             ->and($personProfile->attributes->personId)->toBe(PeopleMocks::PERSON_ID);
     });
 
-    test('People: Can Update Person Profile', function () {
+    test("People: Can Update Person Profile", function (): void {
         $person = Person::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
         $person->attributes->personId = "1";
 
@@ -59,7 +59,7 @@ describe('People Profile Tests', function () {
             ->and($personProfile->attributes->personId)->toBe(PeopleMocks::PERSON_ID);
     });
 
-    test('People: Can Delete Person Profile', function () {
+    test("People: Can Delete Person Profile", function (): void {
         $person = Person::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
         $person->attributes->personId = "1";
 
@@ -67,5 +67,5 @@ describe('People Profile Tests', function () {
 
         expect($response->data->isEmpty())->toBeTrue();
     });
-})->group('people.profile');
+})->group("people.profile");
 

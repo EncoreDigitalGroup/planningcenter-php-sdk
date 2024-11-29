@@ -48,7 +48,7 @@ class GroupMocks extends BaseMock
         HttpClient::fake([
             self::HOSTNAME . Group::GROUPS_ENDPOINT => function ($request) {
                 return match ($request->method()) {
-                    'GET' => HttpClient::response(self::useCollectionResponse(ObjectType::Group)),
+                    "GET" => HttpClient::response(self::useCollectionResponse(ObjectType::Group)),
                     default => HttpClient::response([], 405),
                 };
             },
@@ -57,7 +57,7 @@ class GroupMocks extends BaseMock
         HttpClient::fake([
             self::HOSTNAME . Group::GROUPS_ENDPOINT . "?filter=my_groups" => function ($request) {
                 return match ($request->method()) {
-                    'GET' => HttpClient::response(self::useCollectionResponse(ObjectType::Group)),
+                    "GET" => HttpClient::response(self::useCollectionResponse(ObjectType::Group)),
                     default => HttpClient::response([], 405),
                 };
             },
@@ -69,7 +69,7 @@ class GroupMocks extends BaseMock
         HttpClient::fake([
             self::HOSTNAME . Group::GROUPS_ENDPOINT . "/1" => function ($request) {
                 return match ($request->method()) {
-                    'GET' => HttpClient::response(self::useSingleResponse(ObjectType::Group)),
+                    "GET" => HttpClient::response(self::useSingleResponse(ObjectType::Group)),
                     default => HttpClient::response([], 405),
                 };
             },
@@ -81,7 +81,7 @@ class GroupMocks extends BaseMock
         HttpClient::fake([
             self::HOSTNAME . Group::GROUPS_ENDPOINT . "/1/memberships" => function ($request) {
                 return match ($request->method()) {
-                    'GET' => HttpClient::response(self::useCollectionResponse(ObjectType::GroupMembership)),
+                    "GET" => HttpClient::response(self::useCollectionResponse(ObjectType::GroupMembership)),
                     default => HttpClient::response([], 405),
                 };
             },
@@ -93,7 +93,7 @@ class GroupMocks extends BaseMock
         HttpClient::fake([
             self::HOSTNAME . Group::GROUPS_ENDPOINT . "/1/people" => function ($request) {
                 return match ($request->method()) {
-                    'GET' => HttpClient::response(self::useCollectionResponse(ObjectType::GroupMembers)),
+                    "GET" => HttpClient::response(self::useCollectionResponse(ObjectType::GroupMembers)),
                     default => HttpClient::response([], 405),
                 };
             },
@@ -105,7 +105,7 @@ class GroupMocks extends BaseMock
         HttpClient::fake([
             self::HOSTNAME . Group::GROUPS_ENDPOINT . "/1/tags" => function ($request) {
                 return match ($request->method()) {
-                    'GET' => HttpClient::response(self::useCollectionResponse(ObjectType::Tag)),
+                    "GET" => HttpClient::response(self::useCollectionResponse(ObjectType::Tag)),
                     default => HttpClient::response([], 405),
                 };
             },
@@ -117,7 +117,7 @@ class GroupMocks extends BaseMock
         HttpClient::fake([
             self::HOSTNAME . Group::GROUPS_ENDPOINT . "/1/enrollment" => function ($request) {
                 return match ($request->method()) {
-                    'GET' => HttpClient::response(self::useCollectionResponse(ObjectType::Enrollment)),
+                    "GET" => HttpClient::response(self::useCollectionResponse(ObjectType::Enrollment)),
                     default => HttpClient::response([], 405),
                 };
             },
