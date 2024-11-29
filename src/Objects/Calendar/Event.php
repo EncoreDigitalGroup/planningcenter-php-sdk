@@ -71,6 +71,10 @@ class Event
     {
         $eventInstance = EventInstance::make($this->clientId, $this->clientSecret);
 
+        $eventInstance->relationships = $eventInstance->relationships ?? new EventInstanceRelationships;
+        $eventInstance->relationships->event = $eventInstance->relationships->event ?? new BasicRelationship;
+        $eventInstance->relationships->event->data = $eventInstance->relationships->event->data ?? new BasicRelationshipData;
+
         $eventInstance->relationships->event->data->id = $this->attributes->eventId;
 
         return $eventInstance->all($query);
