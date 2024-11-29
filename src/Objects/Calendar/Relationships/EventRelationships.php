@@ -12,7 +12,7 @@ use Illuminate\Support\Collection;
 
 class EventRelationships
 {
-    /** @var Collection<Tag> $tags */
+    /** @var Collection<Tag> */
     public Collection $tags;
 
     public function __construct(public ?BasicRelationship $owner = null)
