@@ -17,11 +17,11 @@ class PeopleMocks extends BaseMock
 {
     use HasPlanningCenterClient;
 
-    public const string PERSON_ID = '1';
-    public const string FIRST_NAME = 'John';
-    public const string LAST_NAME = 'Smith';
-    public const string EMAIL_ID = '1';
-    public const string EMAIL_ADDRESS = 'john.smith@example.com';
+    public const string PERSON_ID = "1";
+    public const string FIRST_NAME = "John";
+    public const string LAST_NAME = "Smith";
+    public const string EMAIL_ID = "1";
+    public const string EMAIL_ADDRESS = "john.smith@example.com";
 
     public static function setup(): void
     {
@@ -36,8 +36,8 @@ class PeopleMocks extends BaseMock
         HttpClient::fake([
             self::HOSTNAME . Person::PEOPLE_ENDPOINT => function ($request) {
                 return match ($request->method()) {
-                    'POST' => HttpClient::response(self::useSingleResponse(ObjectType::Profile)),
-                    'GET', => HttpClient::response(self::useCollectionResponse(ObjectType::Profile)),
+                    "POST" => HttpClient::response(self::useSingleResponse(ObjectType::Profile)),
+                    "GET", => HttpClient::response(self::useCollectionResponse(ObjectType::Profile)),
                     default => HttpClient::response([], 405),
                 };
             },
@@ -47,10 +47,10 @@ class PeopleMocks extends BaseMock
     public static function useSpecificProfile(): void
     {
         HttpClient::fake([
-            self::HOSTNAME . Person::PEOPLE_ENDPOINT . '/1' => function ($request) {
+            self::HOSTNAME . Person::PEOPLE_ENDPOINT . "/1" => function ($request) {
                 return match ($request->method()) {
-                    'PUT', 'PATCH', 'GET', => HttpClient::response(self::useSingleResponse(ObjectType::Profile)),
-                    'DELETE' => HttpClient::response(self::deleteResponse()),
+                    "PUT", "PATCH", "GET", => HttpClient::response(self::useSingleResponse(ObjectType::Profile)),
+                    "DELETE" => HttpClient::response(self::deleteResponse()),
                     default => HttpClient::response([], 405),
                 };
             },
@@ -62,8 +62,8 @@ class PeopleMocks extends BaseMock
         HttpClient::fake([
             self::HOSTNAME . Person::PEOPLE_ENDPOINT . "/1/emails" => function ($request) {
                 return match ($request->method()) {
-                    'POST' => HttpClient::response(self::useSingleResponse(ObjectType::Email)),
-                    'GET', => HttpClient::response(self::useCollectionResponse(ObjectType::Email)),
+                    "POST" => HttpClient::response(self::useSingleResponse(ObjectType::Email)),
+                    "GET", => HttpClient::response(self::useCollectionResponse(ObjectType::Email)),
                     default => HttpClient::response([], 405),
                 };
             },
@@ -73,10 +73,10 @@ class PeopleMocks extends BaseMock
     public static function useSpecificEmail(): void
     {
         HttpClient::fake([
-            self::HOSTNAME . Email::EMAIL_ENDPOINT . '/1' => function ($request) {
+            self::HOSTNAME . Email::EMAIL_ENDPOINT . "/1" => function ($request) {
                 return match ($request->method()) {
-                    'PUT', 'PATCH', 'GET', => HttpClient::response(self::useSingleResponse(ObjectType::Email)),
-                    'DELETE' => HttpClient::response(self::deleteResponse()),
+                    "PUT", "PATCH", "GET", => HttpClient::response(self::useSingleResponse(ObjectType::Email)),
+                    "DELETE" => HttpClient::response(self::deleteResponse()),
                     default => HttpClient::response([], 405),
                 };
             },
@@ -92,7 +92,7 @@ class PeopleMocks extends BaseMock
                 "avatar" => "string",
                 "demographic_avatar_url" => "string",
                 "first_name" => self::FIRST_NAME,
-                "name" => self::FIRST_NAME . ' ' . self::LAST_NAME,
+                "name" => self::FIRST_NAME . " " . self::LAST_NAME,
                 "status" => "string",
                 "remote_id" => 1,
                 "accounting_administrator" => true,
@@ -144,21 +144,21 @@ class PeopleMocks extends BaseMock
     protected static function email(): array
     {
         return [
-            'type' => 'Email',
-            'id' => '1',
-            'attributes' => [
-                'address' => 'john.smith@example.com',
-                'location' => 'home',
-                'primary' => true,
-                'created_at' => '2000-01-01T12:00:00Z',
-                'updated_at' => '2000-01-01T12:00:00Z',
-                'blocked' => true,
+            "type" => "Email",
+            "id" => "1",
+            "attributes" => [
+                "address" => "john.smith@example.com",
+                "location" => "home",
+                "primary" => true,
+                "created_at" => "2000-01-01T12:00:00Z",
+                "updated_at" => "2000-01-01T12:00:00Z",
+                "blocked" => true,
             ],
-            'relationships' => [
-                'person' => [
-                    'data' => [
-                        'type' => 'Person',
-                        'id' => '1',
+            "relationships" => [
+                "person" => [
+                    "data" => [
+                        "type" => "Person",
+                        "id" => "1",
                     ],
                 ],
             ],

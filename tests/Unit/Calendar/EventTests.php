@@ -9,8 +9,8 @@ use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use Illuminate\Support\Collection;
 use Tests\Helpers\TestConstants;
 
-describe('Calendar Event Tests', function () {
-    test('Event: Can Get Event By ID', function () {
+describe("Calendar Event Tests", function (): void {
+    test("Event: Can Get Event By ID", function (): void {
         $event = Event::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
 
         $response = $event->forEventId("1")->get();
@@ -22,7 +22,7 @@ describe('Calendar Event Tests', function () {
             ->and($calendarEvent->attributes->eventId)->toBe(CalendarMocks::EVENT_ID);
     });
 
-    test('Event: Can List All Events', function () {
+    test("Event: Can List All Events", function (): void {
         $event = Event::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
 
         $response = $event->all();
@@ -32,7 +32,7 @@ describe('Calendar Event Tests', function () {
             ->and($response->data->count())->toBe(1);
     });
 
-    test('Event: Can List All Event Instances For A Specific Event', function () {
+    test("Event: Can List All Event Instances For A Specific Event", function (): void {
         $event = Event::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
 
         $response = $event->forEventId("1")->instances();
@@ -47,7 +47,7 @@ describe('Calendar Event Tests', function () {
             ->and($eventInstance->attributes->eventInstanceId)->toBe(CalendarMocks::EVENT_INSTANCE_ID);
     });
 
-    test("Event: Can List All Tags Associated with an Event", function () {
+    test("Event: Can List All Tags Associated with an Event", function (): void {
         $event = Event::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
 
         $response = $event->forEventId("1")->tags();
@@ -64,4 +64,4 @@ describe('Calendar Event Tests', function () {
             ->and($tag->attributes->tagId)->toBe(CalendarMocks::TAG_ID)
             ->and($tag->attributes->name)->toBe(CalendarMocks::TAG_NAME);
     });
-})->group('calendar.event');
+})->group("calendar.event");

@@ -18,8 +18,8 @@ class CalendarMocks extends BaseMock
 {
     use HasPlanningCenterClient;
 
-    public const string EVENT_ID = '1';
-    public const string EVENT_NAME = 'Sample Event';
+    public const string EVENT_ID = "1";
+    public const string EVENT_NAME = "Sample Event";
     public const string EVENT_INSTANCE_ID = "1";
     public const string TAG_GROUP_ID = "1";
     public const string TAG_NAME = "Demo Tag";
@@ -41,8 +41,8 @@ class CalendarMocks extends BaseMock
         HttpClient::fake([
             self::HOSTNAME . Event::EVENT_ENDPOINT => function ($request) {
                 return match ($request->method()) {
-                    'POST' => HttpClient::response(self::useSingleResponse(ObjectType::Event)),
-                    'GET' => HttpClient::response(self::useCollectionResponse(ObjectType::Event)),
+                    "POST" => HttpClient::response(self::useSingleResponse(ObjectType::Event)),
+                    "GET" => HttpClient::response(self::useCollectionResponse(ObjectType::Event)),
                     default => HttpClient::response([], 405),
                 };
             },
@@ -52,10 +52,10 @@ class CalendarMocks extends BaseMock
     public static function useSpecificEvent(): void
     {
         HttpClient::fake([
-            self::HOSTNAME . Event::EVENT_ENDPOINT . '/1' => function ($request) {
+            self::HOSTNAME . Event::EVENT_ENDPOINT . "/1" => function ($request) {
                 return match ($request->method()) {
-                    'PUT', 'PATCH', 'GET' => HttpClient::response(self::useSingleResponse(ObjectType::Event)),
-                    'DELETE' => HttpClient::response(self::deleteResponse()),
+                    "PUT", "PATCH", "GET" => HttpClient::response(self::useSingleResponse(ObjectType::Event)),
+                    "DELETE" => HttpClient::response(self::deleteResponse()),
                     default => HttpClient::response([], 405),
                 };
             },
@@ -67,7 +67,7 @@ class CalendarMocks extends BaseMock
         HttpClient::fake([
             self::HOSTNAME . Event::EVENT_ENDPOINT . "/1/event_instances" => function ($request) {
                 return match ($request->method()) {
-                    'GET' => HttpClient::response(self::useCollectionResponse(ObjectType::EventInstance)),
+                    "GET" => HttpClient::response(self::useCollectionResponse(ObjectType::EventInstance)),
                     default => HttpClient::response([], 405),
                 };
             },
@@ -77,9 +77,9 @@ class CalendarMocks extends BaseMock
     public static function useSpecificEventInstance(): void
     {
         HttpClient::fake([
-            self::HOSTNAME . EventInstance::EVENT_INSTANCE_ENDPOINT . '/1' => function ($request) {
+            self::HOSTNAME . EventInstance::EVENT_INSTANCE_ENDPOINT . "/1" => function ($request) {
                 return match ($request->method()) {
-                    'GET' => HttpClient::response(self::useSingleResponse(ObjectType::EventInstance)),
+                    "GET" => HttpClient::response(self::useSingleResponse(ObjectType::EventInstance)),
                     default => HttpClient::response([], 405),
                 };
             },
@@ -91,7 +91,7 @@ class CalendarMocks extends BaseMock
         HttpClient::fake([
             self::HOSTNAME . TagGroup::TAG_GROUP_ENDPOINT => function ($request) {
                 return match ($request->method()) {
-                    'GET' => HttpClient::response(self::useCollectionResponse(ObjectType::TagGroup)),
+                    "GET" => HttpClient::response(self::useCollectionResponse(ObjectType::TagGroup)),
                     default => HttpClient::response([], 405),
                 };
             },
@@ -101,9 +101,9 @@ class CalendarMocks extends BaseMock
     public static function useSpecificTagGroup(): void
     {
         HttpClient::fake([
-            self::HOSTNAME . TagGroup::TAG_GROUP_ENDPOINT . '/1/tags' => function ($request) {
+            self::HOSTNAME . TagGroup::TAG_GROUP_ENDPOINT . "/1/tags" => function ($request) {
                 return match ($request->method()) {
-                    'GET' => HttpClient::response(self::useSingleResponse(ObjectType::Tag)),
+                    "GET" => HttpClient::response(self::useSingleResponse(ObjectType::Tag)),
                     default => HttpClient::response([], 405),
                 };
             },
@@ -115,7 +115,7 @@ class CalendarMocks extends BaseMock
         HttpClient::fake([
             self::HOSTNAME . Event::EVENT_ENDPOINT . "/1/tags" => function ($request) {
                 return match ($request->method()) {
-                    'GET' => HttpClient::response(self::useCollectionResponse(ObjectType::Tag)),
+                    "GET" => HttpClient::response(self::useCollectionResponse(ObjectType::Tag)),
                     default => HttpClient::response([], 405),
                 };
             },
@@ -125,27 +125,27 @@ class CalendarMocks extends BaseMock
     protected static function event(): array
     {
         return [
-            'type' => 'Event',
-            'id' => '1',
-            'attributes' => [
-                'approval_status' => 'string',
-                'created_at' => '2000-01-01T12:00:00Z',
-                'description' => 'string',
-                'featured' => true,
-                'image_url' => 'string',
-                'name' => self::EVENT_NAME,
-                'percent_approved' => 1,
-                'percent_rejected' => 1,
-                'registration_url' => 'string',
-                'summary' => 'string',
-                'updated_at' => '2000-01-01T12:00:00Z',
-                'visible_in_church_center' => true,
+            "type" => "Event",
+            "id" => "1",
+            "attributes" => [
+                "approval_status" => "string",
+                "created_at" => "2000-01-01T12:00:00Z",
+                "description" => "string",
+                "featured" => true,
+                "image_url" => "string",
+                "name" => self::EVENT_NAME,
+                "percent_approved" => 1,
+                "percent_rejected" => 1,
+                "registration_url" => "string",
+                "summary" => "string",
+                "updated_at" => "2000-01-01T12:00:00Z",
+                "visible_in_church_center" => true,
             ],
-            'relationships' => [
-                'owner' => [
-                    'data' => [
-                        'type' => 'Person',
-                        'id' => '1',
+            "relationships" => [
+                "owner" => [
+                    "data" => [
+                        "type" => "Person",
+                        "id" => "1",
                     ],
                 ],
             ],
@@ -155,27 +155,27 @@ class CalendarMocks extends BaseMock
     protected static function eventInstance(): array
     {
         return [
-            'type' => 'EventInstance',
-            'id' => '1',
-            'attributes' => [
-                'all_day_event' => true,
-                'compact_recurrence_description' => 'string',
-                'created_at' => '2000-01-01T12:00:00Z',
-                'ends_at' => '2000-01-01T12:00:00Z',
-                'location' => 'string',
-                'recurrence' => 'string',
-                'recurrence_description' => 'string',
-                'starts_at' => '2000-01-01T12:00:00Z',
-                'updated_at' => '2000-01-01T12:00:00Z',
-                'church_center_url' => 'string',
-                'published_starts_at' => 'string',
-                'published_ends_at' => 'string',
+            "type" => "EventInstance",
+            "id" => "1",
+            "attributes" => [
+                "all_day_event" => true,
+                "compact_recurrence_description" => "string",
+                "created_at" => "2000-01-01T12:00:00Z",
+                "ends_at" => "2000-01-01T12:00:00Z",
+                "location" => "string",
+                "recurrence" => "string",
+                "recurrence_description" => "string",
+                "starts_at" => "2000-01-01T12:00:00Z",
+                "updated_at" => "2000-01-01T12:00:00Z",
+                "church_center_url" => "string",
+                "published_starts_at" => "string",
+                "published_ends_at" => "string",
             ],
-            'relationships' => [
-                'event' => [
-                    'data' => [
-                        'type' => 'Event',
-                        'id' => '1',
+            "relationships" => [
+                "event" => [
+                    "data" => [
+                        "type" => "Event",
+                        "id" => "1",
                     ],
                 ],
             ],
@@ -185,15 +185,15 @@ class CalendarMocks extends BaseMock
     protected static function tagGroup(): array
     {
         return [
-            'type' => 'TagGroup',
-            'id' => '1',
-            'attributes' => [
-                'created_at' => '2000-01-01T12:00:00Z',
-                'name' => 'Demo Tag Group',
-                'updated_at' => '2000-01-01T12:00:00Z',
-                'required' => true,
+            "type" => "TagGroup",
+            "id" => "1",
+            "attributes" => [
+                "created_at" => "2000-01-01T12:00:00Z",
+                "name" => "Demo Tag Group",
+                "updated_at" => "2000-01-01T12:00:00Z",
+                "required" => true,
             ],
-            'relationships' => [],
+            "relationships" => [],
         ];
     }
 

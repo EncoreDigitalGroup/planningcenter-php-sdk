@@ -8,6 +8,6 @@ namespace Tests\Helpers;
 
 class TestConstants
 {
-    public const string CLIENT_ID = 'testClientId';
-    public const string CLIENT_SECRET = 'testClientSecret';
+    public const string CLIENT_ID = "testClientId";
+    public const string CLIENT_SECRET = "testClientSecret";
 }

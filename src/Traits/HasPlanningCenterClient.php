@@ -63,14 +63,8 @@ trait HasPlanningCenterClient
 
     protected function isUsingSupportedApiVersion(): bool
     {
-        if (
-            $this->apiVersion == PlanningCenterApiVersion::PEOPLE_DEFAULT
-            || $this->apiVersion == PlanningCenterApiVersion::GROUPS_DEFAULT
-            || $this->apiVersion == PlanningCenterApiVersion::CALENDAR_DEFAULT
-        ) {
-            return true;
-        }
-
-        return false;
+        return $this->apiVersion == PlanningCenterApiVersion::PEOPLE_DEFAULT
+        || $this->apiVersion == PlanningCenterApiVersion::GROUPS_DEFAULT
+        || $this->apiVersion == PlanningCenterApiVersion::CALENDAR_DEFAULT;
     }
 }
