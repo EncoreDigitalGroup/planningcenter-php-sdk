@@ -30,6 +30,13 @@ class TagGroup
         return $tagGroup;
     }
 
+    public function forTagGroupId(string $tagGroupId): static
+    {
+        $this->attributes->tagGroupId = $tagGroupId;
+
+        return $this;
+    }
+
     public function all(array $query = []): ClientResponse
     {
         $http = $this->client()
