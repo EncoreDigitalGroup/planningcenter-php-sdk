@@ -13,7 +13,10 @@ describe("Calendar Event Tests", function (): void {
     test("Event: Can Get Event By ID", function (): void {
         $event = Event::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
 
-        $response = $event->forEventId("1")->get();
+        $response = $event
+            ->forEventId("1")
+            ->get();
+
         /** @var Event $calendarEvent */
         $calendarEvent = $response->data->first();
 
@@ -35,7 +38,9 @@ describe("Calendar Event Tests", function (): void {
     test("Event: Can List All Event Instances For A Specific Event", function (): void {
         $event = Event::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
 
-        $response = $event->forEventId("1")->instances();
+        $response = $event
+            ->forEventId("1")
+            ->instances();
 
         /** @var EventInstance $eventInstance */
         $eventInstance = $response->data->first();
@@ -50,7 +55,9 @@ describe("Calendar Event Tests", function (): void {
     test("Event: Can List All Tags Associated with an Event", function (): void {
         $event = Event::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
 
-        $response = $event->forEventId("1")->tags();
+        $response = $event
+            ->forEventId("1")
+            ->tags();
 
         /** @var Event $calendarEvent */
         $calendarEvent = $response->data->first();

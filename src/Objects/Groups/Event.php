@@ -30,6 +30,13 @@ class Event
         return $event;
     }
 
+    public function forEventId(string $eventId): static
+    {
+        $this->attributes->eventId = $eventId;
+
+        return $this;
+    }
+
     public function all(array $query = []): ClientResponse
     {
         $http = $this->client()
@@ -56,7 +63,11 @@ class Event
 
     private function mapFromPco(mixed $pco): void
     {
-        $pco = objectify($pco);
+        $pco = pco_objectify($pco);
+
+        if (is_null($pco)) {
+            return;
+        }
 
         $attributeMap = [
             "eventId" => "id",

@@ -100,7 +100,7 @@ class Group
     public function tags(array $query = []): ClientResponse
     {
         return Tag::make($this->clientId, $this->clientSecret)
-            ->forGroup($this->attributes->groupId)
+            ->forGroupId($this->attributes->groupId)
             ->groups($query);
     }
 

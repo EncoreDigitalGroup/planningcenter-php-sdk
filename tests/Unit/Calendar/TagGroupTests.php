@@ -26,9 +26,10 @@ describe("TagGroup Tests", function (): void {
 
     test("TagGroup: Can List All Tags For A Specific TagGroup", function (): void {
         $tagGroup = TagGroup::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
-        $tagGroup->attributes->tagGroupId = "1";
 
-        $response = $tagGroup->tags();
+        $response = $tagGroup
+            ->forTagGroupId("1")
+            ->tags();
 
         /** @var TagAttributes $tagAttributes */
         $tagAttributes = $response->data->first()->attributes;

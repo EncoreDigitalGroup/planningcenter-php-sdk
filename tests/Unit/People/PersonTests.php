@@ -35,7 +35,10 @@ describe("People Profile Tests", function (): void {
     test("People: Can Get Person By ID", function (): void {
         $person = Person::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
 
-        $response = $person->forPersonId("1")->get();
+        $response = $person
+            ->forPersonId("1")
+            ->get();
+
         /** @var Person $personProfile */
         $personProfile = $response->data->first();
 
@@ -47,9 +50,11 @@ describe("People Profile Tests", function (): void {
 
     test("People: Can Update Person Profile", function (): void {
         $person = Person::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
-        $person->attributes->personId = "1";
 
-        $response = $person->update();
+        $response = $person
+            ->forPersonId("1")
+            ->update();
+
         /** @var Person $personProfile */
         $personProfile = $response->data->first();
 
@@ -61,9 +66,10 @@ describe("People Profile Tests", function (): void {
 
     test("People: Can Delete Person Profile", function (): void {
         $person = Person::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
-        $person->attributes->personId = "1";
 
-        $response = $person->delete();
+        $response = $person
+            ->forPersonId("1")
+            ->delete();
 
         expect($response->data->isEmpty())->toBeTrue();
     });

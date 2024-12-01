@@ -177,7 +177,13 @@ class Person
             ],
         ];
 
-        unset($person["data"]["attributes"]["id"], $person["data"]["attributes"]["created_at"], $person["data"]["attributes"]["updated_at"], $person["data"]["attributes"]["name"], $person["data"]["attributes"]["demographic_avatar_url"]);
+        unset(
+            $person["data"]["attributes"]["id"],
+            $person["data"]["attributes"]["created_at"],
+            $person["data"]["attributes"]["updated_at"],
+            $person["data"]["attributes"]["name"],
+            $person["data"]["attributes"]["demographic_avatar_url"]
+        );
 
         return Arr::whereNotNull($person["data"]["attributes"]);
     }

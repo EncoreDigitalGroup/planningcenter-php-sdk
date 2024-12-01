@@ -10,9 +10,11 @@ use Tests\Helpers\TestConstants;
 describe("Calendar EventInstance Tests", function (): void {
     test("EventInstance: Can Get EventInstance By ID", function (): void {
         $eventInstance = EventInstance::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
-        $eventInstance->attributes->eventInstanceId = "1";
 
-        $response = $eventInstance->get();
+        $response = $eventInstance
+            ->forEventInstanceId("1")
+            ->get();
+
         /** @var EventInstance $calendarEventInstance */
         $calendarEventInstance = $response->data->first();
 
@@ -23,9 +25,10 @@ describe("Calendar EventInstance Tests", function (): void {
 
     test("EventInstance: Can List All EventInstances", function (): void {
         $eventInstance = EventInstance::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
-        $eventInstance->relationships->event->data->id = "1";
 
-        $response = $eventInstance->all();
+        $response = $eventInstance
+            ->forEventId("1")
+            ->all();
 
         expect($response)->toBeInstanceOf(ClientResponse::class)
             ->and($response->data)->toBeInstanceOf(Collection::class)

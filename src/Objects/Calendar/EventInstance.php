@@ -15,6 +15,7 @@ use EncoreDigitalGroup\PlanningCenter\Support\AttributeMapper;
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Support\RelationshipMapper;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
+use EncoreDigitalGroup\StdLib\Exceptions\NullExceptions\NullException;
 
 /** @api */
 class EventInstance
@@ -36,10 +37,39 @@ class EventInstance
         return $event;
     }
 
+    public function forEventInstanceId(string $eventInstanceId): static
+    {
+        $this->attributes->eventInstanceId = $eventInstanceId;
+
+        return $this;
+    }
+
+    public function forEventId(string $eventId): static
+    {
+        $this->setupEventRelationship();
+
+        if ($this->relationships->event !== null && $this->relationships->event->data !== null) {
+            $this->relationships->event->data->id = $eventId;
+        }
+
+        return $this;
+    }
+
     public function all(array $query = []): ClientResponse
     {
-        $this->relationships->event = $this->relationships->event ?? new BasicRelationship;
-        $this->relationships->event->data = $this->relationships->event->data ?? new BasicRelationshipData;
+        $this->setupEventRelationship();
+
+        if ($this->relationships->event === null) {
+            throw new NullException("relationships->event");
+        }
+
+        if ($this->relationships->event->data === null) {
+            throw new NullException("relationships->event->data");
+        }
+
+        if ($this->relationships->event->data->id === null) {
+            throw new NullException("relationships->event->data->id");
+        }
 
         $http = $this->client()
             ->get($this->hostname() . Event::EVENT_ENDPOINT . "/{$this->relationships->event->data->id}/event_instances", $query);
@@ -87,5 +117,11 @@ class EventInstance
         ];
 
         RelationshipMapper::from($pco, $this->relationships, $relationshipMap);
+    }
+
+    private function setupEventRelationship(): void
+    {
+        $this->relationships->event = $this->relationships->event ?? new BasicRelationship;
+        $this->relationships->event->data = $this->relationships->event->data ?? new BasicRelationshipData;
     }
 }

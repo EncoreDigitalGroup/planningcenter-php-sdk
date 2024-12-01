@@ -28,19 +28,19 @@ class Tag
         return $tagGroup;
     }
 
+    public function forTagGroupId(string $tagGroupId): static
+    {
+        $this->tagGroupId = $tagGroupId;
+
+        return $this;
+    }
+
     public function all(array $query = []): ClientResponse
     {
         $http = $this->client()
             ->get($this->hostname() . TagGroup::TAG_GROUP_ENDPOINT . "/{$this->tagGroupId}/tags", $query);
 
         return $this->processResponse($http);
-    }
-
-    public function inTagGroup(string $tagGroupId): static
-    {
-        $this->tagGroupId = $tagGroupId;
-
-        return $this;
     }
 
     /** @internal */
