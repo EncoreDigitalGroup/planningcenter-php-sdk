@@ -52,7 +52,6 @@ class EventInstance
             $this->relationships->event->data->id = $eventId;
         }
 
-
         return $this;
     }
 
