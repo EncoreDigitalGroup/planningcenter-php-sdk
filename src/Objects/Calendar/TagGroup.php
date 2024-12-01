@@ -29,6 +29,13 @@ class TagGroup
         return $tagGroup;
     }
 
+    public function forTagGroupId(string $tagGroupId): static
+    {
+        $this->attributes->tagGroupId = $tagGroupId;
+
+        return $this;
+    }
+
     public function all(array $query = []): ClientResponse
     {
         $http = $this->client()
@@ -40,7 +47,7 @@ class TagGroup
     public function tags(array $query = []): ClientResponse
     {
         return Tag::make($this->clientId, $this->clientSecret)
-            ->inTagGroup($this->attributes->tagGroupId)
+            ->forTagGroupId($this->attributes->tagGroupId)
             ->all($query);
     }
 

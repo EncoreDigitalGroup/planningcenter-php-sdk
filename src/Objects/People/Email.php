@@ -31,6 +31,20 @@ class Email
         return $email;
     }
 
+    public function forEmailAddressId(string $emailAddressId): static
+    {
+        $this->attributes->emailAddressId = $emailAddressId;
+
+        return $this;
+    }
+
+    public function forPersonId(string $personId): static
+    {
+        $this->attributes->personId = $personId;
+
+        return $this;
+    }
+
     public function get(): ClientResponse
     {
         $http = $this->client()
@@ -39,7 +53,7 @@ class Email
         return $this->processResponse($http);
     }
 
-    public function forPerson(): ClientResponse
+    public function person(): ClientResponse
     {
         $http = $this->client()
             ->get($this->hostname() . Person::PEOPLE_ENDPOINT . "/{$this->attributes->personId}/emails");

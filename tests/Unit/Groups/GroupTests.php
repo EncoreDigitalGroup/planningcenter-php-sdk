@@ -31,9 +31,11 @@ describe("Group Tests", function (): void {
 
     test("Group: Can Get Group By ID", function (): void {
         $group = Group::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
-        $group->attributes->groupId = "1";
 
-        $response = $group->get();
+        $response = $group
+            ->forGroupId("1")
+            ->get();
+
         /** @var GroupAttributes $groupAttributes */
         $groupAttributes = $response->data->first()->attributes;
 
@@ -54,9 +56,10 @@ describe("Group Tests", function (): void {
 
     test("Group: Can List Group Memberships", function (): void {
         $group = Group::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
-        $group->attributes->groupId = "1";
 
-        $response = $group->membership();
+        $response = $group
+            ->forGroupId("1")
+            ->membership();
 
         /** @var GroupMembership $membership */
         $membership = $response->data->first();
@@ -71,9 +74,10 @@ describe("Group Tests", function (): void {
 
     test("Group: Can List Group People", function (): void {
         $group = Group::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
-        $group->attributes->groupId = "1";
 
-        $response = $group->people();
+        $response = $group
+            ->forGroupId("1")
+            ->people();
 
         /** @var GroupMemberPersonAttributes $groupMember */
         $groupMember = $response->data->first()->attributes;
@@ -88,9 +92,10 @@ describe("Group Tests", function (): void {
 
     test("Group: Can List Tags Assigned to Group", function (): void {
         $group = Group::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
-        $group->attributes->groupId = "1";
 
-        $response = $group->tags();
+        $response = $group
+            ->forGroupId("1")
+            ->tags();
 
         /** @var Tag $tag */
         $tag = $response->data->first();
@@ -105,9 +110,10 @@ describe("Group Tests", function (): void {
 
     test("Group: Can Get Group Enrollment Details", function (): void {
         $group = Group::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
-        $group->attributes->groupId = "1";
 
-        $response = $group->enrollment();
+        $response = $group
+            ->forGroupId("1")
+            ->enrollment();
 
         /** @var GroupEnrollmentAttributes $enrollmentAttributes */
         $enrollmentAttributes = $response->data->first()->attributes;

@@ -32,6 +32,13 @@ class GroupEnrollment
         return $group;
     }
 
+    public function forGroupId(string $groupId): static
+    {
+        $this->attributes->groupId = $groupId;
+
+        return $this;
+    }
+
     public function get(array $query = []): ClientResponse
     {
         $http = $this->client()

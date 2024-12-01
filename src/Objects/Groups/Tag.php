@@ -31,7 +31,7 @@ class Tag
         return $tag;
     }
 
-    public function forGroup(string $groupId): static
+    public function forGroupId(string $groupId): static
     {
         $this->groupId = $groupId;
 
