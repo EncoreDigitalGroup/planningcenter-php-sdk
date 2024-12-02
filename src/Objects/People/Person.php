@@ -87,55 +87,54 @@ class Person
         return $this->processResponse($http);
     }
 
-    private function mapFromPco(mixed $pco): void
+    private function mapFromPco(ClientResponse $clientResponse): void
     {
-        $pco = pco_objectify($pco);
+        $records = objectify($clientResponse->meta->response->json("data"));
 
-        if (is_null($pco)) {
-            return;
+        foreach ($records as $record) {
+            $this->attributes->personId = $record->id;
+            $attributeMap = [
+                "firstName" => "first_name",
+                "middleName" => "middle_name",
+                "lastName" => "last_name",
+                "birthdate" => "birthdate",
+                "anniversary" => "anniversary",
+                "gender" => "gender",
+                "grade" => "grade",
+                "child" => "child",
+                "graduationYear" => "graduation_year",
+                "siteAdministrator" => "site_administrator",
+                "accountingAdministrator" => "accounting_administrator",
+                "peoplePermissions" => "people_permissions",
+                "membership" => "membership",
+                "inactivatedAt" => "inactivated_at",
+                "medicalNotes" => "medical_notes",
+                "mfaConfigured" => "mfa_configured",
+                "createdAt" => "created_at",
+                "updatedAt" => "updated_at",
+                "avatar" => "avatar",
+                "name" => "name",
+                "demographicAvatarUrl" => "demographic_avatar_url",
+                "directoryStatus" => "directory_status",
+                "passedBackgroundCheck" => "passed_background_check",
+                "canCreateForms" => "can_create_forms",
+                "canEmailLists" => "can_email_lists",
+                "schoolType" => "school_type",
+                "status" => "status",
+                "primaryCampusId" => "primary_campus_id",
+                "remoteId" => "remote_id",
+            ];
+
+            AttributeMapper::from($record, $this->attributes, $attributeMap, [
+                "birthdate",
+                "anniversary",
+                "created_at",
+                "updated_at",
+                "inactivated_at",
+            ]);
+            $clientResponse->data->add($this);
         }
 
-        $attributeMap = [
-            "firstName" => "first_name",
-            "middleName" => "middle_name",
-            "lastName" => "last_name",
-            "birthdate" => "birthdate",
-            "anniversary" => "anniversary",
-            "gender" => "gender",
-            "grade" => "grade",
-            "child" => "child",
-            "graduationYear" => "graduation_year",
-            "siteAdministrator" => "site_administrator",
-            "accountingAdministrator" => "accounting_administrator",
-            "peoplePermissions" => "people_permissions",
-            "membership" => "membership",
-            "inactivatedAt" => "inactivated_at",
-            "medicalNotes" => "medical_notes",
-            "mfaConfigured" => "mfa_configured",
-            "createdAt" => "created_at",
-            "updatedAt" => "updated_at",
-            "avatar" => "avatar",
-            "name" => "name",
-            "demographicAvatarUrl" => "demographic_avatar_url",
-            "directoryStatus" => "directory_status",
-            "passedBackgroundCheck" => "passed_background_check",
-            "canCreateForms" => "can_create_forms",
-            "canEmailLists" => "can_email_lists",
-            "schoolType" => "school_type",
-            "status" => "status",
-            "primaryCampusId" => "primary_campus_id",
-            "remoteId" => "remote_id",
-        ];
-
-        $this->attributes->personId = $pco->id;
-
-        AttributeMapper::from($pco, $this->attributes, $attributeMap, [
-            "birthdate",
-            "anniversary",
-            "created_at",
-            "updated_at",
-            "inactivated_at",
-        ]);
     }
 
     private function mapToPco(): array

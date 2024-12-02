@@ -77,21 +77,22 @@ class Email
         return $this->processResponse($http);
     }
 
-    private function mapFromPco(mixed $pco): void
+    private function mapFromPco(ClientResponse $clientResponse): void
     {
-        $pco = pco_objectify($pco);
+        $records = objectify($clientResponse->meta->response->json("data"));
 
-        if (is_null($pco)) {
-            return;
+        foreach ($records as $record) {
+            $this->attributes->emailAddressId = $record->id;
+            $attributeMap = [
+                "emailAddressId" => "id",
+                "address" => "address",
+                "primary" => "primary",
+            ];
+
+            AttributeMapper::from($record, $this->attributes, $attributeMap);
+            $clientResponse->data->add($this);
         }
 
-        $attributeMap = [
-            "emailAddressId" => "id",
-            "address" => "address",
-            "primary" => "primary",
-        ];
-
-        AttributeMapper::from($pco, $this->attributes, $attributeMap);
     }
 
     private function mapToPco(): array
