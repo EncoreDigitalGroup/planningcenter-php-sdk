@@ -48,22 +48,22 @@ class GroupMemberPerson
         return $this->processResponse($http);
     }
 
-    protected function mapFromPco(array $pco): void
+    protected function mapFromPco(ClientResponse $clientResponse): void
     {
-        $pco = pco_objectify($pco);
+        $records = objectify($clientResponse->meta->response->json("data"));
 
-        if (is_null($pco)) {
-            return;
+        foreach ($records as $record) {
+            $this->attributes->personId = $record->id;
+            $attributeMap = [
+                "child" => "child",
+                "firstName" => "first_name",
+                "lastName" => "last_name",
+            ];
+
+            AttributeMapper::from($record, $this->attributes, $attributeMap);
+            $clientResponse->data->add($this);
         }
 
-        $this->attributes->personId = $pco->id;
 
-        $attributeMap = [
-            "child" => "child",
-            "firstName" => "first_name",
-            "lastName" => "last_name",
-        ];
-
-        AttributeMapper::from($pco, $this->attributes, $attributeMap);
     }
 }

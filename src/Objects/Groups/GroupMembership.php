@@ -52,26 +52,24 @@ class GroupMembership
         return $this->processResponse($http);
     }
 
-    protected function mapFromPco(array $pco): void
+    protected function mapFromPco(ClientResponse $clientResponse): void
     {
-        $pco = pco_objectify($pco);
+        $records = objectify($clientResponse->meta->response->json("data"));
 
-        if (is_null($pco)) {
-            return;
+        foreach ($records as $record) {
+            $attributeMap = [
+                "joinedAt" => "joined_at",
+                "role" => "role",
+            ];
+
+            $relationshipMap = [
+                "group" => "group",
+                "person" => "person",
+            ];
+
+            AttributeMapper::from($record, $this->attributes, $attributeMap, ["joined_at"]);
+            RelationshipMapper::from($record, $this->relationships, $relationshipMap);
+            $clientResponse->data->add($this);
         }
-
-        $attributeMap = [
-            "joinedAt" => "joined_at",
-            "role" => "role",
-        ];
-
-        AttributeMapper::from($pco, $this->attributes, $attributeMap, ["joined_at"]);
-
-        $relationshipMap = [
-            "group" => "group",
-            "person" => "person",
-        ];
-
-        RelationshipMapper::from($pco, $this->relationships, $relationshipMap);
     }
 }

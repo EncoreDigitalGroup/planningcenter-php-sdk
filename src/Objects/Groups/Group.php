@@ -104,38 +104,36 @@ class Group
             ->groups($query);
     }
 
-    protected function mapFromPco(mixed $pco): void
+    protected function mapFromPco(ClientResponse $clientResponse): void
     {
-        $pco = pco_objectify($pco);
+        $records = objectify($clientResponse->meta->response->json("data"));
 
-        if (is_null($pco)) {
-            return;
+        foreach ($records as $record) {
+            $this->attributes->groupId = $record->id;
+            $attributeMap = [
+                "archivedAt" => "archived_at",
+                "contactEmail" => "contact_email",
+                "createdAt" => "created_at",
+                "description" => "description",
+                "eventVisibility" => "event_visibility",
+                "locationTypePreference" => "location_type_preference",
+                "membershipsCount" => "memberships_count",
+                "name" => "name",
+                "publicChurchCenterUrl" => "public_church_center_url",
+                "schedule" => "schedule",
+                "virtualLocationUrl" => "virtual_location_url",
+            ];
+
+            $headerImageAttributeMap = [
+                "thumbnail" => "thumbnail",
+                "medium" => "medium",
+                "original" => "original",
+            ];
+
+            AttributeMapper::from($record, $this->attributes, $attributeMap, ["archived_at", "created_at"]);
+            AttributeMapper::from($record->attributes->header_image, $this->attributes->headerImage, $headerImageAttributeMap);
+            $clientResponse->data->add($this);
         }
 
-        $attributeMap = [
-            "archivedAt" => "archived_at",
-            "contactEmail" => "contact_email",
-            "createdAt" => "created_at",
-            "description" => "description",
-            "eventVisibility" => "event_visibility",
-            "locationTypePreference" => "location_type_preference",
-            "membershipsCount" => "memberships_count",
-            "name" => "name",
-            "publicChurchCenterUrl" => "public_church_center_url",
-            "schedule" => "schedule",
-            "virtualLocationUrl" => "virtual_location_url",
-        ];
-
-        $this->attributes->groupId = $pco->id;
-
-        AttributeMapper::from($pco, $this->attributes, $attributeMap, ["archived_at", "created_at"]);
-
-        $headerImageAttributeMap = [
-            "thumbnail" => "thumbnail",
-            "medium" => "medium",
-            "original" => "original",
-        ];
-
-        AttributeMapper::from($pco->attributes->header_image, $this->attributes->headerImage, $headerImageAttributeMap);
     }
 }

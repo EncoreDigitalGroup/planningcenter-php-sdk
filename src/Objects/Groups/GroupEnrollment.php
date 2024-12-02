@@ -47,27 +47,26 @@ class GroupEnrollment
         return $this->processResponse($http);
     }
 
-    protected function mapFromPco(mixed $pco): void
+    protected function mapFromPco(ClientResponse $clientResponse): void
     {
-        $pco = pco_objectify($pco);
+        $records = objectify($clientResponse->meta->response->json("data"));
 
-        if (is_null($pco)) {
-            return;
+        foreach ($records as $record) {
+            $this->attributes->groupId = $record->id;
+            $attributeMap = [
+                "autoClosed" => "auto_closed",
+                "autoClosedReason" => "auto_closed_reason",
+                "dateLimit" => "date_limit",
+                "dateLimitReached" => "date_limit_reached",
+                "memberLimit" => "member_limit",
+                "memberLimitReached" => "member_limit_reached",
+                "status" => "status",
+                "strategy" => "strategy",
+            ];
+
+            AttributeMapper::from($record, $this->attributes, $attributeMap, ["date_limit"]);
+            $clientResponse->data->add($this);
         }
 
-        $this->attributes->groupId = $pco->id;
-
-        $attributeMap = [
-            "autoClosed" => "auto_closed",
-            "autoClosedReason" => "auto_closed_reason",
-            "dateLimit" => "date_limit",
-            "dateLimitReached" => "date_limit_reached",
-            "memberLimit" => "member_limit",
-            "memberLimitReached" => "member_limit_reached",
-            "status" => "status",
-            "strategy" => "strategy",
-        ];
-
-        AttributeMapper::from($pco, $this->attributes, $attributeMap, ["date_limit"]);
     }
 }

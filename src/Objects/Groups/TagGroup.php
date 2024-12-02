@@ -53,22 +53,22 @@ class TagGroup
         return $this->processResponse($http);
     }
 
-    protected function mapFromPco(mixed $pco): void
+    protected function mapFromPco(ClientResponse $clientResponse): void
     {
-        $pco = pco_objectify($pco);
+        $records = objectify($clientResponse->meta->response->json("data"));
 
-        if (is_null($pco)) {
-            return;
+        foreach ($records as $record) {
+            $this->attributes->tagGroupId = $record->id;
+            $attributeMap = [
+                "tagGroupId" => "id",
+                "displayPublicly" => "display_publicly",
+                "multipleOptionsEnabled" => "multiple_options_enabled",
+                "name" => "name",
+                "position" => "position",
+            ];
+
+            AttributeMapper::from($record, $this->attributes, $attributeMap);
+            $clientResponse->data->add($this);
         }
-
-        $attributeMap = [
-            "tagGroupId" => "id",
-            "displayPublicly" => "display_publicly",
-            "multipleOptionsEnabled" => "multiple_options_enabled",
-            "name" => "name",
-            "position" => "position",
-        ];
-
-        AttributeMapper::from($pco, $this->attributes, $attributeMap);
     }
 }

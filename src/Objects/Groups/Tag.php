@@ -54,21 +54,19 @@ class Tag
         return $this->processResponse($http);
     }
 
-    protected function mapFromPco(mixed $pco): void
+    protected function mapFromPco(ClientResponse $clientResponse): void
     {
-        $pco = pco_objectify($pco);
+        $records = objectify($clientResponse->meta->response->json("data"));
 
-        if (is_null($pco)) {
-            return;
+        foreach ($records as $record) {
+            $this->attributes->tagId = $record->id;
+            $attributeMap = [
+                "name" => "name",
+                "position" => "position",
+            ];
+
+            AttributeMapper::from($record, $this->attributes, $attributeMap);
+            $clientResponse->data->add($this);
         }
-
-        $this->attributes->tagId = $pco->id;
-
-        $attributeMap = [
-            "name" => "name",
-            "position" => "position",
-        ];
-
-        AttributeMapper::from($pco, $this->attributes, $attributeMap);
     }
 }
