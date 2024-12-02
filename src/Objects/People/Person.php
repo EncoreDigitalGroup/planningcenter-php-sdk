@@ -91,6 +91,10 @@ class Person
     {
         $records = objectify($clientResponse->meta->response->json("data"));
 
+        if (!is_iterable($records)) {
+            return;
+        }
+
         foreach ($records as $record) {
             $this->attributes->personId = $record->id;
             $attributeMap = [

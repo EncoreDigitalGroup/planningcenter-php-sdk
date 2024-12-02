@@ -65,6 +65,10 @@ class Event
     {
         $records = objectify($clientResponse->meta->response->json("data"));
 
+        if (!is_iterable($records)) {
+            return;
+        }
+
         foreach ($records as $record) {
             $this->attributes->eventId = $record->id;
             $attributeMap = [
