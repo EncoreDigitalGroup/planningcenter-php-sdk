@@ -12,7 +12,10 @@ use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\Support\AttributeMapper;
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
+use EncoreDigitalGroup\StdLib\Exceptions\ImproperBooleanReturnedException;
+use Exception;
 use Illuminate\Support\Arr;
+use TypeError;
 
 /** @api */
 class Person
@@ -44,15 +47,7 @@ class Person
         $http = $this->client()
             ->get($this->hostname() . self::PEOPLE_ENDPOINT, $query);
 
-        $clientResponse = new ClientResponse($http);
-
-        foreach ($http->json("data") as $person) {
-            $pcoPerson = Person::make($this->clientId, $this->clientSecret);
-            $pcoPerson->mapFromPco($person);
-            $clientResponse->data->push($pcoPerson);
-        }
-
-        return $clientResponse;
+        return $this->processResponse($http);
     }
 
     public function get(?array $query = null): ClientResponse
@@ -89,7 +84,11 @@ class Person
 
     private function mapFromPco(ClientResponse $clientResponse): void
     {
-        $records = objectify($clientResponse->meta->response->json("data"));
+        try {
+            $records = objectify($clientResponse->meta->response->json("data"));
+        } catch (Exception|TypeError) {
+            return;
+        }
 
         if (!is_iterable($records)) {
             return;

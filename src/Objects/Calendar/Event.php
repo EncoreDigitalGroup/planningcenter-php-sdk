@@ -15,7 +15,6 @@ use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\Relationships\BasicRela
 use EncoreDigitalGroup\PlanningCenter\Support\AttributeMapper;
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
-use Illuminate\Http\Client\Response;
 
 /** @api */
 class Event
@@ -86,17 +85,9 @@ class Event
         $http = $this->client()
             ->get($this->hostname() . self::EVENT_ENDPOINT . "/{$this->attributes->eventId}/tags", $query);
 
-        if ($this->isUsingSupportedApiVersion()) {
-            $tags = $http->json("data");
-            foreach ($tags as $tag) {
-                $tagRecord = Tag::make($this->clientId, $this->clientSecret);
-                $tagRecord->mapFromPco($tag);
-                $this->relationships->tags->add($tagRecord);
-            }
-        }
-
+        $tagRecord = Tag::make($this->clientId, $this->clientSecret);
         $clientResponse = new ClientResponse($http);
-        $clientResponse->data->add($this);
+        $tagRecord->mapFromPco($clientResponse);
 
         return $clientResponse;
     }

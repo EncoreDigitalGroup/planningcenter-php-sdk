@@ -58,15 +58,7 @@ class Email
         $http = $this->client()
             ->get($this->hostname() . Person::PEOPLE_ENDPOINT . "/{$this->attributes->personId}/emails");
 
-        $clientResponse = new ClientResponse($http);
-
-        foreach ($http->json("data") as $email) {
-            $pcoEmail = Email::make($this->clientId, $this->clientSecret);
-            $pcoEmail->mapFromPco($email);
-            $clientResponse->data->push($pcoEmail);
-        }
-
-        return $clientResponse;
+        return $this->processResponse($http);
     }
 
     public function update(): ClientResponse
