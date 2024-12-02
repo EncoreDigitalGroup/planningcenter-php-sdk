@@ -15,6 +15,7 @@ use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\Relationships\BasicRela
 use EncoreDigitalGroup\PlanningCenter\Support\AttributeMapper;
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
+use Illuminate\Http\Client\Response;
 
 /** @api */
 class Event
@@ -100,30 +101,29 @@ class Event
         return $clientResponse;
     }
 
-    private function mapFromPco(mixed $pco): void
+    private function mapFromPco(ClientResponse $clientResponse): void
     {
-        $pco = pco_objectify($pco);
+        $records = objectify($clientResponse->meta->response->json("data"));
 
-        if (is_null($pco)) {
-            return;
+        foreach ($records as $record) {
+            $this->attributes->eventId = $record->id;
+            $attributeMap = [
+                "approvalStatus" => "approval_status",
+                "createdAt" => "created_at",
+                "description" => "description",
+                "featured" => "featured",
+                "imageUrl" => "image_url",
+                "name" => "name",
+                "percentApproved" => "percent_approved",
+                "percentRejected" => "percent_rejected",
+                "registrationUrl" => "registration_url",
+                "summary" => "summary",
+                "updatedAt" => "updated_at",
+                "visibleInChurchCenter" => "visible_in_church_center",
+            ];
+
+            AttributeMapper::from($record, $this->attributes, $attributeMap, ["created_at", "updated_at"]);
+            $clientResponse->data->add($this);
         }
-
-        $attributeMap = [
-            "eventId" => "id",
-            "approvalStatus" => "approval_status",
-            "createdAt" => "created_at",
-            "description" => "description",
-            "featured" => "featured",
-            "imageUrl" => "image_url",
-            "name" => "name",
-            "percentApproved" => "percent_approved",
-            "percentRejected" => "percent_rejected",
-            "registrationUrl" => "registration_url",
-            "summary" => "summary",
-            "updatedAt" => "updated_at",
-            "visibleInChurchCenter" => "visible_in_church_center",
-        ];
-
-        AttributeMapper::from($pco, $this->attributes, $attributeMap, ["created_at", "updated_at"]);
     }
 }
