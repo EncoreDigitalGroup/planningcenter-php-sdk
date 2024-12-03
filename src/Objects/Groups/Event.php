@@ -61,33 +61,37 @@ class Event
         return $this->processResponse($http);
     }
 
-    private function mapFromPco(mixed $pco): void
+    private function mapFromPco(ClientResponse $clientResponse): void
     {
-        $pco = pco_objectify($pco);
+        $records = objectify($clientResponse->meta->response->json("data"));
 
-        if (is_null($pco)) {
+        if (!is_iterable($records)) {
             return;
         }
 
-        $attributeMap = [
-            "eventId" => "id",
-            "attendanceRequestsEnabled" => "attendance_requests_enabled",
-            "automatedReminderEnabled" => "automated_reminder_enabled",
-            "canceled" => "canceled",
-            "canceledAt" => "canceled_at",
-            "description" => "description",
-            "endsAt" => "ends_at",
-            "locationTypePreference" => "location_type_preference",
-            "multiDay" => "multi_day",
-            "name" => "name",
-            "remindersSent" => "reminders_sent",
-            "remindersSentAt" => "reminders_sent_at",
-            "repeating" => "repeating",
-            "startsAt" => "starts_at",
-            "virtualLocationUrl" => "virtual_location_url",
-            "visitorsCount" => "visitors_count",
-        ];
+        foreach ($records as $record) {
+            $this->attributes->eventId = $record->id;
+            $attributeMap = [
+                "attendanceRequestsEnabled" => "attendance_requests_enabled",
+                "automatedReminderEnabled" => "automated_reminder_enabled",
+                "canceled" => "canceled",
+                "canceledAt" => "canceled_at",
+                "description" => "description",
+                "endsAt" => "ends_at",
+                "locationTypePreference" => "location_type_preference",
+                "multiDay" => "multi_day",
+                "name" => "name",
+                "remindersSent" => "reminders_sent",
+                "remindersSentAt" => "reminders_sent_at",
+                "repeating" => "repeating",
+                "startsAt" => "starts_at",
+                "virtualLocationUrl" => "virtual_location_url",
+                "visitorsCount" => "visitors_count",
+            ];
 
-        AttributeMapper::from($pco, $this->attributes, $attributeMap, ["canceledAt", "endsAt", "remindersSentAt", "startsAt"]);
+            AttributeMapper::from($record, $this->attributes, $attributeMap, ["canceledAt", "endsAt", "remindersSentAt", "startsAt"]);
+            $clientResponse->data->add($this);
+        }
+
     }
 }

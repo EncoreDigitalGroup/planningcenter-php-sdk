@@ -48,7 +48,7 @@ class EventInstance
     {
         $this->setupEventRelationship();
 
-        if ($this->relationships->event !== null && $this->relationships->event->data !== null) {
+        if ($this->relationships->event instanceof \EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\Relationships\BasicRelationship && $this->relationships->event->data instanceof \EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\Relationships\BasicRelationshipData) {
             $this->relationships->event->data->id = $eventId;
         }
 
@@ -59,11 +59,11 @@ class EventInstance
     {
         $this->setupEventRelationship();
 
-        if ($this->relationships->event === null) {
+        if (!$this->relationships->event instanceof \EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\Relationships\BasicRelationship) {
             throw new NullException("relationships->event");
         }
 
-        if ($this->relationships->event->data === null) {
+        if (!$this->relationships->event->data instanceof \EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\Relationships\BasicRelationshipData) {
             throw new NullException("relationships->event->data");
         }
 
@@ -85,38 +85,42 @@ class EventInstance
         return $this->processResponse($http);
     }
 
-    private function mapFromPco(mixed $pco): void
+    private function mapFromPco(ClientResponse $clientResponse): void
     {
-        $pco = pco_objectify($pco);
+        $records = objectify($clientResponse->meta->response->json("data"));
 
-        if (is_null($pco)) {
+        if (!is_iterable($records)) {
             return;
         }
 
-        $this->attributes->eventInstanceId = $pco->id;
+        foreach ($records as $record) {
+            $this->attributes->eventInstanceId = $record->id;
+            $attributeMap = [
+                "allDayEvent" => "all_day_event",
+                "compactRecurrenceDescription" => "compact_recurrence_description",
+                "createdAt" => "created_at",
+                "endsAt" => "ends_at",
+                "location" => "location",
+                "recurrence" => "recurrence",
+                "recurrenceDescription" => "recurrence_description",
+                "startsAt" => "starts_at",
+                "updatedAt" => "updated_at",
+                "churchCenterUrl" => "church_center_url",
+                "publishedStartAt" => "published_start_at",
+                "publishedEndsAt" => "published_ends_at",
+            ];
 
-        $attributeMap = [
-            "allDayEvent" => "all_day_event",
-            "compactRecurrenceDescription" => "compact_recurrence_description",
-            "createdAt" => "created_at",
-            "endsAt" => "ends_at",
-            "location" => "location",
-            "recurrence" => "recurrence",
-            "recurrenceDescription" => "recurrence_description",
-            "startsAt" => "starts_at",
-            "updatedAt" => "updated_at",
-            "churchCenterUrl" => "church_center_url",
-            "publishedStartAt" => "published_start_at",
-            "publishedEndsAt" => "published_ends_at",
-        ];
+            AttributeMapper::from($record, $this->attributes, $attributeMap, ["created_at", "ends_at", "starts_at", "updated_at"]);
 
-        AttributeMapper::from($pco, $this->attributes, $attributeMap, ["created_at", "ends_at", "starts_at", "updated_at"]);
+            $relationshipMap = [
+                "event" => "event",
+            ];
 
-        $relationshipMap = [
-            "event" => "event",
-        ];
+            RelationshipMapper::from($record, $this->relationships, $relationshipMap);
+            $clientResponse->data->add($this);
 
-        RelationshipMapper::from($pco, $this->relationships, $relationshipMap);
+        }
+
     }
 
     private function setupEventRelationship(): void

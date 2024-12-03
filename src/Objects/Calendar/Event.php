@@ -85,45 +85,40 @@ class Event
         $http = $this->client()
             ->get($this->hostname() . self::EVENT_ENDPOINT . "/{$this->attributes->eventId}/tags", $query);
 
-        if ($this->isUsingSupportedApiVersion()) {
-            $tags = $http->json("data");
-            foreach ($tags as $tag) {
-                $tagRecord = Tag::make($this->clientId, $this->clientSecret);
-                $tagRecord->mapFromPco($tag);
-                $this->relationships->tags->add($tagRecord);
-            }
-        }
-
+        $tagRecord = Tag::make($this->clientId, $this->clientSecret);
         $clientResponse = new ClientResponse($http);
-        $clientResponse->data->add($this);
+        $tagRecord->mapFromPco($clientResponse);
 
         return $clientResponse;
     }
 
-    private function mapFromPco(mixed $pco): void
+    private function mapFromPco(ClientResponse $clientResponse): void
     {
-        $pco = pco_objectify($pco);
+        $records = objectify($clientResponse->meta->response->json("data"));
 
-        if (is_null($pco)) {
+        if (!is_iterable($records)) {
             return;
         }
 
-        $attributeMap = [
-            "eventId" => "id",
-            "approvalStatus" => "approval_status",
-            "createdAt" => "created_at",
-            "description" => "description",
-            "featured" => "featured",
-            "imageUrl" => "image_url",
-            "name" => "name",
-            "percentApproved" => "percent_approved",
-            "percentRejected" => "percent_rejected",
-            "registrationUrl" => "registration_url",
-            "summary" => "summary",
-            "updatedAt" => "updated_at",
-            "visibleInChurchCenter" => "visible_in_church_center",
-        ];
+        foreach ($records as $record) {
+            $this->attributes->eventId = $record->id;
+            $attributeMap = [
+                "approvalStatus" => "approval_status",
+                "createdAt" => "created_at",
+                "description" => "description",
+                "featured" => "featured",
+                "imageUrl" => "image_url",
+                "name" => "name",
+                "percentApproved" => "percent_approved",
+                "percentRejected" => "percent_rejected",
+                "registrationUrl" => "registration_url",
+                "summary" => "summary",
+                "updatedAt" => "updated_at",
+                "visibleInChurchCenter" => "visible_in_church_center",
+            ];
 
-        AttributeMapper::from($pco, $this->attributes, $attributeMap, ["created_at", "updated_at"]);
+            AttributeMapper::from($record, $this->attributes, $attributeMap, ["created_at", "updated_at"]);
+            $clientResponse->data->add($this);
+        }
     }
 }

@@ -58,15 +58,7 @@ class Email
         $http = $this->client()
             ->get($this->hostname() . Person::PEOPLE_ENDPOINT . "/{$this->attributes->personId}/emails");
 
-        $clientResponse = new ClientResponse($http);
-
-        foreach ($http->json("data") as $email) {
-            $pcoEmail = Email::make($this->clientId, $this->clientSecret);
-            $pcoEmail->mapFromPco($email);
-            $clientResponse->data->push($pcoEmail);
-        }
-
-        return $clientResponse;
+        return $this->processResponse($http);
     }
 
     public function update(): ClientResponse
@@ -77,21 +69,26 @@ class Email
         return $this->processResponse($http);
     }
 
-    private function mapFromPco(mixed $pco): void
+    private function mapFromPco(ClientResponse $clientResponse): void
     {
-        $pco = pco_objectify($pco);
+        $records = objectify($clientResponse->meta->response->json("data"));
 
-        if (is_null($pco)) {
+        if (!is_iterable($records)) {
             return;
         }
 
-        $attributeMap = [
-            "emailAddressId" => "id",
-            "address" => "address",
-            "primary" => "primary",
-        ];
+        foreach ($records as $record) {
+            $this->attributes->emailAddressId = $record->id;
+            $attributeMap = [
+                "emailAddressId" => "id",
+                "address" => "address",
+                "primary" => "primary",
+            ];
 
-        AttributeMapper::from($pco, $this->attributes, $attributeMap);
+            AttributeMapper::from($record, $this->attributes, $attributeMap);
+            $clientResponse->data->add($this);
+        }
+
     }
 
     private function mapToPco(): array

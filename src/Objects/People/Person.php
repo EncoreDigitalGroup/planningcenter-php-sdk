@@ -12,7 +12,9 @@ use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\Support\AttributeMapper;
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
+use Exception;
 use Illuminate\Support\Arr;
+use TypeError;
 
 /** @api */
 class Person
@@ -44,15 +46,7 @@ class Person
         $http = $this->client()
             ->get($this->hostname() . self::PEOPLE_ENDPOINT, $query);
 
-        $clientResponse = new ClientResponse($http);
-
-        foreach ($http->json("data") as $person) {
-            $pcoPerson = Person::make($this->clientId, $this->clientSecret);
-            $pcoPerson->mapFromPco($person);
-            $clientResponse->data->push($pcoPerson);
-        }
-
-        return $clientResponse;
+        return $this->processResponse($http);
     }
 
     public function get(?array $query = null): ClientResponse
@@ -87,55 +81,62 @@ class Person
         return $this->processResponse($http);
     }
 
-    private function mapFromPco(mixed $pco): void
+    private function mapFromPco(ClientResponse $clientResponse): void
     {
-        $pco = pco_objectify($pco);
-
-        if (is_null($pco)) {
+        try {
+            $records = objectify($clientResponse->meta->response->json("data"));
+        } catch (Exception|TypeError) {
             return;
         }
 
-        $attributeMap = [
-            "firstName" => "first_name",
-            "middleName" => "middle_name",
-            "lastName" => "last_name",
-            "birthdate" => "birthdate",
-            "anniversary" => "anniversary",
-            "gender" => "gender",
-            "grade" => "grade",
-            "child" => "child",
-            "graduationYear" => "graduation_year",
-            "siteAdministrator" => "site_administrator",
-            "accountingAdministrator" => "accounting_administrator",
-            "peoplePermissions" => "people_permissions",
-            "membership" => "membership",
-            "inactivatedAt" => "inactivated_at",
-            "medicalNotes" => "medical_notes",
-            "mfaConfigured" => "mfa_configured",
-            "createdAt" => "created_at",
-            "updatedAt" => "updated_at",
-            "avatar" => "avatar",
-            "name" => "name",
-            "demographicAvatarUrl" => "demographic_avatar_url",
-            "directoryStatus" => "directory_status",
-            "passedBackgroundCheck" => "passed_background_check",
-            "canCreateForms" => "can_create_forms",
-            "canEmailLists" => "can_email_lists",
-            "schoolType" => "school_type",
-            "status" => "status",
-            "primaryCampusId" => "primary_campus_id",
-            "remoteId" => "remote_id",
-        ];
+        if (!is_iterable($records)) {
+            return;
+        }
 
-        $this->attributes->personId = $pco->id;
+        foreach ($records as $record) {
+            $this->attributes->personId = $record->id;
+            $attributeMap = [
+                "firstName" => "first_name",
+                "middleName" => "middle_name",
+                "lastName" => "last_name",
+                "birthdate" => "birthdate",
+                "anniversary" => "anniversary",
+                "gender" => "gender",
+                "grade" => "grade",
+                "child" => "child",
+                "graduationYear" => "graduation_year",
+                "siteAdministrator" => "site_administrator",
+                "accountingAdministrator" => "accounting_administrator",
+                "peoplePermissions" => "people_permissions",
+                "membership" => "membership",
+                "inactivatedAt" => "inactivated_at",
+                "medicalNotes" => "medical_notes",
+                "mfaConfigured" => "mfa_configured",
+                "createdAt" => "created_at",
+                "updatedAt" => "updated_at",
+                "avatar" => "avatar",
+                "name" => "name",
+                "demographicAvatarUrl" => "demographic_avatar_url",
+                "directoryStatus" => "directory_status",
+                "passedBackgroundCheck" => "passed_background_check",
+                "canCreateForms" => "can_create_forms",
+                "canEmailLists" => "can_email_lists",
+                "schoolType" => "school_type",
+                "status" => "status",
+                "primaryCampusId" => "primary_campus_id",
+                "remoteId" => "remote_id",
+            ];
 
-        AttributeMapper::from($pco, $this->attributes, $attributeMap, [
-            "birthdate",
-            "anniversary",
-            "created_at",
-            "updated_at",
-            "inactivated_at",
-        ]);
+            AttributeMapper::from($record, $this->attributes, $attributeMap, [
+                "birthdate",
+                "anniversary",
+                "created_at",
+                "updated_at",
+                "inactivated_at",
+            ]);
+            $clientResponse->data->add($this);
+        }
+
     }
 
     private function mapToPco(): array

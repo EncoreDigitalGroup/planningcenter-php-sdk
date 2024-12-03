@@ -59,11 +59,8 @@ describe("Calendar Event Tests", function (): void {
             ->forEventId("1")
             ->tags();
 
-        /** @var Event $calendarEvent */
-        $calendarEvent = $response->data->first();
-
         /** @var Tag $tag */
-        $tag = $calendarEvent->relationships->tags->first();
+        $tag = $response->data->first();
 
         expect($response)->toBeInstanceOf(ClientResponse::class)
             ->and($response->data)->toBeInstanceOf(Collection::class)

@@ -24,7 +24,9 @@ class BaseMock
         $method = $type->value;
 
         return [
-            "data" => static::$method(),
+            "data" => [
+                static::$method(),
+            ],
         ];
     }
 

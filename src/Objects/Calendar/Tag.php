@@ -44,25 +44,29 @@ class Tag
     }
 
     /** @internal */
-    public function mapFromPco(mixed $pco): void
+    public function mapFromPco(ClientResponse $clientResponse): void
     {
-        $pco = pco_objectify($pco);
+        $records = objectify($clientResponse->meta->response->json("data"));
 
-        if (is_null($pco)) {
+        if (!is_iterable($records)) {
             return;
         }
 
-        $this->attributes->tagId = $pco->id;
+        foreach ($records as $record) {
+            $this->attributes->tagId = $record->id;
 
-        $attributeMap = [
-            "churchCenterCategory" => "church_center_category",
-            "color" => "color",
-            "createdAt" => "created_at",
-            "name" => "name",
-            "position" => "position",
-            "updatedAt" => "updated_at",
-        ];
+            $attributeMap = [
+                "churchCenterCategory" => "church_center_category",
+                "color" => "color",
+                "createdAt" => "created_at",
+                "name" => "name",
+                "position" => "position",
+                "updatedAt" => "updated_at",
+            ];
 
-        AttributeMapper::from($pco, $this->attributes, $attributeMap, ["created_at", "updated_at"]);
+            AttributeMapper::from($record, $this->attributes, $attributeMap, ["created_at", "updated_at"]);
+            $clientResponse->data->add($this);
+        }
+
     }
 }

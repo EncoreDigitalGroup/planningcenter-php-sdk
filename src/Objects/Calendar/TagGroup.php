@@ -51,23 +51,25 @@ class TagGroup
             ->all($query);
     }
 
-    private function mapFromPco(mixed $pco): void
+    private function mapFromPco(ClientResponse $clientResponse): void
     {
-        $pco = pco_objectify($pco);
+        $records = objectify($clientResponse->meta->response->json("data"));
 
-        if (is_null($pco)) {
+        if (!is_iterable($records)) {
             return;
         }
 
-        $this->attributes->tagGroupId = $pco->id;
+        foreach ($records as $record) {
+            $this->attributes->tagGroupId = $record->id;
+            $attributeMap = [
+                "createdAt" => "created_at",
+                "name" => "name",
+                "updatedAt" => "updated_at",
+                "required" => "required",
+            ];
 
-        $attributeMap = [
-            "createdAt" => "created_at",
-            "name" => "name",
-            "updatedAt" => "updated_at",
-            "required" => "required",
-        ];
-
-        AttributeMapper::from($pco, $this->attributes, $attributeMap, ["created_at", "updated_at"]);
+            AttributeMapper::from($record, $this->attributes, $attributeMap, ["created_at", "updated_at"]);
+            $clientResponse->data->add($this);
+        }
     }
 }
