@@ -48,7 +48,7 @@ class EventInstance
     {
         $this->setupEventRelationship();
 
-        if ($this->relationships->event !== null && $this->relationships->event->data !== null) {
+        if ($this->relationships->event instanceof \EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\Relationships\BasicRelationship && $this->relationships->event->data instanceof \EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\Relationships\BasicRelationshipData) {
             $this->relationships->event->data->id = $eventId;
         }
 
@@ -59,11 +59,11 @@ class EventInstance
     {
         $this->setupEventRelationship();
 
-        if ($this->relationships->event === null) {
+        if (!$this->relationships->event instanceof \EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\Relationships\BasicRelationship) {
             throw new NullException("relationships->event");
         }
 
-        if ($this->relationships->event->data === null) {
+        if (!$this->relationships->event->data instanceof \EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\Relationships\BasicRelationshipData) {
             throw new NullException("relationships->event->data");
         }
 
