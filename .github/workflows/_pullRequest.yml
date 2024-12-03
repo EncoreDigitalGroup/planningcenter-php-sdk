@@ -35,28 +35,20 @@ jobs:
           repository: ${{ github.repository }}
           token: ${{ secrets.GITHUB_TOKEN }}
 
-  Rector:
+  CodeStyle:
     needs: GitStatusCheck
-    name: Rector
+    name: CodeStyle
     if: needs.GitStatusCheck.outputs.shouldRun == 'true'
     runs-on: ubuntu-latest
     steps:
-      - name: Rector
-        uses: EncoreDigitalGroup/ci-workflows/actions/php/rector@v2
+      - name: CodeStyle
+        uses: EncoreDigitalGroup/ci-workflows/actions/php/codeStyle@v2
         with:
-          branch: "${{ github.ref }}"
+          branch: "${{ github.head_ref }}"
           repository: "${{ github.repository }}"
 
-  Duster:
-    needs: Rector
-    name: Duster
-    uses: EncoreDigitalGroup/ci-workflows/.github/workflows/php_dusterFix.yml@v2
-    permissions:
-      contents: write
-      pull-requests: write
-
   StaticAnalysis:
-    needs: Duster
+    needs: CodeStyle
     name: StaticAnalysis
     uses: EncoreDigitalGroup/ci-workflows/.github/workflows/php_larastan.yml@v2
     with:
@@ -64,7 +56,7 @@ jobs:
       branch: ${{ github.head_ref }}
 
   Test:
-    needs: Duster
+    needs: CodeStyle
     name: Test
     uses: EncoreDigitalGroup/ci-workflows/.github/workflows/php_pest.yml@v2
     with:
