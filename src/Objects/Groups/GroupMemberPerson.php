@@ -68,6 +68,5 @@ class GroupMemberPerson
             $clientResponse->data->add($this);
         }
 
-
     }
 }

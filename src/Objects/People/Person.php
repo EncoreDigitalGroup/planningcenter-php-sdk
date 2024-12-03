@@ -12,7 +12,6 @@ use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\Support\AttributeMapper;
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
-use EncoreDigitalGroup\StdLib\Exceptions\ImproperBooleanReturnedException;
 use Exception;
 use Illuminate\Support\Arr;
 use TypeError;
