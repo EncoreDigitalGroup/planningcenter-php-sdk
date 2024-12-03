@@ -6,10 +6,8 @@
 
 namespace Tests\Unit\Groups;
 
-use EncoreDigitalGroup\PlanningCenter\Objects\Calendar\Event;
-use EncoreDigitalGroup\PlanningCenter\Objects\Calendar\EventInstance;
-use EncoreDigitalGroup\PlanningCenter\Objects\Calendar\TagGroup;
 use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Group;
+use EncoreDigitalGroup\PlanningCenter\Objects\Groups\TagGroup;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 use PHPGenesis\Http\HttpClient;
 use Tests\Helpers\BaseMock;
@@ -30,6 +28,8 @@ class GroupMocks extends BaseMock
     public const string TAG_ID = "1";
     public const string TAG_NAME = "Demo Tag";
     public const int TAG_POSITION = 1;
+    public const string TAG_GROUP_ID = "1";
+    public const string TAG_GROUP_NAME = "Demo Tag Group";
     public const int ENROLLMENT_MEMBER_LIMIT = 1;
     public const bool ENROLLMENT_MEMBER_LIMIT_REACHED = true;
 
@@ -41,6 +41,7 @@ class GroupMocks extends BaseMock
         self::useGroupMemberPersonCollection();
         self::useGroupTagRelationshipCollection();
         self::useEnrollmentCollection();
+        self::useTagGroupCollection();
     }
 
     protected static function useGroupCollection(): void
@@ -118,6 +119,18 @@ class GroupMocks extends BaseMock
             self::HOSTNAME . Group::GROUPS_ENDPOINT . "/1/enrollment" => function ($request) {
                 return match ($request->method()) {
                     "GET" => HttpClient::response(self::useCollectionResponse(ObjectType::Enrollment)),
+                    default => HttpClient::response([], 405),
+                };
+            },
+        ]);
+    }
+
+    protected static function useTagGroupCollection(): void
+    {
+        HttpClient::fake([
+            self::HOSTNAME . TagGroup::TAG_GROUP_ENDPOINT => function ($request) {
+                return match ($request->method()) {
+                    "GET" => HttpClient::response(self::useCollectionResponse(ObjectType::TagGroup)),
                     default => HttpClient::response([], 405),
                 };
             },
@@ -252,6 +265,21 @@ class GroupMocks extends BaseMock
                     ],
                 ],
             ],
+        ];
+    }
+
+    protected static function tagGroup(): array
+    {
+        return [
+            "type" => "TagGroup",
+            "id" => self::TAG_GROUP_ID,
+            "attributes" => [
+                "display_publicly" => true,
+                "multiple_options_enabled" => true,
+                "name" => self::TAG_GROUP_NAME,
+                "position" => 1,
+            ],
+            "relationships" => [],
         ];
     }
 }
