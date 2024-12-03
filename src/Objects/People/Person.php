@@ -84,7 +84,7 @@ class Person
     private function mapFromPco(ClientResponse $clientResponse): void
     {
         try {
-            $records = objectify($clientResponse->meta->response->json("data"));
+            $records = objectify($clientResponse->meta->response->json("data", []));
         } catch (Exception|TypeError) {
             return;
         }

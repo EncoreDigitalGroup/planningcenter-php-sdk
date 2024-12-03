@@ -46,7 +46,7 @@ class Tag
     /** @internal */
     public function mapFromPco(ClientResponse $clientResponse): void
     {
-        $records = objectify($clientResponse->meta->response->json("data"));
+        $records = objectify($clientResponse->meta->response->json("data", []));
 
         if (!is_iterable($records)) {
             return;
