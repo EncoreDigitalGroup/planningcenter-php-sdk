@@ -21,6 +21,7 @@ class Tag
 
     public TagAttributes $attributes;
     private string $groupId;
+    private string $tagGroupId;
 
     public static function make(string $clientId, string $clientSecret): Tag
     {
@@ -38,6 +39,13 @@ class Tag
         return $this;
     }
 
+    public function forTagGroupId(string $tagGroupId): static
+    {
+        $this->tagGroupId = $tagGroupId;
+
+        return $this;
+    }
+
     public function get(array $query = []): ClientResponse
     {
         $http = $this->client()
@@ -50,6 +58,14 @@ class Tag
     {
         $http = $this->client()
             ->get($this->hostname() . Group::GROUPS_ENDPOINT . "/{$this->groupId}/tags", $query);
+
+        return $this->processResponse($http);
+    }
+
+    public function tagGroup(array $query = []): ClientResponse
+    {
+        $http = $this->client()
+            ->get($this->hostname() . TagGroup::TAG_GROUP_ENDPOINT . "/{$this->tagGroupId}/tags", $query);
 
         return $this->processResponse($http);
     }

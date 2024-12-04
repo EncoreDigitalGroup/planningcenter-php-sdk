@@ -47,10 +47,9 @@ class TagGroup
 
     public function tags(array $query = []): ClientResponse
     {
-        $http = $this->client()
-            ->get($this->hostname() . self::TAG_GROUP_ENDPOINT . "/" . $this->attributes->tagGroupId . "/tags", $query);
-
-        return $this->processResponse($http);
+        return Tag::make($this->clientId, $this->clientSecret)
+            ->forTagGroupId($this->attributes->tagGroupId)
+            ->tagGroup($query);
     }
 
     protected function mapFromPco(ClientResponse $clientResponse): void
