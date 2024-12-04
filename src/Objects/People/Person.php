@@ -148,8 +148,8 @@ class Person
                     "first_name" => $this->attributes->firstName ?? null,
                     "middle_name" => $this->attributes->middleName ?? null,
                     "last_name" => $this->attributes->lastName ?? null,
-                    "birthdate" => $this->attributes->birthdate ?? null,
-                    "anniversary" => $this->attributes->anniversary ?? null,
+                    "birthdate" => $this->attributes->birthdate?->toDateString() ?? null,
+                    "anniversary" => $this->attributes->anniversary?->toDateString() ?? null,
                     "gender" => $this->attributes->gender ?? null,
                     "grade" => $this->attributes->grade ?? null,
                     "child" => $this->attributes->child ?? null,
@@ -158,11 +158,11 @@ class Person
                     "accounting_administrator" => $this->attributes->accountingAdministrator ?? null,
                     "people_permissions" => $this->attributes->peoplePermissions ?? null,
                     "membership" => $this->attributes->membership ?? null,
-                    "inactivated_at" => $this->attributes->inactivatedAt ?? null,
+                    "inactivated_at" => $this->attributes->inactivatedAt?->toDateTimeString() ?? null,
                     "medical_notes" => $this->attributes->medicalNotes ?? null,
                     "mfa_configured" => $this->attributes->mfaConfigured ?? null,
-                    "created_at" => $this->attributes->createdAt ?? null,
-                    "updated_at" => $this->attributes->updatedAt ?? null,
+                    "created_at" => $this->attributes->createdAt?->toDateTimeString() ?? null,
+                    "updated_at" => $this->attributes->updatedAt?->toDateTimeString() ?? null,
                     "avatar" => $this->attributes->avatar ?? null,
                     "name" => $this->attributes->name ?? null,
                     "demographic_avatar_url" => $this->attributes->demographicAvatarUrl ?? null,
@@ -186,6 +186,8 @@ class Person
             $person["data"]["attributes"]["demographic_avatar_url"]
         );
 
-        return Arr::whereNotNull($person["data"]["attributes"]);
+        $person["data"]["attributes"] = Arr::whereNotNull($person["data"]["attributes"]);
+
+        return $person;
     }
 }
