@@ -11,15 +11,7 @@ use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Tag;
 Now we can create a new instance of the Tag class;
 
 ```php
-$tag = new Tag($client);
-```
-
-### All Tag Groups
-
-To get all group tags that exist in Planning Center, use the following method:
-
-```php
-$tag->all();
+$tag = Tag::make($clientId, $clientSecret);
 ```
 
 # Tags
@@ -30,16 +22,8 @@ $tag->all();
 $tag->all();
 ```
 
-### Get a Single Tag
+### Get Tags for a Group
 
 ```php
-$tag->tagId = TAG_ID;
-$tag->get();
-```
-
-### Get Groups by Tag
-
-```php
-$tag->tagId = TAG_ID;
-$tag->groups();
+$tag->forGroupId(TAG_ID)->groups();
 ```

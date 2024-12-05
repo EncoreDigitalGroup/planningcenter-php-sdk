@@ -6,14 +6,12 @@ To start using the Calendar Event API, add the following to the top of your file
 use EncoreDigitalGroup\PlanningCenter\Objects\Calendar\Event;
 ```
 
-<include from="SnippetLibrary.md" element-id="setupThePcoClient"></include>
-
 ### Event Class
 
 Now we can create a new instance of the Event class;
 
 ```php
-$event = new Event($client);
+$event = Event::make($clientId, $clientSecret);
 ```
 
 ### All Events
@@ -45,33 +43,22 @@ $event->future();
 
 ### Get an Event
 
-To get a single Planning Center Calendar Event, pass the ```id``` of the event to the ```get()```
-method
+To get a single Planning Center Calendar Event, use the `forEventId()` method and then chain the `get()`
+method.
 
 ```php
-$event->eventId = YOUR_EVENT_ID;
-$event->get();
+$event->forEventId(YOUR_EVENT_ID)->get();
 ```
 
 ### Get Event Instances
 
 ```php
-$event->eventId = YOUR_EVENT_ID;
-$event->instances();
+$event->forEventId(YOUR_EVENT_ID)->instances();
 ```
 
 ### Get a Single Event Instance
 
 ```php
-$event->eventId = YOUR_EVENT_ID;
-$event->eventInstanceId = YOUR_EVENT_INSTANCE_ID;
-$event->instance();
-```
-
-### Get a Single Event Connection
-
-```php
-$event->eventId = YOUR_EVENT_ID;
-$event->connectionId = YOUR_CONNECTION_ID;
-$event->connection();
+$eventInstance = EventInstance::make($clientId, $clientSecret);
+$eventInstance->forEventInstanceId(YOUR_EVENT_INSTANCE_ID)->get();
 ```

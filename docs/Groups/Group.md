@@ -11,7 +11,7 @@ use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Group;
 Now we can create a new instance of the Group class;
 
 ```php
-$group = new Group($clientConfig);
+$group = Group::make($clientId, $clientSecret);
 ```
 
 ### All Groups
@@ -24,9 +24,8 @@ $group->all();
 
 ### Get a Specific Group
 
-To get a specific group, set the  ```$groupId``` property to the ```id``` of the specific group you wish to retrieve.
+To get a single Planning Center Group, use the `forGroupId()` method and then chain the `get()` method.
 
 ```php
-$group->groupId = 123;
-$group->get();
+$group->forGroupId(YOUR_GROUP_ID)->get();
 ```

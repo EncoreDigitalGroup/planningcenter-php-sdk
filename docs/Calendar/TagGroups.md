@@ -6,14 +6,12 @@ To start using the Calendar TagGroup API, add the following to the top of your f
 use EncoreDigitalGroup\PlanningCenter\Objects\Calendar\TagGroup;
 ```
 
-<include from="SnippetLibrary.md" element-id="setupThePcoClient"></include>
-
 ### TagGroup Class
 
 Now we can create a new instance of the TagGroup class;
 
 ```php
-$tagGroup = new TagGroup($client);
+$tagGroup = TagGroup::make($clientId, $clientSecret);
 ```
 
 ### All Tag Groups
@@ -29,14 +27,5 @@ $tagGroup->all();
 ### Get All Tags in Tag Group
 
 ```php
-$tagGroup->tagGroupId = TAG_GROUP_ID;
-$tagGroup->tags();
-```
-
-### Get a Single Tag in a Tag Group
-
-```php
-$tagGroup->tagGroupId = TAG_GROUP_ID;
-$tagGroup->tagId = TAG_ID
-$tagGroup->tag();
+$tagGroup->forTagGroupId(TAG_GROUP_ID)->tags();
 ```
