@@ -11,7 +11,7 @@ use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Event;
 Now we can create a new instance of the Group class;
 
 ```php
-$groupEvent = new Event($clientConfig);
+$groupEvent = Event::make($clientId, $clientSecret);
 ```
 
 ### All Groups
@@ -22,22 +22,11 @@ To get all group events that exist in Planning Center, use the following method:
 $groupEvent->all();
 ```
 
-### Get Events for a Specific Group
-
-To get events for a specific group, set the  ```$groupId``` property to the ```id``` of the specific
-group you wish to retrieve events for.
-
-```php
-$groupEvent->groupId = 123;
-$groupEvent->all();
-```
-
 ### Get a Specific Group Event
 
-To get specific group event, set the  ```$eventId``` property to the ```id``` of the specific
-group event you wish to retrieve.
+To get a single Planning Center Group Event, use the `forEventId()` method and then chain the `get()`
+method.
 
 ```php
-$groupEvent->eventId = 123;
-$groupEvent->get();
+$groupEvent->forEventId(YOUR_EVENT_ID)->get();
 ```

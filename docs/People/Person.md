@@ -1,4 +1,4 @@
-# Person
+# Email
 
 To start using the Person API, add the following to the top of your file:
 
@@ -11,7 +11,7 @@ use EncoreDigitalGroup\PlanningCenter\Objects\People\Person;
 Now we can create a new instance of the Person class;
 
 ```php
-$person = new Person($clientConfig);
+$person = Person::make($clientId, $clientSecret);
 ```
 
 ### All People
@@ -26,12 +26,11 @@ $person->all();
 
 ### Get a Specific Person
 
-To get a specific person, pass the ```$person``` object created earlier with ```$person->id```
-set to the ```id``` of the specific person you want.
+To get a single Person from Planning Center, use the `forPersonId()` method and then chain the `get()`
+method.
 
 ```php
-$person->id = 123;
-$person->get();
+$person->forPersonId(PERSON_ID)->get();
 ```
 
 ### Create a new Person
@@ -39,8 +38,8 @@ $person->get();
 To create a new Person, you must set the first and last name of the Person.
 
 ```php
-$person->first_name = 'John';
-$person->last_name = 'Smith';
+$person->attributes->firstName = "John";
+$person->attributes->lastName = "Smith";
 $person->create();
 ```
 
@@ -54,9 +53,8 @@ For example, let's say that when we created John Smith in the previous section, 
 is spelled Jon and not John. Let's assume that his Person ID is 123.
 
 ```PHP
-$person->id = 123;
-$person->first_name = 'Jon';
-$person->update();
+$person->attributes->firstName = "Jon";
+$person->forPersonId("123")->update();
 ```
 
 <note>Except for the ID, you only need to pass fields that are being updated.</note>
@@ -66,8 +64,7 @@ $person->update();
 To delete a person from planning center, you just need to pass in the ID.
 
 ```PHP
-$person->id = 123;
-$person->delete();
+$person->forPersonId("123")->delete();
 ```
 
 Note: There is no way to recover a person once they have been deleted in Planning Center.
