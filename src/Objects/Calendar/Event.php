@@ -91,14 +91,17 @@ class Event
         $clientResponse = new ClientResponse($http);
         $records = objectify($clientResponse->meta->response->json("data", []));
 
-        foreach ($records as $record) {
-            $tagAttributes = new TagAttributes;
-            $tagAttributes->tagId = $record->id;
-            AttributeMapper::from($record, $tagAttributes, Tag::getAttributeMap(), ["created_at", "updated_at"]);
-            $this->relationships->tags->add($tagAttributes);
-        }
+        if (is_iterable($records)) {
+            foreach ($records as $record) {
+                $tagAttributes = new TagAttributes;
+                $tagAttributes->tagId = $record->id;
+                AttributeMapper::from($record, $tagAttributes, Tag::getAttributeMap(), ["created_at", "updated_at"]);
+                $this->relationships->tags->add($tagAttributes);
+            }
 
-        $clientResponse->data->add($this);
+            $clientResponse->data->add($this);
+
+        }
 
         return $clientResponse;
     }
