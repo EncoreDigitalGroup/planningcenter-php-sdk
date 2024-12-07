@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Encore Digital Group - Planning Center PHP SDK
  * Copyright (c) 2023-2024. Encore Digital Group
@@ -22,7 +23,7 @@ class EventInstance
 {
     use HasPlanningCenterClient;
 
-    public const string EVENT_INSTANCE_ENDPOINT = "calendar/v2/event_instances";
+    public const string EVENT_INSTANCE_ENDPOINT = "/calendar/v2/event_instances";
 
     public EventInstanceAttributes $attributes;
     public EventInstanceRelationships $relationships;
