@@ -27,8 +27,6 @@ class Event
     public EventAttributes $attributes;
     public EventRelationships $relationships;
 
-    private bool $withTags = false;
-
     public static function make(string $clientId, string $clientSecret): Event
     {
         $event = new self($clientId, $clientSecret);
@@ -46,28 +44,18 @@ class Event
         return $this;
     }
 
-    public function withTags(bool $withTags = true): static
-    {
-        $this->withTags = $withTags;
-
-        return $this;
-    }
-
     public function all(array $query = []): ClientResponse
     {
         $http = $this->client()
-            ->get($this->hostname() . self::EVENT_ENDPOINT, $this->buildQuery($query));
+            ->get($this->hostname() . self::EVENT_ENDPOINT, $query);
 
         return $this->processResponse($http);
     }
 
     public function future(array $query = []): ClientResponse
     {
-        $buildQuery = $this->buildQuery($query);
-        $mergeQuery = array_merge(["filter" => "future"], $buildQuery);
-
         $http = $this->client()
-            ->get($this->hostname() . self::EVENT_ENDPOINT, $mergeQuery);
+            ->get($this->hostname() . self::EVENT_ENDPOINT, array_merge(["filter" => "future"], $query));
 
         return $this->processResponse($http);
     }
@@ -75,7 +63,7 @@ class Event
     public function get(array $query = []): ClientResponse
     {
         $http = $this->client()
-            ->get($this->hostname() . self::EVENT_ENDPOINT . "/" . $this->attributes->eventId, $this->buildQuery($query));
+            ->get($this->hostname() . self::EVENT_ENDPOINT . "/" . $this->attributes->eventId, $query);
 
         return $this->processResponse($http);
     }
@@ -133,18 +121,5 @@ class Event
             AttributeMapper::from($record, $this->attributes, $attributeMap, ["created_at", "updated_at"]);
             $clientResponse->data->add($this);
         }
-    }
-
-    private function buildQuery(array $query): array
-    {
-        if ($this->withTags) {
-            $withTagsQuery = [
-                "include" => "tags",
-            ];
-
-            return array_merge($withTagsQuery, $query);
-        }
-
-        return $query;
     }
 }
