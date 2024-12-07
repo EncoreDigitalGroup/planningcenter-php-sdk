@@ -29,6 +29,19 @@ class Tag
         return $tagGroup;
     }
 
+    /** @internal */
+    public static function getAttributeMap(): array
+    {
+        return [
+            "churchCenterCategory" => "church_center_category",
+            "color" => "color",
+            "createdAt" => "created_at",
+            "name" => "name",
+            "position" => "position",
+            "updatedAt" => "updated_at",
+        ];
+    }
+
     public function forTagGroupId(string $tagGroupId): static
     {
         $this->tagGroupId = $tagGroupId;
@@ -56,16 +69,7 @@ class Tag
         foreach ($records as $record) {
             $this->attributes->tagId = $record->id;
 
-            $attributeMap = [
-                "churchCenterCategory" => "church_center_category",
-                "color" => "color",
-                "createdAt" => "created_at",
-                "name" => "name",
-                "position" => "position",
-                "updatedAt" => "updated_at",
-            ];
-
-            AttributeMapper::from($record, $this->attributes, $attributeMap, ["created_at", "updated_at"]);
+            AttributeMapper::from($record, $this->attributes, self::getAttributeMap(), ["created_at", "updated_at"]);
             $clientResponse->data->add($this);
         }
 

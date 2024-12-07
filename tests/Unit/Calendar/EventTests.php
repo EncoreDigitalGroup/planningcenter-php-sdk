@@ -59,13 +59,13 @@ describe("Calendar Event Tests", function (): void {
             ->forEventId("1")
             ->tags();
 
-        /** @var Tag $tag */
-        $tag = $response->data->first();
+        /** @var Event $pcoEvent */
+        $pcoEvent = $response->data->first();
 
         expect($response)->toBeInstanceOf(ClientResponse::class)
             ->and($response->data)->toBeInstanceOf(Collection::class)
             ->and($response->data->count())->toBe(1)
-            ->and($tag->attributes->tagId)->toBe(CalendarMocks::TAG_ID)
-            ->and($tag->attributes->name)->toBe(CalendarMocks::TAG_NAME);
+            ->and($pcoEvent->relationships->tags[0]->tagId)->toBe(CalendarMocks::TAG_ID)
+            ->and($pcoEvent->relationships->tags[0]->name)->toBe(CalendarMocks::TAG_NAME);
     });
 })->group("calendar.event");

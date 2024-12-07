@@ -8,6 +8,7 @@
 namespace EncoreDigitalGroup\PlanningCenter\Objects\Calendar;
 
 use EncoreDigitalGroup\PlanningCenter\Objects\Calendar\Attributes\EventAttributes;
+use EncoreDigitalGroup\PlanningCenter\Objects\Calendar\Attributes\TagAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\Calendar\Relationships\EventInstanceRelationships;
 use EncoreDigitalGroup\PlanningCenter\Objects\Calendar\Relationships\EventRelationships;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
@@ -86,9 +87,20 @@ class Event
         $http = $this->client()
             ->get($this->hostname() . self::EVENT_ENDPOINT . "/{$this->attributes->eventId}/tags", $query);
 
-        $tagRecord = Tag::make($this->clientId, $this->clientSecret);
         $clientResponse = new ClientResponse($http);
-        $tagRecord->mapFromPco($clientResponse);
+        $records = objectify($clientResponse->meta->response->json("data", []));
+
+        if (is_iterable($records)) {
+            foreach ($records as $record) {
+                $tagAttributes = new TagAttributes;
+                $tagAttributes->tagId = $record->id;
+                AttributeMapper::from($record, $tagAttributes, Tag::getAttributeMap(), ["created_at", "updated_at"]);
+                $this->relationships->tags->add($tagAttributes);
+            }
+
+            $clientResponse->data->add($this);
+
+        }
 
         return $clientResponse;
     }
