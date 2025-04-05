@@ -27,11 +27,11 @@
     },
     "require": {
         "php": "^8.3",
-        "illuminate/support": "^10.0|^11.0",
+        "illuminate/support": "^10|^11|^12",
         "phpgenesis/http": "^0.3"
     },
     "require-dev": {
-        "orchestra/testbench": "^9.6",
+        "orchestra/testbench": "^10",
         "pestphp/pest": "^3.5",
         "pestphp/pest-plugin-laravel": "^3.0",
         "phpgenesis/devutilities": "^0.3",
