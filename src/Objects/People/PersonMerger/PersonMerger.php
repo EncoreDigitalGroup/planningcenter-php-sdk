@@ -11,6 +11,7 @@ use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\Relationships\BasicRelationshipData;
 use EncoreDigitalGroup\PlanningCenter\Support\AttributeMapper;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
+use PHPGenesis\Common\Support\Objectify;
 
 class PersonMerger
 {
@@ -47,7 +48,7 @@ class PersonMerger
 
     protected function mapFromPco(mixed $payload): static
     {
-        $payload = objectify($payload);
+        $payload = Objectify::make($payload);
 
         $attributeMap = [
             "personMergerId" => "id",

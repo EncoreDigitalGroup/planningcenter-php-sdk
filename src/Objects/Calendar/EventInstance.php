@@ -17,6 +17,7 @@ use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Support\RelationshipMapper;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 use EncoreDigitalGroup\StdLib\Exceptions\NullExceptions\NullException;
+use PHPGenesis\Common\Support\Objectify;
 
 /** @api */
 class EventInstance
@@ -88,7 +89,7 @@ class EventInstance
 
     private function mapFromPco(ClientResponse $clientResponse): void
     {
-        $records = objectify($clientResponse->meta->response->json("data", []));
+        $records = Objectify::make($clientResponse->meta->response->json("data", []));
 
         if (!is_iterable($records)) {
             return;

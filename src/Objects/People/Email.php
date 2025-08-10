@@ -13,6 +13,7 @@ use EncoreDigitalGroup\PlanningCenter\Support\AttributeMapper;
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 use Illuminate\Support\Arr;
+use PHPGenesis\Common\Support\Objectify;
 
 /** @api */
 class Email
@@ -72,7 +73,7 @@ class Email
 
     private function mapFromPco(ClientResponse $clientResponse): void
     {
-        $records = objectify($clientResponse->meta->response->json("data", []));
+        $records = Objectify::make($clientResponse->meta->response->json("data", []));
 
         if (!is_iterable($records)) {
             return;
