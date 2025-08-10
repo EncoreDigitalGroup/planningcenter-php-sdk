@@ -12,6 +12,7 @@ use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\Support\AttributeMapper;
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
+use PHPGenesis\Common\Support\Objectify;
 
 class Tag
 {
@@ -60,7 +61,7 @@ class Tag
     /** @internal */
     public function mapFromPco(ClientResponse $clientResponse): void
     {
-        $records = objectify($clientResponse->meta->response->json("data", []));
+        $records = Objectify::make($clientResponse->meta->response->json("data", []));
 
         if (!is_iterable($records)) {
             return;

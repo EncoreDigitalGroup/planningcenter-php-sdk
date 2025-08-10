@@ -15,6 +15,7 @@ use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 use Exception;
 use Illuminate\Support\Arr;
+use PHPGenesis\Common\Support\Objectify;
 use TypeError;
 
 /** @api */
@@ -85,7 +86,7 @@ class Person
     private function mapFromPco(ClientResponse $clientResponse): void
     {
         try {
-            $records = objectify($clientResponse->meta->response->json("data", []));
+            $records = Objectify::make($clientResponse->meta->response->json("data", []));
         } catch (Exception|TypeError) {
             return;
         }
