@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Encore Digital Group - Planning Center PHP SDK
  * Copyright (c) 2025. Encore Digital Group

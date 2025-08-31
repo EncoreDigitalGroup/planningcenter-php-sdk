@@ -19,12 +19,14 @@ use PHPGenesis\Http\HttpClientBuilder;
 trait HasPlanningCenterClient
 {
     protected const string HOSTNAME = "https://api.planningcenteronline.com";
+
     /** @experimental This could change. Use with caution. */
     protected const string X_PCO_API_VERSION_HEADER = "X-PCO-API-Version";
 
     protected string $clientId;
     protected string $clientSecret;
     protected string $apiVersion = "";
+
     /** @experimental This could change. Use with caution. */
     protected AuthType $authType = AuthType::Basic;
 
@@ -72,6 +74,7 @@ trait HasPlanningCenterClient
     {
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
+
         return $this->setAuthType(AuthType::Basic);
     }
 
