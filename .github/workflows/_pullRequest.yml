@@ -54,6 +54,7 @@ jobs:
     with:
       path: 'src/'
       branch: ${{ github.head_ref }}
+      phpVersion: '8.3'
 
   Test:
     needs: CodeStyle
