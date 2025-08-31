@@ -83,6 +83,7 @@ trait HasPlanningCenterClient
     {
         $this->clientId = $token;
         $this->clientSecret = Str::empty();
+
         return $this->setAuthType(AuthType::Token);
     }
 
