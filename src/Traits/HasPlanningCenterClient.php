@@ -10,6 +10,7 @@ namespace EncoreDigitalGroup\PlanningCenter\Traits;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\Support\AuthType;
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
+use EncoreDigitalGroup\StdLib\Objects\Support\Types\Str;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\Response;
 use PHPGenesis\Http\HttpClient;
@@ -29,8 +30,8 @@ trait HasPlanningCenterClient
 
     public function __construct(?string $clientId = null, ?string $clientSecret = null)
     {
-        $this->clientId = $clientId ?? "";
-        $this->clientSecret = $clientSecret ?? "";
+        $this->clientId = $clientId ?? Str::empty();
+        $this->clientSecret = $clientSecret ?? Str::empty();
 
         new HttpClientBuilder;
     }
@@ -67,7 +68,7 @@ trait HasPlanningCenterClient
     }
 
     /** @experimental This could change. Use with caution. */
-    public function withBasicAuth(?string $clientId = null, ?string $clientSecret = null): static
+    public function withBasicAuth(string $clientId = "", string $clientSecret = ""): static
     {
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
@@ -75,10 +76,10 @@ trait HasPlanningCenterClient
     }
 
     /** @experimental This could change. Use with caution. */
-    public function withToken(?string $token = null): static
+    public function withToken(string $token = ""): static
     {
         $this->clientId = $token;
-        $this->clientSecret = null;
+        $this->clientSecret = Str::empty();
         return $this->setAuthType(AuthType::Token);
     }
 
