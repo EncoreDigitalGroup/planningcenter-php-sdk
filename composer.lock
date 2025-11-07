@@ -11538,16 +11538,16 @@
         },
         {
             "name": "tightenco/duster",
-            "version": "v3.2.0",
+            "version": "v3.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tighten/duster.git",
-                "reference": "b311811719ed432613cd3e9ac14a5952fc7cb5c5"
+                "reference": "0260abaaecabd9655a0836e4038238e6585a8b45"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tighten/duster/zipball/b311811719ed432613cd3e9ac14a5952fc7cb5c5",
-                "reference": "b311811719ed432613cd3e9ac14a5952fc7cb5c5",
+                "url": "https://api.github.com/repos/tighten/duster/zipball/0260abaaecabd9655a0836e4038238e6585a8b45",
+                "reference": "0260abaaecabd9655a0836e4038238e6585a8b45",
                 "shasum": ""
             },
             "require": {
@@ -11602,7 +11602,7 @@
                 "issues": "https://github.com/tighten/duster/issues",
                 "source": "https://github.com/tighten/duster"
             },
-            "time": "2025-03-21T20:21:10+00:00"
+            "time": "2025-11-07T15:00:12+00:00"
         },
         {
             "name": "tomasvotruba/cognitive-complexity",
