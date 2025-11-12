@@ -1,3 +1,7 @@
+---
+title: People 
+---
+
 # People Overview
 
 [Person](Person.md)
