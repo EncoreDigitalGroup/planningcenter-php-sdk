@@ -1,3 +1,7 @@
+---
+title: Planning Center 
+---
+
 # Welcome
 
 This SDK is open-source and freely available to use. Contributions are welcome. Curious what's in the works? Here's the

@@ -1,3 +1,8 @@
+---
+title: Getting Started
+sidebar_position: 1 
+---
+
 # Getting Started
 
 1. [Installation](Installation.md)
