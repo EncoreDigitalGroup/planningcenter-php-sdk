@@ -2,13 +2,15 @@
 
 /*
  * Encore Digital Group - Planning Center PHP SDK
- * Copyright (c) 2023-2024. Encore Digital Group
+ * Copyright (c) 2023-2025. Encore Digital Group
  */
 
 namespace EncoreDigitalGroup\PlanningCenter\Traits;
 
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
+use EncoreDigitalGroup\PlanningCenter\Support\AuthType;
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
+use EncoreDigitalGroup\StdLib\Objects\Support\Types\Str;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\Response;
 use PHPGenesis\Http\HttpClient;
@@ -18,22 +20,33 @@ trait HasPlanningCenterClient
 {
     protected const string HOSTNAME = "https://api.planningcenteronline.com";
 
+    /** @experimental This could change. Use with caution. */
+    protected const string X_PCO_API_VERSION_HEADER = "X-PCO-API-Version";
+
     protected string $clientId;
     protected string $clientSecret;
     protected string $apiVersion = "";
 
+    /** @experimental This could change. Use with caution. */
+    protected AuthType $authType = AuthType::Basic;
+
     public function __construct(?string $clientId = null, ?string $clientSecret = null)
     {
-        $this->clientId = $clientId ?? "";
-        $this->clientSecret = $clientSecret ?? "";
+        $this->clientId = $clientId ?? Str::empty();
+        $this->clientSecret = $clientSecret ?? Str::empty();
 
         new HttpClientBuilder;
     }
 
     public function client(): PendingRequest
     {
+        if ($this->authType == AuthType::Token) {
+            return HttpClient::withToken($this->clientId)
+                ->withHeader(self::X_PCO_API_VERSION_HEADER, $this->apiVersion);
+        }
+
         return HttpClient::withBasicAuth($this->clientId, $this->clientSecret)
-            ->withHeader("X-PCO-API-Version", $this->apiVersion);
+            ->withHeader(self::X_PCO_API_VERSION_HEADER, $this->apiVersion);
     }
 
     public function hostname(): string
@@ -46,6 +59,32 @@ trait HasPlanningCenterClient
         $this->apiVersion = $apiVersion;
 
         return $this;
+    }
+
+    /** @experimental This could change. Use with caution. */
+    public function setAuthType(AuthType $authType): static
+    {
+        $this->authType = $authType;
+
+        return $this;
+    }
+
+    /** @experimental This could change. Use with caution. */
+    public function withBasicAuth(string $clientId = "", string $clientSecret = ""): static
+    {
+        $this->clientId = $clientId;
+        $this->clientSecret = $clientSecret;
+
+        return $this->setAuthType(AuthType::Basic);
+    }
+
+    /** @experimental This could change. Use with caution. */
+    public function withToken(string $token = ""): static
+    {
+        $this->clientId = $token;
+        $this->clientSecret = Str::empty();
+
+        return $this->setAuthType(AuthType::Token);
     }
 
     protected function processResponse(Response $http): ClientResponse

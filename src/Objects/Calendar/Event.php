@@ -17,6 +17,7 @@ use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\Relationships\BasicRela
 use EncoreDigitalGroup\PlanningCenter\Support\AttributeMapper;
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
+use PHPGenesis\Common\Support\Objectify;
 
 /** @api */
 class Event
@@ -88,7 +89,7 @@ class Event
             ->get($this->hostname() . self::EVENT_ENDPOINT . "/{$this->attributes->eventId}/tags", $query);
 
         $clientResponse = new ClientResponse($http);
-        $records = objectify($clientResponse->meta->response->json("data", []));
+        $records = Objectify::make($clientResponse->meta->response->json("data", []));
 
         if (is_iterable($records)) {
             foreach ($records as $record) {
@@ -107,7 +108,7 @@ class Event
 
     private function mapFromPco(ClientResponse $clientResponse): void
     {
-        $records = objectify($clientResponse->meta->response->json("data", []));
+        $records = Objectify::make($clientResponse->meta->response->json("data", []));
 
         if (!is_iterable($records)) {
             return;
