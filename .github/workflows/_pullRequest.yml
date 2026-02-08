@@ -1,72 +1,72 @@
 name: Pull Request
 
 on:
-  pull_request_target:
-  workflow_dispatch:
+    pull_request_target:
+    workflow_dispatch:
 
 concurrency:
-  group: ${{ github.repository }}-${{ github.event.pull_request.number }}-pullRequest
-  cancel-in-progress: true
+    group: ${{ github.repository }}-${{ github.event.pull_request.number }}-pullRequest
+    cancel-in-progress: true
 
 permissions:
-  contents: write
-  pull-requests: write
+    contents: write
+    pull-requests: write
 
 jobs:
-  GitStatusCheck:
-    name: GitStatusCheck
-    runs-on: ubuntu-latest
-    outputs:
-      shouldRun: ${{ steps.GitStatusCheck.outputs.shouldRun }}
-    steps:
-      - name: GitStatusCheck
-        id: GitStatusCheck
-        uses: EncoreDigitalGroup/ci-workflows/actions/php/gitStatusCheck@v3
+    GitStatusCheck:
+        name: GitStatusCheck
+        runs-on: ubuntu-latest
+        outputs:
+            shouldRun: ${{ steps.GitStatusCheck.outputs.shouldRun }}
+        steps:
+            -   name: GitStatusCheck
+                id: GitStatusCheck
+                uses: EncoreDigitalGroup/ci-workflows/actions/php/gitStatusCheck@v3
 
-  EnrichPullRequest:
-    name: EnrichPullRequest
-    runs-on: ubuntu-latest
-    steps:
-      - name: EnrichPullRequest
-        uses: EncoreDigitalGroup/ci-workflows/actions/github/enrichPullRequest@v3
+    EnrichPullRequest:
+        name: EnrichPullRequest
+        runs-on: ubuntu-latest
+        steps:
+            -   name: EnrichPullRequest
+                uses: EncoreDigitalGroup/ci-workflows/actions/github/enrichPullRequest@v3
+                with:
+                    branch: ${{ github.head_ref }}
+                    pullRequestNumber: ${{ github.event.number }}
+                    repository: ${{ github.repository }}
+                    token: ${{ secrets.GITHUB_TOKEN }}
+                    jiraURL: ${{ vars.JIRA_URL }}
+                    jiraEmail: ${{ secrets.JIRA_EMAIL }}
+                    jiraToken: ${{ secrets.JIRA_TOKEN }}
+
+    CodeStyle:
+        needs: GitStatusCheck
+        name: CodeStyle
+        if: needs.GitStatusCheck.outputs.shouldRun == 'true'
+        runs-on: ubuntu-latest
+        steps:
+            -   name: CodeStyle
+                uses: EncoreDigitalGroup/ci-workflows/actions/php/codeStyle@v3
+                with:
+                    branch: "${{ github.head_ref }}"
+                    repository: "${{ github.repository }}"
+
+    StaticAnalysis:
+        needs: CodeStyle
+        name: StaticAnalysis
+        uses: EncoreDigitalGroup/ci-workflows/.github/workflows/php_staticAnalysis.yml@v3
         with:
-          branch: ${{ github.head_ref }}
-          pullRequestNumber: ${{ github.event.number }}
-          repository: ${{ github.repository }}
-          token: ${{ secrets.GITHUB_TOKEN }}
-          jiraURL: ${{ vars.JIRA_URL }}
-          jiraEmail: ${{ secrets.JIRA_EMAIL }}
-          jiraToken: ${{ secrets.JIRA_TOKEN }}
+            path: 'src/'
+            branch: ${{ github.head_ref }}
+            phpVersion: '8.3'
 
-  CodeStyle:
-    needs: GitStatusCheck
-    name: CodeStyle
-    if: needs.GitStatusCheck.outputs.shouldRun == 'true'
-    runs-on: ubuntu-latest
-    steps:
-      - name: CodeStyle
-        uses: EncoreDigitalGroup/ci-workflows/actions/php/codeStyle@v3
+    Test:
+        needs: CodeStyle
+        name: Test
+        uses: EncoreDigitalGroup/ci-workflows/.github/workflows/php_test.yml@v3
         with:
-          branch: "${{ github.head_ref }}"
-          repository: "${{ github.repository }}"
+            branch: ${{ github.head_ref }}
 
-  StaticAnalysis:
-    needs: CodeStyle
-    name: StaticAnalysis
-    uses: EncoreDigitalGroup/ci-workflows/.github/workflows/php_staticAnalysis.yml@v3
-    with:
-      path: 'src/'
-      branch: ${{ github.head_ref }}
-      phpVersion: '8.3'
-
-  Test:
-    needs: CodeStyle
-    name: Test
-    uses: EncoreDigitalGroup/ci-workflows/.github/workflows/php_test.yml@v3
-    with:
-      branch: ${{ github.head_ref }}
-
-  AutoMerge:
-    needs: [ StaticAnalysis, Test ]
-    name: Auto-Merge
-    uses: EncoreDigitalGroup/ci-workflows/.github/workflows/github_dependabotAutoMerge.yml@v3
+    AutoMerge:
+        needs: [ StaticAnalysis, Test ]
+        name: Auto-Merge
+        uses: EncoreDigitalGroup/ci-workflows/.github/workflows/github_dependabotAutoMerge.yml@v3
