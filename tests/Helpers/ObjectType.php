@@ -18,4 +18,8 @@ enum ObjectType: string
     case Profile = "profile";
     case TagGroup = "tagGroup";
     case Tag = "tag";
+    case WebhookSubscription = "webhook_subscription";
+    case WebhookEvent = "webhook_event";
+    case WebhookDelivery = "webhook_delivery";
+    case WebhookAvailableEvent = "available_event";
 }

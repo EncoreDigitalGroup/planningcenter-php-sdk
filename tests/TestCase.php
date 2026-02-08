@@ -12,6 +12,7 @@ use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use Tests\Unit\Calendar\CalendarMocks;
 use Tests\Unit\Groups\GroupMocks;
 use Tests\Unit\People\PeopleMocks;
+use Tests\Unit\Webhooks\WebhookMocks;
 
 class TestCase extends OrchestraTestCase
 {
@@ -25,6 +26,7 @@ class TestCase extends OrchestraTestCase
         PeopleMocks::setup();
         CalendarMocks::setup();
         GroupMocks::setup();
+        WebhookMocks::setup();
     }
 
     protected function getEnvironmentSetup($app): void
