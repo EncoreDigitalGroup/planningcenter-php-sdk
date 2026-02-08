@@ -1,8 +1,0 @@
-{
-    "tool": {
-        "rector": true,
-        "phpstan": true,
-        "duster": true,
-        "pest": false
-    }
-}
