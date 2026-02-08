@@ -11,10 +11,10 @@ namespace EncoreDigitalGroup\PlanningCenter\Objects\Webhooks\Attributes;
 class AvailableEventAttributes
 {
     public string $availableEventId = "";
-    public string $action = "";
-    public string $app = "";
-    public string $name = "";
-    public string $resource = "";
-    public string $type = "";
-    public string $version = "";
+    public ?string $action = null;
+    public ?string $app = null;
+    public ?string $name = null;
+    public ?string $resource = null;
+    public ?string $type = null;
+    public ?string $version = null;
 }

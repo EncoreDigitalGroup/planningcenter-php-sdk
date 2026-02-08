@@ -13,11 +13,11 @@ use Carbon\Carbon;
 class WebhookSubscriptionAttributes
 {
     public string $webhookSubscriptionId = "";
-    public bool $active = false;
-    public string $applicationId = "";
-    public string $authenticitySecret = "";
+    public ?bool $active = null;
+    public ?string $applicationId = null;
+    public ?string $authenticitySecret = null;
     public ?Carbon $createdAt = null;
-    public string $name = "";
+    public ?string $name = null;
     public ?Carbon $updatedAt = null;
-    public string $url = "";
+    public ?string $url = null;
 }

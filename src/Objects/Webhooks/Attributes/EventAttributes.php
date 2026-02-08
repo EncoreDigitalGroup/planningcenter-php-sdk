@@ -16,7 +16,7 @@ class EventAttributes
     public string $eventId = "";
     public ?Carbon $createdAt = null;
     public ?Carbon $updatedAt = null;
-    public string $uuid = "";
-    public string $payload = "";
-    public string $status = "";
+    public ?string $uuid = null;
+    public ?string $payload = null;
+    public ?string $status = null;
 }

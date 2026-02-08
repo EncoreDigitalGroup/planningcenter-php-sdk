@@ -17,11 +17,11 @@ class DeliveryAttributes
     public string $deliveryId = "";
     public ?Carbon $createdAt = null;
     public ?Carbon $updatedAt = null;
-    public string $objectUrl = "";
-    public string $requestBody = "";
-    public string $requestHeaders = "";
-    public string $responseBody = "";
-    public string $responseHeaders = "";
-    public int $status = 0;
-    public float $timing = 0.0;
+    public ?string $objectUrl = null;
+    public ?string $requestBody = null;
+    public ?string $requestHeaders = null;
+    public ?string $responseBody = null;
+    public ?string $responseHeaders = null;
+    public ?int $status = null;
+    public ?float $timing = null;
 }
