@@ -1,6 +1,0 @@
-<component name="CopyrightManager">
-  <copyright>
-    <option name="notice" value="Encore Digital Group - Planning Center PHP SDK&#10;Copyright (c) &amp;#36;originalComment.match(&quot;Copyright \(c\) (\d+)&quot;, 1, &quot;-&quot;, &quot;&amp;#36;today.year&quot;)&amp;#36;today.year. Encore Digital Group" />
-    <option name="myName" value="Encore Digital Group" />
-  </copyright>
-</component>
