@@ -4,7 +4,6 @@ namespace Tests\Unit\Webhooks;
 
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\Objects\Webhooks\WebhookSubscription;
-use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterWebhookEvent;
 use Illuminate\Support\Collection;
 use Tests\Helpers\TestConstants;
 
@@ -90,80 +89,5 @@ describe("Webhook Subscription Tests", function (): void {
         expect($response)->toBeInstanceOf(ClientResponse::class)
             ->and($response->data)->toBeInstanceOf(Collection::class)
             ->and($response->data->count())->toBe(1);
-    });
-
-    test("WebhookSubscription: Can Subscribe To Single Event", function (): void {
-        $webhookSubscription = WebhookSubscription::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
-
-        $webhookSubscription->subscribeToEvent(PlanningCenterWebhookEvent::PeoplePersonCreated);
-
-        expect($webhookSubscription->attributes->eventTypes)->toHaveCount(1)
-            ->and($webhookSubscription->attributes->eventTypes[0])->toBe("people.v2.events.person.created");
-    });
-
-    test("WebhookSubscription: Can Subscribe To Multiple Events", function (): void {
-        $webhookSubscription = WebhookSubscription::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
-
-        $webhookSubscription->subscribeToEvents([
-            PlanningCenterWebhookEvent::PeoplePersonCreated,
-            PlanningCenterWebhookEvent::PeoplePersonUpdated,
-            PlanningCenterWebhookEvent::GroupsGroupCreated,
-        ]);
-
-        expect($webhookSubscription->attributes->eventTypes)->toHaveCount(3)
-            ->and($webhookSubscription->attributes->eventTypes)->toContain("people.v2.events.person.created")
-            ->and($webhookSubscription->attributes->eventTypes)->toContain("people.v2.events.person.updated")
-            ->and($webhookSubscription->attributes->eventTypes)->toContain("groups.v2.events.group.created");
-    });
-
-    test("WebhookSubscription: Can Unsubscribe From Event", function (): void {
-        $webhookSubscription = WebhookSubscription::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
-
-        $webhookSubscription->subscribeToEvents([
-            PlanningCenterWebhookEvent::PeoplePersonCreated,
-            PlanningCenterWebhookEvent::PeoplePersonUpdated,
-        ]);
-
-        $webhookSubscription->unsubscribeFromEvent(PlanningCenterWebhookEvent::PeoplePersonCreated);
-
-        expect($webhookSubscription->attributes->eventTypes)->toHaveCount(1)
-            ->and($webhookSubscription->attributes->eventTypes[0])->toBe("people.v2.events.person.updated");
-    });
-
-    test("WebhookSubscription: Can Clear All Event Subscriptions", function (): void {
-        $webhookSubscription = WebhookSubscription::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
-
-        $webhookSubscription->subscribeToEvents([
-            PlanningCenterWebhookEvent::PeoplePersonCreated,
-            PlanningCenterWebhookEvent::PeoplePersonUpdated,
-        ]);
-
-        $webhookSubscription->clearEventSubscriptions();
-
-        expect($webhookSubscription->attributes->eventTypes)->toHaveCount(0);
-    });
-
-    test("WebhookSubscription: Can Get Subscribed Events", function (): void {
-        $webhookSubscription = WebhookSubscription::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
-
-        $webhookSubscription->subscribeToEvents([
-            PlanningCenterWebhookEvent::PeoplePersonCreated,
-            PlanningCenterWebhookEvent::GroupsGroupCreated,
-        ]);
-
-        $events = $webhookSubscription->getSubscribedEvents();
-
-        expect($events)->toHaveCount(2)
-            ->and($events)->toContain("people.v2.events.person.created")
-            ->and($events)->toContain("groups.v2.events.group.created");
-    });
-
-    test("WebhookSubscription: Prevents Duplicate Event Subscriptions", function (): void {
-        $webhookSubscription = WebhookSubscription::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
-
-        $webhookSubscription->subscribeToEvent(PlanningCenterWebhookEvent::PeoplePersonCreated);
-        $webhookSubscription->subscribeToEvent(PlanningCenterWebhookEvent::PeoplePersonCreated);
-
-        expect($webhookSubscription->attributes->eventTypes)->toHaveCount(1);
     });
 })->group("webhooks.subscription");

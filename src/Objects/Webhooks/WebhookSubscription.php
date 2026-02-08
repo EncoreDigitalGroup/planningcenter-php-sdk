@@ -11,7 +11,6 @@ use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\Objects\Webhooks\Attributes\WebhookSubscriptionAttributes;
 use EncoreDigitalGroup\PlanningCenter\Support\AttributeMapper;
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
-use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterWebhookEvent;
 use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
 use Exception;
 use Illuminate\Support\Arr;
@@ -86,102 +85,17 @@ class WebhookSubscription
     }
 
     /**
-     * Get webhook event deliveries (history of sent webhooks)
-     * Note: This returns Event objects which represent webhook deliveries,
-     * not event type subscriptions. To manage which events you want to receive,
-     * use subscribeToEvent() or subscribeToEvents()
+     * Get webhook event deliveries (history of sent webhooks).
+     * Returns Event objects representing webhook deliveries that have been sent.
+     *
+     * Note: Planning Center webhooks automatically receive ALL available events.
+     * Filtering must be done in your webhook receiver code, not at the subscription level.
      */
     public function events(array $query = []): ClientResponse
     {
         $event = Event::make($this->clientId, $this->clientSecret);
 
         return $event->forWebhookSubscriptionId($this->attributes->webhookSubscriptionId)->all($query);
-    }
-
-    /**
-     * Subscribe to a single webhook event type.
-     * The event type will be included in the event_types attribute when
-     * creating or updating the subscription.
-     */
-    public function subscribeToEvent(PlanningCenterWebhookEvent $event): static
-    {
-        if (!in_array($event->value, $this->attributes->eventTypes)) {
-            $this->attributes->eventTypes[] = $event->value;
-        }
-
-        return $this;
-    }
-
-    /**
-     * Subscribe to multiple webhook event types.
-     * The event types will be included in the event_types attribute when
-     * creating or updating the subscription.
-     *
-     * @param array<PlanningCenterWebhookEvent> $events
-     */
-    public function subscribeToEvents(array $events): static
-    {
-        foreach ($events as $event) {
-            $this->subscribeToEvent($event);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Unsubscribe from a single webhook event type.
-     * The event type will be removed from the event_types attribute when
-     * updating the subscription.
-     */
-    public function unsubscribeFromEvent(PlanningCenterWebhookEvent $event): static
-    {
-        $this->attributes->eventTypes = array_values(
-            array_filter(
-                $this->attributes->eventTypes,
-                fn($type) => $type !== $event->value
-            )
-        );
-
-        return $this;
-    }
-
-    /**
-     * Unsubscribe from multiple webhook event types.
-     * The event types will be removed from the event_types attribute when
-     * updating the subscription.
-     *
-     * @param array<PlanningCenterWebhookEvent> $events
-     */
-    public function unsubscribeFromEvents(array $events): static
-    {
-        foreach ($events as $event) {
-            $this->unsubscribeFromEvent($event);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Clear all event subscriptions.
-     * Removes all event types from the subscription.
-     */
-    public function clearEventSubscriptions(): static
-    {
-        $this->attributes->eventTypes = [];
-
-        return $this;
-    }
-
-    /**
-     * Get all currently subscribed event types.
-     * Returns the event type names (e.g., "people.v2.events.person.created")
-     * that will be sent in the event_types attribute when creating/updating.
-     *
-     * @return array<string>
-     */
-    public function getSubscribedEvents(): array
-    {
-        return $this->attributes->eventTypes;
     }
 
     private function mapFromPco(ClientResponse $clientResponse): void
@@ -213,11 +127,6 @@ class WebhookSubscription
                 "updated_at",
             ]);
 
-            // Map event types if present
-            if (isset($record->attributes->event_types) && is_array($record->attributes->event_types)) {
-                $this->attributes->eventTypes = $record->attributes->event_types;
-            }
-
             $clientResponse->data->add($this);
         }
     }
@@ -230,7 +139,6 @@ class WebhookSubscription
                     "active" => $this->attributes->active ?? null,
                     "name" => $this->attributes->name ?? null,
                     "url" => $this->attributes->url ?? null,
-                    "event_types" => !empty($this->attributes->eventTypes) ? $this->attributes->eventTypes : null,
                 ],
             ],
         ];
