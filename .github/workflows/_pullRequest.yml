@@ -21,19 +21,22 @@ jobs:
     steps:
       - name: GitStatusCheck
         id: GitStatusCheck
-        uses: EncoreDigitalGroup/ci-workflows/actions/php/gitStatusCheck@v2
+        uses: EncoreDigitalGroup/ci-workflows/actions/php/gitStatusCheck@v3
 
-  FormatTitle:
-    name: FormatTitle
+  EnrichPullRequest:
+    name: EnrichPullRequest
     runs-on: ubuntu-latest
     steps:
-      - name: FormatTitle
-        uses: EncoreDigitalGroup/ci-workflows/actions/github/formatPullRequestTitle@v2
+      - name: EnrichPullRequest
+        uses: EncoreDigitalGroup/ci-workflows/actions/github/enrichPullRequest@v3
         with:
           branch: ${{ github.head_ref }}
           pullRequestNumber: ${{ github.event.number }}
           repository: ${{ github.repository }}
           token: ${{ secrets.GITHUB_TOKEN }}
+          jiraURL: ${{ vars.JIRA_URL }}
+          jiraEmail: ${{ secrets.JIRA_EMAIL }}
+          jiraToken: ${{ secrets.JIRA_TOKEN }}
 
   CodeStyle:
     needs: GitStatusCheck
@@ -42,7 +45,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: CodeStyle
-        uses: EncoreDigitalGroup/ci-workflows/actions/php/codeStyle@v2
+        uses: EncoreDigitalGroup/ci-workflows/actions/php/codeStyle@v3
         with:
           branch: "${{ github.head_ref }}"
           repository: "${{ github.repository }}"
@@ -50,7 +53,7 @@ jobs:
   StaticAnalysis:
     needs: CodeStyle
     name: StaticAnalysis
-    uses: EncoreDigitalGroup/ci-workflows/.github/workflows/php_larastan.yml@v2
+    uses: EncoreDigitalGroup/ci-workflows/.github/workflows/php_staticAnalysis.yml@v3
     with:
       path: 'src/'
       branch: ${{ github.head_ref }}
@@ -59,12 +62,11 @@ jobs:
   Test:
     needs: CodeStyle
     name: Test
-    uses: EncoreDigitalGroup/ci-workflows/.github/workflows/php_pest.yml@v2
+    uses: EncoreDigitalGroup/ci-workflows/.github/workflows/php_test.yml@v3
     with:
       branch: ${{ github.head_ref }}
-      runParallel: true
 
   AutoMerge:
     needs: [ StaticAnalysis, Test ]
     name: Auto-Merge
-    uses: EncoreDigitalGroup/ci-workflows/.github/workflows/github_dependabotAutoMerge.yml@v2
+    uses: EncoreDigitalGroup/ci-workflows/.github/workflows/github_dependabotAutoMerge.yml@v3

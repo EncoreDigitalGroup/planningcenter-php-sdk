@@ -8,12 +8,13 @@ on:
   workflow_dispatch:
 
 jobs:
-  CreateRelease:
-    name: CreateRelease
-    uses: EncoreDigitalGroup/ci-workflows/.github/workflows/github_createRelease.yml@v2
-    secrets:
-      token: ${{ secrets.GITHUB_TOKEN }}
+  CreatePreRelease:
+    name: CreatePreRelease
+    uses: EncoreDigitalGroup/ci-workflows/actions/github/createRelease@v3
     with:
       generateReleaseNotes: true
       isDraft: false
       preRelease: true
+      repository: ${{ github.repository }}
+      tagName: ${{ github.ref_name }}
+      token: ${{ secrets.GITHUB_TOKEN }}
