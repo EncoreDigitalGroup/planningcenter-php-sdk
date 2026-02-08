@@ -12,6 +12,7 @@ A clear and concise description of what the bug is.
 
 **To Reproduce**
 Steps to reproduce the behavior:
+
 1. Go to '...'
 2. Click on '....'
 3. Scroll down to '....'
@@ -24,14 +25,16 @@ A clear and concise description of what you expected to happen.
 If applicable, add screenshots to help explain your problem.
 
 **Basic Info (please complete the following information):**
- - OS: [e.g. iOS]
- - PHP Version: [e.g. 8.2, 8.3, etc...]
+
+- OS: [e.g. iOS]
+- PHP Version: [e.g. 8.3, 8.4, 8.5, etc...]
 
 **SDK Info (please complete the following information):**
- - SDK Version: [e.g. v1.0.0]
- - SDK Namespace: [e.g. EncoreDigitalGroup\PlanningCenter\Objects\People]
- - SDK Class: [e.g. Person]
- - SDK Class Method [e.g. all]
+
+- SDK Version: [e.g. v1.0.0]
+- SDK Namespace: [e.g. EncoreDigitalGroup\PlanningCenter\Objects\People]
+- SDK Class: [e.g. Person]
+- SDK Class Method [e.g. all]
 
 **Additional context**
 Add any other context about the problem here.

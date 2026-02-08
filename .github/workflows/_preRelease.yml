@@ -1,19 +1,23 @@
 name: Pre-Release
 
 on:
-  push:
-    tags:
-      - 'v[0-9]+.[0-9]+.[0-9]+-rc[0-9]+'
-      - '!v[0-9]+.[0-9]+.[0-9]+'
-  workflow_dispatch:
+    push:
+        tags:
+            - 'v[0-9]+.[0-9]+.[0-9]+-rc[0-9]+'
+            - '!v[0-9]+.[0-9]+.[0-9]+'
+    workflow_dispatch:
 
 jobs:
-  CreateRelease:
-    name: CreateRelease
-    uses: EncoreDigitalGroup/ci-workflows/.github/workflows/github_createRelease.yml@v2
-    secrets:
-      token: ${{ secrets.GITHUB_TOKEN }}
-    with:
-      generateReleaseNotes: true
-      isDraft: false
-      preRelease: true
+    CreatePreRelease:
+        name: CreatePreRelease
+        runs-on: ubuntu-latest
+        steps:
+            -   name: Create Release
+                uses: EncoreDigitalGroup/ci-workflows/actions/github/createRelease@v3
+                with:
+                    repository: ${{ github.repository }}
+                    tagName: ${{ github.ref_name }}
+                    token: ${{ secrets.GITHUB_TOKEN }}
+                    generateReleaseNotes: true
+                    isDraft: false
+                    preRelease: true
