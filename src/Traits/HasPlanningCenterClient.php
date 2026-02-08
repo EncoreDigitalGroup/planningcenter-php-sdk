@@ -102,6 +102,7 @@ trait HasPlanningCenterClient
     {
         return $this->apiVersion == PlanningCenterApiVersion::PEOPLE_DEFAULT
             || $this->apiVersion == PlanningCenterApiVersion::GROUPS_DEFAULT
-            || $this->apiVersion == PlanningCenterApiVersion::CALENDAR_DEFAULT;
+            || $this->apiVersion == PlanningCenterApiVersion::CALENDAR_DEFAULT
+            || $this->apiVersion == PlanningCenterApiVersion::WEBHOOKS_DEFAULT;
     }
 }
