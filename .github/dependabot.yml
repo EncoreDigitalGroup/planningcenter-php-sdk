@@ -2,7 +2,10 @@ version: 2
 updates:
   - package-ecosystem: "composer"
     directory: "/"
+    cooldown:
+      default-days: 7
     schedule:
-      interval: daily
+      interval: weekly
+      day: wednesday
       time: "12:00"
       timezone: America/Chicago
