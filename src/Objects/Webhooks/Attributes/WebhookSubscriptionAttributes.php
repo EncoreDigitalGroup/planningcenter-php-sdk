@@ -20,4 +20,13 @@ class WebhookSubscriptionAttributes
     public ?string $name = null;
     public ?Carbon $updatedAt = null;
     public ?string $url = null;
+
+    /**
+     * Array of event type names to subscribe to (e.g., "people.v2.events.person.created").
+     * This is sent to the API as "event_types" when creating/updating a subscription.
+     * Use the helper methods on WebhookSubscription to manage this array.
+     *
+     * @var array<string>
+     */
+    public array $eventTypes = [];
 }
