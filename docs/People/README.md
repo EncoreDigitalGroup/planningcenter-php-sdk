@@ -1,5 +1,6 @@
 ---
-title: People 
+title: People
+sidebar_position: 4
 ---
 
 # People Overview

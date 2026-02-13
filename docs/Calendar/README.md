@@ -1,5 +1,6 @@
 ---
-title: Calendar 
+title: Calendar
+sidebar_position: 2
 ---
 
 # Calendar Overview
