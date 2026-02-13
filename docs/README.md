@@ -1,5 +1,5 @@
 ---
-title: Planning Center 
+title: Planning Center
 ---
 
 # Welcome
@@ -10,4 +10,8 @@ SDK [Roadmap](https://github.com/orgs/EncoreDigitalGroup/projects/2).
 As we add functionality to the SDK, documentation will be made available here.
 
 - [Get Started](./GettingStarted/README.md)
+- [Calendar](./Calendar/README.md)
+- [Groups](./Groups/README.md)
+- [People](./People/README.md)
+- [Webhooks](./Webhooks/README.md)
 - [Roadmap](https://github.com/orgs/EncoreDigitalGroup/projects/2)
