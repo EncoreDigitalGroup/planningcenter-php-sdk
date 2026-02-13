@@ -44,12 +44,7 @@ describe("Webhook Subscription Tests", function (): void {
 
         $response = $webhookSubscription->create();
 
-        /** @var WebhookSubscription $subscription */
-        $subscription = $response->data->first();
-
-        expect($response)->toBeInstanceOf(ClientResponse::class)
-            ->and($subscription->attributes->name)->toBe(WebhookMocks::WEBHOOK_SUBSCRIPTION_NAME)
-            ->and($subscription->attributes->url)->toBe(WebhookMocks::WEBHOOK_SUBSCRIPTION_URL);
+        expect($response)->toBeTrue();
     });
 
     test("WebhookSubscription: Can Update Webhook Subscription", function (): void {
@@ -59,7 +54,7 @@ describe("Webhook Subscription Tests", function (): void {
 
         $response = $webhookSubscription->update();
 
-        expect($response)->toBeInstanceOf(ClientResponse::class);
+        expect($response)->toBeTrue();
     });
 
     test("WebhookSubscription: Can Delete Webhook Subscription", function (): void {
@@ -68,8 +63,7 @@ describe("Webhook Subscription Tests", function (): void {
 
         $response = $webhookSubscription->delete();
 
-        expect($response)->toBeInstanceOf(ClientResponse::class)
-            ->and($response->data->first())->toBeNull();
+        expect($response)->toBeTrue();
     });
 
     test("WebhookSubscription: Can Rotate Secret", function (): void {

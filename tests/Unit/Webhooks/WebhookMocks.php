@@ -30,7 +30,7 @@ class WebhookMocks extends BaseMock
     public static function useWebhookSubscriptionCollection(): void
     {
         HttpClient::fake([
-            self::HOSTNAME . WebhookSubscription::POST_ENDPOINT => function ($request) {
+            self::HOSTNAME . WebhookSubscription::ENDPOINT => function ($request) {
                 return match ($request->method()) {
                     "POST" => HttpClient::response(self::useSingleResponse(ObjectType::WebhookSubscription)),
                     "GET" => HttpClient::response(self::useCollectionResponse(ObjectType::WebhookSubscription)),
@@ -43,7 +43,7 @@ class WebhookMocks extends BaseMock
     public static function useSpecificWebhookSubscription(): void
     {
         HttpClient::fake([
-            self::HOSTNAME . WebhookSubscription::POST_ENDPOINT . "/1" => function ($request) {
+            self::HOSTNAME . WebhookSubscription::ENDPOINT . "/1" => function ($request) {
                 return match ($request->method()) {
                     "PUT", "PATCH", "GET" => HttpClient::response(self::useSingleResponse(ObjectType::WebhookSubscription)),
                     "DELETE" => HttpClient::response(self::deleteResponse()),
@@ -56,7 +56,7 @@ class WebhookMocks extends BaseMock
     public static function useWebhookSubscriptionRotateSecret(): void
     {
         HttpClient::fake([
-            self::HOSTNAME . WebhookSubscription::POST_ENDPOINT . "/1/rotate_secret" => function ($request) {
+            self::HOSTNAME . WebhookSubscription::ENDPOINT . "/1/rotate_secret" => function ($request) {
                 return match ($request->method()) {
                     "POST" => HttpClient::response(self::useSingleResponse(ObjectType::WebhookSubscription)),
                     default => HttpClient::response([], 405),
