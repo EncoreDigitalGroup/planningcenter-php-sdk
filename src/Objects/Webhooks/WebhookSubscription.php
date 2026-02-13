@@ -132,8 +132,8 @@ class WebhookSubscription
         ];
 
         if ($isUpdate) {
-            unset($webhookSubscription["data"]["attributes"]["name"]);
-            unset($webhookSubscription["data"]["attributes"]["url"]);
+            unset($webhookSubscription["data"]["attributes"]["name"], $webhookSubscription["data"]["attributes"]["url"]);
+
         }
 
         $webhookSubscription["data"]["attributes"] = Arr::whereNotNull($webhookSubscription["data"]["attributes"]);
