@@ -72,6 +72,6 @@ describe("Webhook Subscription Tests", function (): void {
 
         $response = $webhookSubscription->rotateSecret();
 
-        expect($response)->toBeInstanceOf(ClientResponse::class);
+        expect($response)->toBeTrue();
     });
 })->group("webhooks.subscription");

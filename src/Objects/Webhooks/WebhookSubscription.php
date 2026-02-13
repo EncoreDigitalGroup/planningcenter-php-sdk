@@ -78,11 +78,11 @@ class WebhookSubscription
         return $http->successful();
     }
 
-    public function rotateSecret(): ClientResponse
+    public function rotateSecret(): bool
     {
         $http = $this->client()->post($this->hostname() . self::ENDPOINT . "/{$this->attributes->webhookSubscriptionId}/rotate_secret", []);
 
-        return $this->processResponse($http);
+        return $http->successful();
     }
 
     private function mapFromPco(ClientResponse $clientResponse): void
