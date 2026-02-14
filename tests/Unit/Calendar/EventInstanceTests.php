@@ -2,36 +2,29 @@
 
 namespace Tests\Unit\Calendar;
 
-use EncoreDigitalGroup\PlanningCenter\Objects\Calendar\EventInstance;
-use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
+use EncoreDigitalGroup\PlanningCenter\PlanningCenter;
+use EncoreDigitalGroup\PlanningCenter\Resources\EventInstance;
+use EncoreDigitalGroup\PlanningCenter\Support\Paginator;
 use Illuminate\Support\Collection;
 use Tests\Helpers\TestConstants;
 
 describe("Calendar EventInstance Tests", function (): void {
-    test("EventInstance: Can Get EventInstance By ID", function (): void {
-        $eventInstance = EventInstance::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
+    test("EventInstance: Can List All Event Instances (Read-Only)", function (): void {
+        $paginator = EventInstance::all(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
 
-        $response = $eventInstance
-            ->forEventInstanceId("1")
+        expect($paginator)->toBeInstanceOf(Paginator::class)
+            ->and($paginator->items())->toBeInstanceOf(Collection::class);
+    });
+
+    test("EventInstance: Can Get Event Instance By ID (Read-Only)", function (): void {
+        $instance = PlanningCenter::make()
+            ->withBasicAuth(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET)
+            ->calendar()
+            ->eventInstance()
+            ->withId(CalendarMocks::EVENT_INSTANCE_ID)
             ->get();
 
-        /** @var EventInstance $calendarEventInstance */
-        $calendarEventInstance = $response->data->first();
-
-        expect($response)->toBeInstanceOf(ClientResponse::class)
-            ->and($calendarEventInstance->attributes->eventInstanceId)->toBe(CalendarMocks::EVENT_INSTANCE_ID)
-            ->and($calendarEventInstance->relationships->event->data->id)->toBe(CalendarMocks::EVENT_ID);
+        expect($instance)->toBeInstanceOf(EventInstance::class)
+            ->and($instance->id())->toBe(CalendarMocks::EVENT_INSTANCE_ID);
     });
-
-    test("EventInstance: Can List All EventInstances", function (): void {
-        $eventInstance = EventInstance::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
-
-        $response = $eventInstance
-            ->forEventId("1")
-            ->all();
-
-        expect($response)->toBeInstanceOf(ClientResponse::class)
-            ->and($response->data)->toBeInstanceOf(Collection::class)
-            ->and($response->data->count())->toBe(1);
-    });
-})->group("calendar.eventInstance");
+})->group("calendar.eventinstance");

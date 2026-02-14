@@ -6,9 +6,9 @@
 
 namespace Tests\Unit\Calendar;
 
-use EncoreDigitalGroup\PlanningCenter\Objects\Calendar\Event;
-use EncoreDigitalGroup\PlanningCenter\Objects\Calendar\EventInstance;
-use EncoreDigitalGroup\PlanningCenter\Objects\Calendar\TagGroup;
+use EncoreDigitalGroup\PlanningCenter\Resources\CalendarEvent as Event;
+use EncoreDigitalGroup\PlanningCenter\Resources\EventInstance;
+use EncoreDigitalGroup\PlanningCenter\Resources\CalendarTagGroup as TagGroup;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasClient;
 use PHPGenesis\Http\HttpClient;
 use Tests\Helpers\BaseMock;

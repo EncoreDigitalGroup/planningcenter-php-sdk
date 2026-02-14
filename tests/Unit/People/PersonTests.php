@@ -2,76 +2,75 @@
 
 namespace Tests\Unit\People;
 
-use EncoreDigitalGroup\PlanningCenter\Objects\People\Person;
-use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
+use EncoreDigitalGroup\PlanningCenter\PlanningCenter;
+use EncoreDigitalGroup\PlanningCenter\Resources\Person;
+use EncoreDigitalGroup\PlanningCenter\Support\Paginator;
 use Illuminate\Support\Collection;
 use Tests\Helpers\TestConstants;
 
 describe("People Profile Tests", function (): void {
     test("People: Can Create Person", function (): void {
-        $person = Person::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
-        $person->attributes->firstName = "John";
-        $person->attributes->lastName = "Smith";
+        $person = PlanningCenter::make()
+            ->withBasicAuth(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET)
+            ->people()
+            ->person()
+            ->withFirstName("John")
+            ->withLastName("Smith")
+            ->save();
 
-        $response = $person->create();
-        /** @var Person $personProfile */
-        $personProfile = $response->data->first();
-
-        expect($response)->toBeInstanceOf(ClientResponse::class)
-            ->and($personProfile->attributes->firstName)->toBe(PeopleMocks::FIRST_NAME)
-            ->and($personProfile->attributes->lastName)->toBe(PeopleMocks::LAST_NAME);
+        expect($person)->toBeInstanceOf(Person::class)
+            ->and($person->firstName())->toBe(PeopleMocks::FIRST_NAME)
+            ->and($person->lastName())->toBe(PeopleMocks::LAST_NAME)
+            ->and($person->id())->not()->toBeNull();
     });
 
     test("People: Can List All", function (): void {
-        $person = Person::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
+        $paginator = PlanningCenter::make()
+            ->withBasicAuth(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET)
+            ->people()
+            ->all();
 
-        $response = $person->all();
-
-        expect($response)->toBeInstanceOf(ClientResponse::class)
-            ->and($response->data)->toBeInstanceOf(Collection::class)
-            ->and($response->data->count())->toBe(1);
+        expect($paginator)->toBeInstanceOf(Paginator::class)
+            ->and($paginator->items())->toBeInstanceOf(Collection::class)
+            ->and($paginator->items()->count())->toBe(1);
     });
 
     test("People: Can Get Person By ID", function (): void {
-        $person = Person::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
-
-        $response = $person
-            ->forPersonId("1")
+        $person = PlanningCenter::make()
+            ->withBasicAuth(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET)
+            ->people()
+            ->person()
+            ->withId("1")
             ->get();
 
-        /** @var Person $personProfile */
-        $personProfile = $response->data->first();
-
-        expect($response)->toBeInstanceOf(ClientResponse::class)
-            ->and($personProfile->attributes->firstName)->toBe(PeopleMocks::FIRST_NAME)
-            ->and($personProfile->attributes->lastName)->toBe(PeopleMocks::LAST_NAME)
-            ->and($personProfile->attributes->personId)->toBe(PeopleMocks::PERSON_ID);
+        expect($person)->toBeInstanceOf(Person::class)
+            ->and($person->firstName())->toBe(PeopleMocks::FIRST_NAME)
+            ->and($person->lastName())->toBe(PeopleMocks::LAST_NAME)
+            ->and($person->id())->toBe(PeopleMocks::PERSON_ID);
     });
 
     test("People: Can Update Person Profile", function (): void {
-        $person = Person::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
+        $person = PlanningCenter::make()
+            ->withBasicAuth(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET)
+            ->people()
+            ->person()
+            ->withId("1")
+            ->withFirstName("Jane")
+            ->save();
 
-        $response = $person
-            ->forPersonId("1")
-            ->update();
-
-        /** @var Person $personProfile */
-        $personProfile = $response->data->first();
-
-        expect($response)->toBeInstanceOf(ClientResponse::class)
-            ->and($personProfile->attributes->firstName)->toBe(PeopleMocks::FIRST_NAME)
-            ->and($personProfile->attributes->lastName)->toBe(PeopleMocks::LAST_NAME)
-            ->and($personProfile->attributes->personId)->toBe(PeopleMocks::PERSON_ID);
+        expect($person)->toBeInstanceOf(Person::class)
+            ->and($person->id())->toBe(PeopleMocks::PERSON_ID);
     });
 
     test("People: Can Delete Person Profile", function (): void {
-        $person = Person::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
+        $person = PlanningCenter::make()
+            ->withBasicAuth(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET)
+            ->people()
+            ->person()
+            ->withId("1");
 
-        $response = $person
-            ->forPersonId("1")
-            ->delete();
+        $result = $person->delete();
 
-        expect($response->data->isEmpty())->toBeTrue();
+        expect($result)->toBeTrue();
     });
 })->group("people.profile");
-

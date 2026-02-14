@@ -2,23 +2,44 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Resources;
 
-use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasAttributes;
 use Carbon\CarbonImmutable;
+use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
+use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasApiMethods;
+use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasAttributes;
+use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasClient;
+use Illuminate\Support\Collection;
 
 class Person
 {
-    use HasAttributes;
+    use HasAttributes, HasClient, HasApiMethods;
 
-    /**
-     * Read-only attributes that cannot be updated via the API
-     */
-    private const array READ_ONLY_ATTRIBUTES = [
+    public const string PEOPLE_ENDPOINT = '/people/v2/people';
+
+    protected string $endpoint = '/people/v2/people';
+
+    protected array $dateAttributes = [
+        'birthdate',
+        'anniversary',
+        'created_at',
+        'updated_at',
+        'inactivated_at',
+    ];
+
+    protected array $readOnlyAttributes = [
         'id',
         'created_at',
         'updated_at',
         'name',
         'demographic_avatar_url',
     ];
+
+    public function __construct(string $clientId, string $clientSecret)
+    {
+        $this->attributes = new Collection();
+        $this->clientId = $clientId;
+        $this->clientSecret = $clientSecret;
+        $this->setApiVersion(PlanningCenterApiVersion::PEOPLE_DEFAULT);
+    }
 
     // Setters
     public function withId(string $value): self
@@ -184,7 +205,7 @@ class Person
     // Getters
     public function id(): ?string
     {
-        return $this->getAttribute('person_id');
+        return $this->getAttribute('id');
     }
 
     public function givenName(): ?string
@@ -340,5 +361,23 @@ class Person
     public function remoteId(): ?int
     {
         return $this->getAttribute('remote_id');
+    }
+
+    // Relationships
+    private ?Collection $emails = null;
+
+    /**
+     * Get emails for this person (lazy-loaded)
+     */
+    public function emails(): Collection
+    {
+        if ($this->emails === null) {
+            $this->emails = Email::forPerson(
+                $this->clientId,
+                $this->clientSecret,
+                $this->id()
+            )->items();
+        }
+        return $this->emails;
     }
 }

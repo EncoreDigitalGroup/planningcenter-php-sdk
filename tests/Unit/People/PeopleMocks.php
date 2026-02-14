@@ -6,8 +6,8 @@
 
 namespace Tests\Unit\People;
 
-use EncoreDigitalGroup\PlanningCenter\Objects\People\Email;
-use EncoreDigitalGroup\PlanningCenter\Objects\People\Person;
+use EncoreDigitalGroup\PlanningCenter\Resources\Email;
+use EncoreDigitalGroup\PlanningCenter\Resources\Person;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasClient;
 use PHPGenesis\Http\HttpClient;
 use Tests\Helpers\BaseMock;

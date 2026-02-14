@@ -6,7 +6,7 @@
 
 namespace Tests\Unit\Webhooks;
 
-use EncoreDigitalGroup\PlanningCenter\Objects\Webhooks\WebhookSubscription;
+use EncoreDigitalGroup\PlanningCenter\Resources\WebhookSubscription;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasClient;
 use PHPGenesis\Http\HttpClient;
 use Tests\Helpers\BaseMock;

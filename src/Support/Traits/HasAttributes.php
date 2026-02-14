@@ -2,11 +2,17 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Support\Traits;
 
+use Carbon\CarbonImmutable;
 use Illuminate\Support\Collection;
 
 trait HasAttributes
 {
     protected Collection $attributes;
+
+    public function __construct()
+    {
+        $this->attributes = new Collection();
+    }
 
     public function setAttribute(string $key, mixed $value): self
     {
@@ -40,5 +46,34 @@ trait HasAttributes
         }
 
         return $attribute;
+    }
+
+    public function toArray(): array
+    {
+        return $this->attributes->toArray();
+    }
+
+    protected function parseDate(?string $value): ?CarbonImmutable
+    {
+        if ($value === null) {
+            return null;
+        }
+
+        return CarbonImmutable::parse($value);
+    }
+
+    protected function hydrateFromArray(array $data): void
+    {
+        if (isset($data['id'])) {
+            $this->setAttribute('id', $data['id']);
+        }
+
+        foreach ($data['attributes'] ?? [] as $key => $value) {
+            // Parse dates/datetimes if dateAttributes is defined
+            if (property_exists($this, 'dateAttributes') && in_array($key, $this->dateAttributes)) {
+                $value = $this->parseDate($value);
+            }
+            $this->setAttribute($key, $value);
+        }
     }
 }

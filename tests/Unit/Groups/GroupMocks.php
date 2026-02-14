@@ -6,8 +6,8 @@
 
 namespace Tests\Unit\Groups;
 
-use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Group;
-use EncoreDigitalGroup\PlanningCenter\Objects\Groups\TagGroup;
+use EncoreDigitalGroup\PlanningCenter\Resources\Group;
+use EncoreDigitalGroup\PlanningCenter\Resources\GroupTagGroup as TagGroup;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasClient;
 use PHPGenesis\Http\HttpClient;
 use Tests\Helpers\BaseMock;

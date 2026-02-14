@@ -1,0 +1,214 @@
+<?php
+
+namespace EncoreDigitalGroup\PlanningCenter\Resources;
+
+use Carbon\CarbonImmutable;
+use EncoreDigitalGroup\PlanningCenter\Support\Paginator;
+use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
+use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasAttributes;
+use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasClient;
+use Illuminate\Support\Collection;
+
+class Group
+{
+    use HasAttributes, HasClient;
+
+    public const string GROUPS_ENDPOINT = '/groups/v2/groups';
+
+    protected string $endpoint = '/groups/v2/groups';
+
+    protected array $dateAttributes = [
+        'archived_at',
+        'created_at',
+    ];
+
+    protected array $readOnlyAttributes = [
+        'id',
+        'archived_at',
+        'created_at',
+        'memberships_count',
+        'public_church_center_url',
+    ];
+
+    public function __construct(string $clientId, string $clientSecret)
+    {
+        $this->attributes = new Collection();
+        $this->clientId = $clientId;
+        $this->clientSecret = $clientSecret;
+        $this->setApiVersion(PlanningCenterApiVersion::GROUPS_DEFAULT);
+    }
+
+    /**
+     * Static factory method for backward compatibility with tests
+     */
+    public static function make(string $clientId, string $clientSecret): self
+    {
+        return new self($clientId, $clientSecret);
+    }
+
+    // Setters
+    public function withId(string $value): self
+    {
+        return $this->setAttribute('id', $value);
+    }
+
+    public function withContactEmail(?string $value): self
+    {
+        return $this->setAttribute('contact_email', $value);
+    }
+
+    public function withDescription(?string $value): self
+    {
+        return $this->setAttribute('description', $value);
+    }
+
+    public function withEventVisibility(?string $value): self
+    {
+        return $this->setAttribute('event_visibility', $value);
+    }
+
+    public function withLocationTypePreference(?string $value): self
+    {
+        return $this->setAttribute('location_type_preference', $value);
+    }
+
+    public function withName(?string $value): self
+    {
+        return $this->setAttribute('name', $value);
+    }
+
+    public function withSchedule(?string $value): self
+    {
+        return $this->setAttribute('schedule', $value);
+    }
+
+    public function withVirtualLocationUrl(?string $value): self
+    {
+        return $this->setAttribute('virtual_location_url', $value);
+    }
+
+    // Getters
+    public function id(): ?string
+    {
+        return $this->getAttribute('id');
+    }
+
+    public function archivedAt(): ?CarbonImmutable
+    {
+        return $this->getAttribute('archived_at');
+    }
+
+    public function contactEmail(): ?string
+    {
+        return $this->getAttribute('contact_email');
+    }
+
+    public function createdAt(): ?CarbonImmutable
+    {
+        return $this->getAttribute('created_at');
+    }
+
+    public function description(): ?string
+    {
+        return $this->getAttribute('description');
+    }
+
+    public function eventVisibility(): ?string
+    {
+        return $this->getAttribute('event_visibility');
+    }
+
+    public function locationTypePreference(): ?string
+    {
+        return $this->getAttribute('location_type_preference');
+    }
+
+    public function membershipsCount(): ?int
+    {
+        return $this->getAttribute('memberships_count');
+    }
+
+    public function name(): ?string
+    {
+        return $this->getAttribute('name');
+    }
+
+    public function publicChurchCenterUrl(): ?string
+    {
+        return $this->getAttribute('public_church_center_url');
+    }
+
+    public function schedule(): ?string
+    {
+        return $this->getAttribute('schedule');
+    }
+
+    public function virtualLocationUrl(): ?string
+    {
+        return $this->getAttribute('virtual_location_url');
+    }
+
+    /**
+     * Fetch a single group by ID (read-only)
+     */
+    public function get(): self
+    {
+        if (!$this->getAttribute('id')) {
+            throw new \InvalidArgumentException('Cannot fetch group without an ID. Use withId() first.');
+        }
+
+        $response = $this->client()->get(
+            $this->hostname() . $this->endpoint . '/' . $this->getAttribute('id')
+        );
+
+        $this->hydrateFromResponse($response);
+
+        return $this;
+    }
+
+    /**
+     * List all groups with pagination (read-only)
+     */
+    public static function all(
+        string $clientId,
+        string $clientSecret,
+        array $query = []
+    ): Paginator {
+        $instance = new static($clientId, $clientSecret);
+
+        $response = $instance->client()->get(
+            $instance->hostname() . $instance->endpoint,
+            $query
+        );
+
+        $data = collect($response->json('data'))->map(function ($item) use ($clientId, $clientSecret) {
+            $resource = new static($clientId, $clientSecret);
+            $resource->hydrateFromArray($item);
+            return $resource;
+        });
+
+        $meta = $response->json('meta');
+
+        return new Paginator(
+            data: $data,
+            nextUrl: $response->json('links.next'),
+            prevUrl: $response->json('links.prev'),
+            totalCount: $meta['total_count'] ?? 0,
+            perPage: $meta['per_page'] ?? 25
+        );
+    }
+
+    /**
+     * Hydrate attributes from API response
+     */
+    protected function hydrateFromResponse($response): void
+    {
+        $data = $response->json('data');
+
+        if (is_array($data) && isset($data[0])) {
+            $data = $data[0];
+        }
+
+        $this->hydrateFromArray($data);
+    }
+}
