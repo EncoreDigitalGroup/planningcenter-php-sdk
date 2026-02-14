@@ -149,4 +149,21 @@ class Group
         return $this->getAttribute('virtual_location_url');
     }
 
+    /**
+     * Get memberships for this group (lazy-loaded)
+     */
+    private ?Collection $memberships = null;
+
+    public function memberships(): Collection
+    {
+        if ($this->memberships === null) {
+            $this->memberships = GroupMembership::forGroup(
+                $this->clientId,
+                $this->clientSecret,
+                $this->getAttribute('id')
+            )->items();
+        }
+
+        return $this->memberships;
+    }
 }

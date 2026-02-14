@@ -129,4 +129,20 @@ class EventInstance
         return $this->getAttribute('published_ends_at');
     }
 
+    /**
+     * Get all event instances for a specific event
+     */
+    public static function forEvent(
+        string $clientId,
+        string $clientSecret,
+        string $eventId
+    ): Paginator {
+        $instance = new static($clientId, $clientSecret);
+
+        $response = $instance->client()->get(
+            $instance->hostname() . "/calendar/v2/events/{$eventId}/event_instances"
+        );
+
+        return static::buildPaginatorFromResponse($response, $clientId, $clientSecret);
+    }
 }

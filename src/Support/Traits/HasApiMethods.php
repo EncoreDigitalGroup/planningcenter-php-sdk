@@ -61,8 +61,9 @@ trait HasApiMethods
     public static function all(
         string $clientId,
         string $clientSecret,
-        array $query = []
-    ): Paginator {
+        array  $query = []
+    ): Paginator
+    {
         $instance = new static($clientId, $clientSecret);
 
         $response = $instance->client()->get(
@@ -78,9 +79,10 @@ trait HasApiMethods
      */
     protected static function buildPaginatorFromResponse(
         Response $response,
-        string $clientId,
-        string $clientSecret
-    ): Paginator {
+        string   $clientId,
+        string   $clientSecret
+    ): Paginator
+    {
         $data = collect($response->json('data'))->map(function ($item) use ($clientId, $clientSecret) {
             $resource = new static($clientId, $clientSecret);
             $resource->hydrateFromArray($item);
@@ -112,7 +114,7 @@ trait HasApiMethods
     /**
      * Create a new resource
      */
-    protected function create(): self
+    public function create(): self
     {
         $response = $this->client()->post(
             $this->hostname() . $this->endpoint,
@@ -127,7 +129,7 @@ trait HasApiMethods
     /**
      * Update an existing resource
      */
-    protected function update(): self
+    public function update(): self
     {
         $response = $this->client()->patch(
             $this->hostname() . $this->endpoint . '/' . $this->getAttribute('id'),
@@ -182,8 +184,8 @@ trait HasApiMethods
 
         return [
             'data' => [
-                'attributes' => array_filter($attributes, fn($v) => $v !== null)
-            ]
+                'attributes' => array_filter($attributes, fn($v) => $v !== null),
+            ],
         ];
     }
 }

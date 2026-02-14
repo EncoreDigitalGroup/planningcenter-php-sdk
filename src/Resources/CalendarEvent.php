@@ -127,4 +127,21 @@ class CalendarEvent
         return $this->getAttribute('visible_in_church_center');
     }
 
+    /**
+     * Get event instances for this event (lazy-loaded)
+     */
+    private ?Collection $eventInstances = null;
+
+    public function eventInstances(): Collection
+    {
+        if ($this->eventInstances === null) {
+            $this->eventInstances = EventInstance::forEvent(
+                $this->clientId,
+                $this->clientSecret,
+                $this->getAttribute('id')
+            )->items();
+        }
+
+        return $this->eventInstances;
+    }
 }

@@ -3,6 +3,7 @@
 namespace EncoreDigitalGroup\PlanningCenter\Resources;
 
 use Carbon\CarbonImmutable;
+use EncoreDigitalGroup\PlanningCenter\Support\Paginator;
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasApiMethods;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasAttributes;
@@ -61,5 +62,22 @@ class GroupMembership
     public function role(): ?string
     {
         return $this->getAttribute('role');
+    }
+
+    /**
+     * Get all memberships for a specific group
+     */
+    public static function forGroup(
+        string $clientId,
+        string $clientSecret,
+        string $groupId
+    ): Paginator {
+        $instance = new static($clientId, $clientSecret);
+
+        $response = $instance->client()->get(
+            $instance->hostname() . "/groups/v2/groups/{$groupId}/memberships"
+        );
+
+        return static::buildPaginatorFromResponse($response, $clientId, $clientSecret);
     }
 }
