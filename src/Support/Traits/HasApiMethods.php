@@ -70,6 +70,17 @@ trait HasApiMethods
             $query
         );
 
+        return static::buildPaginatorFromResponse($response, $clientId, $clientSecret);
+    }
+
+    /**
+     * Build a Paginator from an API response
+     */
+    protected static function buildPaginatorFromResponse(
+        Response $response,
+        string $clientId,
+        string $clientSecret
+    ): Paginator {
         $data = collect($response->json('data'))->map(function ($item) use ($clientId, $clientSecret) {
             $resource = new static($clientId, $clientSecret);
             $resource->hydrateFromArray($item);

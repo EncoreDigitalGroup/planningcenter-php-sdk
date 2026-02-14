@@ -117,20 +117,6 @@ class Email
             $instance->hostname() . "/people/v2/people/{$personId}/emails"
         );
 
-        $data = collect($response->json('data'))->map(function ($item) use ($clientId, $clientSecret) {
-            $resource = new static($clientId, $clientSecret);
-            $resource->hydrateFromArray($item);
-            return $resource;
-        });
-
-        $meta = $response->json('meta');
-
-        return new Paginator(
-            data: $data,
-            nextUrl: $response->json('links.next'),
-            prevUrl: $response->json('links.prev'),
-            totalCount: $meta['total_count'] ?? 0,
-            perPage: $meta['per_page'] ?? 25
-        );
+        return static::buildPaginatorFromResponse($response, $clientId, $clientSecret);
     }
 }
