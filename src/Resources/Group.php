@@ -5,13 +5,14 @@ namespace EncoreDigitalGroup\PlanningCenter\Resources;
 use Carbon\CarbonImmutable;
 use EncoreDigitalGroup\PlanningCenter\Support\Paginator;
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
+use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasApiMethods;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasAttributes;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasClient;
 use Illuminate\Support\Collection;
 
 class Group
 {
-    use HasAttributes, HasClient;
+    use HasApiMethods, HasAttributes, HasClient;
 
     public const string GROUPS_ENDPOINT = '/groups/v2/groups';
 
@@ -148,67 +149,4 @@ class Group
         return $this->getAttribute('virtual_location_url');
     }
 
-    /**
-     * Fetch a single group by ID (read-only)
-     */
-    public function get(): self
-    {
-        if (!$this->getAttribute('id')) {
-            throw new \InvalidArgumentException('Cannot fetch group without an ID. Use withId() first.');
-        }
-
-        $response = $this->client()->get(
-            $this->hostname() . $this->endpoint . '/' . $this->getAttribute('id')
-        );
-
-        $this->hydrateFromResponse($response);
-
-        return $this;
-    }
-
-    /**
-     * List all groups with pagination (read-only)
-     */
-    public static function all(
-        string $clientId,
-        string $clientSecret,
-        array $query = []
-    ): Paginator {
-        $instance = new static($clientId, $clientSecret);
-
-        $response = $instance->client()->get(
-            $instance->hostname() . $instance->endpoint,
-            $query
-        );
-
-        $data = collect($response->json('data'))->map(function ($item) use ($clientId, $clientSecret) {
-            $resource = new static($clientId, $clientSecret);
-            $resource->hydrateFromArray($item);
-            return $resource;
-        });
-
-        $meta = $response->json('meta');
-
-        return new Paginator(
-            data: $data,
-            nextUrl: $response->json('links.next'),
-            prevUrl: $response->json('links.prev'),
-            totalCount: $meta['total_count'] ?? 0,
-            perPage: $meta['per_page'] ?? 25
-        );
-    }
-
-    /**
-     * Hydrate attributes from API response
-     */
-    protected function hydrateFromResponse($response): void
-    {
-        $data = $response->json('data');
-
-        if (is_array($data) && isset($data[0])) {
-            $data = $data[0];
-        }
-
-        $this->hydrateFromArray($data);
-    }
 }

@@ -42,6 +42,7 @@ class GroupMocks extends BaseMock
         self::useGroupTagRelationshipCollection();
         self::useEnrollmentCollection();
         self::useTagGroupCollection();
+        self::useSpecificTagGroup();
     }
 
     protected static function useGroupCollection(): void
@@ -131,6 +132,18 @@ class GroupMocks extends BaseMock
             self::HOSTNAME . TagGroup::TAG_GROUP_ENDPOINT => function ($request) {
                 return match ($request->method()) {
                     "GET" => HttpClient::response(self::useCollectionResponse(ObjectType::TagGroup)),
+                    default => HttpClient::response([], 405),
+                };
+            },
+        ]);
+    }
+
+    protected static function useSpecificTagGroup(): void
+    {
+        HttpClient::fake([
+            self::HOSTNAME . TagGroup::TAG_GROUP_ENDPOINT . "/1" => function ($request) {
+                return match ($request->method()) {
+                    "GET" => HttpClient::response(self::useSingleResponse(ObjectType::TagGroup)),
                     default => HttpClient::response([], 405),
                 };
             },

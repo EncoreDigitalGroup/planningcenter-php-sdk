@@ -101,6 +101,15 @@ class CalendarMocks extends BaseMock
     public static function useSpecificTagGroup(): void
     {
         HttpClient::fake([
+            self::HOSTNAME . TagGroup::TAG_GROUP_ENDPOINT . "/1" => function ($request) {
+                return match ($request->method()) {
+                    "GET" => HttpClient::response(self::useSingleResponse(ObjectType::TagGroup)),
+                    default => HttpClient::response([], 405),
+                };
+            },
+        ]);
+
+        HttpClient::fake([
             self::HOSTNAME . TagGroup::TAG_GROUP_ENDPOINT . "/1/tags" => function ($request) {
                 return match ($request->method()) {
                     "GET" => HttpClient::response(self::useSingleResponse(ObjectType::Tag)),

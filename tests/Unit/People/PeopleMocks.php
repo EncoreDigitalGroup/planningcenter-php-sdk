@@ -73,6 +73,15 @@ class PeopleMocks extends BaseMock
     public static function useSpecificEmail(): void
     {
         HttpClient::fake([
+            self::HOSTNAME . Email::EMAIL_ENDPOINT => function ($request) {
+                return match ($request->method()) {
+                    "POST" => HttpClient::response(self::useSingleResponse(ObjectType::Email)),
+                    default => HttpClient::response([], 405),
+                };
+            },
+        ]);
+
+        HttpClient::fake([
             self::HOSTNAME . Email::EMAIL_ENDPOINT . "/1" => function ($request) {
                 return match ($request->method()) {
                     "PUT", "PATCH", "GET", => HttpClient::response(self::useSingleResponse(ObjectType::Email)),

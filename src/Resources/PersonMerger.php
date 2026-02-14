@@ -5,13 +5,14 @@ namespace EncoreDigitalGroup\PlanningCenter\Resources;
 use Carbon\CarbonImmutable;
 use EncoreDigitalGroup\PlanningCenter\Support\Paginator;
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
+use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasApiMethods;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasAttributes;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasClient;
 use Illuminate\Support\Collection;
 
 class PersonMerger
 {
-    use HasAttributes, HasClient;
+    use HasApiMethods, HasAttributes, HasClient;
 
     protected string $endpoint = '/people/v2/person_mergers';
 
@@ -71,68 +72,4 @@ class PersonMerger
         return $this->getAttribute('person_to_remove_id');
     }
 
-    /**
-     * Fetch a single person merger by ID (read-only)
-     */
-    public function get(): self
-    {
-        if (!$this->getAttribute('id')) {
-            throw new \InvalidArgumentException('Cannot fetch person merger without an ID. Use withId() first.');
-        }
-
-        $response = $this->client()->get(
-            $this->hostname() . $this->endpoint . '/' . $this->getAttribute('id')
-        );
-
-        $this->hydrateFromResponse($response);
-
-        return $this;
-    }
-
-    /**
-     * List all person mergers with pagination
-     */
-    public static function all(
-        string $clientId,
-        string $clientSecret,
-        array $query = []
-    ): Paginator {
-        $instance = new static($clientId, $clientSecret);
-
-        $response = $instance->client()->get(
-            $instance->hostname() . $instance->endpoint,
-            $query
-        );
-
-        $data = collect($response->json('data'))->map(function ($item) use ($clientId, $clientSecret) {
-            $resource = new static($clientId, $clientSecret);
-            $resource->hydrateFromArray($item);
-            return $resource;
-        });
-
-        $meta = $response->json('meta');
-
-        return new Paginator(
-            data: $data,
-            nextUrl: $response->json('links.next'),
-            prevUrl: $response->json('links.prev'),
-            totalCount: $meta['total_count'] ?? 0,
-            perPage: $meta['per_page'] ?? 25
-        );
-    }
-
-    /**
-     * Hydrate attributes from API response
-     */
-    protected function hydrateFromResponse($response): void
-    {
-        $data = $response->json('data');
-
-        // Handle array responses (list endpoints)
-        if (is_array($data) && isset($data[0])) {
-            $data = $data[0];
-        }
-
-        $this->hydrateFromArray($data);
-    }
 }

@@ -48,6 +48,21 @@ trait HasAttributes
         return $attribute;
     }
 
+    public function getAttributeDate(string $key, ?CarbonImmutable $default = null): CarbonImmutable
+    {
+        if (is_null($default)) {
+            $default = CarbonImmutable::now();
+        }
+
+        $attribute = $this->getAttribute($key);
+
+        if (!$attribute instanceof CarbonImmutable) {
+            return $default;
+        }
+
+        return $attribute;
+    }
+
     public function toArray(): array
     {
         return $this->attributes->toArray();
