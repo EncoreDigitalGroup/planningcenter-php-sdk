@@ -11,7 +11,7 @@ use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\Objects\Webhooks\Attributes\WebhookSubscriptionAttributes;
 use EncoreDigitalGroup\PlanningCenter\Support\AttributeMapper;
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
-use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
+use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasClient;
 use Exception;
 use Illuminate\Support\Arr;
 use PHPGenesis\Common\Support\Objectify;
@@ -20,7 +20,7 @@ use TypeError;
 /** @api */
 class WebhookSubscription
 {
-    use HasPlanningCenterClient;
+    use HasClient;
 
     public const string ENDPOINT = "/webhooks/v2/webhook_subscriptions";
 

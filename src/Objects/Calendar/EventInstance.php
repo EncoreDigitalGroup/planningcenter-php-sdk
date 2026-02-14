@@ -15,14 +15,14 @@ use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\Relationships\BasicRela
 use EncoreDigitalGroup\PlanningCenter\Support\AttributeMapper;
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Support\RelationshipMapper;
-use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
+use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasClient;
 use EncoreDigitalGroup\StdLib\Exceptions\NullExceptions\NullException;
 use PHPGenesis\Common\Support\Objectify;
 
 /** @api */
 class EventInstance
 {
-    use HasPlanningCenterClient;
+    use HasClient;
 
     public const string EVENT_INSTANCE_ENDPOINT = "/calendar/v2/event_instances";
 

@@ -12,7 +12,7 @@ use EncoreDigitalGroup\PlanningCenter\Objects\People\Traits\HasEmails;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\Support\AttributeMapper;
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
-use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
+use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasClient;
 use Exception;
 use Illuminate\Support\Arr;
 use PHPGenesis\Common\Support\Objectify;
@@ -21,7 +21,7 @@ use TypeError;
 /** @api */
 class Person
 {
-    use HasEmails, HasPlanningCenterClient;
+    use HasEmails, HasClient;
 
     public const string PEOPLE_ENDPOINT = "/people/v2/people";
 

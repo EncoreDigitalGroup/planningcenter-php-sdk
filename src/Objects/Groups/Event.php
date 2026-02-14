@@ -11,13 +11,13 @@ use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Attributes\EventAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\Support\AttributeMapper;
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
-use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
+use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasClient;
 use PHPGenesis\Common\Support\Objectify;
 
 /** @api */
 class Event
 {
-    use HasPlanningCenterClient;
+    use HasClient;
 
     public const string EVENT_ENDPOINT = "/groups/v2/events";
 

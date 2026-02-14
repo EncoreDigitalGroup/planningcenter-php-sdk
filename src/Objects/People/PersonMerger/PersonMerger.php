@@ -10,12 +10,12 @@ namespace EncoreDigitalGroup\PlanningCenter\Objects\People\PersonMerger;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\Relationships\BasicRelationshipData;
 use EncoreDigitalGroup\PlanningCenter\Support\AttributeMapper;
-use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
+use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasClient;
 use PHPGenesis\Common\Support\Objectify;
 
 class PersonMerger
 {
-    use HasPlanningCenterClient;
+    use HasClient;
 
     public const string PERSON_MERGER_ENDPOINT = "/people/v2/person_mergers";
 

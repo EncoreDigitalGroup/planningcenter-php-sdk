@@ -11,13 +11,13 @@ use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Attributes\TagAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\Support\AttributeMapper;
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
-use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
+use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasClient;
 use PHPGenesis\Common\Support\Objectify;
 
 /** @api */
 class Tag
 {
-    use HasPlanningCenterClient;
+    use HasClient;
 
     public const string TAGS_ENDPOINT = "/groups/v2/tags";
 

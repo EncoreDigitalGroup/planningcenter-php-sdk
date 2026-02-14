@@ -5,36 +5,31 @@
  * Copyright (c) 2023-2025. Encore Digital Group
  */
 
-namespace EncoreDigitalGroup\PlanningCenter\Traits;
+namespace EncoreDigitalGroup\PlanningCenter\Support\Traits;
 
-use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\Support\AuthType;
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\StdLib\Objects\Support\Types\Str;
 use Illuminate\Http\Client\PendingRequest;
-use Illuminate\Http\Client\Response;
 use PHPGenesis\Http\HttpClient;
 use PHPGenesis\Http\HttpClientBuilder;
 
-trait HasPlanningCenterClient
+trait HasClient
 {
     protected const string HOSTNAME = "https://api.planningcenteronline.com";
 
     /** @experimental This could change. Use with caution. */
     protected const string X_PCO_API_VERSION_HEADER = "X-PCO-API-Version";
 
-    protected string $clientId;
-    protected string $clientSecret;
+    protected string $clientId = "";
+    protected string $clientSecret = "";
     protected string $apiVersion = "";
 
     /** @experimental This could change. Use with caution. */
     protected AuthType $authType = AuthType::Basic;
 
-    public function __construct(?string $clientId = null, ?string $clientSecret = null)
+    private function __construct()
     {
-        $this->clientId = $clientId ?? Str::empty();
-        $this->clientSecret = $clientSecret ?? Str::empty();
-
         new HttpClientBuilder;
     }
 
@@ -85,17 +80,6 @@ trait HasPlanningCenterClient
         $this->clientSecret = Str::empty();
 
         return $this->setAuthType(AuthType::Token);
-    }
-
-    protected function processResponse(Response $http): ClientResponse
-    {
-        $clientResponse = new ClientResponse($http);
-
-        if ($this->isUsingSupportedApiVersion()) {
-            $this->mapFromPco($clientResponse);
-        }
-
-        return $clientResponse;
     }
 
     protected function isUsingSupportedApiVersion(): bool

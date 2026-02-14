@@ -8,14 +8,14 @@ namespace Tests\Unit\People;
 
 use EncoreDigitalGroup\PlanningCenter\Objects\People\Email;
 use EncoreDigitalGroup\PlanningCenter\Objects\People\Person;
-use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
+use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasClient;
 use PHPGenesis\Http\HttpClient;
 use Tests\Helpers\BaseMock;
 use Tests\Helpers\ObjectType;
 
 class PeopleMocks extends BaseMock
 {
-    use HasPlanningCenterClient;
+    use HasClient;
 
     public const string PERSON_ID = "1";
     public const string FIRST_NAME = "John";

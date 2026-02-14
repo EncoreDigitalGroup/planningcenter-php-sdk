@@ -8,7 +8,7 @@ namespace Tests\Unit\Groups;
 
 use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Group;
 use EncoreDigitalGroup\PlanningCenter\Objects\Groups\TagGroup;
-use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
+use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasClient;
 use PHPGenesis\Http\HttpClient;
 use Tests\Helpers\BaseMock;
 use Tests\Helpers\ObjectType;
@@ -16,7 +16,7 @@ use Tests\Unit\People\PeopleMocks;
 
 class GroupMocks extends BaseMock
 {
-    use HasPlanningCenterClient;
+    use HasClient;
 
     public const string GROUP_ID = "1";
     public const string GROUP_NAME = "Demo Group";

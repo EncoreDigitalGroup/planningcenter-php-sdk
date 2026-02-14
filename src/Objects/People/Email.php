@@ -11,14 +11,14 @@ use EncoreDigitalGroup\PlanningCenter\Objects\People\Attributes\EmailAttributes;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\Support\AttributeMapper;
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
-use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
+use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasClient;
 use Illuminate\Support\Arr;
 use PHPGenesis\Common\Support\Objectify;
 
 /** @api */
 class Email
 {
-    use HasPlanningCenterClient;
+    use HasClient;
 
     public const string EMAIL_ENDPOINT = "/people/v2/emails";
 

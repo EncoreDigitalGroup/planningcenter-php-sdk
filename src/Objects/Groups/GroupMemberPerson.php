@@ -11,7 +11,7 @@ use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Attributes\GroupMemberPerso
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
 use EncoreDigitalGroup\PlanningCenter\Support\AttributeMapper;
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
-use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
+use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasClient;
 use PHPGenesis\Common\Support\Objectify;
 
 /**
@@ -21,7 +21,7 @@ use PHPGenesis\Common\Support\Objectify;
  */
 class GroupMemberPerson
 {
-    use HasPlanningCenterClient;
+    use HasClient;
 
     public GroupMemberPersonAttributes $attributes;
     private string $groupId;

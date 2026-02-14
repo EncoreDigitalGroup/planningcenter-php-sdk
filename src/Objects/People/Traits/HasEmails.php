@@ -9,12 +9,12 @@ namespace EncoreDigitalGroup\PlanningCenter\Objects\People\Traits;
 
 use EncoreDigitalGroup\PlanningCenter\Objects\People\Email;
 use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
-use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
+use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasClient;
 
 /** @codeCoverageIgnore */
 trait HasEmails
 {
-    use HasPlanningCenterClient;
+    use HasClient;
 
     protected bool $withEmails = false;
 
