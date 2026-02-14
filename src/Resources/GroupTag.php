@@ -10,19 +10,17 @@ use Illuminate\Support\Collection;
 
 class GroupTag
 {
-    use HasAttributes, HasClient, HasApiMethods;
+    use HasApiMethods, HasAttributes, HasClient;
 
-    protected string $endpoint = '/groups/v2/tags';
-
+    protected string $endpoint = "/groups/v2/tags";
     protected array $dateAttributes = [];
-
     protected array $readOnlyAttributes = [
-        'id',
+        "id",
     ];
 
     public function __construct(string $clientId, string $clientSecret)
     {
-        $this->attributes = new Collection();
+        $this->attributes = new Collection;
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
         $this->setApiVersion(PlanningCenterApiVersion::GROUPS_DEFAULT);
@@ -31,32 +29,32 @@ class GroupTag
     // Setters
     public function withId(string $value): self
     {
-        return $this->setAttribute('id', $value);
+        return $this->setAttribute("id", $value);
     }
 
     public function withName(?string $value): self
     {
-        return $this->setAttribute('name', $value);
+        return $this->setAttribute("name", $value);
     }
 
     public function withPosition(?int $value): self
     {
-        return $this->setAttribute('position', $value);
+        return $this->setAttribute("position", $value);
     }
 
     // Getters
     public function id(): ?string
     {
-        return $this->getAttribute('id');
+        return $this->getAttribute("id");
     }
 
     public function name(): ?string
     {
-        return $this->getAttribute('name');
+        return $this->getAttribute("name");
     }
 
     public function position(): ?int
     {
-        return $this->getAttribute('position');
+        return $this->getAttribute("position");
     }
 }

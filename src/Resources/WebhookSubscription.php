@@ -8,39 +8,36 @@ use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasApiMethods;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasAttributes;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasClient;
 use Illuminate\Support\Collection;
+use InvalidArgumentException;
 
 class WebhookSubscription
 {
-    use HasAttributes, HasClient, HasApiMethods;
+    use HasApiMethods, HasAttributes, HasClient;
 
-    public const string ENDPOINT = '/webhooks/v2/webhook_subscriptions';
+    public const string ENDPOINT = "/webhooks/v2/webhook_subscriptions";
 
-    protected string $endpoint = '/webhooks/v2/webhook_subscriptions';
-
+    protected string $endpoint = "/webhooks/v2/webhook_subscriptions";
     protected array $dateAttributes = [
-        'created_at',
-        'updated_at',
+        "created_at",
+        "updated_at",
     ];
-
     protected array $readOnlyAttributes = [
-        'id',
-        'application_id',
-        'authenticity_secret',
-        'created_at',
-        'updated_at',
+        "id",
+        "application_id",
+        "authenticity_secret",
+        "created_at",
+        "updated_at",
     ];
 
     public function __construct(string $clientId, string $clientSecret)
     {
-        $this->attributes = new Collection();
+        $this->attributes = new Collection;
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
         $this->setApiVersion(PlanningCenterApiVersion::WEBHOOKS_DEFAULT);
     }
 
-    /**
-     * Static factory method for backward compatibility with tests
-     */
+    /** Static factory method for backward compatibility with tests */
     public static function make(string $clientId, string $clientSecret): self
     {
         return new self($clientId, $clientSecret);
@@ -49,76 +46,74 @@ class WebhookSubscription
     // Setters
     public function withId(string $value): self
     {
-        return $this->setAttribute('id', $value);
+        return $this->setAttribute("id", $value);
     }
 
     public function withActive(?bool $value): self
     {
-        return $this->setAttribute('active', $value);
+        return $this->setAttribute("active", $value);
     }
 
     public function withName(?string $value): self
     {
-        return $this->setAttribute('name', $value);
+        return $this->setAttribute("name", $value);
     }
 
     public function withUrl(?string $value): self
     {
-        return $this->setAttribute('url', $value);
+        return $this->setAttribute("url", $value);
     }
 
     // Getters
     public function id(): ?string
     {
-        return $this->getAttribute('id');
+        return $this->getAttribute("id");
     }
 
     public function active(): ?bool
     {
-        return $this->getAttribute('active');
+        return $this->getAttribute("active");
     }
 
     public function applicationId(): ?string
     {
-        return $this->getAttribute('application_id');
+        return $this->getAttribute("application_id");
     }
 
     public function authenticitySecret(): ?string
     {
-        return $this->getAttribute('authenticity_secret');
+        return $this->getAttribute("authenticity_secret");
     }
 
     public function createdAt(): ?CarbonImmutable
     {
-        return $this->getAttribute('created_at');
+        return $this->getAttribute("created_at");
     }
 
     public function name(): ?string
     {
-        return $this->getAttribute('name');
+        return $this->getAttribute("name");
     }
 
     public function updatedAt(): ?CarbonImmutable
     {
-        return $this->getAttribute('updated_at');
+        return $this->getAttribute("updated_at");
     }
 
     public function url(): ?string
     {
-        return $this->getAttribute('url');
+        return $this->getAttribute("url");
     }
 
-    /**
-     * Rotate the authenticity secret for this webhook subscription
-     */
+    /** Rotate the authenticity secret for this webhook subscription */
     public function rotateSecret(): bool
     {
-        if (!$this->getAttribute('id')) {
-            throw new \InvalidArgumentException('Cannot rotate secret without an ID. Use withId() first or save the webhook subscription.');
+        if (!$this->getAttribute("id")) {
+            throw new InvalidArgumentException("Cannot rotate secret without an ID. Use withId() first or save the webhook subscription.");
         }
 
         $response = $this->client()->post(
-            $this->hostname() . $this->endpoint . '/' . $this->getAttribute('id') . '/rotate_secret',
+            $this->hostname() . $this->endpoint . "/" . $this->getAttribute("id") . "/rotate_secret",
             []
         );
 
@@ -137,13 +132,13 @@ class WebhookSubscription
     protected function update(): self
     {
         $response = $this->client()->patch(
-            $this->hostname() . $this->endpoint . '/' . $this->getAttribute('id'),
+            $this->hostname() . $this->endpoint . "/" . $this->getAttribute("id"),
             [
-                'data' => [
-                    'attributes' => array_filter([
-                        'active' => $this->getAttribute('active'),
-                    ], fn($v) => $v !== null)
-                ]
+                "data" => [
+                    "attributes" => array_filter([
+                        "active" => $this->getAttribute("active"),
+                    ], fn ($v): bool => $v !== null),
+                ],
             ]
         );
 

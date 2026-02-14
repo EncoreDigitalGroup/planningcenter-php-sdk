@@ -14,17 +14,13 @@ class WebhooksModule extends Module
         $this->setApiVersion(PlanningCenterApiVersion::WEBHOOKS_DEFAULT);
     }
 
-    /**
-     * Create a new WebhookSubscription resource
-     */
+    /** Create a new WebhookSubscription resource */
     public function webhookSubscription(): WebhookSubscription
     {
         return new WebhookSubscription($this->clientId, $this->clientSecret);
     }
 
-    /**
-     * List all webhook subscriptions with pagination
-     */
+    /** List all webhook subscriptions with pagination */
     public function all(array $query = []): Paginator
     {
         return WebhookSubscription::all($this->clientId, $this->clientSecret, $query);

@@ -5,8 +5,8 @@ namespace EncoreDigitalGroup\PlanningCenter\Modules;
 use EncoreDigitalGroup\PlanningCenter\Resources\Group;
 use EncoreDigitalGroup\PlanningCenter\Resources\GroupEnrollment;
 use EncoreDigitalGroup\PlanningCenter\Resources\GroupEvent;
-use EncoreDigitalGroup\PlanningCenter\Resources\GroupMembership;
 use EncoreDigitalGroup\PlanningCenter\Resources\GroupMemberPerson;
+use EncoreDigitalGroup\PlanningCenter\Resources\GroupMembership;
 use EncoreDigitalGroup\PlanningCenter\Resources\GroupTag;
 use EncoreDigitalGroup\PlanningCenter\Resources\GroupTagGroup;
 use EncoreDigitalGroup\PlanningCenter\Support\Paginator;
@@ -20,65 +20,49 @@ class GroupsModule extends Module
         $this->setApiVersion(PlanningCenterApiVersion::GROUPS_DEFAULT);
     }
 
-    /**
-     * Create a new Group resource
-     */
+    /** Create a new Group resource */
     public function group(): Group
     {
         return new Group($this->clientId, $this->clientSecret);
     }
 
-    /**
-     * Create a new GroupEnrollment resource
-     */
+    /** Create a new GroupEnrollment resource */
     public function groupEnrollment(): GroupEnrollment
     {
         return new GroupEnrollment($this->clientId, $this->clientSecret);
     }
 
-    /**
-     * Create a new GroupEvent resource
-     */
+    /** Create a new GroupEvent resource */
     public function groupEvent(): GroupEvent
     {
         return new GroupEvent($this->clientId, $this->clientSecret);
     }
 
-    /**
-     * Create a new GroupMembership resource
-     */
+    /** Create a new GroupMembership resource */
     public function groupMembership(): GroupMembership
     {
         return new GroupMembership($this->clientId, $this->clientSecret);
     }
 
-    /**
-     * Create a new GroupMemberPerson resource
-     */
+    /** Create a new GroupMemberPerson resource */
     public function groupMemberPerson(): GroupMemberPerson
     {
         return new GroupMemberPerson($this->clientId, $this->clientSecret);
     }
 
-    /**
-     * Create a new GroupTag resource
-     */
+    /** Create a new GroupTag resource */
     public function groupTag(): GroupTag
     {
         return new GroupTag($this->clientId, $this->clientSecret);
     }
 
-    /**
-     * Create a new GroupTagGroup resource
-     */
+    /** Create a new GroupTagGroup resource */
     public function groupTagGroup(): GroupTagGroup
     {
         return new GroupTagGroup($this->clientId, $this->clientSecret);
     }
 
-    /**
-     * List all groups with pagination
-     */
+    /** List all groups with pagination */
     public function all(array $query = []): Paginator
     {
         return Group::all($this->clientId, $this->clientSecret, $query);

@@ -12,61 +12,25 @@ use Illuminate\Support\Collection;
 
 class GroupMembership
 {
-    use HasAttributes, HasClient, HasApiMethods;
+    use HasApiMethods, HasAttributes, HasClient;
 
-    protected string $endpoint = '/groups/v2/memberships';
-
+    protected string $endpoint = "/groups/v2/memberships";
     protected array $dateAttributes = [
-        'joined_at',
+        "joined_at",
     ];
-
     protected array $readOnlyAttributes = [
-        'id',
+        "id",
     ];
 
     public function __construct(string $clientId, string $clientSecret)
     {
-        $this->attributes = new Collection();
+        $this->attributes = new Collection;
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
         $this->setApiVersion(PlanningCenterApiVersion::GROUPS_DEFAULT);
     }
 
-    // Setters
-    public function withId(string $value): self
-    {
-        return $this->setAttribute('id', $value);
-    }
-
-    public function withJoinedAt(?CarbonImmutable $value): self
-    {
-        return $this->setAttribute('joined_at', $value);
-    }
-
-    public function withRole(?string $value): self
-    {
-        return $this->setAttribute('role', $value);
-    }
-
-    // Getters
-    public function id(): ?string
-    {
-        return $this->getAttribute('id');
-    }
-
-    public function joinedAt(): ?CarbonImmutable
-    {
-        return $this->getAttribute('joined_at');
-    }
-
-    public function role(): ?string
-    {
-        return $this->getAttribute('role');
-    }
-
-    /**
-     * Get all memberships for a specific group
-     */
+    /** Get all memberships for a specific group */
     public static function forGroup(
         string $clientId,
         string $clientSecret,
@@ -79,5 +43,37 @@ class GroupMembership
         );
 
         return static::buildPaginatorFromResponse($response, $clientId, $clientSecret);
+    }
+
+    // Setters
+    public function withId(string $value): self
+    {
+        return $this->setAttribute("id", $value);
+    }
+
+    public function withJoinedAt(?CarbonImmutable $value): self
+    {
+        return $this->setAttribute("joined_at", $value);
+    }
+
+    public function withRole(?string $value): self
+    {
+        return $this->setAttribute("role", $value);
+    }
+
+    // Getters
+    public function id(): ?string
+    {
+        return $this->getAttribute("id");
+    }
+
+    public function joinedAt(): ?CarbonImmutable
+    {
+        return $this->getAttribute("joined_at");
+    }
+
+    public function role(): ?string
+    {
+        return $this->getAttribute("role");
     }
 }

@@ -3,7 +3,6 @@
 namespace EncoreDigitalGroup\PlanningCenter\Resources;
 
 use Carbon\CarbonImmutable;
-use EncoreDigitalGroup\PlanningCenter\Support\Paginator;
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasApiMethods;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasAttributes;
@@ -14,22 +13,20 @@ class PersonMerger
 {
     use HasApiMethods, HasAttributes, HasClient;
 
-    protected string $endpoint = '/people/v2/person_mergers';
-
+    protected string $endpoint = "/people/v2/person_mergers";
     protected array $dateAttributes = [
-        'created_at',
+        "created_at",
     ];
-
     protected array $readOnlyAttributes = [
-        'id',
-        'created_at',
-        'person_to_keep_id',
-        'person_to_remove_id',
+        "id",
+        "created_at",
+        "person_to_keep_id",
+        "person_to_remove_id",
     ];
 
     public function __construct(string $clientId, string $clientSecret)
     {
-        $this->attributes = new Collection();
+        $this->attributes = new Collection;
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
         $this->setApiVersion(PlanningCenterApiVersion::PEOPLE_DEFAULT);
@@ -38,38 +35,37 @@ class PersonMerger
     // Setters
     public function withId(string $value): self
     {
-        return $this->setAttribute('id', $value);
+        return $this->setAttribute("id", $value);
     }
 
     public function withPersonToKeepId(?int $value): self
     {
-        return $this->setAttribute('person_to_keep_id', $value);
+        return $this->setAttribute("person_to_keep_id", $value);
     }
 
     public function withPersonToRemoveId(?int $value): self
     {
-        return $this->setAttribute('person_to_remove_id', $value);
+        return $this->setAttribute("person_to_remove_id", $value);
     }
 
     // Getters
     public function id(): ?string
     {
-        return $this->getAttribute('id');
+        return $this->getAttribute("id");
     }
 
     public function createdAt(): ?CarbonImmutable
     {
-        return $this->getAttribute('created_at');
+        return $this->getAttribute("created_at");
     }
 
     public function personToKeepId(): ?int
     {
-        return $this->getAttribute('person_to_keep_id');
+        return $this->getAttribute("person_to_keep_id");
     }
 
     public function personToRemoveId(): ?int
     {
-        return $this->getAttribute('person_to_remove_id');
+        return $this->getAttribute("person_to_remove_id");
     }
-
 }

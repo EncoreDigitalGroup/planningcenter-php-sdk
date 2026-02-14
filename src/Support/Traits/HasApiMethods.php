@@ -2,68 +2,20 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Support\Traits;
 
+use BadMethodCallException;
 use Carbon\CarbonImmutable;
 use EncoreDigitalGroup\PlanningCenter\Support\Paginator;
 use Illuminate\Http\Client\Response;
-use Illuminate\Support\Collection;
+use InvalidArgumentException;
 
 trait HasApiMethods
 {
-    /**
-     * Fetch a single resource by ID
-     */
-    public function get(): self
-    {
-        if (!$this->getAttribute('id')) {
-            throw new \InvalidArgumentException('Cannot fetch resource without an ID. Use withId() first.');
-        }
-
-        $response = $this->client()->get(
-            $this->hostname() . $this->endpoint . '/' . $this->getAttribute('id')
-        );
-
-        $this->hydrateFromResponse($response);
-
-        return $this;
-    }
-
-    /**
-     * Smart save - creates if no ID, updates if ID exists
-     */
-    public function save(): self
-    {
-        if ($this->getAttribute('id')) {
-            return $this->update();
-        }
-
-        return $this->create();
-    }
-
-    /**
-     * Delete the resource
-     */
-    public function delete(): bool
-    {
-        if (!$this->getAttribute('id')) {
-            throw new \InvalidArgumentException('Cannot delete resource without an ID.');
-        }
-
-        $response = $this->client()->delete(
-            $this->hostname() . $this->endpoint . '/' . $this->getAttribute('id')
-        );
-
-        return $response->successful();
-    }
-
-    /**
-     * List all resources with pagination
-     */
+    /** List all resources with pagination */
     public static function all(
         string $clientId,
         string $clientSecret,
-        array  $query = []
-    ): Paginator
-    {
+        array $query = []
+    ): Paginator {
         $instance = new static($clientId, $clientSecret);
 
         $response = $instance->client()->get(
@@ -74,46 +26,80 @@ trait HasApiMethods
         return static::buildPaginatorFromResponse($response, $clientId, $clientSecret);
     }
 
-    /**
-     * Build a Paginator from an API response
-     */
-    protected static function buildPaginatorFromResponse(
-        Response $response,
-        string   $clientId,
-        string   $clientSecret
-    ): Paginator
-    {
-        $data = collect($response->json('data'))->map(function ($item) use ($clientId, $clientSecret) {
-            $resource = new static($clientId, $clientSecret);
-            $resource->hydrateFromArray($item);
-            return $resource;
-        });
-
-        $meta = $response->json('meta');
-
-        return new Paginator(
-            data: $data,
-            nextUrl: $response->json('links.next'),
-            prevUrl: $response->json('links.prev'),
-            totalCount: $meta['total_count'] ?? 0,
-            perPage: $meta['per_page'] ?? 25
-        );
-    }
-
-    /**
-     * Query resources with filters
-     */
+    /** Query resources with filters */
     public static function where(array $query): Paginator
     {
         // This requires singleton credentials, will be implemented via modules
-        throw new \BadMethodCallException(
+        throw new BadMethodCallException(
             'where() must be called through a module. Use PlanningCenter::make()->withBasicAuth()->people()->all($query) instead.'
         );
     }
 
-    /**
-     * Create a new resource
-     */
+    /** Build a Paginator from an API response */
+    protected static function buildPaginatorFromResponse(
+        Response $response,
+        string $clientId,
+        string $clientSecret
+    ): Paginator {
+        $data = collect($response->json("data"))->map(function ($item) use ($clientId, $clientSecret): static {
+            $resource = new static($clientId, $clientSecret);
+            $resource->hydrateFromArray($item);
+
+            return $resource;
+        });
+
+        $meta = $response->json("meta");
+
+        return new Paginator(
+            data: $data,
+            nextUrl: $response->json("links.next"),
+            prevUrl: $response->json("links.prev"),
+            totalCount: $meta["total_count"] ?? 0,
+            perPage: $meta["per_page"] ?? 25
+        );
+    }
+
+    /** Fetch a single resource by ID */
+    public function get(): self
+    {
+        if (!$this->getAttribute("id")) {
+            throw new InvalidArgumentException("Cannot fetch resource without an ID. Use withId() first.");
+        }
+
+        $response = $this->client()->get(
+            $this->hostname() . $this->endpoint . "/" . $this->getAttribute("id")
+        );
+
+        $this->hydrateFromResponse($response);
+
+        return $this;
+    }
+
+    /** Smart save - creates if no ID, updates if ID exists */
+    public function save(): self
+    {
+        if ($this->getAttribute("id")) {
+            return $this->update();
+        }
+
+        return $this->create();
+    }
+
+    /** Delete the resource */
+    public function delete(): bool
+    {
+        if (!$this->getAttribute("id")) {
+            throw new InvalidArgumentException("Cannot delete resource without an ID.");
+        }
+
+        $response = $this->client()->delete(
+            $this->hostname() . $this->endpoint . "/" . $this->getAttribute("id")
+        );
+
+        return $response->successful();
+    }
+
+    /** Create a new resource */
     public function create(): self
     {
         $response = $this->client()->post(
@@ -126,13 +112,11 @@ trait HasApiMethods
         return $this;
     }
 
-    /**
-     * Update an existing resource
-     */
+    /** Update an existing resource */
     public function update(): self
     {
         $response = $this->client()->patch(
-            $this->hostname() . $this->endpoint . '/' . $this->getAttribute('id'),
+            $this->hostname() . $this->endpoint . "/" . $this->getAttribute("id"),
             $this->mapToPco()
         );
 
@@ -141,12 +125,10 @@ trait HasApiMethods
         return $this;
     }
 
-    /**
-     * Hydrate attributes from API response
-     */
+    /** Hydrate attributes from API response */
     protected function hydrateFromResponse(Response $response): void
     {
-        $data = $response->json('data');
+        $data = $response->json("data");
 
         // Handle array responses (list endpoints)
         if (is_array($data) && isset($data[0])) {
@@ -156,13 +138,11 @@ trait HasApiMethods
         $this->hydrateFromArray($data);
     }
 
-    /**
-     * Convert attributes to Planning Center API format
-     */
+    /** Convert attributes to Planning Center API format */
     protected function mapToPco(): array
     {
         // Get read-only attributes if defined, otherwise empty array
-        $readOnlyAttributes = property_exists($this, 'readOnlyAttributes')
+        $readOnlyAttributes = property_exists($this, "readOnlyAttributes")
             ? $this->readOnlyAttributes
             : [];
 
@@ -175,7 +155,7 @@ trait HasApiMethods
         foreach ($attributes as $key => $value) {
             if ($value instanceof CarbonImmutable) {
                 // Use date-only format for date fields, datetime for others
-                $dateOnlyFields = ['birthdate', 'anniversary'];
+                $dateOnlyFields = ["birthdate", "anniversary"];
                 $attributes[$key] = in_array($key, $dateOnlyFields)
                     ? $value->toDateString()
                     : $value->toIso8601String();
@@ -183,8 +163,8 @@ trait HasApiMethods
         }
 
         return [
-            'data' => [
-                'attributes' => array_filter($attributes, fn($v) => $v !== null),
+            "data" => [
+                "attributes" => array_filter($attributes, fn ($v): bool => $v !== null),
             ],
         ];
     }

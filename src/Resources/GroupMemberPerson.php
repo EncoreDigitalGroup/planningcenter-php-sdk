@@ -10,22 +10,20 @@ use Illuminate\Support\Collection;
 
 class GroupMemberPerson
 {
-    use HasAttributes, HasClient, HasApiMethods;
+    use HasApiMethods, HasAttributes, HasClient;
 
-    protected string $endpoint = '/groups/v2/people';
-
+    protected string $endpoint = "/groups/v2/people";
     protected array $dateAttributes = [];
-
     protected array $readOnlyAttributes = [
-        'id',
-        'child',
-        'first_name',
-        'last_name',
+        "id",
+        "child",
+        "first_name",
+        "last_name",
     ];
 
     public function __construct(string $clientId, string $clientSecret)
     {
-        $this->attributes = new Collection();
+        $this->attributes = new Collection;
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
         $this->setApiVersion(PlanningCenterApiVersion::GROUPS_DEFAULT);
@@ -34,27 +32,27 @@ class GroupMemberPerson
     // Setters
     public function withId(string $value): self
     {
-        return $this->setAttribute('id', $value);
+        return $this->setAttribute("id", $value);
     }
 
     // Getters
     public function id(): ?string
     {
-        return $this->getAttribute('id');
+        return $this->getAttribute("id");
     }
 
     public function child(): ?bool
     {
-        return $this->getAttribute('child');
+        return $this->getAttribute("child");
     }
 
     public function firstName(): ?string
     {
-        return $this->getAttribute('first_name');
+        return $this->getAttribute("first_name");
     }
 
     public function lastName(): ?string
     {
-        return $this->getAttribute('last_name');
+        return $this->getAttribute("last_name");
     }
 }

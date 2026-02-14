@@ -17,41 +17,31 @@ class CalendarModule extends Module
         $this->setApiVersion(PlanningCenterApiVersion::CALENDAR_DEFAULT);
     }
 
-    /**
-     * Create a new CalendarEvent resource (read-only)
-     */
+    /** Create a new CalendarEvent resource (read-only) */
     public function event(): CalendarEvent
     {
         return new CalendarEvent($this->clientId, $this->clientSecret);
     }
 
-    /**
-     * Create a new EventInstance resource (read-only)
-     */
+    /** Create a new EventInstance resource (read-only) */
     public function eventInstance(): EventInstance
     {
         return new EventInstance($this->clientId, $this->clientSecret);
     }
 
-    /**
-     * Create a new CalendarTag resource (read-only)
-     */
+    /** Create a new CalendarTag resource (read-only) */
     public function tag(): CalendarTag
     {
         return new CalendarTag($this->clientId, $this->clientSecret);
     }
 
-    /**
-     * Create a new CalendarTagGroup resource (read-only)
-     */
+    /** Create a new CalendarTagGroup resource (read-only) */
     public function tagGroup(): CalendarTagGroup
     {
         return new CalendarTagGroup($this->clientId, $this->clientSecret);
     }
 
-    /**
-     * List all calendar events with pagination (read-only)
-     */
+    /** List all calendar events with pagination (read-only) */
     public function all(array $query = []): Paginator
     {
         return CalendarEvent::all($this->clientId, $this->clientSecret, $query);

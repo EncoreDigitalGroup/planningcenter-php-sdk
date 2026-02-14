@@ -11,25 +11,23 @@ use Illuminate\Support\Collection;
 
 class GroupEnrollment
 {
-    use HasAttributes, HasClient, HasApiMethods;
+    use HasApiMethods, HasAttributes, HasClient;
 
-    protected string $endpoint = '/groups/v2/group_enrollments';
-
+    protected string $endpoint = "/groups/v2/group_enrollments";
     protected array $dateAttributes = [
-        'date_limit',
+        "date_limit",
     ];
-
     protected array $readOnlyAttributes = [
-        'id',
-        'auto_closed',
-        'auto_closed_reason',
-        'date_limit_reached',
-        'member_limit_reached',
+        "id",
+        "auto_closed",
+        "auto_closed_reason",
+        "date_limit_reached",
+        "member_limit_reached",
     ];
 
     public function __construct(string $clientId, string $clientSecret)
     {
-        $this->attributes = new Collection();
+        $this->attributes = new Collection;
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
         $this->setApiVersion(PlanningCenterApiVersion::GROUPS_DEFAULT);
@@ -38,72 +36,72 @@ class GroupEnrollment
     // Setters
     public function withId(string $value): self
     {
-        return $this->setAttribute('id', $value);
+        return $this->setAttribute("id", $value);
     }
 
     public function withDateLimit(?CarbonImmutable $value): self
     {
-        return $this->setAttribute('date_limit', $value);
+        return $this->setAttribute("date_limit", $value);
     }
 
     public function withMemberLimit(?int $value): self
     {
-        return $this->setAttribute('member_limit', $value);
+        return $this->setAttribute("member_limit", $value);
     }
 
     public function withStatus(?string $value): self
     {
-        return $this->setAttribute('status', $value);
+        return $this->setAttribute("status", $value);
     }
 
     public function withStrategy(?string $value): self
     {
-        return $this->setAttribute('strategy', $value);
+        return $this->setAttribute("strategy", $value);
     }
 
     // Getters
     public function id(): ?string
     {
-        return $this->getAttribute('id');
+        return $this->getAttribute("id");
     }
 
     public function autoClosed(): ?bool
     {
-        return $this->getAttribute('auto_closed');
+        return $this->getAttribute("auto_closed");
     }
 
     public function autoClosedReason(): ?string
     {
-        return $this->getAttribute('auto_closed_reason');
+        return $this->getAttribute("auto_closed_reason");
     }
 
     public function dateLimit(): ?CarbonImmutable
     {
-        return $this->getAttribute('date_limit');
+        return $this->getAttribute("date_limit");
     }
 
     public function dateLimitReached(): ?bool
     {
-        return $this->getAttribute('date_limit_reached');
+        return $this->getAttribute("date_limit_reached");
     }
 
     public function memberLimit(): ?int
     {
-        return $this->getAttribute('member_limit');
+        return $this->getAttribute("member_limit");
     }
 
     public function memberLimitReached(): ?bool
     {
-        return $this->getAttribute('member_limit_reached');
+        return $this->getAttribute("member_limit_reached");
     }
 
     public function status(): ?string
     {
-        return $this->getAttribute('status');
+        return $this->getAttribute("status");
     }
 
     public function strategy(): ?string
     {
-        return $this->getAttribute('strategy');
+        return $this->getAttribute("strategy");
     }
 }

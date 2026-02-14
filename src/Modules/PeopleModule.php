@@ -16,33 +16,25 @@ class PeopleModule extends Module
         $this->setApiVersion(PlanningCenterApiVersion::PEOPLE_DEFAULT);
     }
 
-    /**
-     * Create a new Person resource
-     */
+    /** Create a new Person resource */
     public function person(): Person
     {
         return new Person($this->clientId, $this->clientSecret);
     }
 
-    /**
-     * Create a new Email resource
-     */
+    /** Create a new Email resource */
     public function email(): Email
     {
         return new Email($this->clientId, $this->clientSecret);
     }
 
-    /**
-     * Create a new PersonMerger resource
-     */
+    /** Create a new PersonMerger resource */
     public function personMerger(): PersonMerger
     {
         return new PersonMerger($this->clientId, $this->clientSecret);
     }
 
-    /**
-     * List all people with pagination
-     */
+    /** List all people with pagination */
     public function all(array $query = []): Paginator
     {
         return Person::all($this->clientId, $this->clientSecret, $query);

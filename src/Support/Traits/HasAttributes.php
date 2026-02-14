@@ -11,7 +11,7 @@ trait HasAttributes
 
     public function __construct()
     {
-        $this->attributes = new Collection();
+        $this->attributes = new Collection;
     }
 
     public function setAttribute(string $key, mixed $value): self
@@ -79,13 +79,13 @@ trait HasAttributes
 
     protected function hydrateFromArray(array $data): void
     {
-        if (isset($data['id'])) {
-            $this->setAttribute('id', $data['id']);
+        if (isset($data["id"])) {
+            $this->setAttribute("id", $data["id"]);
         }
 
-        foreach ($data['attributes'] ?? [] as $key => $value) {
+        foreach ($data["attributes"] ?? [] as $key => $value) {
             // Parse dates/datetimes if dateAttributes is defined
-            if (property_exists($this, 'dateAttributes') && in_array($key, $this->dateAttributes)) {
+            if (property_exists($this, "dateAttributes") && in_array($key, $this->dateAttributes)) {
                 $value = $this->parseDate($value);
             }
             $this->setAttribute($key, $value);
