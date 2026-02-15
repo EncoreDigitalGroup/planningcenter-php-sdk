@@ -7,13 +7,14 @@ use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasApiMethods;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasAttributes;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasClient;
+use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasRead;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
 
 /** @phpstan-consistent-constructor */
 class Group
 {
-    use HasApiMethods, HasAttributes, HasClient;
+    use HasApiMethods, HasAttributes, HasClient, HasRead;
 
     public const string ENDPOINT = "/groups/v2/groups";
 
@@ -140,11 +141,11 @@ class Group
                 throw new InvalidArgumentException("Cannot fetch memberships for a group without an ID.");
             }
 
-            $this->memberships = GroupMembership::forGroup(
-                $this->clientId,
-                $this->clientSecret,
-                $groupId
-            )->items();
+            $membershipInstance = new GroupMembership($this->clientId, $this->clientSecret);
+            $response = $membershipInstance->client()->get(
+                $membershipInstance->hostname() . "/groups/v2/groups/{$groupId}/memberships"
+            );
+            $this->memberships = $membershipInstance->buildPaginatorFromResponse($response)->items();
         }
 
         return $this->memberships;

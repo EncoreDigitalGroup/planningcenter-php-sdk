@@ -3,17 +3,17 @@
 namespace EncoreDigitalGroup\PlanningCenter\Resources;
 
 use Carbon\CarbonImmutable;
-use EncoreDigitalGroup\PlanningCenter\Support\Paginator;
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasApiMethods;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasAttributes;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasClient;
+use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasRead;
 use Illuminate\Support\Collection;
 
 /** @phpstan-consistent-constructor */
 class GroupMembership
 {
-    use HasApiMethods, HasAttributes, HasClient;
+    use HasApiMethods, HasAttributes, HasClient, HasRead;
 
     public const string ENDPOINT = "/groups/v2/memberships";
 
@@ -25,21 +25,6 @@ class GroupMembership
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
         $this->setApiVersion(PlanningCenterApiVersion::GROUPS_DEFAULT);
-    }
-
-    /** Get all memberships for a specific group */
-    public static function forGroup(
-        string $clientId,
-        string $clientSecret,
-        string $groupId
-    ): Paginator {
-        $instance = new static($clientId, $clientSecret);
-
-        $response = $instance->client()->get(
-            $instance->hostname() . "/groups/v2/groups/{$groupId}/memberships"
-        );
-
-        return static::buildPaginatorFromResponse($response, $clientId, $clientSecret);
     }
 
     // Setters

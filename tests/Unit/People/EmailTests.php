@@ -10,15 +10,15 @@ use Tests\Helpers\TestConstants;
 
 describe("People Email Tests", function (): void {
     test("Email: Can List All Emails for Person", function (): void {
-        $paginator = Email::forPerson(
-            TestConstants::CLIENT_ID,
-            TestConstants::CLIENT_SECRET,
-            PeopleMocks::PERSON_ID
-        );
+        $emails = PlanningCenter::make()
+            ->withBasicAuth(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET)
+            ->people()
+            ->person()
+            ->withId(PeopleMocks::PERSON_ID)
+            ->emails();
 
-        expect($paginator)->toBeInstanceOf(Paginator::class)
-            ->and($paginator->items())->toBeInstanceOf(Collection::class)
-            ->and($paginator->items()->count())->toBe(1);
+        expect($emails)->toBeInstanceOf(Collection::class)
+            ->and($emails->count())->toBe(1);
     });
 
     test("Email: Can Get Email By ID", function (): void {

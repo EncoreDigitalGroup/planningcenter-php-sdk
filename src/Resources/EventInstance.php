@@ -3,17 +3,17 @@
 namespace EncoreDigitalGroup\PlanningCenter\Resources;
 
 use Carbon\CarbonImmutable;
-use EncoreDigitalGroup\PlanningCenter\Support\Paginator;
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasApiMethods;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasAttributes;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasClient;
+use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasRead;
 use Illuminate\Support\Collection;
 
 /** @phpstan-consistent-constructor */
 class EventInstance
 {
-    use HasApiMethods, HasAttributes, HasClient;
+    use HasApiMethods, HasAttributes, HasClient, HasRead;
 
     public const string ENDPOINT = "/calendar/v2/event_instances";
 
@@ -25,21 +25,6 @@ class EventInstance
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
         $this->setApiVersion(PlanningCenterApiVersion::CALENDAR_DEFAULT);
-    }
-
-    /** Get all event instances for a specific event */
-    public static function forEvent(
-        string $clientId,
-        string $clientSecret,
-        string $eventId
-    ): Paginator {
-        $instance = new static($clientId, $clientSecret);
-
-        $response = $instance->client()->get(
-            $instance->hostname() . "/calendar/v2/events/{$eventId}/event_instances"
-        );
-
-        return static::buildPaginatorFromResponse($response, $clientId, $clientSecret);
     }
 
     // Setters (for withId only, as this is read-only)

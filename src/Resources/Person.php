@@ -7,13 +7,18 @@ use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasApiMethods;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasAttributes;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasClient;
+use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasCreate;
+use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasDelete;
+use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasRead;
+use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasSave;
+use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasUpdate;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
 
 /** @phpstan-consistent-constructor */
 class Person
 {
-    use HasApiMethods, HasAttributes, HasClient;
+    use HasApiMethods, HasAttributes, HasClient, HasCreate, HasDelete, HasRead, HasSave, HasUpdate;
 
     public const string ENDPOINT = "/people/v2/people";
 
@@ -361,11 +366,11 @@ class Person
                 throw new InvalidArgumentException("Cannot fetch emails for a person without an ID.");
             }
 
-            $this->emails = Email::forPerson(
-                $this->clientId,
-                $this->clientSecret,
-                $personId
-            )->items();
+            $emailInstance = new Email($this->clientId, $this->clientSecret);
+            $response = $emailInstance->client()->get(
+                $emailInstance->hostname() . "/people/v2/people/{$personId}/emails"
+            );
+            $this->emails = $emailInstance->buildPaginatorFromResponse($response)->items();
         }
 
         return $this->emails;

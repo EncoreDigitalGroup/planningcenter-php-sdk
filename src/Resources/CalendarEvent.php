@@ -7,13 +7,14 @@ use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasApiMethods;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasAttributes;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasClient;
+use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasRead;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
 
 /** @phpstan-consistent-constructor */
 class CalendarEvent
 {
-    use HasApiMethods, HasAttributes, HasClient;
+    use HasApiMethods, HasAttributes, HasClient, HasRead;
 
     public const string ENDPOINT = "/calendar/v2/events";
 
@@ -21,6 +22,9 @@ class CalendarEvent
 
     /** Get event instances for this event (lazy-loaded) */
     private ?Collection $eventInstances = null;
+
+    /** Get tags for this event (lazy-loaded) */
+    private ?Collection $tags = null;
 
     public function __construct(string $clientId, string $clientSecret)
     {
@@ -110,14 +114,32 @@ class CalendarEvent
                 throw new InvalidArgumentException("Cannot fetch event instances for an event without an ID.");
             }
 
-            $this->eventInstances = EventInstance::forEvent(
-                $this->clientId,
-                $this->clientSecret,
-                $eventId
-            )->items();
+            $instanceResource = new EventInstance($this->clientId, $this->clientSecret);
+            $response = $instanceResource->client()->get(
+                $instanceResource->hostname() . "/calendar/v2/events/{$eventId}/event_instances"
+            );
+            $this->eventInstances = $instanceResource->buildPaginatorFromResponse($response)->items();
         }
 
         return $this->eventInstances;
+    }
+
+    public function tags(): Collection
+    {
+        if (!$this->tags instanceof Collection) {
+            $eventId = $this->id();
+            if ($eventId === null) {
+                throw new InvalidArgumentException("Cannot fetch tags for an event without an ID.");
+            }
+
+            $tagInstance = new CalendarTag($this->clientId, $this->clientSecret);
+            $response = $tagInstance->client()->get(
+                $tagInstance->hostname() . "/calendar/v2/events/{$eventId}/tags"
+            );
+            $this->tags = $tagInstance->buildPaginatorFromResponse($response)->items();
+        }
+
+        return $this->tags;
     }
 
     protected function dateAttributes(): array
