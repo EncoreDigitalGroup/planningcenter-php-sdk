@@ -32,6 +32,13 @@ class PersonMerger
         $this->setApiVersion(PlanningCenterApiVersion::PEOPLE_DEFAULT);
     }
 
+    protected function dateAttributes(): array
+    {
+        return [
+            'created_at',
+        ];
+    }
+
     // Setters
     public function withId(string $value): self
     {

@@ -8,11 +8,21 @@ use Illuminate\Support\Collection;
 trait HasAttributes
 {
     protected Collection $attributes;
-    protected array $dateAttributes = [];
 
     public function __construct()
     {
         $this->attributes = new Collection;
+    }
+
+    /**
+     * Get the list of attributes that should be parsed as dates.
+     * Override this method in your class to specify date attributes.
+     *
+     * @return array<int, string>
+     */
+    protected function dateAttributes(): array
+    {
+        return [];
     }
 
     public function setAttribute(string $key, mixed $value): self
@@ -71,11 +81,16 @@ trait HasAttributes
 
     protected function parseDate(?string $value): ?CarbonImmutable
     {
-        if ($value === null) {
+        if ($value === null || $value === '') {
             return null;
         }
 
-        return CarbonImmutable::parse($value);
+        try {
+            return CarbonImmutable::parse($value);
+        } catch (\Exception $e) {
+            // If parsing fails, return null instead of throwing
+            return null;
+        }
     }
 
     protected function hydrateFromArray(array $data): void
@@ -85,8 +100,8 @@ trait HasAttributes
         }
 
         foreach ($data["attributes"] ?? [] as $key => $value) {
-            // Parse dates/datetimes if dateAttributes is defined
-            if (in_array($key, $this->dateAttributes)) {
+            // Parse dates/datetimes if specified in dateAttributes
+            if (in_array($key, $this->dateAttributes(), strict: true)) {
                 $value = $this->parseDate($value);
             }
             $this->setAttribute($key, $value);

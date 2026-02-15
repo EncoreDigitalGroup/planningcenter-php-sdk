@@ -33,6 +33,16 @@ class GroupEvent
         $this->setApiVersion(PlanningCenterApiVersion::GROUPS_DEFAULT);
     }
 
+    protected function dateAttributes(): array
+    {
+        return [
+            'canceled_at',
+            'ends_at',
+            'reminders_sent_at',
+            'starts_at',
+        ];
+    }
+
     // Setters
     public function withId(string $value): self
     {

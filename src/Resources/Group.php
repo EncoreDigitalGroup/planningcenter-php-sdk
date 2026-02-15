@@ -36,6 +36,14 @@ class Group
         $this->setApiVersion(PlanningCenterApiVersion::GROUPS_DEFAULT);
     }
 
+    protected function dateAttributes(): array
+    {
+        return [
+            'archived_at',
+            'created_at',
+        ];
+    }
+
     /** Static factory method for backward compatibility with tests */
     public static function make(string $clientId, string $clientSecret): self
     {

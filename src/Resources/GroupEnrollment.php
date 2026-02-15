@@ -33,6 +33,13 @@ class GroupEnrollment
         $this->setApiVersion(PlanningCenterApiVersion::GROUPS_DEFAULT);
     }
 
+    protected function dateAttributes(): array
+    {
+        return [
+            'date_limit',
+        ];
+    }
+
     // Setters
     public function withId(string $value): self
     {

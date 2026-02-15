@@ -35,6 +35,14 @@ class CalendarTag
         $this->setApiVersion(PlanningCenterApiVersion::CALENDAR_DEFAULT);
     }
 
+    protected function dateAttributes(): array
+    {
+        return [
+            'created_at',
+            'updated_at',
+        ];
+    }
+
     // Setters (for withId only, as this is read-only)
     public function withId(string $value): self
     {

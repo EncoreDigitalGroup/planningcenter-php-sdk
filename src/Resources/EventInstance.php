@@ -42,6 +42,18 @@ class EventInstance
         $this->setApiVersion(PlanningCenterApiVersion::CALENDAR_DEFAULT);
     }
 
+    protected function dateAttributes(): array
+    {
+        return [
+            'created_at',
+            'ends_at',
+            'starts_at',
+            'updated_at',
+            'published_start_at',
+            'published_ends_at',
+        ];
+    }
+
     /** Static factory method for backward compatibility with tests */
     public static function make(string $clientId, string $clientSecret): self
     {

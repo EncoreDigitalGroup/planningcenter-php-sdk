@@ -37,6 +37,17 @@ class Person
         $this->setApiVersion(PlanningCenterApiVersion::PEOPLE_DEFAULT);
     }
 
+    protected function dateAttributes(): array
+    {
+        return [
+            'birthdate',
+            'anniversary',
+            'created_at',
+            'updated_at',
+            'inactivated_at',
+        ];
+    }
+
     // Setters
     public function withId(string $value): self
     {
