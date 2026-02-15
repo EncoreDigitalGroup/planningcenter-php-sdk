@@ -3,7 +3,6 @@
 namespace EncoreDigitalGroup\PlanningCenter\Resources;
 
 use Carbon\CarbonImmutable;
-use EncoreDigitalGroup\PlanningCenter\Support\Paginator;
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasApiMethods;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasAttributes;

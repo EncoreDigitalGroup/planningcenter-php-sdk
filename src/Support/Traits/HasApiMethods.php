@@ -29,9 +29,23 @@ trait HasApiMethods
     }
 
     /**
+     * Create and hydrate a new instance from array data
+     *
+     * @param  array<string, mixed>  $data
+     */
+    protected static function createFromArray(array $data, string $clientId, string $clientSecret): static
+    {
+        $instance = new static($clientId, $clientSecret);
+        $instance->hydrateFromArray($data);
+
+        return $instance;
+    }
+
+    /**
      * Build a Paginator from an API response
      *
      * @internal This method is for internal SDK use only.
+     *
      * @return Paginator<static>
      */
     public function buildPaginatorFromResponse(Response $response): Paginator
@@ -54,18 +68,4 @@ trait HasApiMethods
             perPage: $meta["per_page"] ?? 25
         );
     }
-
-    /**
-     * Create and hydrate a new instance from array data
-     *
-     * @param  array<string, mixed>  $data
-     */
-    protected static function createFromArray(array $data, string $clientId, string $clientSecret): static
-    {
-        $instance = new static($clientId, $clientSecret);
-        $instance->hydrateFromArray($data);
-
-        return $instance;
-    }
-
 }

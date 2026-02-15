@@ -28,9 +28,7 @@ trait HasSave
         return $this->create();
     }
 
-    /**
-     * Check if this resource supports update operations
-     */
+    /** Check if this resource supports update operations */
     private function supportsUpdate(): bool
     {
         return in_array(HasUpdate::class, class_uses($this), true);

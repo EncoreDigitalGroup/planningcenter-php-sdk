@@ -130,9 +130,7 @@ trait HasAttributes
         }
     }
 
-    /**
-     * Hydrate attributes from API response
-     */
+    /** Hydrate attributes from API response */
     protected function hydrateFromResponse(Response $response): void
     {
         $data = $response->json("data");
@@ -145,9 +143,7 @@ trait HasAttributes
         $this->hydrateFromArray($data);
     }
 
-    /**
-     * Convert attributes to Planning Center API format
-     */
+    /** Convert attributes to Planning Center API format */
     protected function mapToPco(): array
     {
         // Exclude read-only attributes
