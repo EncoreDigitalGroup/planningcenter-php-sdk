@@ -37,6 +37,7 @@ jobs:
                     jiraURL: ${{ vars.JIRA_URL }}
                     jiraEmail: ${{ secrets.JIRA_EMAIL }}
                     jiraToken: ${{ secrets.JIRA_TOKEN }}
+                    strategy: 'jira'
 
     CodeStyle:
         needs: GitStatusCheck
