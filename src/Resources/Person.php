@@ -373,15 +373,10 @@ class Person
                 throw new InvalidArgumentException("Cannot fetch emails for a person without an ID.");
             }
 
-            // Merge with accumulated query parameters if HasQueryParameters trait is used
-            $mergedQuery = method_exists($this, 'mergeQueryParameters')
-                ? $this->mergeQueryParameters($query)
-                : $query;
-
             $emailInstance = new Email($this->clientId, $this->clientSecret);
             $response = $emailInstance->client()->get(
                 $emailInstance->hostname() . "/people/v2/people/{$personId}/emails",
-                $mergedQuery
+                $this->mergeQueryParameters($query)
             );
             $this->emails = $emailInstance->buildPaginatorFromResponse($response);
         }

@@ -122,15 +122,10 @@ class CalendarEvent
                 throw new InvalidArgumentException("Cannot fetch event instances for an event without an ID.");
             }
 
-            // Merge with accumulated query parameters if HasQueryParameters trait is used
-            $mergedQuery = method_exists($this, 'mergeQueryParameters')
-                ? $this->mergeQueryParameters($query)
-                : $query;
-
             $instanceResource = new EventInstance($this->clientId, $this->clientSecret);
             $response = $instanceResource->client()->get(
                 $instanceResource->hostname() . "/calendar/v2/events/{$eventId}/event_instances",
-                $mergedQuery
+                $this->mergeQueryParameters($query)
             );
             $this->eventInstances = $instanceResource->buildPaginatorFromResponse($response);
         }
@@ -151,15 +146,10 @@ class CalendarEvent
                 throw new InvalidArgumentException("Cannot fetch tags for an event without an ID.");
             }
 
-            // Merge with accumulated query parameters if HasQueryParameters trait is used
-            $mergedQuery = method_exists($this, 'mergeQueryParameters')
-                ? $this->mergeQueryParameters($query)
-                : $query;
-
             $tagInstance = new CalendarTag($this->clientId, $this->clientSecret);
             $response = $tagInstance->client()->get(
                 $tagInstance->hostname() . "/calendar/v2/events/{$eventId}/tags",
-                $mergedQuery
+                $this->mergeQueryParameters($query)
             );
             $this->tags = $tagInstance->buildPaginatorFromResponse($response);
         }

@@ -19,14 +19,9 @@ trait HasRead
             throw new InvalidArgumentException("Cannot fetch resource without an ID. Use withId() first.");
         }
 
-        // Merge with accumulated query parameters if HasQueryParameters trait is used
-        $mergedQuery = method_exists($this, 'mergeQueryParameters')
-            ? $this->mergeQueryParameters($query)
-            : $query;
-
         $response = $this->client()->get(
             $this->hostname() . $this->endpoint . "/" . $this->getAttribute("id"),
-            $mergedQuery
+            $this->mergeQueryParameters($query)
         );
 
         $this->setResponse($response);

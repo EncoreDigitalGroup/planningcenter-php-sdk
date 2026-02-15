@@ -149,15 +149,10 @@ class Group
                 throw new InvalidArgumentException("Cannot fetch memberships for a group without an ID.");
             }
 
-            // Merge with accumulated query parameters if HasQueryParameters trait is used
-            $mergedQuery = method_exists($this, 'mergeQueryParameters')
-                ? $this->mergeQueryParameters($query)
-                : $query;
-
             $membershipInstance = new GroupMembership($this->clientId, $this->clientSecret);
             $response = $membershipInstance->client()->get(
                 $membershipInstance->hostname() . "/groups/v2/groups/{$groupId}/memberships",
-                $mergedQuery
+                $this->mergeQueryParameters($query)
             );
             $this->memberships = $membershipInstance->buildPaginatorFromResponse($response);
         }
