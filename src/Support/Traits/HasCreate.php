@@ -16,6 +16,7 @@ trait HasCreate
             $this->mapToPco()
         );
 
+        $this->setResponse($response);
         $this->hydrateFromResponse($response);
 
         return $this;

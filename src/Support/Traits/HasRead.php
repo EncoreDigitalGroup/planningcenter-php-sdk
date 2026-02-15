@@ -21,6 +21,7 @@ trait HasRead
             $this->hostname() . $this->endpoint . "/" . $this->getAttribute("id")
         );
 
+        $this->setResponse($response);
         $this->hydrateFromResponse($response);
 
         return $this;

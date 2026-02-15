@@ -47,7 +47,6 @@ trait HasApiMethods
      *
      * @return Paginator<static>
      * @internal This method is for internal SDK use only.
-     *
      */
     public function buildPaginatorFromResponse(Response $response): Paginator
     {
