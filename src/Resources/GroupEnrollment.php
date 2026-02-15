@@ -8,12 +8,13 @@ use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasApiMethods;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasAttributes;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasClient;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasRead;
+use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasResponse;
 use Illuminate\Support\Collection;
 
 /** @phpstan-consistent-constructor */
 class GroupEnrollment
 {
-    use HasApiMethods, HasAttributes, HasClient, HasRead;
+    use HasApiMethods, HasAttributes, HasClient, HasRead, HasResponse;
 
     public const string ENDPOINT = "/groups/v2/group_enrollments";
 

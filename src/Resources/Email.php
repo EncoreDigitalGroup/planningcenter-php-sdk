@@ -10,6 +10,7 @@ use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasClient;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasCreate;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasDelete;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasRead;
+use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasResponse;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasSave;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasUpdate;
 use Illuminate\Support\Collection;
@@ -17,7 +18,7 @@ use Illuminate\Support\Collection;
 /** @phpstan-consistent-constructor */
 class Email
 {
-    use HasApiMethods, HasAttributes, HasClient, HasCreate, HasDelete, HasRead, HasSave, HasUpdate;
+    use HasApiMethods, HasAttributes, HasClient, HasCreate, HasDelete, HasRead, HasResponse, HasSave, HasUpdate;
 
     public const string ENDPOINT = "/people/v2/emails";
 
