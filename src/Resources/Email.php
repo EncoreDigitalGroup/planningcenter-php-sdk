@@ -10,17 +10,14 @@ use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasAttributes;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasClient;
 use Illuminate\Support\Collection;
 
-/**
- * @phpstan-consistent-constructor
- */
+/** @phpstan-consistent-constructor */
 class Email
 {
     use HasApiMethods, HasAttributes, HasClient;
 
-    public const string EMAIL_ENDPOINT = "/people/v2/emails";
+    public const string ENDPOINT = "/people/v2/emails";
 
-    protected string $endpoint = "/people/v2/emails";
-
+    protected string $endpoint = self::ENDPOINT;
     protected array $readOnlyAttributes = [
         "id",
         "created_at",

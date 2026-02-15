@@ -9,18 +9,14 @@ use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasAttributes;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasClient;
 use Illuminate\Support\Collection;
 
-/**
- * @phpstan-consistent-constructor
- */
+/** @phpstan-consistent-constructor */
 class CalendarTag
 {
     use HasApiMethods, HasAttributes, HasClient;
 
-    protected string $endpoint = "/calendar/v2/tags";
-    protected array $dateAttributes = [
-        "created_at",
-        "updated_at",
-    ];
+    public const string ENDPOINT = "/calendar/v2/tags";
+
+    protected string $endpoint = self::ENDPOINT;
     protected array $readOnlyAttributes = [
         "id",
         "church_center_category",

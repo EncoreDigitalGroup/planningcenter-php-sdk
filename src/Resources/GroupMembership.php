@@ -10,17 +10,14 @@ use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasAttributes;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasClient;
 use Illuminate\Support\Collection;
 
-/**
- * @phpstan-consistent-constructor
- */
+/** @phpstan-consistent-constructor */
 class GroupMembership
 {
     use HasApiMethods, HasAttributes, HasClient;
 
-    protected string $endpoint = "/groups/v2/memberships";
-    protected array $dateAttributes = [
-        "joined_at",
-    ];
+    public const string ENDPOINT = "/groups/v2/memberships";
+
+    protected string $endpoint = self::ENDPOINT;
     protected array $readOnlyAttributes = [
         "id",
     ];
@@ -38,7 +35,8 @@ class GroupMembership
         string $clientId,
         string $clientSecret,
         string $groupId
-    ): Paginator {
+    ): Paginator
+    {
         $instance = new static($clientId, $clientSecret);
 
         $response = $instance->client()->get(

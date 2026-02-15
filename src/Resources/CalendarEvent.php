@@ -9,16 +9,14 @@ use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasAttributes;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasClient;
 use Illuminate\Support\Collection;
 
-/**
- * @phpstan-consistent-constructor
- */
+/** @phpstan-consistent-constructor */
 class CalendarEvent
 {
     use HasApiMethods, HasAttributes, HasClient;
 
-    public const string EVENT_ENDPOINT = "/calendar/v2/events";
+    public const string ENDPOINT = "/calendar/v2/events";
 
-    protected string $endpoint = "/calendar/v2/events";
+    protected string $endpoint = self::ENDPOINT;
     protected array $readOnlyAttributes = [
         "id",
         "approval_status",

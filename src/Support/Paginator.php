@@ -5,14 +5,10 @@ namespace EncoreDigitalGroup\PlanningCenter\Support;
 use BadMethodCallException;
 use Illuminate\Support\Collection;
 
-/**
- * @template TResource
- */
+/** @template TResource */
 class Paginator
 {
-    /**
-     * @param Collection<int, TResource> $data
-     */
+    /** @param Collection<int, TResource> $data */
     public function __construct(
         private Collection $data,
         private ?string $nextUrl,

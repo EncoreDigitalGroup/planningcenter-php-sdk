@@ -8,14 +8,14 @@ use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasAttributes;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasClient;
 use Illuminate\Support\Collection;
 
-/**
- * @phpstan-consistent-constructor
- */
+/** @phpstan-consistent-constructor */
 class GroupTag
 {
     use HasApiMethods, HasAttributes, HasClient;
 
-    protected string $endpoint = "/groups/v2/tags";
+    public const string ENDPOINT = "/groups/v2/tags";
+
+    protected string $endpoint = self::ENDPOINT;
     protected array $dateAttributes = [];
     protected array $readOnlyAttributes = [
         "id",

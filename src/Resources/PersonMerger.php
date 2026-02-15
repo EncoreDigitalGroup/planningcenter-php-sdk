@@ -9,17 +9,14 @@ use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasAttributes;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasClient;
 use Illuminate\Support\Collection;
 
-/**
- * @phpstan-consistent-constructor
- */
+/** @phpstan-consistent-constructor */
 class PersonMerger
 {
     use HasApiMethods, HasAttributes, HasClient;
 
-    protected string $endpoint = "/people/v2/person_mergers";
-    protected array $dateAttributes = [
-        "created_at",
-    ];
+    public const string ENDPOINT = "/people/v2/person_mergers";
+
+    protected string $endpoint = self::ENDPOINT;
     protected array $readOnlyAttributes = [
         "id",
         "created_at",

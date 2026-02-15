@@ -10,16 +10,14 @@ use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasAttributes;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasClient;
 use Illuminate\Support\Collection;
 
-/**
- * @phpstan-consistent-constructor
- */
+/** @phpstan-consistent-constructor */
 class EventInstance
 {
     use HasApiMethods, HasAttributes, HasClient;
 
-    public const string EVENT_INSTANCE_ENDPOINT = "/calendar/v2/event_instances";
+    public const string ENDPOINT = "/calendar/v2/event_instances";
 
-    protected string $endpoint = "/calendar/v2/event_instances";
+    protected string $endpoint = self::ENDPOINT;
     protected array $readOnlyAttributes = [
         "id",
         "all_day_event",

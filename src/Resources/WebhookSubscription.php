@@ -10,16 +10,14 @@ use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasClient;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
 
-/**
- * @phpstan-consistent-constructor
- */
+/** @phpstan-consistent-constructor */
 class WebhookSubscription
 {
     use HasApiMethods, HasAttributes, HasClient;
 
     public const string ENDPOINT = "/webhooks/v2/webhook_subscriptions";
 
-    protected string $endpoint = "/webhooks/v2/webhook_subscriptions";
+    protected string $endpoint = self::ENDPOINT;
     protected array $readOnlyAttributes = [
         "id",
         "application_id",

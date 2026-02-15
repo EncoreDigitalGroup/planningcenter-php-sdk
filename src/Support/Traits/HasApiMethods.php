@@ -19,9 +19,8 @@ trait HasApiMethods
     public static function all(
         string $clientId,
         string $clientSecret,
-        array  $query = []
-    ): Paginator
-    {
+        array $query = []
+    ): Paginator {
         $instance = new static($clientId, $clientSecret);
 
         $response = $instance->client()->get(
@@ -52,16 +51,15 @@ trait HasApiMethods
      */
     protected static function buildPaginatorFromResponse(
         Response $response,
-        string   $clientId,
-        string   $clientSecret
-    ): Paginator
-    {
+        string $clientId,
+        string $clientSecret
+    ): Paginator {
         /** @var array<int, array<string, mixed>> $jsonData */
         $jsonData = $response->json("data");
 
         /** @var Collection<int, static> $data */
         $data = collect($jsonData)->map(
-            fn (array $item) => static::createFromArray($item, $clientId, $clientSecret)
+            fn (array $item): static => static::createFromArray($item, $clientId, $clientSecret)
         );
 
         $meta = $response->json("meta");
@@ -78,8 +76,7 @@ trait HasApiMethods
     /**
      * Create and hydrate a new instance from array data
      *
-     * @param array<string, mixed> $data
-     * @return static
+     * @param  array<string, mixed>  $data
      */
     protected static function createFromArray(array $data, string $clientId, string $clientSecret): static
     {
@@ -195,7 +192,7 @@ trait HasApiMethods
 
         return [
             "data" => [
-                "attributes" => array_filter($attributes, fn($v): bool => $v !== null),
+                "attributes" => array_filter($attributes, fn ($v): bool => $v !== null),
             ],
         ];
     }

@@ -48,7 +48,7 @@ class GroupMocks extends BaseMock
     protected static function useGroupCollection(): void
     {
         HttpClient::fake([
-            self::HOSTNAME . Group::GROUPS_ENDPOINT => function ($request) {
+            self::HOSTNAME . Group::ENDPOINT => function ($request) {
                 return match ($request->method()) {
                     "GET" => HttpClient::response(self::useCollectionResponse(ObjectType::Group)),
                     default => HttpClient::response([], 405),
@@ -57,7 +57,7 @@ class GroupMocks extends BaseMock
         ]);
 
         HttpClient::fake([
-            self::HOSTNAME . Group::GROUPS_ENDPOINT . "?filter=my_groups" => function ($request) {
+            self::HOSTNAME . Group::ENDPOINT . "?filter=my_groups" => function ($request) {
                 return match ($request->method()) {
                     "GET" => HttpClient::response(self::useCollectionResponse(ObjectType::Group)),
                     default => HttpClient::response([], 405),
@@ -69,7 +69,7 @@ class GroupMocks extends BaseMock
     protected static function useSpecificGroup(): void
     {
         HttpClient::fake([
-            self::HOSTNAME . Group::GROUPS_ENDPOINT . "/1" => function ($request) {
+            self::HOSTNAME . Group::ENDPOINT . "/1" => function ($request) {
                 return match ($request->method()) {
                     "GET" => HttpClient::response(self::useSingleResponse(ObjectType::Group)),
                     default => HttpClient::response([], 405),
@@ -81,7 +81,7 @@ class GroupMocks extends BaseMock
     protected static function useMembershipCollection(): void
     {
         HttpClient::fake([
-            self::HOSTNAME . Group::GROUPS_ENDPOINT . "/1/memberships" => function ($request) {
+            self::HOSTNAME . Group::ENDPOINT . "/1/memberships" => function ($request) {
                 return match ($request->method()) {
                     "GET" => HttpClient::response(self::useCollectionResponse(ObjectType::GroupMembership)),
                     default => HttpClient::response([], 405),
@@ -93,7 +93,7 @@ class GroupMocks extends BaseMock
     protected static function useGroupMemberPersonCollection(): void
     {
         HttpClient::fake([
-            self::HOSTNAME . Group::GROUPS_ENDPOINT . "/1/people" => function ($request) {
+            self::HOSTNAME . Group::ENDPOINT . "/1/people" => function ($request) {
                 return match ($request->method()) {
                     "GET" => HttpClient::response(self::useCollectionResponse(ObjectType::GroupMembers)),
                     default => HttpClient::response([], 405),
@@ -105,7 +105,7 @@ class GroupMocks extends BaseMock
     protected static function useGroupTagRelationshipCollection(): void
     {
         HttpClient::fake([
-            self::HOSTNAME . Group::GROUPS_ENDPOINT . "/1/tags" => function ($request) {
+            self::HOSTNAME . Group::ENDPOINT . "/1/tags" => function ($request) {
                 return match ($request->method()) {
                     "GET" => HttpClient::response(self::useCollectionResponse(ObjectType::Tag)),
                     default => HttpClient::response([], 405),
@@ -117,7 +117,7 @@ class GroupMocks extends BaseMock
     protected static function useEnrollmentCollection(): void
     {
         HttpClient::fake([
-            self::HOSTNAME . Group::GROUPS_ENDPOINT . "/1/enrollment" => function ($request) {
+            self::HOSTNAME . Group::ENDPOINT . "/1/enrollment" => function ($request) {
                 return match ($request->method()) {
                     "GET" => HttpClient::response(self::useCollectionResponse(ObjectType::Enrollment)),
                     default => HttpClient::response([], 405),
@@ -129,7 +129,7 @@ class GroupMocks extends BaseMock
     protected static function useTagGroupCollection(): void
     {
         HttpClient::fake([
-            self::HOSTNAME . TagGroup::TAG_GROUP_ENDPOINT => function ($request) {
+            self::HOSTNAME . TagGroup::ENDPOINT => function ($request) {
                 return match ($request->method()) {
                     "GET" => HttpClient::response(self::useCollectionResponse(ObjectType::TagGroup)),
                     default => HttpClient::response([], 405),
@@ -141,7 +141,7 @@ class GroupMocks extends BaseMock
     protected static function useSpecificTagGroup(): void
     {
         HttpClient::fake([
-            self::HOSTNAME . TagGroup::TAG_GROUP_ENDPOINT . "/1" => function ($request) {
+            self::HOSTNAME . TagGroup::ENDPOINT . "/1" => function ($request) {
                 return match ($request->method()) {
                     "GET" => HttpClient::response(self::useSingleResponse(ObjectType::TagGroup)),
                     default => HttpClient::response([], 405),

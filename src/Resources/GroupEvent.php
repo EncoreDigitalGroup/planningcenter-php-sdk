@@ -9,20 +9,14 @@ use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasAttributes;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasClient;
 use Illuminate\Support\Collection;
 
-/**
- * @phpstan-consistent-constructor
- */
+/** @phpstan-consistent-constructor */
 class GroupEvent
 {
     use HasApiMethods, HasAttributes, HasClient;
 
-    protected string $endpoint = "/groups/v2/events";
-    protected array $dateAttributes = [
-        "canceled_at",
-        "ends_at",
-        "reminders_sent_at",
-        "starts_at",
-    ];
+    public const string ENDPOINT = "/groups/v2/events";
+
+    protected string $endpoint = self::ENDPOINT;
     protected array $readOnlyAttributes = [
         "id",
         "canceled_at",
