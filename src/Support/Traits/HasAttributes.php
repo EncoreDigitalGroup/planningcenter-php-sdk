@@ -3,6 +3,7 @@
 namespace EncoreDigitalGroup\PlanningCenter\Support\Traits;
 
 use Carbon\CarbonImmutable;
+use Exception;
 use Illuminate\Support\Collection;
 
 trait HasAttributes
@@ -12,28 +13,6 @@ trait HasAttributes
     public function __construct()
     {
         $this->attributes = new Collection;
-    }
-
-    /**
-     * Get the list of attributes that should be parsed as dates.
-     * Override this method in your class to specify date attributes.
-     *
-     * @return array<int, string>
-     */
-    protected function dateAttributes(): array
-    {
-        return [];
-    }
-
-    /**
-     * Get the list of read-only attributes that should not be sent to the API.
-     * Override this method in your class to specify additional read-only attributes.
-     *
-     * @return array<int, string>
-     */
-    protected function readOnlyAttributes(): array
-    {
-        return ['id', 'created_at', 'updated_at'];
     }
 
     public function setAttribute(string $key, mixed $value): self
@@ -90,15 +69,37 @@ trait HasAttributes
         return $this->attributes->toArray();
     }
 
+    /**
+     * Get the list of attributes that should be parsed as dates.
+     * Override this method in your class to specify date attributes.
+     *
+     * @return array<int, string>
+     */
+    protected function dateAttributes(): array
+    {
+        return [];
+    }
+
+    /**
+     * Get the list of read-only attributes that should not be sent to the API.
+     * Override this method in your class to specify additional read-only attributes.
+     *
+     * @return array<int, string>
+     */
+    protected function readOnlyAttributes(): array
+    {
+        return ["id", "created_at", "updated_at"];
+    }
+
     protected function parseDate(?string $value): ?CarbonImmutable
     {
-        if ($value === null || $value === '') {
+        if ($value === null || $value === "") {
             return null;
         }
 
         try {
             return CarbonImmutable::parse($value);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // If parsing fails, return null instead of throwing
             return null;
         }

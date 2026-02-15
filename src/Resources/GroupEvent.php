@@ -26,27 +26,6 @@ class GroupEvent
         $this->setApiVersion(PlanningCenterApiVersion::GROUPS_DEFAULT);
     }
 
-    protected function dateAttributes(): array
-    {
-        return [
-            'canceled_at',
-            'ends_at',
-            'reminders_sent_at',
-            'starts_at',
-        ];
-    }
-
-    protected function readOnlyAttributes(): array
-    {
-        return [
-            'id',
-            'canceled_at',
-            'reminders_sent',
-            'reminders_sent_at',
-            'visitors_count',
-        ];
-    }
-
     // Setters
     public function withId(string $value): self
     {
@@ -187,5 +166,26 @@ class GroupEvent
     public function visitorsCount(): ?int
     {
         return $this->getAttribute("visitors_count");
+    }
+
+    protected function dateAttributes(): array
+    {
+        return [
+            "canceled_at",
+            "ends_at",
+            "reminders_sent_at",
+            "starts_at",
+        ];
+    }
+
+    protected function readOnlyAttributes(): array
+    {
+        return [
+            "id",
+            "canceled_at",
+            "reminders_sent",
+            "reminders_sent_at",
+            "visitors_count",
+        ];
     }
 }

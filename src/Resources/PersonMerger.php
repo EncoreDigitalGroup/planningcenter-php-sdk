@@ -26,23 +26,6 @@ class PersonMerger
         $this->setApiVersion(PlanningCenterApiVersion::PEOPLE_DEFAULT);
     }
 
-    protected function dateAttributes(): array
-    {
-        return [
-            'created_at',
-        ];
-    }
-
-    protected function readOnlyAttributes(): array
-    {
-        return [
-            'id',
-            'created_at',
-            'person_to_keep_id',
-            'person_to_remove_id',
-        ];
-    }
-
     // Setters
     public function withId(string $value): self
     {
@@ -78,5 +61,22 @@ class PersonMerger
     public function personToRemoveId(): ?int
     {
         return $this->getAttribute("person_to_remove_id");
+    }
+
+    protected function dateAttributes(): array
+    {
+        return [
+            "created_at",
+        ];
+    }
+
+    protected function readOnlyAttributes(): array
+    {
+        return [
+            "id",
+            "created_at",
+            "person_to_keep_id",
+            "person_to_remove_id",
+        ];
     }
 }

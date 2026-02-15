@@ -27,25 +27,6 @@ class WebhookSubscription
         $this->setApiVersion(PlanningCenterApiVersion::WEBHOOKS_DEFAULT);
     }
 
-    protected function dateAttributes(): array
-    {
-        return [
-            'created_at',
-            'updated_at',
-        ];
-    }
-
-    protected function readOnlyAttributes(): array
-    {
-        return [
-            'id',
-            'application_id',
-            'authenticity_secret',
-            'created_at',
-            'updated_at',
-        ];
-    }
-
     // Setters
     public function withId(string $value): self
     {
@@ -128,6 +109,25 @@ class WebhookSubscription
         return $response->successful();
     }
 
+    protected function dateAttributes(): array
+    {
+        return [
+            "created_at",
+            "updated_at",
+        ];
+    }
+
+    protected function readOnlyAttributes(): array
+    {
+        return [
+            "id",
+            "application_id",
+            "authenticity_secret",
+            "created_at",
+            "updated_at",
+        ];
+    }
+
     /**
      * Override update method to handle webhook-specific update logic
      * On update, only 'active' can be changed (name and url are read-only after creation)
@@ -140,7 +140,7 @@ class WebhookSubscription
                 "data" => [
                     "attributes" => array_filter([
                         "active" => $this->getAttribute("active"),
-                    ], fn($v): bool => $v !== null),
+                    ], fn ($v): bool => $v !== null),
                 ],
             ]
         );

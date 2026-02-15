@@ -25,16 +25,6 @@ class GroupMemberPerson
         $this->setApiVersion(PlanningCenterApiVersion::GROUPS_DEFAULT);
     }
 
-    protected function readOnlyAttributes(): array
-    {
-        return [
-            'id',
-            'child',
-            'first_name',
-            'last_name',
-        ];
-    }
-
     // Setters
     public function withId(string $value): self
     {
@@ -60,5 +50,15 @@ class GroupMemberPerson
     public function lastName(): ?string
     {
         return $this->getAttribute("last_name");
+    }
+
+    protected function readOnlyAttributes(): array
+    {
+        return [
+            "id",
+            "child",
+            "first_name",
+            "last_name",
+        ];
     }
 }

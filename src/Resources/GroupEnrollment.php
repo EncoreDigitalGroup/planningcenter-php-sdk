@@ -26,24 +26,6 @@ class GroupEnrollment
         $this->setApiVersion(PlanningCenterApiVersion::GROUPS_DEFAULT);
     }
 
-    protected function dateAttributes(): array
-    {
-        return [
-            'date_limit',
-        ];
-    }
-
-    protected function readOnlyAttributes(): array
-    {
-        return [
-            'id',
-            'auto_closed',
-            'auto_closed_reason',
-            'date_limit_reached',
-            'member_limit_reached',
-        ];
-    }
-
     // Setters
     public function withId(string $value): self
     {
@@ -114,5 +96,23 @@ class GroupEnrollment
     public function strategy(): ?string
     {
         return $this->getAttribute("strategy");
+    }
+
+    protected function dateAttributes(): array
+    {
+        return [
+            "date_limit",
+        ];
+    }
+
+    protected function readOnlyAttributes(): array
+    {
+        return [
+            "id",
+            "auto_closed",
+            "auto_closed_reason",
+            "date_limit_reached",
+            "member_limit_reached",
+        ];
     }
 }

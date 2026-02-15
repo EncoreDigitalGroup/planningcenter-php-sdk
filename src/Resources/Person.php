@@ -30,28 +30,6 @@ class Person
         $this->setApiVersion(PlanningCenterApiVersion::PEOPLE_DEFAULT);
     }
 
-    protected function dateAttributes(): array
-    {
-        return [
-            'birthdate',
-            'anniversary',
-            'created_at',
-            'updated_at',
-            'inactivated_at',
-        ];
-    }
-
-    protected function readOnlyAttributes(): array
-    {
-        return [
-            'id',
-            'created_at',
-            'updated_at',
-            'name',
-            'demographic_avatar_url',
-        ];
-    }
-
     // Setters
     public function withId(string $value): self
     {
@@ -391,5 +369,27 @@ class Person
         }
 
         return $this->emails;
+    }
+
+    protected function dateAttributes(): array
+    {
+        return [
+            "birthdate",
+            "anniversary",
+            "created_at",
+            "updated_at",
+            "inactivated_at",
+        ];
+    }
+
+    protected function readOnlyAttributes(): array
+    {
+        return [
+            "id",
+            "created_at",
+            "updated_at",
+            "name",
+            "demographic_avatar_url",
+        ];
     }
 }

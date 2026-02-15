@@ -27,44 +27,12 @@ class EventInstance
         $this->setApiVersion(PlanningCenterApiVersion::CALENDAR_DEFAULT);
     }
 
-    protected function dateAttributes(): array
-    {
-        return [
-            'created_at',
-            'ends_at',
-            'starts_at',
-            'updated_at',
-            'published_start_at',
-            'published_ends_at',
-        ];
-    }
-
-    protected function readOnlyAttributes(): array
-    {
-        return [
-            'id',
-            'all_day_event',
-            'compact_recurrence_description',
-            'created_at',
-            'ends_at',
-            'location',
-            'recurrence',
-            'recurrence_description',
-            'starts_at',
-            'updated_at',
-            'church_center_url',
-            'published_start_at',
-            'published_ends_at',
-        ];
-    }
-
     /** Get all event instances for a specific event */
     public static function forEvent(
         string $clientId,
         string $clientSecret,
         string $eventId
-    ): Paginator
-    {
+    ): Paginator {
         $instance = new static($clientId, $clientSecret);
 
         $response = $instance->client()->get(
@@ -144,5 +112,36 @@ class EventInstance
     public function publishedEndsAt(): ?string
     {
         return $this->getAttribute("published_ends_at");
+    }
+
+    protected function dateAttributes(): array
+    {
+        return [
+            "created_at",
+            "ends_at",
+            "starts_at",
+            "updated_at",
+            "published_start_at",
+            "published_ends_at",
+        ];
+    }
+
+    protected function readOnlyAttributes(): array
+    {
+        return [
+            "id",
+            "all_day_event",
+            "compact_recurrence_description",
+            "created_at",
+            "ends_at",
+            "location",
+            "recurrence",
+            "recurrence_description",
+            "starts_at",
+            "updated_at",
+            "church_center_url",
+            "published_start_at",
+            "published_ends_at",
+        ];
     }
 }

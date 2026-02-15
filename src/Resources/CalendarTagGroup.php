@@ -26,25 +26,6 @@ class CalendarTagGroup
         $this->setApiVersion(PlanningCenterApiVersion::CALENDAR_DEFAULT);
     }
 
-    protected function dateAttributes(): array
-    {
-        return [
-            'created_at',
-            'updated_at',
-        ];
-    }
-
-    protected function readOnlyAttributes(): array
-    {
-        return [
-            'id',
-            'created_at',
-            'name',
-            'updated_at',
-            'required',
-        ];
-    }
-
     // Setters (for withId only, as this is read-only)
     public function withId(string $value): self
     {
@@ -75,5 +56,24 @@ class CalendarTagGroup
     public function required(): ?bool
     {
         return $this->getAttribute("required");
+    }
+
+    protected function dateAttributes(): array
+    {
+        return [
+            "created_at",
+            "updated_at",
+        ];
+    }
+
+    protected function readOnlyAttributes(): array
+    {
+        return [
+            "id",
+            "created_at",
+            "name",
+            "updated_at",
+            "required",
+        ];
     }
 }

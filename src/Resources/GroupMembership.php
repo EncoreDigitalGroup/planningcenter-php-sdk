@@ -27,18 +27,12 @@ class GroupMembership
         $this->setApiVersion(PlanningCenterApiVersion::GROUPS_DEFAULT);
     }
 
-    protected function readOnlyAttributes(): array
-    {
-        return ['id'];
-    }
-
     /** Get all memberships for a specific group */
     public static function forGroup(
         string $clientId,
         string $clientSecret,
         string $groupId
-    ): Paginator
-    {
+    ): Paginator {
         $instance = new static($clientId, $clientSecret);
 
         $response = $instance->client()->get(
@@ -78,5 +72,10 @@ class GroupMembership
     public function role(): ?string
     {
         return $this->getAttribute("role");
+    }
+
+    protected function readOnlyAttributes(): array
+    {
+        return ["id"];
     }
 }

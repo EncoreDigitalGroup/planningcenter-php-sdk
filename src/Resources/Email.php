@@ -27,31 +27,12 @@ class Email
         $this->setApiVersion(PlanningCenterApiVersion::PEOPLE_DEFAULT);
     }
 
-    protected function dateAttributes(): array
-    {
-        return [
-            'created_at',
-            'updated_at',
-        ];
-    }
-
-    protected function readOnlyAttributes(): array
-    {
-        return [
-            'id',
-            'created_at',
-            'updated_at',
-            'blocked',
-        ];
-    }
-
     /** Get all emails for a specific person */
     public static function forPerson(
         string $clientId,
         string $clientSecret,
         string $personId
-    ): Paginator
-    {
+    ): Paginator {
         $instance = new static($clientId, $clientSecret);
 
         $response = $instance->client()->get(
@@ -116,5 +97,23 @@ class Email
     public function updatedAt(): ?CarbonImmutable
     {
         return $this->getAttribute("updated_at");
+    }
+
+    protected function dateAttributes(): array
+    {
+        return [
+            "created_at",
+            "updated_at",
+        ];
+    }
+
+    protected function readOnlyAttributes(): array
+    {
+        return [
+            "id",
+            "created_at",
+            "updated_at",
+            "blocked",
+        ];
     }
 }

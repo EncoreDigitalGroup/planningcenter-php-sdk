@@ -29,25 +29,6 @@ class Group
         $this->setApiVersion(PlanningCenterApiVersion::GROUPS_DEFAULT);
     }
 
-    protected function dateAttributes(): array
-    {
-        return [
-            'archived_at',
-            'created_at',
-        ];
-    }
-
-    protected function readOnlyAttributes(): array
-    {
-        return [
-            'id',
-            'archived_at',
-            'created_at',
-            'memberships_count',
-            'public_church_center_url',
-        ];
-    }
-
     // Setters
     public function withId(string $value): self
     {
@@ -161,5 +142,24 @@ class Group
         }
 
         return $this->memberships;
+    }
+
+    protected function dateAttributes(): array
+    {
+        return [
+            "archived_at",
+            "created_at",
+        ];
+    }
+
+    protected function readOnlyAttributes(): array
+    {
+        return [
+            "id",
+            "archived_at",
+            "created_at",
+            "memberships_count",
+            "public_church_center_url",
+        ];
     }
 }

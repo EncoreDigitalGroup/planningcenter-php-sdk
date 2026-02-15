@@ -25,11 +25,6 @@ class GroupTagGroup
         $this->setApiVersion(PlanningCenterApiVersion::GROUPS_DEFAULT);
     }
 
-    protected function readOnlyAttributes(): array
-    {
-        return ['id'];
-    }
-
     // Setters
     public function withId(string $value): self
     {
@@ -80,5 +75,10 @@ class GroupTagGroup
     public function position(): ?int
     {
         return $this->getAttribute("position");
+    }
+
+    protected function readOnlyAttributes(): array
+    {
+        return ["id"];
     }
 }

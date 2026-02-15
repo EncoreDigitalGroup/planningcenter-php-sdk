@@ -26,27 +26,6 @@ class CalendarTag
         $this->setApiVersion(PlanningCenterApiVersion::CALENDAR_DEFAULT);
     }
 
-    protected function dateAttributes(): array
-    {
-        return [
-            'created_at',
-            'updated_at',
-        ];
-    }
-
-    protected function readOnlyAttributes(): array
-    {
-        return [
-            'id',
-            'church_center_category',
-            'color',
-            'created_at',
-            'name',
-            'position',
-            'updated_at',
-        ];
-    }
-
     // Setters (for withId only, as this is read-only)
     public function withId(string $value): self
     {
@@ -87,5 +66,26 @@ class CalendarTag
     public function updatedAt(): ?CarbonImmutable
     {
         return $this->getAttribute("updated_at");
+    }
+
+    protected function dateAttributes(): array
+    {
+        return [
+            "created_at",
+            "updated_at",
+        ];
+    }
+
+    protected function readOnlyAttributes(): array
+    {
+        return [
+            "id",
+            "church_center_category",
+            "color",
+            "created_at",
+            "name",
+            "position",
+            "updated_at",
+        ];
     }
 }
