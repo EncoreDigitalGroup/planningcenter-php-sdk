@@ -8,6 +8,7 @@ use Illuminate\Support\Collection;
 trait HasAttributes
 {
     protected Collection $attributes;
+    protected array $dateAttributes = [];
 
     public function __construct()
     {
@@ -85,7 +86,7 @@ trait HasAttributes
 
         foreach ($data["attributes"] ?? [] as $key => $value) {
             // Parse dates/datetimes if dateAttributes is defined
-            if (property_exists($this, "dateAttributes") && in_array($key, $this->dateAttributes)) {
+            if (in_array($key, $this->dateAttributes)) {
                 $value = $this->parseDate($value);
             }
             $this->setAttribute($key, $value);

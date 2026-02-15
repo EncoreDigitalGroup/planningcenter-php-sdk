@@ -5,8 +5,14 @@ namespace EncoreDigitalGroup\PlanningCenter\Support;
 use BadMethodCallException;
 use Illuminate\Support\Collection;
 
+/**
+ * @template TResource
+ */
 class Paginator
 {
+    /**
+     * @param Collection<int, TResource> $data
+     */
     public function __construct(
         private Collection $data,
         private ?string $nextUrl,
@@ -15,7 +21,11 @@ class Paginator
         private int $perPage
     ) {}
 
-    /** Get the items in the current page */
+    /**
+     * Get the items in the current page
+     *
+     * @return Collection<int, TResource>
+     */
     public function items(): Collection
     {
         return $this->data;

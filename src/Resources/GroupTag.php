@@ -8,6 +8,9 @@ use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasAttributes;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasClient;
 use Illuminate\Support\Collection;
 
+/**
+ * @phpstan-consistent-constructor
+ */
 class GroupTag
 {
     use HasApiMethods, HasAttributes, HasClient;

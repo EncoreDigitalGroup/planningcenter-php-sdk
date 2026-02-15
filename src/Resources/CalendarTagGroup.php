@@ -9,6 +9,9 @@ use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasAttributes;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasClient;
 use Illuminate\Support\Collection;
 
+/**
+ * @phpstan-consistent-constructor
+ */
 class CalendarTagGroup
 {
     use HasApiMethods, HasAttributes, HasClient;
@@ -16,10 +19,6 @@ class CalendarTagGroup
     public const string TAG_GROUP_ENDPOINT = "/calendar/v2/tag_groups";
 
     protected string $endpoint = "/calendar/v2/tag_groups";
-    protected array $dateAttributes = [
-        "created_at",
-        "updated_at",
-    ];
     protected array $readOnlyAttributes = [
         "id",
         "created_at",

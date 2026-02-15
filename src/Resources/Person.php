@@ -9,6 +9,9 @@ use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasAttributes;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasClient;
 use Illuminate\Support\Collection;
 
+/**
+ * @phpstan-consistent-constructor
+ */
 class Person
 {
     use HasApiMethods, HasAttributes, HasClient;
@@ -16,13 +19,7 @@ class Person
     public const string PEOPLE_ENDPOINT = "/people/v2/people";
 
     protected string $endpoint = "/people/v2/people";
-    protected array $dateAttributes = [
-        "birthdate",
-        "anniversary",
-        "created_at",
-        "updated_at",
-        "inactivated_at",
-    ];
+
     protected array $readOnlyAttributes = [
         "id",
         "created_at",
@@ -368,10 +365,15 @@ class Person
     public function emails(): Collection
     {
         if (!$this->emails instanceof Collection) {
+            $personId = $this->id();
+            if ($personId === null) {
+                throw new \InvalidArgumentException("Cannot fetch emails for a person without an ID.");
+            }
+
             $this->emails = Email::forPerson(
                 $this->clientId,
                 $this->clientSecret,
-                $this->id()
+                $personId
             )->items();
         }
 

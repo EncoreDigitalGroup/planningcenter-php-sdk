@@ -10,6 +10,9 @@ use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasClient;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
 
+/**
+ * @phpstan-consistent-constructor
+ */
 class WebhookSubscription
 {
     use HasApiMethods, HasAttributes, HasClient;
@@ -17,10 +20,6 @@ class WebhookSubscription
     public const string ENDPOINT = "/webhooks/v2/webhook_subscriptions";
 
     protected string $endpoint = "/webhooks/v2/webhook_subscriptions";
-    protected array $dateAttributes = [
-        "created_at",
-        "updated_at",
-    ];
     protected array $readOnlyAttributes = [
         "id",
         "application_id",
@@ -137,7 +136,7 @@ class WebhookSubscription
                 "data" => [
                     "attributes" => array_filter([
                         "active" => $this->getAttribute("active"),
-                    ], fn ($v): bool => $v !== null),
+                    ], fn($v): bool => $v !== null),
                 ],
             ]
         );

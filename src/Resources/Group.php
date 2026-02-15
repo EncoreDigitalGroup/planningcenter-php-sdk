@@ -9,6 +9,9 @@ use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasAttributes;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasClient;
 use Illuminate\Support\Collection;
 
+/**
+ * @phpstan-consistent-constructor
+ */
 class Group
 {
     use HasApiMethods, HasAttributes, HasClient;
@@ -16,10 +19,6 @@ class Group
     public const string GROUPS_ENDPOINT = "/groups/v2/groups";
 
     protected string $endpoint = "/groups/v2/groups";
-    protected array $dateAttributes = [
-        "archived_at",
-        "created_at",
-    ];
     protected array $readOnlyAttributes = [
         "id",
         "archived_at",

@@ -6,16 +6,22 @@ use BadMethodCallException;
 use Carbon\CarbonImmutable;
 use EncoreDigitalGroup\PlanningCenter\Support\Paginator;
 use Illuminate\Http\Client\Response;
+use Illuminate\Support\Collection;
 use InvalidArgumentException;
 
 trait HasApiMethods
 {
-    /** List all resources with pagination */
+    /**
+     * List all resources with pagination
+     *
+     * @return Paginator<static>
+     */
     public static function all(
         string $clientId,
         string $clientSecret,
-        array $query = []
-    ): Paginator {
+        array  $query = []
+    ): Paginator
+    {
         $instance = new static($clientId, $clientSecret);
 
         $response = $instance->client()->get(
@@ -26,7 +32,11 @@ trait HasApiMethods
         return static::buildPaginatorFromResponse($response, $clientId, $clientSecret);
     }
 
-    /** Query resources with filters */
+    /**
+     * Query resources with filters
+     *
+     * @return Paginator<static>
+     */
     public static function where(array $query): Paginator
     {
         // This requires singleton credentials, will be implemented via modules
@@ -35,18 +45,24 @@ trait HasApiMethods
         );
     }
 
-    /** Build a Paginator from an API response */
+    /**
+     * Build a Paginator from an API response
+     *
+     * @return Paginator<static>
+     */
     protected static function buildPaginatorFromResponse(
         Response $response,
-        string $clientId,
-        string $clientSecret
-    ): Paginator {
-        $data = collect($response->json("data"))->map(function ($item) use ($clientId, $clientSecret): static {
-            $resource = new static($clientId, $clientSecret);
-            $resource->hydrateFromArray($item);
+        string   $clientId,
+        string   $clientSecret
+    ): Paginator
+    {
+        /** @var array<int, array<string, mixed>> $jsonData */
+        $jsonData = $response->json("data");
 
-            return $resource;
-        });
+        /** @var Collection<int, static> $data */
+        $data = collect($jsonData)->map(
+            fn (array $item) => static::createFromArray($item, $clientId, $clientSecret)
+        );
 
         $meta = $response->json("meta");
 
@@ -57,6 +73,20 @@ trait HasApiMethods
             totalCount: $meta["total_count"] ?? 0,
             perPage: $meta["per_page"] ?? 25
         );
+    }
+
+    /**
+     * Create and hydrate a new instance from array data
+     *
+     * @param array<string, mixed> $data
+     * @return static
+     */
+    protected static function createFromArray(array $data, string $clientId, string $clientSecret): static
+    {
+        $instance = new static($clientId, $clientSecret);
+        $instance->hydrateFromArray($data);
+
+        return $instance;
     }
 
     /** Fetch a single resource by ID */
@@ -142,6 +172,7 @@ trait HasApiMethods
     protected function mapToPco(): array
     {
         // Get read-only attributes if defined, otherwise empty array
+        /** @phpstan-ignore-next-line property.onlyRead */
         $readOnlyAttributes = property_exists($this, "readOnlyAttributes")
             ? $this->readOnlyAttributes
             : [];
@@ -164,7 +195,7 @@ trait HasApiMethods
 
         return [
             "data" => [
-                "attributes" => array_filter($attributes, fn ($v): bool => $v !== null),
+                "attributes" => array_filter($attributes, fn($v): bool => $v !== null),
             ],
         ];
     }

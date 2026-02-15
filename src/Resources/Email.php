@@ -10,6 +10,9 @@ use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasAttributes;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasClient;
 use Illuminate\Support\Collection;
 
+/**
+ * @phpstan-consistent-constructor
+ */
 class Email
 {
     use HasApiMethods, HasAttributes, HasClient;
@@ -17,10 +20,7 @@ class Email
     public const string EMAIL_ENDPOINT = "/people/v2/emails";
 
     protected string $endpoint = "/people/v2/emails";
-    protected array $dateAttributes = [
-        "created_at",
-        "updated_at",
-    ];
+
     protected array $readOnlyAttributes = [
         "id",
         "created_at",
@@ -47,7 +47,8 @@ class Email
         string $clientId,
         string $clientSecret,
         string $personId
-    ): Paginator {
+    ): Paginator
+    {
         $instance = new static($clientId, $clientSecret);
 
         $response = $instance->client()->get(

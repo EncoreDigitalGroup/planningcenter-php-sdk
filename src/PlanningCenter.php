@@ -17,7 +17,7 @@ class PlanningCenter
     private static ?self $instance = null;
     private static bool $credentialsSet = false;
 
-    public static function make(): static
+    public static function make(): self
     {
         if (!isset(self::$instance)) {
             self::$instance = new self;
@@ -34,7 +34,7 @@ class PlanningCenter
     }
 
     /** Set credentials using Basic Auth and reset singleton */
-    public function withBasicAuth(string $clientId, string $clientSecret): static
+    public function withBasicAuth(string $clientId, string $clientSecret): self
     {
         static::reset();
         self::$instance = new self;
@@ -48,7 +48,7 @@ class PlanningCenter
     }
 
     /** Set credentials using OAuth token and reset singleton */
-    public function withToken(string $token): static
+    public function withToken(string $token): self
     {
         static::reset();
         self::$instance = new self;
