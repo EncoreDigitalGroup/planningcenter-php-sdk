@@ -23,22 +23,6 @@ jobs:
                 id: GitStatusCheck
                 uses: EncoreDigitalGroup/ci-workflows/actions/php/gitStatusCheck@v3
 
-    EnrichPullRequest:
-        name: EnrichPullRequest
-        runs-on: ubuntu-latest
-        steps:
-            -   name: EnrichPullRequest
-                uses: EncoreDigitalGroup/ci-workflows/actions/github/enrichPullRequest@v3
-                with:
-                    branch: ${{ github.head_ref }}
-                    pullRequestNumber: ${{ github.event.number }}
-                    repository: ${{ github.repository }}
-                    token: ${{ secrets.GITHUB_TOKEN }}
-                    jiraURL: ${{ vars.JIRA_URL }}
-                    jiraEmail: ${{ secrets.JIRA_EMAIL }}
-                    jiraToken: ${{ secrets.JIRA_TOKEN }}
-                    strategy: 'jira'
-
     CodeStyle:
         needs: GitStatusCheck
         name: CodeStyle
