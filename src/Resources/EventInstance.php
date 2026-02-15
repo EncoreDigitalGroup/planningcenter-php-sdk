@@ -104,12 +104,12 @@ class EventInstance
         return $this->getAttribute("church_center_url");
     }
 
-    public function publishedStartAt(): ?string
+    public function publishedStartAt(): ?CarbonImmutable
     {
         return $this->getAttribute("published_start_at");
     }
 
-    public function publishedEndsAt(): ?string
+    public function publishedEndsAt(): ?CarbonImmutable
     {
         return $this->getAttribute("published_ends_at");
     }

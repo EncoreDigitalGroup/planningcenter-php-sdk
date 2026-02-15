@@ -49,12 +49,8 @@ trait HasAttributes
         return $attribute;
     }
 
-    public function getAttributeDate(string $key, ?CarbonImmutable $default = null): CarbonImmutable
+    public function getAttributeDate(string $key, ?CarbonImmutable $default = null): ?CarbonImmutable
     {
-        if (is_null($default)) {
-            $default = CarbonImmutable::now();
-        }
-
         $attribute = $this->getAttribute($key);
 
         if (!$attribute instanceof CarbonImmutable) {
@@ -91,6 +87,30 @@ trait HasAttributes
         return ["id", "created_at", "updated_at"];
     }
 
+    /**
+     * Get the list of date attributes that should use date-only format (Y-m-d).
+     * Override this method in your class to specify date-only attributes.
+     * Other date attributes will use full ISO8601 datetime format.
+     * Note: These are automatically included in dateAttributes() for parsing.
+     *
+     * @return array<int, string>
+     */
+    protected function dateOnlyAttributes(): array
+    {
+        return [];
+    }
+
+    /**
+     * Get all date attributes including date-only attributes.
+     * This ensures dateOnlyAttributes are always parsed as dates.
+     *
+     * @return array<int, string>
+     */
+    private function getAllDateAttributes(): array
+    {
+        return array_unique(array_merge($this->dateAttributes(), $this->dateOnlyAttributes()));
+    }
+
     protected function parseDate(?string $value): ?CarbonImmutable
     {
         if ($value === null || $value === "") {
@@ -112,8 +132,8 @@ trait HasAttributes
         }
 
         foreach ($data["attributes"] ?? [] as $key => $value) {
-            // Parse dates/datetimes if specified in dateAttributes
-            if (in_array($key, $this->dateAttributes(), strict: true)) {
+            // Parse dates/datetimes if specified in dateAttributes or dateOnlyAttributes
+            if (in_array($key, $this->getAllDateAttributes(), strict: true)) {
                 $value = $this->parseDate($value);
             }
             $this->setAttribute($key, $value);

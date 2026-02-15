@@ -32,19 +32,6 @@ trait HasApiMethods
     }
 
     /**
-     * Query resources with filters
-     *
-     * @return Paginator<static>
-     */
-    public static function where(array $query): Paginator
-    {
-        // This requires singleton credentials, will be implemented via modules
-        throw new BadMethodCallException(
-            'where() must be called through a module. Use PlanningCenter::make()->withBasicAuth()->people()->all($query) instead.'
-        );
-    }
-
-    /**
      * Build a Paginator from an API response
      *
      * @return Paginator<static>
@@ -176,9 +163,8 @@ trait HasApiMethods
         // Convert CarbonImmutable to strings
         foreach ($attributes as $key => $value) {
             if ($value instanceof CarbonImmutable) {
-                // Use date-only format for date fields, datetime for others
-                $dateOnlyFields = ["birthdate", "anniversary"];
-                $attributes[$key] = in_array($key, $dateOnlyFields)
+                // Use date-only format for specified fields, datetime for others
+                $attributes[$key] = in_array($key, $this->dateOnlyAttributes(), strict: true)
                     ? $value->toDateString()
                     : $value->toIso8601String();
             }

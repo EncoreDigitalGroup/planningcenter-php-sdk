@@ -374,11 +374,17 @@ class Person
     protected function dateAttributes(): array
     {
         return [
-            "birthdate",
-            "anniversary",
             "created_at",
             "updated_at",
             "inactivated_at",
+        ];
+    }
+
+    protected function dateOnlyAttributes(): array
+    {
+        return [
+            "birthdate",
+            "anniversary",
         ];
     }
 

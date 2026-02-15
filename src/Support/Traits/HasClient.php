@@ -9,10 +9,8 @@ namespace EncoreDigitalGroup\PlanningCenter\Support\Traits;
 
 use EncoreDigitalGroup\PlanningCenter\Support\AuthType;
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
-use EncoreDigitalGroup\StdLib\Objects\Support\Types\Str;
 use Illuminate\Http\Client\PendingRequest;
 use PHPGenesis\Http\HttpClient;
-use PHPGenesis\Http\HttpClientBuilder;
 
 trait HasClient
 {
@@ -27,11 +25,6 @@ trait HasClient
 
     /** @experimental This could change. Use with caution. */
     protected AuthType $authType = AuthType::Basic;
-
-    private function __construct()
-    {
-        new HttpClientBuilder;
-    }
 
     public function client(): PendingRequest
     {
@@ -77,7 +70,7 @@ trait HasClient
     public function withToken(string $token = ""): static
     {
         $this->clientId = $token;
-        $this->clientSecret = Str::empty();
+        $this->clientSecret = "";
 
         return $this->setAuthType(AuthType::Token);
     }

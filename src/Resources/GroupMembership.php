@@ -74,6 +74,11 @@ class GroupMembership
         return $this->getAttribute("role");
     }
 
+    protected function dateAttributes(): array
+    {
+        return ["joined_at"];
+    }
+
     protected function readOnlyAttributes(): array
     {
         return ["id"];

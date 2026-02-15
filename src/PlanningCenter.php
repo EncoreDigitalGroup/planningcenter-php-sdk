@@ -66,7 +66,10 @@ class PlanningCenter
     {
         $this->ensureCredentialsSet();
 
-        return new PeopleModule($this->clientId, $this->clientSecret);
+        $module = new PeopleModule($this->clientId, $this->clientSecret);
+        $module->setAuthType($this->authType);
+
+        return $module;
     }
 
     /** Get the Groups module */
@@ -74,7 +77,10 @@ class PlanningCenter
     {
         $this->ensureCredentialsSet();
 
-        return new GroupsModule($this->clientId, $this->clientSecret);
+        $module = new GroupsModule($this->clientId, $this->clientSecret);
+        $module->setAuthType($this->authType);
+
+        return $module;
     }
 
     /** Get the Calendar module */
@@ -82,7 +88,10 @@ class PlanningCenter
     {
         $this->ensureCredentialsSet();
 
-        return new CalendarModule($this->clientId, $this->clientSecret);
+        $module = new CalendarModule($this->clientId, $this->clientSecret);
+        $module->setAuthType($this->authType);
+
+        return $module;
     }
 
     /** Get the Webhooks module */
@@ -90,7 +99,10 @@ class PlanningCenter
     {
         $this->ensureCredentialsSet();
 
-        return new WebhooksModule($this->clientId, $this->clientSecret);
+        $module = new WebhooksModule($this->clientId, $this->clientSecret);
+        $module->setAuthType($this->authType);
+
+        return $module;
     }
 
     /** Ensure credentials have been set before accessing modules */
@@ -98,7 +110,7 @@ class PlanningCenter
     {
         if (!self::$credentialsSet) {
             throw new RuntimeException(
-                "Credentials not set. Use withBasicAuth() before accessing modules."
+                "Credentials not set. Use withBasicAuth() or withToken() before accessing modules."
             );
         }
     }

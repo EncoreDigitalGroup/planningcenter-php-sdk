@@ -8,6 +8,7 @@ use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasApiMethods;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasAttributes;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasClient;
 use Illuminate\Support\Collection;
+use InvalidArgumentException;
 
 /** @phpstan-consistent-constructor */
 class Group
@@ -134,10 +135,15 @@ class Group
     public function memberships(): Collection
     {
         if (!$this->memberships instanceof Collection) {
+            $groupId = $this->id();
+            if ($groupId === null) {
+                throw new InvalidArgumentException("Cannot fetch memberships for a group without an ID.");
+            }
+
             $this->memberships = GroupMembership::forGroup(
                 $this->clientId,
                 $this->clientSecret,
-                $this->getAttribute("id")
+                $groupId
             )->items();
         }
 

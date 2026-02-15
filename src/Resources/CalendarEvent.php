@@ -8,6 +8,7 @@ use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasApiMethods;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasAttributes;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasClient;
 use Illuminate\Support\Collection;
+use InvalidArgumentException;
 
 /** @phpstan-consistent-constructor */
 class CalendarEvent
@@ -104,10 +105,15 @@ class CalendarEvent
     public function eventInstances(): Collection
     {
         if (!$this->eventInstances instanceof Collection) {
+            $eventId = $this->id();
+            if ($eventId === null) {
+                throw new InvalidArgumentException("Cannot fetch event instances for an event without an ID.");
+            }
+
             $this->eventInstances = EventInstance::forEvent(
                 $this->clientId,
                 $this->clientSecret,
-                $this->getAttribute("id")
+                $eventId
             )->items();
         }
 
