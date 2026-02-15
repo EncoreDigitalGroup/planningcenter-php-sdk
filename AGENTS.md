@@ -65,7 +65,8 @@ Resources represent API entities (Person, Group, CalendarEvent, etc.) and use **
 - **HasClient** - HTTP client configuration, authentication (Basic/Token), API versioning
 - **HasAttributes** - Attribute storage using Laravel Collections, hydration from API responses
 - **HasApiMethods** - Static `all()` method returning Paginator, builds resources from arrays
-- **HasRead** - `get()` method to fetch by ID (requires `withId()` first)
+- **HasQueryParameters** - Fluent query builder for includes, filters, ordering, pagination
+- **HasRead** - `get()` method to fetch by ID (requires `withId()` first), accepts query parameters
 - **HasCreate** - `create()` method for new resources
 - **HasUpdate** - `update()` method for existing resources
 - **HasDelete** - `delete()` method
@@ -79,6 +80,65 @@ Resources use a fluent setter/getter pattern:
 - **Setters**: `withFirstName()`, `withEmail()` - return `self` for chaining
 - **Getters**: `firstName()`, `email()` - return the value
 - All setters prefixed with `with`, getters have no prefix
+
+### Query Parameters
+
+The SDK supports JSON:API query parameters via both fluent methods and direct arrays:
+
+#### Fluent Query Builder (HasQueryParameters trait)
+
+```php
+// Single resource with includes and filters
+$person = PlanningCenter::make()
+    ->withBasicAuth($id, $secret)
+    ->people()
+    ->person()
+    ->withId('123')
+    ->withInclude('emails', 'addresses')
+    ->withFilter('status', 'active')
+    ->withOrder('-created_at')
+    ->withPerPage(100)
+    ->withOffset(50)
+    ->get();
+
+// List resources with query parameters
+$people = PlanningCenter::make()
+    ->withBasicAuth($id, $secret)
+    ->people()
+    ->all([
+        'include' => 'emails',
+        'where' => ['status' => 'active'],
+        'order' => 'last_name',
+        'per_page' => 50,
+    ]);
+
+// Relationship methods accept query parameters
+$emails = $person->emails(['per_page' => 100, 'order' => 'created_at']);
+```
+
+#### Available Query Methods
+
+- `withInclude(...$includes)` - Include related resources (can be called multiple times)
+- `withFilter($key, $value)` - Add filter (maps to `where[key]=value`)
+- `withOrder($field)` - Set ordering (prefix with `-` for descending)
+- `withPerPage($count)` - Set pagination limit
+- `withOffset($offset)` - Set pagination offset
+- `clearQueryParameters()` - Clear all accumulated query parameters
+
+#### Precedence Rules
+
+- Direct array parameters passed to methods take precedence over fluent parameters
+- This allows overriding fluent settings on a per-call basis
+
+```php
+$person = PlanningCenter::make()
+    ->withBasicAuth($id, $secret)
+    ->people()
+    ->person()
+    ->withId('123')
+    ->withPerPage(50)
+    ->get(['per_page' => 100]); // 100 takes precedence
+```
 
 ### Pagination
 
@@ -113,15 +173,6 @@ API versions are set per module via `PlanningCenterApiVersion` enum constants an
 - Test constants in `tests/Helpers/TestConstants.php`
 - Tests extend `Tests\TestCase` (configured in `tests/Pest.php`)
 - Group tests using `->group('module.feature')` for selective runs
-
-## CI/CD Pipeline
-
-Pull requests run (defined in `.github/workflows/_pullRequest.yml`):
-
-1. **GitStatusCheck** - Determines if code changes require checks
-2. **CodeStyle** - Runs Duster for PSR-12 compliance
-3. **StaticAnalysis** - PHPStan level 8 analysis
-4. **Test** - Full Pest test suite
 
 ## Key Design Patterns
 

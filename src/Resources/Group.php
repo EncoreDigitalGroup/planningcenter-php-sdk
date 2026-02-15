@@ -8,6 +8,7 @@ use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasApiMethods;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasAttributes;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasClient;
+use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasQueryParameters;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasRead;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasResponse;
 use Illuminate\Support\Collection;
@@ -16,7 +17,7 @@ use InvalidArgumentException;
 /** @phpstan-consistent-constructor */
 class Group
 {
-    use HasApiMethods, HasAttributes, HasClient, HasRead, HasResponse;
+    use HasApiMethods, HasAttributes, HasClient, HasQueryParameters, HasRead, HasResponse;
 
     public const string ENDPOINT = "/groups/v2/groups";
 
@@ -135,7 +136,12 @@ class Group
         return $this->getAttribute("virtual_location_url");
     }
 
-    public function memberships(): Paginator
+    /**
+     * Get memberships for this group (lazy-loaded)
+     *
+     * @param  array<string, mixed>  $query  Optional query parameters
+     */
+    public function memberships(array $query = []): Paginator
     {
         if (!$this->memberships instanceof Paginator) {
             $groupId = $this->id();
@@ -143,9 +149,15 @@ class Group
                 throw new InvalidArgumentException("Cannot fetch memberships for a group without an ID.");
             }
 
+            // Merge with accumulated query parameters if HasQueryParameters trait is used
+            $mergedQuery = method_exists($this, 'mergeQueryParameters')
+                ? $this->mergeQueryParameters($query)
+                : $query;
+
             $membershipInstance = new GroupMembership($this->clientId, $this->clientSecret);
             $response = $membershipInstance->client()->get(
-                $membershipInstance->hostname() . "/groups/v2/groups/{$groupId}/memberships"
+                $membershipInstance->hostname() . "/groups/v2/groups/{$groupId}/memberships",
+                $mergedQuery
             );
             $this->memberships = $membershipInstance->buildPaginatorFromResponse($response);
         }

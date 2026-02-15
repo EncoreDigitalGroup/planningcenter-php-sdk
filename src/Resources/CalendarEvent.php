@@ -8,6 +8,7 @@ use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasApiMethods;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasAttributes;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasClient;
+use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasQueryParameters;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasRead;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasResponse;
 use Illuminate\Support\Collection;
@@ -16,7 +17,7 @@ use InvalidArgumentException;
 /** @phpstan-consistent-constructor */
 class CalendarEvent
 {
-    use HasApiMethods, HasAttributes, HasClient, HasRead, HasResponse;
+    use HasApiMethods, HasAttributes, HasClient, HasQueryParameters, HasRead, HasResponse;
 
     public const string ENDPOINT = "/calendar/v2/events";
 
@@ -108,7 +109,12 @@ class CalendarEvent
         return $this->getAttribute("visible_in_church_center");
     }
 
-    public function eventInstances(): Paginator
+    /**
+     * Get event instances for this event (lazy-loaded)
+     *
+     * @param  array<string, mixed>  $query  Optional query parameters
+     */
+    public function eventInstances(array $query = []): Paginator
     {
         if (!$this->eventInstances instanceof Paginator) {
             $eventId = $this->id();
@@ -116,9 +122,15 @@ class CalendarEvent
                 throw new InvalidArgumentException("Cannot fetch event instances for an event without an ID.");
             }
 
+            // Merge with accumulated query parameters if HasQueryParameters trait is used
+            $mergedQuery = method_exists($this, 'mergeQueryParameters')
+                ? $this->mergeQueryParameters($query)
+                : $query;
+
             $instanceResource = new EventInstance($this->clientId, $this->clientSecret);
             $response = $instanceResource->client()->get(
-                $instanceResource->hostname() . "/calendar/v2/events/{$eventId}/event_instances"
+                $instanceResource->hostname() . "/calendar/v2/events/{$eventId}/event_instances",
+                $mergedQuery
             );
             $this->eventInstances = $instanceResource->buildPaginatorFromResponse($response);
         }
@@ -126,7 +138,12 @@ class CalendarEvent
         return $this->eventInstances;
     }
 
-    public function tags(): Paginator
+    /**
+     * Get tags for this event (lazy-loaded)
+     *
+     * @param  array<string, mixed>  $query  Optional query parameters
+     */
+    public function tags(array $query = []): Paginator
     {
         if (!$this->tags instanceof Paginator) {
             $eventId = $this->id();
@@ -134,9 +151,15 @@ class CalendarEvent
                 throw new InvalidArgumentException("Cannot fetch tags for an event without an ID.");
             }
 
+            // Merge with accumulated query parameters if HasQueryParameters trait is used
+            $mergedQuery = method_exists($this, 'mergeQueryParameters')
+                ? $this->mergeQueryParameters($query)
+                : $query;
+
             $tagInstance = new CalendarTag($this->clientId, $this->clientSecret);
             $response = $tagInstance->client()->get(
-                $tagInstance->hostname() . "/calendar/v2/events/{$eventId}/tags"
+                $tagInstance->hostname() . "/calendar/v2/events/{$eventId}/tags",
+                $mergedQuery
             );
             $this->tags = $tagInstance->buildPaginatorFromResponse($response);
         }
