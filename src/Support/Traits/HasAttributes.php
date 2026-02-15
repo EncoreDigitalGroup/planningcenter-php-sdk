@@ -4,6 +4,7 @@ namespace EncoreDigitalGroup\PlanningCenter\Support\Traits;
 
 use Carbon\CarbonImmutable;
 use Exception;
+use Illuminate\Http\Client\Response;
 use Illuminate\Support\Collection;
 
 trait HasAttributes
@@ -127,6 +128,48 @@ trait HasAttributes
             }
             $this->setAttribute($key, $value);
         }
+    }
+
+    /**
+     * Hydrate attributes from API response
+     */
+    protected function hydrateFromResponse(Response $response): void
+    {
+        $data = $response->json("data");
+
+        // Handle array responses (list endpoints)
+        if (is_array($data) && isset($data[0])) {
+            $data = $data[0];
+        }
+
+        $this->hydrateFromArray($data);
+    }
+
+    /**
+     * Convert attributes to Planning Center API format
+     */
+    protected function mapToPco(): array
+    {
+        // Exclude read-only attributes
+        $attributes = $this->attributes
+            ->except($this->readOnlyAttributes())
+            ->toArray();
+
+        // Convert CarbonImmutable to strings
+        foreach ($attributes as $key => $value) {
+            if ($value instanceof CarbonImmutable) {
+                // Use date-only format for specified fields, datetime for others
+                $attributes[$key] = in_array($key, $this->dateOnlyAttributes(), strict: true)
+                    ? $value->toDateString()
+                    : $value->toIso8601String();
+            }
+        }
+
+        return [
+            "data" => [
+                "attributes" => array_filter($attributes, fn ($v): bool => $v !== null),
+            ],
+        ];
     }
 
     /**

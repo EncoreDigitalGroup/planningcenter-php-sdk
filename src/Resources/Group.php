@@ -7,13 +7,14 @@ use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasApiMethods;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasAttributes;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasClient;
+use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasRead;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
 
 /** @phpstan-consistent-constructor */
 class Group
 {
-    use HasApiMethods, HasAttributes, HasClient;
+    use HasApiMethods, HasAttributes, HasClient, HasRead;
 
     public const string ENDPOINT = "/groups/v2/groups";
 
