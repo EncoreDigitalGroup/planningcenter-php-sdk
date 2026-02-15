@@ -16,10 +16,6 @@ class GroupTag
     public const string ENDPOINT = "/groups/v2/tags";
 
     protected string $endpoint = self::ENDPOINT;
-    protected array $dateAttributes = [];
-    protected array $readOnlyAttributes = [
-        "id",
-    ];
 
     public function __construct(string $clientId, string $clientSecret)
     {
@@ -27,6 +23,11 @@ class GroupTag
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
         $this->setApiVersion(PlanningCenterApiVersion::GROUPS_DEFAULT);
+    }
+
+    protected function readOnlyAttributes(): array
+    {
+        return ['id'];
     }
 
     // Setters

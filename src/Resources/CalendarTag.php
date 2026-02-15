@@ -17,15 +17,6 @@ class CalendarTag
     public const string ENDPOINT = "/calendar/v2/tags";
 
     protected string $endpoint = self::ENDPOINT;
-    protected array $readOnlyAttributes = [
-        "id",
-        "church_center_category",
-        "color",
-        "created_at",
-        "name",
-        "position",
-        "updated_at",
-    ];
 
     public function __construct(string $clientId, string $clientSecret)
     {
@@ -39,6 +30,19 @@ class CalendarTag
     {
         return [
             'created_at',
+            'updated_at',
+        ];
+    }
+
+    protected function readOnlyAttributes(): array
+    {
+        return [
+            'id',
+            'church_center_category',
+            'color',
+            'created_at',
+            'name',
+            'position',
             'updated_at',
         ];
     }

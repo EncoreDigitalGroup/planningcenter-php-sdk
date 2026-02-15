@@ -16,10 +16,6 @@ class GroupTagGroup
     public const string ENDPOINT = "/groups/v2/tag_groups";
 
     protected string $endpoint = self::ENDPOINT;
-    protected array $dateAttributes = [];
-    protected array $readOnlyAttributes = [
-        "id",
-    ];
 
     public function __construct(string $clientId, string $clientSecret)
     {
@@ -29,10 +25,9 @@ class GroupTagGroup
         $this->setApiVersion(PlanningCenterApiVersion::GROUPS_DEFAULT);
     }
 
-    /** Static factory method for backward compatibility with tests */
-    public static function make(string $clientId, string $clientSecret): self
+    protected function readOnlyAttributes(): array
     {
-        return new self($clientId, $clientSecret);
+        return ['id'];
     }
 
     // Setters

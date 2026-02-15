@@ -25,6 +25,17 @@ trait HasAttributes
         return [];
     }
 
+    /**
+     * Get the list of read-only attributes that should not be sent to the API.
+     * Override this method in your class to specify additional read-only attributes.
+     *
+     * @return array<int, string>
+     */
+    protected function readOnlyAttributes(): array
+    {
+        return ['id', 'created_at', 'updated_at'];
+    }
+
     public function setAttribute(string $key, mixed $value): self
     {
         $this->attributes->put($key, $value);

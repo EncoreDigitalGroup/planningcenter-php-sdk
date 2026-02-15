@@ -17,13 +17,6 @@ class GroupEnrollment
     public const string ENDPOINT = "/groups/v2/group_enrollments";
 
     protected string $endpoint = self::ENDPOINT;
-    protected array $readOnlyAttributes = [
-        "id",
-        "auto_closed",
-        "auto_closed_reason",
-        "date_limit_reached",
-        "member_limit_reached",
-    ];
 
     public function __construct(string $clientId, string $clientSecret)
     {
@@ -37,6 +30,17 @@ class GroupEnrollment
     {
         return [
             'date_limit',
+        ];
+    }
+
+    protected function readOnlyAttributes(): array
+    {
+        return [
+            'id',
+            'auto_closed',
+            'auto_closed_reason',
+            'date_limit_reached',
+            'member_limit_reached',
         ];
     }
 

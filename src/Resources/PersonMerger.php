@@ -17,12 +17,6 @@ class PersonMerger
     public const string ENDPOINT = "/people/v2/person_mergers";
 
     protected string $endpoint = self::ENDPOINT;
-    protected array $readOnlyAttributes = [
-        "id",
-        "created_at",
-        "person_to_keep_id",
-        "person_to_remove_id",
-    ];
 
     public function __construct(string $clientId, string $clientSecret)
     {
@@ -36,6 +30,16 @@ class PersonMerger
     {
         return [
             'created_at',
+        ];
+    }
+
+    protected function readOnlyAttributes(): array
+    {
+        return [
+            'id',
+            'created_at',
+            'person_to_keep_id',
+            'person_to_remove_id',
         ];
     }
 

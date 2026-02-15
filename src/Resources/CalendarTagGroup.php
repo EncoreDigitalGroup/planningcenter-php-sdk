@@ -17,13 +17,6 @@ class CalendarTagGroup
     public const string ENDPOINT = "/calendar/v2/tag_groups";
 
     protected string $endpoint = self::ENDPOINT;
-    protected array $readOnlyAttributes = [
-        "id",
-        "created_at",
-        "name",
-        "updated_at",
-        "required",
-    ];
 
     public function __construct(string $clientId, string $clientSecret)
     {
@@ -41,10 +34,15 @@ class CalendarTagGroup
         ];
     }
 
-    /** Static factory method for backward compatibility with tests */
-    public static function make(string $clientId, string $clientSecret): self
+    protected function readOnlyAttributes(): array
     {
-        return new self($clientId, $clientSecret);
+        return [
+            'id',
+            'created_at',
+            'name',
+            'updated_at',
+            'required',
+        ];
     }
 
     // Setters (for withId only, as this is read-only)

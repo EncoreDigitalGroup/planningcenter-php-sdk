@@ -17,13 +17,6 @@ class GroupEvent
     public const string ENDPOINT = "/groups/v2/events";
 
     protected string $endpoint = self::ENDPOINT;
-    protected array $readOnlyAttributes = [
-        "id",
-        "canceled_at",
-        "reminders_sent",
-        "reminders_sent_at",
-        "visitors_count",
-    ];
 
     public function __construct(string $clientId, string $clientSecret)
     {
@@ -40,6 +33,17 @@ class GroupEvent
             'ends_at',
             'reminders_sent_at',
             'starts_at',
+        ];
+    }
+
+    protected function readOnlyAttributes(): array
+    {
+        return [
+            'id',
+            'canceled_at',
+            'reminders_sent',
+            'reminders_sent_at',
+            'visitors_count',
         ];
     }
 

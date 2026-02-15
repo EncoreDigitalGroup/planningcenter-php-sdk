@@ -18,12 +18,6 @@ class Email
     public const string ENDPOINT = "/people/v2/emails";
 
     protected string $endpoint = self::ENDPOINT;
-    protected array $readOnlyAttributes = [
-        "id",
-        "created_at",
-        "updated_at",
-        "blocked",
-    ];
 
     public function __construct(string $clientId, string $clientSecret)
     {
@@ -41,10 +35,14 @@ class Email
         ];
     }
 
-    /** Static factory method for backward compatibility with tests */
-    public static function make(string $clientId, string $clientSecret): self
+    protected function readOnlyAttributes(): array
     {
-        return new self($clientId, $clientSecret);
+        return [
+            'id',
+            'created_at',
+            'updated_at',
+            'blocked',
+        ];
     }
 
     /** Get all emails for a specific person */

@@ -18,21 +18,6 @@ class EventInstance
     public const string ENDPOINT = "/calendar/v2/event_instances";
 
     protected string $endpoint = self::ENDPOINT;
-    protected array $readOnlyAttributes = [
-        "id",
-        "all_day_event",
-        "compact_recurrence_description",
-        "created_at",
-        "ends_at",
-        "location",
-        "recurrence",
-        "recurrence_description",
-        "starts_at",
-        "updated_at",
-        "church_center_url",
-        "published_start_at",
-        "published_ends_at",
-    ];
 
     public function __construct(string $clientId, string $clientSecret)
     {
@@ -54,10 +39,23 @@ class EventInstance
         ];
     }
 
-    /** Static factory method for backward compatibility with tests */
-    public static function make(string $clientId, string $clientSecret): self
+    protected function readOnlyAttributes(): array
     {
-        return new self($clientId, $clientSecret);
+        return [
+            'id',
+            'all_day_event',
+            'compact_recurrence_description',
+            'created_at',
+            'ends_at',
+            'location',
+            'recurrence',
+            'recurrence_description',
+            'starts_at',
+            'updated_at',
+            'church_center_url',
+            'published_start_at',
+            'published_ends_at',
+        ];
     }
 
     /** Get all event instances for a specific event */

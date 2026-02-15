@@ -17,13 +17,6 @@ class Group
     public const string ENDPOINT = "/groups/v2/groups";
 
     protected string $endpoint = self::ENDPOINT;
-    protected array $readOnlyAttributes = [
-        "id",
-        "archived_at",
-        "created_at",
-        "memberships_count",
-        "public_church_center_url",
-    ];
 
     /** Get memberships for this group (lazy-loaded) */
     private ?Collection $memberships = null;
@@ -44,10 +37,15 @@ class Group
         ];
     }
 
-    /** Static factory method for backward compatibility with tests */
-    public static function make(string $clientId, string $clientSecret): self
+    protected function readOnlyAttributes(): array
     {
-        return new self($clientId, $clientSecret);
+        return [
+            'id',
+            'archived_at',
+            'created_at',
+            'memberships_count',
+            'public_church_center_url',
+        ];
     }
 
     // Setters

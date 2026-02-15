@@ -17,21 +17,6 @@ class CalendarEvent
     public const string ENDPOINT = "/calendar/v2/events";
 
     protected string $endpoint = self::ENDPOINT;
-    protected array $readOnlyAttributes = [
-        "id",
-        "approval_status",
-        "created_at",
-        "description",
-        "featured",
-        "image_url",
-        "name",
-        "percent_approved",
-        "percent_rejected",
-        "registration_url",
-        "summary",
-        "updated_at",
-        "visible_in_church_center",
-    ];
 
     /** Get event instances for this event (lazy-loaded) */
     private ?Collection $eventInstances = null;
@@ -52,10 +37,23 @@ class CalendarEvent
         ];
     }
 
-    /** Static factory method for backward compatibility with tests */
-    public static function make(string $clientId, string $clientSecret): self
+    protected function readOnlyAttributes(): array
     {
-        return new self($clientId, $clientSecret);
+        return [
+            'id',
+            'approval_status',
+            'created_at',
+            'description',
+            'featured',
+            'image_url',
+            'name',
+            'percent_approved',
+            'percent_rejected',
+            'registration_url',
+            'summary',
+            'updated_at',
+            'visible_in_church_center',
+        ];
     }
 
     // Setters (for withId only, as this is read-only)

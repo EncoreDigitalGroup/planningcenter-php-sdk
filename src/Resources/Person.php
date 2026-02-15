@@ -18,13 +18,6 @@ class Person
     public const string ENDPOINT = "/people/v2/people";
 
     protected string $endpoint = self::ENDPOINT;
-    protected array $readOnlyAttributes = [
-        "id",
-        "created_at",
-        "updated_at",
-        "name",
-        "demographic_avatar_url",
-    ];
 
     // Relationships
     private ?Collection $emails = null;
@@ -45,6 +38,17 @@ class Person
             'created_at',
             'updated_at',
             'inactivated_at',
+        ];
+    }
+
+    protected function readOnlyAttributes(): array
+    {
+        return [
+            'id',
+            'created_at',
+            'updated_at',
+            'name',
+            'demographic_avatar_url',
         ];
     }
 

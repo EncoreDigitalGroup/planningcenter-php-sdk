@@ -16,13 +16,6 @@ class GroupMemberPerson
     public const string ENDPOINT = "/groups/v2/people";
 
     protected string $endpoint = self::ENDPOINT;
-    protected array $dateAttributes = [];
-    protected array $readOnlyAttributes = [
-        "id",
-        "child",
-        "first_name",
-        "last_name",
-    ];
 
     public function __construct(string $clientId, string $clientSecret)
     {
@@ -30,6 +23,16 @@ class GroupMemberPerson
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
         $this->setApiVersion(PlanningCenterApiVersion::GROUPS_DEFAULT);
+    }
+
+    protected function readOnlyAttributes(): array
+    {
+        return [
+            'id',
+            'child',
+            'first_name',
+            'last_name',
+        ];
     }
 
     // Setters

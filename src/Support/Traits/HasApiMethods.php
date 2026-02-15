@@ -168,15 +168,9 @@ trait HasApiMethods
     /** Convert attributes to Planning Center API format */
     protected function mapToPco(): array
     {
-        // Get read-only attributes if defined, otherwise empty array
-        /** @phpstan-ignore-next-line property.onlyRead */
-        $readOnlyAttributes = property_exists($this, "readOnlyAttributes")
-            ? $this->readOnlyAttributes
-            : [];
-
         // Exclude read-only attributes
         $attributes = $this->attributes
-            ->except($readOnlyAttributes)
+            ->except($this->readOnlyAttributes())
             ->toArray();
 
         // Convert CarbonImmutable to strings
