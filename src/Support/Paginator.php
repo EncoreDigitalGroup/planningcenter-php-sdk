@@ -10,12 +10,12 @@ readonly class Paginator
 {
     /** @param Collection<int, TResource> $data */
     public function __construct(
-        private Response   $response,
+        private Response $response,
         private Collection $data,
-        private ?string    $nextUrl,
-        private ?string    $prevUrl,
-        private int        $totalCount,
-        private int        $perPage
+        private ?string $nextUrl,
+        private ?string $prevUrl,
+        private int $totalCount,
+        private int $perPage
     ) {}
 
     /** @return Collection<int, TResource> */
