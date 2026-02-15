@@ -16,8 +16,9 @@ trait HasApiMethods
     public static function all(
         string $clientId,
         string $clientSecret,
-        array $query = []
-    ): Paginator {
+        array  $query = []
+    ): Paginator
+    {
         $instance = new static($clientId, $clientSecret);
 
         $response = $instance->client()->get(
@@ -31,7 +32,7 @@ trait HasApiMethods
     /**
      * Create and hydrate a new instance from array data
      *
-     * @param  array<string, mixed>  $data
+     * @param array<string, mixed> $data
      */
     protected static function createFromArray(array $data, string $clientId, string $clientSecret): static
     {
@@ -44,9 +45,9 @@ trait HasApiMethods
     /**
      * Build a Paginator from an API response
      *
+     * @return Paginator<static>
      * @internal This method is for internal SDK use only.
      *
-     * @return Paginator<static>
      */
     public function buildPaginatorFromResponse(Response $response): Paginator
     {
@@ -55,12 +56,13 @@ trait HasApiMethods
 
         /** @var Collection<int, static> $data */
         $data = collect($jsonData)->map(
-            fn (array $item): static => static::createFromArray($item, $this->clientId, $this->clientSecret)
+            fn(array $item): static => static::createFromArray($item, $this->clientId, $this->clientSecret)
         );
 
         $meta = $response->json("meta");
 
         return new Paginator(
+            response: $response,
             data: $data,
             nextUrl: $response->json("links.next"),
             prevUrl: $response->json("links.prev"),
