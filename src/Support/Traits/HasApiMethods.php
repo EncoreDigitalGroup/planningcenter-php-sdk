@@ -2,7 +2,6 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Support\Traits;
 
-use BadMethodCallException;
 use Carbon\CarbonImmutable;
 use EncoreDigitalGroup\PlanningCenter\Support\Paginator;
 use Illuminate\Http\Client\Response;

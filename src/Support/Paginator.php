@@ -2,7 +2,6 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Support;
 
-use BadMethodCallException;
 use Illuminate\Support\Collection;
 
 /** @template TResource */

@@ -100,17 +100,6 @@ trait HasAttributes
         return [];
     }
 
-    /**
-     * Get all date attributes including date-only attributes.
-     * This ensures dateOnlyAttributes are always parsed as dates.
-     *
-     * @return array<int, string>
-     */
-    private function getAllDateAttributes(): array
-    {
-        return array_unique(array_merge($this->dateAttributes(), $this->dateOnlyAttributes()));
-    }
-
     protected function parseDate(?string $value): ?CarbonImmutable
     {
         if ($value === null || $value === "") {
@@ -138,5 +127,16 @@ trait HasAttributes
             }
             $this->setAttribute($key, $value);
         }
+    }
+
+    /**
+     * Get all date attributes including date-only attributes.
+     * This ensures dateOnlyAttributes are always parsed as dates.
+     *
+     * @return array<int, string>
+     */
+    private function getAllDateAttributes(): array
+    {
+        return array_unique(array_merge($this->dateAttributes(), $this->dateOnlyAttributes()));
     }
 }
