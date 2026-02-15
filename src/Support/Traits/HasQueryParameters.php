@@ -15,7 +15,7 @@ trait HasQueryParameters
     public function withInclude(string ...$includes): self
     {
         $existing = $this->queryParameters["include"] ?? "";
-        $existingArray = $existing !== '' ? explode(",", $existing) : [];
+        $existingArray = $existing !== "" ? explode(",", $existing) : [];
         $merged = array_unique([...$existingArray, ...$includes]);
         $this->queryParameters["include"] = implode(",", $merged);
 
