@@ -27,25 +27,23 @@ trait HasApiMethods
             $query
         );
 
-        return static::buildPaginatorFromResponse($response, $clientId, $clientSecret);
+        return $instance->buildPaginatorFromResponse($response);
     }
 
     /**
      * Build a Paginator from an API response
      *
+     * @internal This method is for internal SDK use only.
      * @return Paginator<static>
      */
-    protected static function buildPaginatorFromResponse(
-        Response $response,
-        string $clientId,
-        string $clientSecret
-    ): Paginator {
+    public function buildPaginatorFromResponse(Response $response): Paginator
+    {
         /** @var array<int, array<string, mixed>> $jsonData */
         $jsonData = $response->json("data");
 
         /** @var Collection<int, static> $data */
         $data = collect($jsonData)->map(
-            fn (array $item): static => static::createFromArray($item, $clientId, $clientSecret)
+            fn (array $item): static => static::createFromArray($item, $this->clientId, $this->clientSecret)
         );
 
         $meta = $response->json("meta");

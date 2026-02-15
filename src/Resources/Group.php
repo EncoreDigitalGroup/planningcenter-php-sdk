@@ -140,11 +140,11 @@ class Group
                 throw new InvalidArgumentException("Cannot fetch memberships for a group without an ID.");
             }
 
-            $this->memberships = GroupMembership::forGroup(
-                $this->clientId,
-                $this->clientSecret,
-                $groupId
-            )->items();
+            $membershipInstance = new GroupMembership($this->clientId, $this->clientSecret);
+            $response = $membershipInstance->client()->get(
+                $membershipInstance->hostname() . "/groups/v2/groups/{$groupId}/memberships"
+            );
+            $this->memberships = $membershipInstance->buildPaginatorFromResponse($response)->items();
         }
 
         return $this->memberships;

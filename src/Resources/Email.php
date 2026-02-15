@@ -27,21 +27,6 @@ class Email
         $this->setApiVersion(PlanningCenterApiVersion::PEOPLE_DEFAULT);
     }
 
-    /** Get all emails for a specific person */
-    public static function forPerson(
-        string $clientId,
-        string $clientSecret,
-        string $personId
-    ): Paginator {
-        $instance = new static($clientId, $clientSecret);
-
-        $response = $instance->client()->get(
-            $instance->hostname() . "/people/v2/people/{$personId}/emails"
-        );
-
-        return static::buildPaginatorFromResponse($response, $clientId, $clientSecret);
-    }
-
     // Setters
     public function withId(string $value): self
     {

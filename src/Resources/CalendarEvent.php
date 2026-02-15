@@ -113,11 +113,11 @@ class CalendarEvent
                 throw new InvalidArgumentException("Cannot fetch event instances for an event without an ID.");
             }
 
-            $this->eventInstances = EventInstance::forEvent(
-                $this->clientId,
-                $this->clientSecret,
-                $eventId
-            )->items();
+            $instanceResource = new EventInstance($this->clientId, $this->clientSecret);
+            $response = $instanceResource->client()->get(
+                $instanceResource->hostname() . "/calendar/v2/events/{$eventId}/event_instances"
+            );
+            $this->eventInstances = $instanceResource->buildPaginatorFromResponse($response)->items();
         }
 
         return $this->eventInstances;
@@ -131,11 +131,11 @@ class CalendarEvent
                 throw new InvalidArgumentException("Cannot fetch tags for an event without an ID.");
             }
 
-            $this->tags = CalendarTag::forEvent(
-                $this->clientId,
-                $this->clientSecret,
-                $eventId
-            )->items();
+            $tagInstance = new CalendarTag($this->clientId, $this->clientSecret);
+            $response = $tagInstance->client()->get(
+                $tagInstance->hostname() . "/calendar/v2/events/{$eventId}/tags"
+            );
+            $this->tags = $tagInstance->buildPaginatorFromResponse($response)->items();
         }
 
         return $this->tags;

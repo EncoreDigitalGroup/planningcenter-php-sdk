@@ -27,21 +27,6 @@ class CalendarTag
         $this->setApiVersion(PlanningCenterApiVersion::CALENDAR_DEFAULT);
     }
 
-    /** Get all tags for a specific event */
-    public static function forEvent(
-        string $clientId,
-        string $clientSecret,
-        string $eventId
-    ): Paginator {
-        $instance = new static($clientId, $clientSecret);
-
-        $response = $instance->client()->get(
-            $instance->hostname() . "/calendar/v2/events/{$eventId}/tags"
-        );
-
-        return static::buildPaginatorFromResponse($response, $clientId, $clientSecret);
-    }
-
     // Setters (for withId only, as this is read-only)
     public function withId(string $value): self
     {

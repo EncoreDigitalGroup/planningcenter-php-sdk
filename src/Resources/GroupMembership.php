@@ -27,21 +27,6 @@ class GroupMembership
         $this->setApiVersion(PlanningCenterApiVersion::GROUPS_DEFAULT);
     }
 
-    /** Get all memberships for a specific group */
-    public static function forGroup(
-        string $clientId,
-        string $clientSecret,
-        string $groupId
-    ): Paginator {
-        $instance = new static($clientId, $clientSecret);
-
-        $response = $instance->client()->get(
-            $instance->hostname() . "/groups/v2/groups/{$groupId}/memberships"
-        );
-
-        return static::buildPaginatorFromResponse($response, $clientId, $clientSecret);
-    }
-
     // Setters
     public function withId(string $value): self
     {

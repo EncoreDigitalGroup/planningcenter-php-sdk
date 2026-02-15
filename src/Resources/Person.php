@@ -361,11 +361,11 @@ class Person
                 throw new InvalidArgumentException("Cannot fetch emails for a person without an ID.");
             }
 
-            $this->emails = Email::forPerson(
-                $this->clientId,
-                $this->clientSecret,
-                $personId
-            )->items();
+            $emailInstance = new Email($this->clientId, $this->clientSecret);
+            $response = $emailInstance->client()->get(
+                $emailInstance->hostname() . "/people/v2/people/{$personId}/emails"
+            );
+            $this->emails = $emailInstance->buildPaginatorFromResponse($response)->items();
         }
 
         return $this->emails;
