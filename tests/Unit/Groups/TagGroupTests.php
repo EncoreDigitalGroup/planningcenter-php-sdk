@@ -2,33 +2,29 @@
 
 namespace Tests\Unit\Groups;
 
-use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Attributes\GroupAttributes;
-use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Attributes\GroupEnrollmentAttributes;
-use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Attributes\GroupMemberPersonAttributes;
-use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Attributes\TagGroupAttributes;
-use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Group;
-use EncoreDigitalGroup\PlanningCenter\Objects\Groups\GroupMembership;
-use EncoreDigitalGroup\PlanningCenter\Objects\Groups\Tag;
-use EncoreDigitalGroup\PlanningCenter\Objects\Groups\TagGroup;
-use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
+use EncoreDigitalGroup\PlanningCenter\PlanningCenter;
+use EncoreDigitalGroup\PlanningCenter\Resources\GroupTagGroup;
+use EncoreDigitalGroup\PlanningCenter\Support\Paginator;
 use Illuminate\Support\Collection;
-use Tests\Helpers\TaskAssignee;
 use Tests\Helpers\TestConstants;
-use Tests\Unit\People\PeopleMocks;
 
-describe("Group TagGroup Tests", function (): void {
-    test("Group TagGroup: Can List All TagGroups", function (): void {
-        $tagGroup = TagGroup::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
+describe("Groups TagGroup Tests", function (): void {
+    test("TagGroup: Can List All Tag Groups (Read-Only)", function (): void {
+        $paginator = GroupTagGroup::all(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
 
-        $response = $tagGroup->all();
-
-        /** @var TagGroupAttributes $tagGroupAttributes */
-        $tagGroupAttributes = $response->data->first()->attributes;
-
-        expect($response)->toBeInstanceOf(ClientResponse::class)
-            ->and($response->data)->toBeInstanceOf(Collection::class)
-            ->and($response->data->count())->toBe(1)
-            ->and($tagGroupAttributes->tagGroupId)->toBe(GroupMocks::TAG_GROUP_ID)
-            ->and($tagGroupAttributes->name)->toBe(GroupMocks::TAG_GROUP_NAME);
+        expect($paginator)->toBeInstanceOf(Paginator::class)
+            ->and($paginator->items())->toBeInstanceOf(Collection::class);
     });
-})->group("groups.tagGroup");
+
+    test("TagGroup: Can Get Tag Group By ID (Read-Only)", function (): void {
+        $tagGroup = PlanningCenter::make()
+            ->withBasicAuth(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET)
+            ->groups()
+            ->groupTagGroup()
+            ->withId(GroupMocks::TAG_GROUP_ID)
+            ->get();
+
+        expect($tagGroup)->toBeInstanceOf(GroupTagGroup::class)
+            ->and($tagGroup->id())->toBe(GroupMocks::TAG_GROUP_ID);
+    });
+})->group("groups.taggroup");

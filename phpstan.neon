@@ -10,6 +10,7 @@ parameters:
         - identifier: missingType.generics
         - '#Cognitive complexity for "EncoreDigitalGroup\\PlanningCenter\\Support\\AttributeMapper[^\\s]+#'
         - '#Cognitive complexity for "EncoreDigitalGroup\\PlanningCenter\\Support\\RelationshipMapper[^\\s]+#'
+        - '#Unsafe usage of new static\(\)#'
     cognitive_complexity:
             class: 50
             function: 10

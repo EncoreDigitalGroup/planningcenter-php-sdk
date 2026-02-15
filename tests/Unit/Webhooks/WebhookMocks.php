@@ -6,15 +6,15 @@
 
 namespace Tests\Unit\Webhooks;
 
-use EncoreDigitalGroup\PlanningCenter\Objects\Webhooks\WebhookSubscription;
-use EncoreDigitalGroup\PlanningCenter\Traits\HasPlanningCenterClient;
+use EncoreDigitalGroup\PlanningCenter\Resources\WebhookSubscription;
+use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasClient;
 use PHPGenesis\Http\HttpClient;
 use Tests\Helpers\BaseMock;
 use Tests\Helpers\ObjectType;
 
 class WebhookMocks extends BaseMock
 {
-    use HasPlanningCenterClient;
+    use HasClient;
 
     public const string WEBHOOK_SUBSCRIPTION_ID = "1";
     public const string WEBHOOK_SUBSCRIPTION_NAME = "people.v2.events.person.created";

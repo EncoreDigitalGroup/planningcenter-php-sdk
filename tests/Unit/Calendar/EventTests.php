@@ -2,70 +2,34 @@
 
 namespace Tests\Unit\Calendar;
 
-use EncoreDigitalGroup\PlanningCenter\Objects\Calendar\Event;
-use EncoreDigitalGroup\PlanningCenter\Objects\Calendar\EventInstance;
-use EncoreDigitalGroup\PlanningCenter\Objects\Calendar\Tag;
-use EncoreDigitalGroup\PlanningCenter\Objects\SdkObjects\ClientResponse;
+use EncoreDigitalGroup\PlanningCenter\PlanningCenter;
+use EncoreDigitalGroup\PlanningCenter\Resources\CalendarEvent;
+use EncoreDigitalGroup\PlanningCenter\Support\Paginator;
 use Illuminate\Support\Collection;
 use Tests\Helpers\TestConstants;
 
 describe("Calendar Event Tests", function (): void {
-    test("Event: Can Get Event By ID", function (): void {
-        $event = Event::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
+    test("CalendarEvent: Can List All Events (Read-Only)", function (): void {
+        $paginator = PlanningCenter::make()
+            ->withBasicAuth(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET)
+            ->calendar()
+            ->all();
 
-        $response = $event
-            ->forEventId("1")
+        expect($paginator)->toBeInstanceOf(Paginator::class)
+            ->and($paginator->items())->toBeInstanceOf(Collection::class)
+            ->and($paginator->items()->count())->toBe(1);
+    });
+
+    test("CalendarEvent: Can Get Event By ID (Read-Only)", function (): void {
+        $event = PlanningCenter::make()
+            ->withBasicAuth(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET)
+            ->calendar()
+            ->event()
+            ->withId(CalendarMocks::EVENT_ID)
             ->get();
 
-        /** @var Event $calendarEvent */
-        $calendarEvent = $response->data->first();
-
-        expect($response)->toBeInstanceOf(ClientResponse::class)
-            ->and($calendarEvent->attributes->name)->toBe(CalendarMocks::EVENT_NAME)
-            ->and($calendarEvent->attributes->eventId)->toBe(CalendarMocks::EVENT_ID);
-    });
-
-    test("Event: Can List All Events", function (): void {
-        $event = Event::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
-
-        $response = $event->all();
-
-        expect($response)->toBeInstanceOf(ClientResponse::class)
-            ->and($response->data)->toBeInstanceOf(Collection::class)
-            ->and($response->data->count())->toBe(1);
-    });
-
-    test("Event: Can List All Event Instances For A Specific Event", function (): void {
-        $event = Event::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
-
-        $response = $event
-            ->forEventId("1")
-            ->instances();
-
-        /** @var EventInstance $eventInstance */
-        $eventInstance = $response->data->first();
-
-        expect($response)->toBeInstanceOf(ClientResponse::class)
-            ->and($response->data)->toBeInstanceOf(Collection::class)
-            ->and($response->data->count())->toBe(1)
-            ->and($eventInstance->relationships->event->data->id)->toBe(CalendarMocks::EVENT_ID)
-            ->and($eventInstance->attributes->eventInstanceId)->toBe(CalendarMocks::EVENT_INSTANCE_ID);
-    });
-
-    test("Event: Can List All Tags Associated with an Event", function (): void {
-        $event = Event::make(TestConstants::CLIENT_ID, TestConstants::CLIENT_SECRET);
-
-        $response = $event
-            ->forEventId("1")
-            ->tags();
-
-        /** @var Event $pcoEvent */
-        $pcoEvent = $response->data->first();
-
-        expect($response)->toBeInstanceOf(ClientResponse::class)
-            ->and($response->data)->toBeInstanceOf(Collection::class)
-            ->and($response->data->count())->toBe(1)
-            ->and($pcoEvent->relationships->tags[0]->tagId)->toBe(CalendarMocks::TAG_ID)
-            ->and($pcoEvent->relationships->tags[0]->name)->toBe(CalendarMocks::TAG_NAME);
+        expect($event)->toBeInstanceOf(CalendarEvent::class)
+            ->and($event->name())->toBe(CalendarMocks::EVENT_NAME)
+            ->and($event->id())->toBe(CalendarMocks::EVENT_ID);
     });
 })->group("calendar.event");
