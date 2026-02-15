@@ -3,25 +3,27 @@
 namespace EncoreDigitalGroup\PlanningCenter\Resources;
 
 use Carbon\CarbonImmutable;
+use EncoreDigitalGroup\PlanningCenter\Support\Paginator;
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasApiMethods;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasAttributes;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasClient;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasRead;
+use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasResponse;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
 
 /** @phpstan-consistent-constructor */
 class Group
 {
-    use HasApiMethods, HasAttributes, HasClient, HasRead;
+    use HasApiMethods, HasAttributes, HasClient, HasRead, HasResponse;
 
     public const string ENDPOINT = "/groups/v2/groups";
 
     protected string $endpoint = self::ENDPOINT;
 
     /** Get memberships for this group (lazy-loaded) */
-    private ?Collection $memberships = null;
+    private ?Paginator $memberships = null;
 
     public function __construct(string $clientId, string $clientSecret)
     {
@@ -133,9 +135,9 @@ class Group
         return $this->getAttribute("virtual_location_url");
     }
 
-    public function memberships(): Collection
+    public function memberships(): Paginator
     {
-        if (!$this->memberships instanceof Collection) {
+        if (!$this->memberships instanceof Paginator) {
             $groupId = $this->id();
             if ($groupId === null) {
                 throw new InvalidArgumentException("Cannot fetch memberships for a group without an ID.");
@@ -145,7 +147,7 @@ class Group
             $response = $membershipInstance->client()->get(
                 $membershipInstance->hostname() . "/groups/v2/groups/{$groupId}/memberships"
             );
-            $this->memberships = $membershipInstance->buildPaginatorFromResponse($response)->items();
+            $this->memberships = $membershipInstance->buildPaginatorFromResponse($response);
         }
 
         return $this->memberships;

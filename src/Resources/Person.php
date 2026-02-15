@@ -3,6 +3,7 @@
 namespace EncoreDigitalGroup\PlanningCenter\Resources;
 
 use Carbon\CarbonImmutable;
+use EncoreDigitalGroup\PlanningCenter\Support\Paginator;
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasApiMethods;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasAttributes;
@@ -10,6 +11,7 @@ use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasClient;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasCreate;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasDelete;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasRead;
+use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasResponse;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasSave;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasUpdate;
 use Illuminate\Support\Collection;
@@ -18,14 +20,14 @@ use InvalidArgumentException;
 /** @phpstan-consistent-constructor */
 class Person
 {
-    use HasApiMethods, HasAttributes, HasClient, HasCreate, HasDelete, HasRead, HasSave, HasUpdate;
+    use HasApiMethods, HasAttributes, HasClient, HasCreate, HasDelete, HasRead, HasResponse, HasSave, HasUpdate;
 
     public const string ENDPOINT = "/people/v2/people";
 
     protected string $endpoint = self::ENDPOINT;
 
     // Relationships
-    private ?Collection $emails = null;
+    private ?Paginator $emails = null;
 
     public function __construct(string $clientId, string $clientSecret)
     {
@@ -358,9 +360,9 @@ class Person
     }
 
     /** Get emails for this person (lazy-loaded) */
-    public function emails(): Collection
+    public function emails(): Paginator
     {
-        if (!$this->emails instanceof Collection) {
+        if (!$this->emails instanceof Paginator) {
             $personId = $this->id();
             if ($personId === null) {
                 throw new InvalidArgumentException("Cannot fetch emails for a person without an ID.");
@@ -370,7 +372,7 @@ class Person
             $response = $emailInstance->client()->get(
                 $emailInstance->hostname() . "/people/v2/people/{$personId}/emails"
             );
-            $this->emails = $emailInstance->buildPaginatorFromResponse($response)->items();
+            $this->emails = $emailInstance->buildPaginatorFromResponse($response);
         }
 
         return $this->emails;

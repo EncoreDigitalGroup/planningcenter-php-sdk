@@ -3,28 +3,30 @@
 namespace EncoreDigitalGroup\PlanningCenter\Resources;
 
 use Carbon\CarbonImmutable;
+use EncoreDigitalGroup\PlanningCenter\Support\Paginator;
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasApiMethods;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasAttributes;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasClient;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasRead;
+use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasResponse;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
 
 /** @phpstan-consistent-constructor */
 class CalendarEvent
 {
-    use HasApiMethods, HasAttributes, HasClient, HasRead;
+    use HasApiMethods, HasAttributes, HasClient, HasRead, HasResponse;
 
     public const string ENDPOINT = "/calendar/v2/events";
 
     protected string $endpoint = self::ENDPOINT;
 
     /** Get event instances for this event (lazy-loaded) */
-    private ?Collection $eventInstances = null;
+    private ?Paginator $eventInstances = null;
 
     /** Get tags for this event (lazy-loaded) */
-    private ?Collection $tags = null;
+    private ?Paginator $tags = null;
 
     public function __construct(string $clientId, string $clientSecret)
     {
@@ -106,9 +108,9 @@ class CalendarEvent
         return $this->getAttribute("visible_in_church_center");
     }
 
-    public function eventInstances(): Collection
+    public function eventInstances(): Paginator
     {
-        if (!$this->eventInstances instanceof Collection) {
+        if (!$this->eventInstances instanceof Paginator) {
             $eventId = $this->id();
             if ($eventId === null) {
                 throw new InvalidArgumentException("Cannot fetch event instances for an event without an ID.");
@@ -118,15 +120,15 @@ class CalendarEvent
             $response = $instanceResource->client()->get(
                 $instanceResource->hostname() . "/calendar/v2/events/{$eventId}/event_instances"
             );
-            $this->eventInstances = $instanceResource->buildPaginatorFromResponse($response)->items();
+            $this->eventInstances = $instanceResource->buildPaginatorFromResponse($response);
         }
 
         return $this->eventInstances;
     }
 
-    public function tags(): Collection
+    public function tags(): Paginator
     {
-        if (!$this->tags instanceof Collection) {
+        if (!$this->tags instanceof Paginator) {
             $eventId = $this->id();
             if ($eventId === null) {
                 throw new InvalidArgumentException("Cannot fetch tags for an event without an ID.");
@@ -136,7 +138,7 @@ class CalendarEvent
             $response = $tagInstance->client()->get(
                 $tagInstance->hostname() . "/calendar/v2/events/{$eventId}/tags"
             );
-            $this->tags = $tagInstance->buildPaginatorFromResponse($response)->items();
+            $this->tags = $tagInstance->buildPaginatorFromResponse($response);
         }
 
         return $this->tags;

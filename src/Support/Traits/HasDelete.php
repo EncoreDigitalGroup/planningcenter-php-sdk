@@ -21,6 +21,8 @@ trait HasDelete
             $this->hostname() . $this->endpoint . "/" . $this->getAttribute("id")
         );
 
+        $this->setResponse($response);
+
         return $response->successful();
     }
 }
