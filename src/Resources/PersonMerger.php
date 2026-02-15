@@ -15,7 +15,12 @@ use Illuminate\Support\Collection;
 /** @phpstan-consistent-constructor */
 class PersonMerger
 {
-    use HasApiMethods, HasAttributes, HasClient, HasQueryParameters, HasRead, HasResponse;
+    use HasApiMethods;
+    use HasAttributes;
+    use HasClient;
+    use HasQueryParameters;
+    use HasRead;
+    use HasResponse;
 
     public const string ENDPOINT = "/people/v2/person_mergers";
 

@@ -14,10 +14,10 @@ trait HasQueryParameters
      */
     public function withInclude(string ...$includes): self
     {
-        $existing = $this->queryParameters['include'] ?? '';
-        $existingArray = $existing ? explode(',', $existing) : [];
+        $existing = $this->queryParameters["include"] ?? "";
+        $existingArray = $existing !== '' ? explode(",", $existing) : [];
         $merged = array_unique([...$existingArray, ...$includes]);
-        $this->queryParameters['include'] = implode(',', $merged);
+        $this->queryParameters["include"] = implode(",", $merged);
 
         return $this;
     }
@@ -30,11 +30,11 @@ trait HasQueryParameters
      */
     public function withFilter(string $key, mixed $value): self
     {
-        if (!isset($this->queryParameters['where'])) {
-            $this->queryParameters['where'] = [];
+        if (!isset($this->queryParameters["where"])) {
+            $this->queryParameters["where"] = [];
         }
 
-        $this->queryParameters['where'][$key] = $value;
+        $this->queryParameters["where"][$key] = $value;
 
         return $this;
     }
@@ -46,7 +46,7 @@ trait HasQueryParameters
      */
     public function withOrder(string $field): self
     {
-        $this->queryParameters['order'] = $field;
+        $this->queryParameters["order"] = $field;
 
         return $this;
     }
@@ -58,7 +58,7 @@ trait HasQueryParameters
      */
     public function withPerPage(int $perPage): self
     {
-        $this->queryParameters['per_page'] = $perPage;
+        $this->queryParameters["per_page"] = $perPage;
 
         return $this;
     }
@@ -70,7 +70,15 @@ trait HasQueryParameters
      */
     public function withOffset(int $offset): self
     {
-        $this->queryParameters['offset'] = $offset;
+        $this->queryParameters["offset"] = $offset;
+
+        return $this;
+    }
+
+    /** Clear all query parameters */
+    public function clearQueryParameters(): self
+    {
+        $this->queryParameters = [];
 
         return $this;
     }
@@ -83,16 +91,6 @@ trait HasQueryParameters
     protected function getQueryParameters(): array
     {
         return $this->queryParameters;
-    }
-
-    /**
-     * Clear all query parameters
-     */
-    public function clearQueryParameters(): self
-    {
-        $this->queryParameters = [];
-
-        return $this;
     }
 
     /**

@@ -21,7 +21,16 @@ use InvalidArgumentException;
 /** @phpstan-consistent-constructor */
 class Person
 {
-    use HasApiMethods, HasAttributes, HasClient, HasCreate, HasDelete, HasQueryParameters, HasRead, HasResponse, HasSave, HasUpdate;
+    use HasApiMethods;
+    use HasAttributes;
+    use HasClient;
+    use HasCreate;
+    use HasDelete;
+    use HasQueryParameters;
+    use HasRead;
+    use HasResponse;
+    use HasSave;
+    use HasUpdate;
 
     public const string ENDPOINT = "/people/v2/people";
 

@@ -17,7 +17,12 @@ use InvalidArgumentException;
 /** @phpstan-consistent-constructor */
 class Group
 {
-    use HasApiMethods, HasAttributes, HasClient, HasQueryParameters, HasRead, HasResponse;
+    use HasApiMethods;
+    use HasAttributes;
+    use HasClient;
+    use HasQueryParameters;
+    use HasRead;
+    use HasResponse;
 
     public const string ENDPOINT = "/groups/v2/groups";
 

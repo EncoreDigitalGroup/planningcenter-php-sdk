@@ -14,7 +14,12 @@ use Illuminate\Support\Collection;
 /** @phpstan-consistent-constructor */
 class GroupMemberPerson
 {
-    use HasApiMethods, HasAttributes, HasClient, HasQueryParameters, HasRead, HasResponse;
+    use HasApiMethods;
+    use HasAttributes;
+    use HasClient;
+    use HasQueryParameters;
+    use HasRead;
+    use HasResponse;
 
     public const string ENDPOINT = "/groups/v2/people";
 
