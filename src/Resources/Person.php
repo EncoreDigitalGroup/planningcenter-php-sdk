@@ -10,6 +10,7 @@ use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasAttributes;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasClient;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasCreate;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasDelete;
+use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasQueryParameters;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasRead;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasResponse;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasSave;
@@ -20,7 +21,16 @@ use InvalidArgumentException;
 /** @phpstan-consistent-constructor */
 class Person
 {
-    use HasApiMethods, HasAttributes, HasClient, HasCreate, HasDelete, HasRead, HasResponse, HasSave, HasUpdate;
+    use HasApiMethods;
+    use HasAttributes;
+    use HasClient;
+    use HasCreate;
+    use HasDelete;
+    use HasQueryParameters;
+    use HasRead;
+    use HasResponse;
+    use HasSave;
+    use HasUpdate;
 
     public const string ENDPOINT = "/people/v2/people";
 
@@ -359,8 +369,12 @@ class Person
         return $this->getAttribute("remote_id");
     }
 
-    /** Get emails for this person (lazy-loaded) */
-    public function emails(): Paginator
+    /**
+     * Get emails for this person (lazy-loaded)
+     *
+     * @param  array<string, mixed>  $query  Optional query parameters
+     */
+    public function emails(array $query = []): Paginator
     {
         if (!$this->emails instanceof Paginator) {
             $personId = $this->id();
@@ -370,7 +384,8 @@ class Person
 
             $emailInstance = new Email($this->clientId, $this->clientSecret);
             $response = $emailInstance->client()->get(
-                $emailInstance->hostname() . "/people/v2/people/{$personId}/emails"
+                $emailInstance->hostname() . "/people/v2/people/{$personId}/emails",
+                $this->mergeQueryParameters($query)
             );
             $this->emails = $emailInstance->buildPaginatorFromResponse($response);
         }

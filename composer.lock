@@ -3237,7 +3237,7 @@
         },
         {
             "name": "phpgenesis/common",
-            "version": "v1.9.3",
+            "version": "v1.9.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPGenesis/Common.git",
@@ -3276,13 +3276,13 @@
             ],
             "description": "Shared Functionality for PHPGenesis",
             "support": {
-                "source": "https://github.com/PHPGenesis/Common/tree/v1.9.3"
+                "source": "https://github.com/PHPGenesis/Common/tree/v1.9.4"
             },
             "time": "2025-12-11T03:43:53+00:00"
         },
         {
             "name": "phpgenesis/http",
-            "version": "v1.9.3",
+            "version": "v1.9.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPGenesis/Http.git",
@@ -3313,7 +3313,7 @@
             ],
             "description": "PHPGenesis Implementation of Laravel's HTTP Client",
             "support": {
-                "source": "https://github.com/PHPGenesis/Http/tree/v1.9.3"
+                "source": "https://github.com/PHPGenesis/Http/tree/v1.9.4"
             },
             "time": "2025-12-11T03:43:50+00:00"
         },
@@ -9541,16 +9541,16 @@
         },
         {
             "name": "phpgenesis/devutilities",
-            "version": "v1.9.3",
+            "version": "v1.9.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPGenesis/DevUtilities.git",
-                "reference": "12e7590bc6eabe12c915601e6cbcb82f2a90a6c5"
+                "reference": "47285297cc3fe73788fbc2b7b78d6d65f05e2a6f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPGenesis/DevUtilities/zipball/12e7590bc6eabe12c915601e6cbcb82f2a90a6c5",
-                "reference": "12e7590bc6eabe12c915601e6cbcb82f2a90a6c5",
+                "url": "https://api.github.com/repos/PHPGenesis/DevUtilities/zipball/47285297cc3fe73788fbc2b7b78d6d65f05e2a6f",
+                "reference": "47285297cc3fe73788fbc2b7b78d6d65f05e2a6f",
                 "shasum": ""
             },
             "require": {
@@ -9574,9 +9574,9 @@
                 "dev"
             ],
             "support": {
-                "source": "https://github.com/PHPGenesis/DevUtilities/tree/v1.9.3"
+                "source": "https://github.com/PHPGenesis/DevUtilities/tree/v1.9.4"
             },
-            "time": "2025-12-11T03:44:54+00:00"
+            "time": "2026-02-15T21:58:08+00:00"
         },
         {
             "name": "phpstan/extension-installer",

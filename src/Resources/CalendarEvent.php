@@ -8,6 +8,7 @@ use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasApiMethods;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasAttributes;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasClient;
+use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasQueryParameters;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasRead;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasResponse;
 use Illuminate\Support\Collection;
@@ -16,7 +17,12 @@ use InvalidArgumentException;
 /** @phpstan-consistent-constructor */
 class CalendarEvent
 {
-    use HasApiMethods, HasAttributes, HasClient, HasRead, HasResponse;
+    use HasApiMethods;
+    use HasAttributes;
+    use HasClient;
+    use HasQueryParameters;
+    use HasRead;
+    use HasResponse;
 
     public const string ENDPOINT = "/calendar/v2/events";
 
@@ -108,7 +114,12 @@ class CalendarEvent
         return $this->getAttribute("visible_in_church_center");
     }
 
-    public function eventInstances(): Paginator
+    /**
+     * Get event instances for this event (lazy-loaded)
+     *
+     * @param  array<string, mixed>  $query  Optional query parameters
+     */
+    public function eventInstances(array $query = []): Paginator
     {
         if (!$this->eventInstances instanceof Paginator) {
             $eventId = $this->id();
@@ -118,7 +129,8 @@ class CalendarEvent
 
             $instanceResource = new EventInstance($this->clientId, $this->clientSecret);
             $response = $instanceResource->client()->get(
-                $instanceResource->hostname() . "/calendar/v2/events/{$eventId}/event_instances"
+                $instanceResource->hostname() . "/calendar/v2/events/{$eventId}/event_instances",
+                $this->mergeQueryParameters($query)
             );
             $this->eventInstances = $instanceResource->buildPaginatorFromResponse($response);
         }
@@ -126,7 +138,12 @@ class CalendarEvent
         return $this->eventInstances;
     }
 
-    public function tags(): Paginator
+    /**
+     * Get tags for this event (lazy-loaded)
+     *
+     * @param  array<string, mixed>  $query  Optional query parameters
+     */
+    public function tags(array $query = []): Paginator
     {
         if (!$this->tags instanceof Paginator) {
             $eventId = $this->id();
@@ -136,7 +153,8 @@ class CalendarEvent
 
             $tagInstance = new CalendarTag($this->clientId, $this->clientSecret);
             $response = $tagInstance->client()->get(
-                $tagInstance->hostname() . "/calendar/v2/events/{$eventId}/tags"
+                $tagInstance->hostname() . "/calendar/v2/events/{$eventId}/tags",
+                $this->mergeQueryParameters($query)
             );
             $this->tags = $tagInstance->buildPaginatorFromResponse($response);
         }
