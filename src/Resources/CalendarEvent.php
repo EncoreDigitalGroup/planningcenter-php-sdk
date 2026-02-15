@@ -22,6 +22,9 @@ class CalendarEvent
     /** Get event instances for this event (lazy-loaded) */
     private ?Collection $eventInstances = null;
 
+    /** Get tags for this event (lazy-loaded) */
+    private ?Collection $tags = null;
+
     public function __construct(string $clientId, string $clientSecret)
     {
         $this->attributes = new Collection;
@@ -118,6 +121,24 @@ class CalendarEvent
         }
 
         return $this->eventInstances;
+    }
+
+    public function tags(): Collection
+    {
+        if (!$this->tags instanceof Collection) {
+            $eventId = $this->id();
+            if ($eventId === null) {
+                throw new InvalidArgumentException("Cannot fetch tags for an event without an ID.");
+            }
+
+            $this->tags = CalendarTag::forEvent(
+                $this->clientId,
+                $this->clientSecret,
+                $eventId
+            )->items();
+        }
+
+        return $this->tags;
     }
 
     protected function dateAttributes(): array
