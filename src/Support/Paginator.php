@@ -18,9 +18,7 @@ readonly class Paginator
         private int        $perPage
     ) {}
 
-    /**
-     * @return Collection<int, TResource>
-     */
+    /** @return Collection<int, TResource> */
     public function items(): Collection
     {
         return $this->data;
