@@ -167,7 +167,7 @@ trait HasAttributes
 
         return [
             "data" => [
-                "attributes" => array_filter($attributes, fn($v): bool => $v !== null),
+                "attributes" => array_filter($attributes, fn ($v): bool => $v !== null),
             ],
         ];
     }
