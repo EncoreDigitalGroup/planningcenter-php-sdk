@@ -3,6 +3,7 @@
 namespace EncoreDigitalGroup\PlanningCenter\Resources;
 
 use Carbon\CarbonImmutable;
+use EncoreDigitalGroup\PlanningCenter\Support\Paginator;
 use EncoreDigitalGroup\PlanningCenter\Support\PlanningCenterApiVersion;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasApiMethods;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasAttributes;
@@ -11,6 +12,7 @@ use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasQueryParameters;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasRead;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasResponse;
 use Illuminate\Support\Collection;
+use InvalidArgumentException;
 
 /** @phpstan-consistent-constructor */
 class CalendarTagGroup
@@ -25,6 +27,9 @@ class CalendarTagGroup
     public const string ENDPOINT = "/calendar/v2/tag_groups";
 
     protected string $endpoint = self::ENDPOINT;
+
+    /** Get tags for this tag group (lazy-loaded) */
+    private ?Paginator $tags = null;
 
     public function __construct(string $clientId, string $clientSecret)
     {
@@ -64,6 +69,30 @@ class CalendarTagGroup
     public function required(): ?bool
     {
         return $this->getAttribute("required");
+    }
+
+    /**
+     * Get tags for this tag group (lazy-loaded)
+     *
+     * @param  array<string, mixed>  $query  Optional query parameters
+     */
+    public function tags(array $query = []): Paginator
+    {
+        if (!$this->tags instanceof Paginator) {
+            $tagGroupId = $this->id();
+            if ($tagGroupId === null) {
+                throw new InvalidArgumentException("Cannot fetch tags for a tag group without an ID.");
+            }
+
+            $tagInstance = new CalendarTag($this->clientId, $this->clientSecret);
+            $response = $tagInstance->client()->get(
+                $tagInstance->hostname() . "/calendar/v2/tag_groups/{$tagGroupId}/tags",
+                $this->mergeQueryParameters($query)
+            );
+            $this->tags = $tagInstance->buildPaginatorFromResponse($response);
+        }
+
+        return $this->tags;
     }
 
     protected function dateAttributes(): array

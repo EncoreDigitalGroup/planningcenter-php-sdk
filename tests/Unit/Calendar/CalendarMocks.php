@@ -112,7 +112,7 @@ class CalendarMocks extends BaseMock
         HttpClient::fake([
             self::HOSTNAME . TagGroup::ENDPOINT . "/1/tags" => function ($request) {
                 return match ($request->method()) {
-                    "GET" => HttpClient::response(self::useSingleResponse(ObjectType::Tag)),
+                    "GET" => HttpClient::response(self::useCollectionResponse(ObjectType::Tag)),
                     default => HttpClient::response([], 405),
                 };
             },
