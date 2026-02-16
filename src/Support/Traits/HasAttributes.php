@@ -135,6 +135,10 @@ trait HasAttributes
     {
         $data = $response->json("data");
 
+        if (is_null($data)) {
+            return;
+        }
+
         // Handle array responses (list endpoints)
         if (is_array($data) && isset($data[0])) {
             $data = $data[0];

@@ -50,11 +50,14 @@ trait HasApiMethods
      */
     public function buildPaginatorFromResponse(Response $response): Paginator
     {
-        /** @var array<int, array<string, mixed>> $jsonData */
+        /** @var array<int, array<string, mixed>|null>|null $jsonData */
         $jsonData = $response->json("data");
 
+        /** @var Collection<int, array<string, mixed>> $filtered */
+        $filtered = collect($jsonData)->filter(fn ($item): bool => is_array($item));
+
         /** @var Collection<int, static> $data */
-        $data = collect($jsonData)->map(
+        $data = $filtered->map(
             fn (array $item): static => static::createFromArray($item, $this->clientId, $this->clientSecret)
         );
 

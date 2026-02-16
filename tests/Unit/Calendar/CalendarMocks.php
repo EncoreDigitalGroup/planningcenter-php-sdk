@@ -86,6 +86,37 @@ class CalendarMocks extends BaseMock
         ]);
     }
 
+    public static function useNullEventInstance(): void
+    {
+        HttpClient::fake([
+            self::HOSTNAME . EventInstance::ENDPOINT . "/999" => function ($request) {
+                return match ($request->method()) {
+                    "GET" => HttpClient::response(["data" => null], 200),
+                    default => HttpClient::response([], 405),
+                };
+            },
+        ]);
+    }
+
+    public static function useEventInstanceCollectionWithNulls(): void
+    {
+        HttpClient::fake([
+            self::HOSTNAME . EventInstance::ENDPOINT => function ($request) {
+                return match ($request->method()) {
+                    "GET" => HttpClient::response([
+                        "data" => [
+                            self::eventInstance(),
+                            null,
+                            self::eventInstance(),
+                        ],
+                        "meta" => ["total_count" => 2, "per_page" => 25],
+                    ]),
+                    default => HttpClient::response([], 405),
+                };
+            },
+        ]);
+    }
+
     public static function useTagGroupCollection(): void
     {
         HttpClient::fake([
