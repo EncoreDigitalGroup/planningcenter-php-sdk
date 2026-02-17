@@ -20,30 +20,42 @@ class CalendarModule extends Module
     /** Create a new CalendarEvent resource (read-only) */
     public function event(): CalendarEvent
     {
-        return new CalendarEvent($this->clientId, $this->clientSecret);
+        $resource = new CalendarEvent($this->clientId, $this->clientSecret);
+        $resource->setAuthType($this->authType);
+
+        return $resource;
     }
 
     /** Create a new EventInstance resource (read-only) */
     public function eventInstance(): EventInstance
     {
-        return new EventInstance($this->clientId, $this->clientSecret);
+        $resource = new EventInstance($this->clientId, $this->clientSecret);
+        $resource->setAuthType($this->authType);
+
+        return $resource;
     }
 
     /** Create a new CalendarTag resource (read-only) */
     public function tag(): CalendarTag
     {
-        return new CalendarTag($this->clientId, $this->clientSecret);
+        $resource = new CalendarTag($this->clientId, $this->clientSecret);
+        $resource->setAuthType($this->authType);
+
+        return $resource;
     }
 
     /** Create a new CalendarTagGroup resource (read-only) */
     public function tagGroup(): CalendarTagGroup
     {
-        return new CalendarTagGroup($this->clientId, $this->clientSecret);
+        $resource = new CalendarTagGroup($this->clientId, $this->clientSecret);
+        $resource->setAuthType($this->authType);
+
+        return $resource;
     }
 
     /** List all calendar events with pagination (read-only) */
     public function all(array $query = []): Paginator
     {
-        return CalendarEvent::all($this->clientId, $this->clientSecret, $query);
+        return CalendarEvent::all($this->clientId, $this->clientSecret, $query, $this->authType);
     }
 }

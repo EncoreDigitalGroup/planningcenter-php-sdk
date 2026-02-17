@@ -19,24 +19,33 @@ class PeopleModule extends Module
     /** Create a new Person resource */
     public function person(): Person
     {
-        return new Person($this->clientId, $this->clientSecret);
+        $resource = new Person($this->clientId, $this->clientSecret);
+        $resource->setAuthType($this->authType);
+
+        return $resource;
     }
 
     /** Create a new Email resource */
     public function email(): Email
     {
-        return new Email($this->clientId, $this->clientSecret);
+        $resource = new Email($this->clientId, $this->clientSecret);
+        $resource->setAuthType($this->authType);
+
+        return $resource;
     }
 
     /** Create a new PersonMerger resource */
     public function personMerger(): PersonMerger
     {
-        return new PersonMerger($this->clientId, $this->clientSecret);
+        $resource = new PersonMerger($this->clientId, $this->clientSecret);
+        $resource->setAuthType($this->authType);
+
+        return $resource;
     }
 
     /** List all people with pagination */
     public function all(array $query = []): Paginator
     {
-        return Person::all($this->clientId, $this->clientSecret, $query);
+        return Person::all($this->clientId, $this->clientSecret, $query, $this->authType);
     }
 }

@@ -163,6 +163,7 @@ class Group
             }
 
             $membershipInstance = new GroupMembership($this->clientId, $this->clientSecret);
+            $membershipInstance->setAuthType($this->authType);
             $response = $membershipInstance->client()->get(
                 $membershipInstance->hostname() . "/groups/v2/groups/{$groupId}/memberships",
                 $this->mergeQueryParameters($query)
@@ -187,6 +188,7 @@ class Group
             }
 
             $tagInstance = new GroupTag($this->clientId, $this->clientSecret);
+            $tagInstance->setAuthType($this->authType);
             $response = $tagInstance->client()->get(
                 $tagInstance->hostname() . "/groups/v2/groups/{$groupId}/tags",
                 $this->mergeQueryParameters($query)
