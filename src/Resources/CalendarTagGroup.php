@@ -85,6 +85,7 @@ class CalendarTagGroup
             }
 
             $tagInstance = new CalendarTag($this->clientId, $this->clientSecret);
+            $tagInstance->setAuthType($this->authType);
             $response = $tagInstance->client()->get(
                 $tagInstance->hostname() . "/calendar/v2/tag_groups/{$tagGroupId}/tags",
                 $this->mergeQueryParameters($query)

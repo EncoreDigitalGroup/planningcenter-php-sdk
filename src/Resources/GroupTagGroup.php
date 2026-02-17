@@ -104,6 +104,7 @@ class GroupTagGroup
             }
 
             $tagInstance = new GroupTag($this->clientId, $this->clientSecret);
+            $tagInstance->setAuthType($this->authType);
             $response = $tagInstance->client()->get(
                 $tagInstance->hostname() . "/groups/v2/tag_groups/{$tagGroupId}/tags",
                 $this->mergeQueryParameters($query)

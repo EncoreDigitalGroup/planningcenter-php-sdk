@@ -17,12 +17,15 @@ class WebhooksModule extends Module
     /** Create a new WebhookSubscription resource */
     public function webhookSubscription(): WebhookSubscription
     {
-        return new WebhookSubscription($this->clientId, $this->clientSecret);
+        $resource = new WebhookSubscription($this->clientId, $this->clientSecret);
+        $resource->setAuthType($this->authType);
+
+        return $resource;
     }
 
     /** List all webhook subscriptions with pagination */
     public function all(array $query = []): Paginator
     {
-        return WebhookSubscription::all($this->clientId, $this->clientSecret, $query);
+        return WebhookSubscription::all($this->clientId, $this->clientSecret, $query, $this->authType);
     }
 }

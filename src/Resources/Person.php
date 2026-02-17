@@ -383,6 +383,7 @@ class Person
             }
 
             $emailInstance = new Email($this->clientId, $this->clientSecret);
+            $emailInstance->setAuthType($this->authType);
             $response = $emailInstance->client()->get(
                 $emailInstance->hostname() . "/people/v2/people/{$personId}/emails",
                 $this->mergeQueryParameters($query)

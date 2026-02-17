@@ -23,48 +23,69 @@ class GroupsModule extends Module
     /** Create a new Group resource */
     public function group(): Group
     {
-        return new Group($this->clientId, $this->clientSecret);
+        $resource = new Group($this->clientId, $this->clientSecret);
+        $resource->setAuthType($this->authType);
+
+        return $resource;
     }
 
     /** Create a new GroupEnrollment resource */
     public function groupEnrollment(): GroupEnrollment
     {
-        return new GroupEnrollment($this->clientId, $this->clientSecret);
+        $resource = new GroupEnrollment($this->clientId, $this->clientSecret);
+        $resource->setAuthType($this->authType);
+
+        return $resource;
     }
 
     /** Create a new GroupEvent resource */
     public function groupEvent(): GroupEvent
     {
-        return new GroupEvent($this->clientId, $this->clientSecret);
+        $resource = new GroupEvent($this->clientId, $this->clientSecret);
+        $resource->setAuthType($this->authType);
+
+        return $resource;
     }
 
     /** Create a new GroupMembership resource */
     public function groupMembership(): GroupMembership
     {
-        return new GroupMembership($this->clientId, $this->clientSecret);
+        $resource = new GroupMembership($this->clientId, $this->clientSecret);
+        $resource->setAuthType($this->authType);
+
+        return $resource;
     }
 
     /** Create a new GroupMemberPerson resource */
     public function groupMemberPerson(): GroupMemberPerson
     {
-        return new GroupMemberPerson($this->clientId, $this->clientSecret);
+        $resource = new GroupMemberPerson($this->clientId, $this->clientSecret);
+        $resource->setAuthType($this->authType);
+
+        return $resource;
     }
 
     /** Create a new GroupTag resource */
     public function groupTag(): GroupTag
     {
-        return new GroupTag($this->clientId, $this->clientSecret);
+        $resource = new GroupTag($this->clientId, $this->clientSecret);
+        $resource->setAuthType($this->authType);
+
+        return $resource;
     }
 
     /** Create a new GroupTagGroup resource */
     public function groupTagGroup(): GroupTagGroup
     {
-        return new GroupTagGroup($this->clientId, $this->clientSecret);
+        $resource = new GroupTagGroup($this->clientId, $this->clientSecret);
+        $resource->setAuthType($this->authType);
+
+        return $resource;
     }
 
     /** List all groups with pagination */
     public function all(array $query = []): Paginator
     {
-        return Group::all($this->clientId, $this->clientSecret, $query);
+        return Group::all($this->clientId, $this->clientSecret, $query, $this->authType);
     }
 }

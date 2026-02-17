@@ -2,6 +2,7 @@
 
 namespace EncoreDigitalGroup\PlanningCenter\Support\Traits;
 
+use EncoreDigitalGroup\PlanningCenter\Support\AuthType;
 use EncoreDigitalGroup\PlanningCenter\Support\Paginator;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Collection;
@@ -16,9 +17,11 @@ trait HasApiMethods
     public static function all(
         string $clientId,
         string $clientSecret,
-        array $query = []
+        array $query = [],
+        AuthType $authType = AuthType::Basic
     ): Paginator {
         $instance = new static($clientId, $clientSecret);
+        $instance->setAuthType($authType);
 
         $response = $instance->client()->get(
             $instance->hostname() . $instance->endpoint,
@@ -33,9 +36,10 @@ trait HasApiMethods
      *
      * @param  array<string, mixed>  $data
      */
-    protected static function createFromArray(array $data, string $clientId, string $clientSecret): static
+    protected static function createFromArray(array $data, string $clientId, string $clientSecret, AuthType $authType = AuthType::Basic): static
     {
         $instance = new static($clientId, $clientSecret);
+        $instance->setAuthType($authType);
         $instance->hydrateFromArray($data);
 
         return $instance;
@@ -58,7 +62,7 @@ trait HasApiMethods
 
         /** @var Collection<int, static> $data */
         $data = $filtered->map(
-            fn (array $item): static => static::createFromArray($item, $this->clientId, $this->clientSecret)
+            fn (array $item): static => static::createFromArray($item, $this->clientId, $this->clientSecret, $this->authType)
         );
 
         $meta = $response->json("meta");

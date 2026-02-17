@@ -128,6 +128,7 @@ class CalendarEvent
             }
 
             $instanceResource = new EventInstance($this->clientId, $this->clientSecret);
+            $instanceResource->setAuthType($this->authType);
             $response = $instanceResource->client()->get(
                 $instanceResource->hostname() . "/calendar/v2/events/{$eventId}/event_instances",
                 $this->mergeQueryParameters($query)
@@ -152,6 +153,7 @@ class CalendarEvent
             }
 
             $tagInstance = new CalendarTag($this->clientId, $this->clientSecret);
+            $tagInstance->setAuthType($this->authType);
             $response = $tagInstance->client()->get(
                 $tagInstance->hostname() . "/calendar/v2/events/{$eventId}/tags",
                 $this->mergeQueryParameters($query)
