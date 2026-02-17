@@ -31,6 +31,9 @@ class Group
     /** Get memberships for this group (lazy-loaded) */
     private ?Paginator $memberships = null;
 
+    /** Get tags for this group (lazy-loaded) */
+    private ?Paginator $tags = null;
+
     public function __construct(string $clientId, string $clientSecret)
     {
         $this->attributes = new Collection;
@@ -141,6 +144,11 @@ class Group
         return $this->getAttribute("virtual_location_url");
     }
 
+    public function headerImage(): ?string
+    {
+        return ($this->getAttribute("header_image") ?? [])["original"] ?? null;
+    }
+
     /**
      * Get memberships for this group (lazy-loaded)
      *
@@ -163,6 +171,30 @@ class Group
         }
 
         return $this->memberships;
+    }
+
+    /**
+     * Get tags for this group (lazy-loaded)
+     *
+     * @param  array<string, mixed>  $query  Optional query parameters
+     */
+    public function tags(array $query = []): Paginator
+    {
+        if (!$this->tags instanceof Paginator) {
+            $groupId = $this->id();
+            if ($groupId === null) {
+                throw new InvalidArgumentException("Cannot fetch tags for a group without an ID.");
+            }
+
+            $tagInstance = new GroupTag($this->clientId, $this->clientSecret);
+            $response = $tagInstance->client()->get(
+                $tagInstance->hostname() . "/groups/v2/groups/{$groupId}/tags",
+                $this->mergeQueryParameters($query)
+            );
+            $this->tags = $tagInstance->buildPaginatorFromResponse($response);
+        }
+
+        return $this->tags;
     }
 
     protected function dateAttributes(): array

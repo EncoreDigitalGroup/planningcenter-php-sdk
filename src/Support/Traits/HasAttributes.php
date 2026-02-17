@@ -3,6 +3,7 @@
 namespace EncoreDigitalGroup\PlanningCenter\Support\Traits;
 
 use Carbon\CarbonImmutable;
+use EncoreDigitalGroup\StdLib\Objects\Support\Types\Str;
 use Exception;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Collection;
@@ -10,6 +11,7 @@ use Illuminate\Support\Collection;
 trait HasAttributes
 {
     protected Collection $attributes;
+    protected ?Collection $relationshipIds = null;
 
     public function __construct()
     {
@@ -128,6 +130,20 @@ trait HasAttributes
             }
             $this->setAttribute($key, $value);
         }
+
+        foreach ($data["relationships"] ?? [] as $key => $relationship) {
+            if (isset($relationship["data"]["id"])) {
+                $normalizedKey = Str::lower($key);
+                ($this->relationshipIds ??= new Collection)->put($normalizedKey . "_id", $relationship["data"]["id"]);
+            }
+        }
+    }
+
+    protected function getRelationshipId(string $key): ?string
+    {
+        $value = $this->relationshipIds?->get($key);
+
+        return is_string($value) ? $value : null;
     }
 
     /** Hydrate attributes from API response */

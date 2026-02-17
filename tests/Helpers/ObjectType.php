@@ -13,6 +13,8 @@ enum ObjectType: string
     case Event = "event";
     case EventInstance = "eventInstance";
     case Group = "group";
+    case GroupEnrollment = "groupEnrollment";
+    case GroupEvent = "groupEvent";
     case GroupMembers = "people";
     case GroupMembership = "membership";
     case Profile = "profile";
