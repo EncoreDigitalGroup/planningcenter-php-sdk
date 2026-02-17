@@ -7,6 +7,8 @@
 namespace Tests\Unit\Groups;
 
 use EncoreDigitalGroup\PlanningCenter\Resources\Group;
+use EncoreDigitalGroup\PlanningCenter\Resources\GroupEnrollment;
+use EncoreDigitalGroup\PlanningCenter\Resources\GroupEvent;
 use EncoreDigitalGroup\PlanningCenter\Resources\GroupTagGroup as TagGroup;
 use EncoreDigitalGroup\PlanningCenter\Support\Traits\HasClient;
 use PHPGenesis\Http\HttpClient;
@@ -20,6 +22,7 @@ class GroupMocks extends BaseMock
 
     public const string GROUP_ID = "1";
     public const string GROUP_NAME = "Demo Group";
+    public const string GROUP_HEADER_IMAGE_URL = "https://example.com/header.jpg";
     public const string MEMBERSHIP_ID = "1";
     public const string MEMBERSHIP_ROLE = "leader";
     public const string MEMBER_PROFILE_ID = "1";
@@ -32,6 +35,9 @@ class GroupMocks extends BaseMock
     public const string TAG_GROUP_NAME = "Demo Tag Group";
     public const int ENROLLMENT_MEMBER_LIMIT = 1;
     public const bool ENROLLMENT_MEMBER_LIMIT_REACHED = true;
+    public const string GROUP_EVENT_ID = "1";
+    public const string GROUP_EVENT_NAME = "Demo Group Event";
+    public const string GROUP_ENROLLMENT_ID = "1";
 
     public static function setup(): void
     {
@@ -43,6 +49,11 @@ class GroupMocks extends BaseMock
         self::useEnrollmentCollection();
         self::useTagGroupCollection();
         self::useSpecificTagGroup();
+        self::useTagGroupTagsCollection();
+        self::useGroupEventCollection();
+        self::useSpecificGroupEvent();
+        self::useGroupEnrollmentCollection();
+        self::useSpecificGroupEnrollment();
     }
 
     protected static function useGroupCollection(): void
@@ -150,6 +161,89 @@ class GroupMocks extends BaseMock
         ]);
     }
 
+    protected static function useTagGroupTagsCollection(): void
+    {
+        HttpClient::fake([
+            self::HOSTNAME . TagGroup::ENDPOINT . "/1/tags" => function ($request) {
+                return match ($request->method()) {
+                    "GET" => HttpClient::response(self::useCollectionResponse(ObjectType::Tag)),
+                    default => HttpClient::response([], 405),
+                };
+            },
+        ]);
+    }
+
+    protected static function useGroupEventCollection(): void
+    {
+        HttpClient::fake([
+            self::HOSTNAME . GroupEvent::ENDPOINT => function ($request) {
+                return match ($request->method()) {
+                    "GET" => HttpClient::response(self::useCollectionResponse(ObjectType::GroupEvent)),
+                    default => HttpClient::response([], 405),
+                };
+            },
+        ]);
+    }
+
+    protected static function useSpecificGroupEvent(): void
+    {
+        HttpClient::fake([
+            self::HOSTNAME . GroupEvent::ENDPOINT . "/1" => function ($request) {
+                return match ($request->method()) {
+                    "GET" => HttpClient::response(self::useSingleResponse(ObjectType::GroupEvent)),
+                    default => HttpClient::response([], 405),
+                };
+            },
+        ]);
+    }
+
+    public static function useGroupEventWithMixedCaseRelationship(): void
+    {
+        HttpClient::fake([
+            self::HOSTNAME . GroupEvent::ENDPOINT . "/99" => function ($request) {
+                return match ($request->method()) {
+                    "GET" => HttpClient::response([
+                        "data" => [[
+                            "type" => "Event",
+                            "id" => "99",
+                            "attributes" => ["name" => "Test Event"],
+                            "relationships" => [
+                                "Group" => [
+                                    "data" => ["type" => "Group", "id" => self::GROUP_ID],
+                                ],
+                            ],
+                        ]],
+                    ]),
+                    default => HttpClient::response([], 405),
+                };
+            },
+        ]);
+    }
+
+    protected static function useGroupEnrollmentCollection(): void
+    {
+        HttpClient::fake([
+            self::HOSTNAME . GroupEnrollment::ENDPOINT => function ($request) {
+                return match ($request->method()) {
+                    "GET" => HttpClient::response(self::useCollectionResponse(ObjectType::GroupEnrollment)),
+                    default => HttpClient::response([], 405),
+                };
+            },
+        ]);
+    }
+
+    protected static function useSpecificGroupEnrollment(): void
+    {
+        HttpClient::fake([
+            self::HOSTNAME . GroupEnrollment::ENDPOINT . "/1" => function ($request) {
+                return match ($request->method()) {
+                    "GET" => HttpClient::response(self::useSingleResponse(ObjectType::GroupEnrollment)),
+                    default => HttpClient::response([], 405),
+                };
+            },
+        ]);
+    }
+
     protected static function group(): array
     {
         return [
@@ -162,7 +256,7 @@ class GroupMocks extends BaseMock
                 "created_at" => "2000-01-01T12:00:00Z",
                 "description" => "string",
                 "events_visibility" => "value",
-                "header_image" => [],
+                "header_image" => ["original" => self::GROUP_HEADER_IMAGE_URL],
                 "leaders_can_search_people_database" => true,
                 "location_type_preference" => "value",
                 "memberships_count" => 1,
@@ -274,7 +368,7 @@ class GroupMocks extends BaseMock
                 "group" => [
                     "data" => [
                         "type" => "Group",
-                        "id" => "1",
+                        "id" => self::GROUP_ID,
                     ],
                 ],
             ],
@@ -293,6 +387,68 @@ class GroupMocks extends BaseMock
                 "position" => 1,
             ],
             "relationships" => [],
+        ];
+    }
+
+    protected static function groupEvent(): array
+    {
+        return [
+            "type" => "Event",
+            "id" => self::GROUP_EVENT_ID,
+            "attributes" => [
+                "attendance_requests_enabled" => true,
+                "automated_reminder_enabled" => false,
+                "canceled" => false,
+                "canceled_at" => null,
+                "description" => "string",
+                "ends_at" => "2000-01-01T13:00:00Z",
+                "location_type_preference" => "physical",
+                "multi_day" => false,
+                "name" => self::GROUP_EVENT_NAME,
+                "reminders_sent" => false,
+                "reminders_sent_at" => null,
+                "repeating" => false,
+                "starts_at" => "2000-01-01T12:00:00Z",
+                "virtual_location_url" => null,
+                "visitors_count" => 0,
+            ],
+            "relationships" => [
+                "group" => [
+                    "data" => [
+                        "type" => "Group",
+                        "id" => self::GROUP_ID,
+                    ],
+                ],
+                "location" => [
+                    "data" => null,
+                ],
+            ],
+        ];
+    }
+
+    protected static function groupEnrollment(): array
+    {
+        return [
+            "type" => "GroupEnrollment",
+            "id" => self::GROUP_ENROLLMENT_ID,
+            "attributes" => [
+                "auto_closed" => false,
+                "auto_closed_reason" => null,
+                "date_limit" => null,
+                "date_limit_reached" => false,
+                "member_limit" => self::ENROLLMENT_MEMBER_LIMIT,
+                "member_limit_reached" => self::ENROLLMENT_MEMBER_LIMIT_REACHED,
+                "status" => "open",
+                "strategy" => "request_to_join",
+            ],
+            "relationships" => [
+                "group" => [
+                    "data" => [
+                        "type" => "Group",
+                        "id" => self::GROUP_ID,
+                    ],
+                ],
+            ],
         ];
     }
 }

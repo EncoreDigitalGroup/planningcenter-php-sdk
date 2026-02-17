@@ -176,6 +176,11 @@ class GroupEvent
         return $this->getAttribute("visitors_count");
     }
 
+    public function groupId(): ?string
+    {
+        return $this->getRelationshipId("group_id");
+    }
+
     protected function dateAttributes(): array
     {
         return [

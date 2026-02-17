@@ -106,6 +106,11 @@ class GroupEnrollment
         return $this->getAttribute("strategy");
     }
 
+    public function groupId(): ?string
+    {
+        return $this->getRelationshipId("group_id");
+    }
+
     protected function dateAttributes(): array
     {
         return [
