@@ -11,7 +11,6 @@ use Illuminate\Support\Collection;
 trait HasAttributes
 {
     protected Collection $attributes;
-
     protected ?Collection $relationshipIds = null;
 
     public function __construct()
@@ -184,7 +183,7 @@ trait HasAttributes
 
         return [
             "data" => [
-                "attributes" => array_filter($attributes, fn($v): bool => $v !== null),
+                "attributes" => array_filter($attributes, fn ($v): bool => $v !== null),
             ],
         ];
     }
